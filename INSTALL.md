@@ -43,6 +43,7 @@ deactivate
 ```
 
 **Install project requirements**
+
 ```sh
 pip install -r requirements.txt
 ```
