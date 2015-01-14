@@ -30,6 +30,14 @@ git clone ssh://git@devops-tools.pearson.com/appsec/bag-of-holding.git
 cd bag-of-holding
 ```
 
+**Create your virtual environment**
+
+```sh
+virtualenv env
+```
+You can name your environment whatever you wish, just remember to use your new name in future commands instead of 'env'. Be sure not to commit it to the repository by adding it to the [.gitignore](.gitignore) file. 'env' is already being ignored.
+
+
 **Activate the virtual environment**
 
 ```sh
