@@ -65,22 +65,27 @@ pip freeze > requirements.txt
 ## Common Commands
 
 **Create and update migrations**
+
 ```sh
 python manage.py makemigrations
 ```
 
 **Migrate the database to latest data model**
+
 ```sh
 python manage.py migrate
 ```
 
 **Create a super user account**
+
 ```sh
 python manage.py createsuperuser
 ```
+
 _You can login by going to /admin/_
 
 **Run the server**
+
 ```sh
 python manage.py runserver
 ```
