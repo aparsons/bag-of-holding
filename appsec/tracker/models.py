@@ -1,6 +1,22 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # Create your models here.
+class Tag(models.Model):
+    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the hex format: 'd94d59'. Only 6 characters allowed.")
+
+    name = models.CharField(max_length=128, unique=True)
+    color = models.CharField(max_length=6, validators=[color_regex])
+
+    def __str__(self):
+        return self.name
+
+    # Overriding
+    def save(self, *args, **kwargs):
+        self.color = self.color.lower() # Convert to lowercase
+        super(Tag, self).save(*args, **kwargs)
+
+
 class Application(models.Model):
     WEB_PLATFORM = 1
     DESKTOP_PLATFORM = 2
@@ -156,7 +172,102 @@ class Application(models.Model):
     business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES)
     external_audience = models.BooleanField(default=False)
     internet_accessible = models.BooleanField(default=False)
-    #threadfix_application_id = models.CharField(max_length=12, unique=True)
+    #threadfix_application_id = models.IntegerField(unique=True)
+
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.name
+
+
+class Environment(models.Model):
+    DEVELOPMENT_ENVIRONMENT = 'DEV'
+    INTEGRATION_ENVIRONMENT = 'INT'
+    QUALITY_ASSURANCE_ENVIRONMENT = 'QA'
+    PRE_PRODUCTION_ENVIRONMENT = 'PPE'
+    CUSTOMER_ACCEPTANCE_ENVIRONMENT = 'CAT'
+    PRODUCTION_ENVIRONMENT = 'PROD'
+    ENVIRONMENT_CHOICES = (
+        (DEVELOPMENT_ENVIRONMENT, 'Development'),
+        (INTEGRATION_ENVIRONMENT, 'Integration'),
+        (QUALITY_ASSURANCE_ENVIRONMENT, 'Quality Assurance'),
+        (PRE_PRODUCTION_ENVIRONMENT, 'Pre-Production'),
+        (CUSTOMER_ACCEPTANCE_ENVIRONMENT, 'Customer Acceptance'),
+        (PRODUCTION_ENVIRONMENT, 'Production'),
+    )
+
+    environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES)
+    description = models.TextField(blank=True)
+    testing_approved = models.BooleanField(default=False)
+
+    application = models.ForeignKey(Application)
+
+    def __str__(self):
+        return self.application.name + ' ' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type]
+
+
+class EnvironmentLocation(models.Model):
+    location = models.URLField()
+    notes = models.TextField(blank=True)
+
+    environment = models.ForeignKey(Environment)
+
+    def __str__(self):
+        return self.location
+
+
+class EnvironmentCredentials(models.Model):
+    username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
+    password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
+    notes = models.TextField(blank=True) # Needs to be encrypted
+
+    environment = models.ForeignKey(Environment)
+
+    class Meta:
+        verbose_name_plural = 'Environment credentials'
+
+
+class Person(models.Model):
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+    phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+
+    application = models.ManyToManyField(Application, through='Relation')
+
+    def __str__(self):
+        return self.last_name + ', ' + self.first_name
+
+    class Meta:
+        ordering = ['last_name']
+        verbose_name_plural = 'People'
+
+
+class Relation(models.Model):
+    DEVELOPER_ROLE = 1
+    QUALITY_ASSURANCE_ROLE = 2
+    OPERATIONS_ROLE = 3
+    MANAGER_ROLE = 4
+    SECURITY_OFFICER_ROLE = 5
+    SECURITY_CHAMPION_ROLE = 6
+    ROLE_CHOICES = (
+        (DEVELOPER_ROLE, 'Developer'),
+        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
+        (OPERATIONS_ROLE, 'Operations'),
+        (MANAGER_ROLE, 'Manager'),
+        (SECURITY_OFFICER_ROLE, 'Security Officer'),
+        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
+    )
+
+    owner = models.BooleanField(default=False)
+    role = models.IntegerField(choices=ROLE_CHOICES)
+    notes = models.TextField(blank=True)
+
+    person = models.ForeignKey(Person)
+    application = models.ForeignKey(Application)
+
+    def __str__(self):
+        return self.person.first_name + ' ' + self.person.last_name + ', ' + self.application.name + ' ' + dict(Relation.ROLE_CHOICES)[self.role]
