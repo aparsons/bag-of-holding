@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 # Create your models here.
@@ -271,3 +272,49 @@ class Relation(models.Model):
 
     def __str__(self):
         return self.person.first_name + ' ' + self.person.last_name + ', ' + self.application.name + ' ' + dict(Relation.ROLE_CHOICES)[self.role]
+
+
+class Engagement(models.Model):
+    OPEN_STATUS = 1
+    CLOSED_STATUS = 2
+    STATUS_CHOICES = (
+        (OPEN_STATUS, 'Open'),
+        (CLOSED_STATUS, 'Closed'),
+    )
+
+    status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    open_date = models.DateTimeField(blank=True)
+    close_date = models.DateTimeField(blank=True)
+
+    application = models.ForeignKey(Application)
+
+
+class Activity(models.Model):
+    APPSCAN_ACTIVITY_TYPE = 1
+    MANUAL_ASSESSMENT_ACTIVITY_TYPE = 2
+    ACTIVITY_TYPE_CHOICES = (
+        (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
+        (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
+    )
+
+    OPEN_STATUS = 1
+    CLOSED_STATUS = 2
+    STATUS_CHOICES = (
+        (OPEN_STATUS, 'Open'),
+        (CLOSED_STATUS, 'Closed'),
+    )
+
+    activity_type = models.IntegerField(choices=ACTIVITY_TYPE_CHOICES)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    open_date = models.DateTimeField(blank=True)
+    close_date = models.DateTimeField(blank=True)
+
+    engagement = models.ForeignKey(Engagement)
+    users = models.ManyToManyField(User, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Activities'

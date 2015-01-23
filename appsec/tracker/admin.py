@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation
+from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity
 
 # Register your models here.
 
@@ -24,6 +24,30 @@ class RelationInline(admin.StackedInline):
     extra = 0
 
 
+class EngagementInline(admin.StackedInline):
+    model = Engagement
+    fieldsets = [
+        (None, {'fields': ['application', 'status', 'start_date', 'end_date']}),
+        ('Advanced options', {
+            'classes': ['collapse'],
+            'fields': ['open_date', 'close_date']
+        }),
+    ]
+    extra = 0
+
+
+class ActivityInline(admin.StackedInline):
+    model = Activity
+    fieldsets = [
+        (None, {'fields': ['activity_type', 'status', 'start_date', 'end_date', 'users']}),
+        ('Advanced options', {
+            'classes': ['collapse'],
+            'fields': ['open_date', 'close_date']
+        }),
+    ]
+    extra = 0
+
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'color']
     search_fields = ['^name']
@@ -34,7 +58,7 @@ admin.site.register(Tag, TagAdmin)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ['name', 'business_criticality', 'platform', 'origin', 'industry', 'external_audience', 'internet_accessible']
     list_filter = ('external_audience', 'internet_accessible')
-    inlines = [EnvironmentInline, RelationInline]
+    inlines = [EnvironmentInline, RelationInline, EngagementInline]
     search_fields = ['^name']
 
 admin.site.register(Application, ApplicationAdmin)
@@ -54,3 +78,17 @@ class PersonAdmin(admin.ModelAdmin):
     inlines = [RelationInline]
 
 admin.site.register(Person, PersonAdmin)
+
+
+class EngagementAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['application', 'status', 'start_date', 'end_date']}),
+        ('Advanced options', {
+            'classes': ['collapse'],
+            'fields': ['open_date', 'close_date']
+        }),
+    ]
+    list_display = ['start_date', 'end_date', 'status', 'application']
+    inlines = [ActivityInline]
+
+admin.site.register(Engagement, EngagementAdmin)
