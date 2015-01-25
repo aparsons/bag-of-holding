@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
@@ -285,8 +286,8 @@ class Engagement(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
     start_date = models.DateField()
     end_date = models.DateField()
-    open_date = models.DateTimeField(blank=True)
-    close_date = models.DateTimeField(blank=True)
+    open_date = models.DateTimeField(blank=True, null=True)
+    close_date = models.DateTimeField(blank=True, null=True)
 
     application = models.ForeignKey(Application)
 
@@ -310,11 +311,11 @@ class Activity(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
     start_date = models.DateField()
     end_date = models.DateField()
-    open_date = models.DateTimeField(blank=True)
-    close_date = models.DateTimeField(blank=True)
+    open_date = models.DateTimeField(blank=True, null=True)
+    close_date = models.DateTimeField(blank=True, null=True)
 
     engagement = models.ForeignKey(Engagement)
-    users = models.ManyToManyField(User, blank=True)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     class Meta:
         verbose_name_plural = 'Activities'

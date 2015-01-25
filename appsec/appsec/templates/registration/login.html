@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
+{% block title %}Login{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="large-6 large-centered columns">
     <div class="panel">
-      <h2>Bag of Holding</h2>
       {% if form.errors %}
       <div data-alert class="alert-box alert">
         The username or password you entered is not valid.

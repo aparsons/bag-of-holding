@@ -1,11 +1,10 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 
-from tracker.views import ListApplicationView
+from tracker import views
 
 urlpatterns = patterns('',
 
-
-    url(r'^applications/$', login_required(ListApplicationView.as_view())),
+    url(r'^applications/$', login_required(views.list_applications), name='applications'),
 
 )

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bag of Holding</title>
+  <title>Bag of Holding | {% block title %}{% endblock %}</title>
 
   <link href="{% static 'foundation-5.5.0/css/foundation.css' %}" rel="stylesheet" media="screen">
   <script src="{% static 'foundation-5.5.0/js/vendor/modernizr.js' %}"></script>
@@ -17,16 +17,16 @@
       <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
     <section class="top-bar-section">
+      <ul class="left">
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/tracker/applications">Applications</a></li>
+      </ul>
       <ul class="right">
         {% if user.is_staff %}
         <li><a href="/admin">Admin</a></li>
         {% endif %}
-        <li><a href="#">Account</a></li>
+        <li><a href="/accounts/profile">Account</a></li>
         <li class="has-form"><a href="/accounts/logout" class="button">Logout</a></li>
-      </ul>
-      <ul class="left">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/tracker/applications">Applications</a></li>
       </ul>
     </section>
   </nav>
@@ -36,5 +36,9 @@
   {% endblock %}
   <script src="{% static 'foundation-5.5.0/js/vendor/jquery.js' %}"></script>
   <script src="{% static 'foundation-5.5.0/js/foundation.min.js' %}"></script>
+  <script src="{% static 'foundation-5.5.0/js/foundation/foundation.topbar.js' %}"></script>
+  <script>
+    $(document).foundation();
+  </script>
 </body>
 </html>

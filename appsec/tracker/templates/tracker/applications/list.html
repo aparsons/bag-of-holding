@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="large-12 columns">
+    <h2>Applications</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    {% if applications %}  
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Criticality</th>
+          <th>Platform</th>
+          <th>Origin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for application in applications %}
+        <tr>
+          <td><a href="/tracker/applications/{{ application.id }}">{{ application.name }}</a></td>
+          <td>{{ application.get_business_criticality_display }}</td>
+          <td>{{ application.get_platform_display }}</td>
+          <td>{{ application.get_origin_display }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <ul class="pagination">
+      {% if applications.has_previous %}
+      <li class="arrow"><a href="?page={{ applications.previous_page_number }}">&laquo; Previous</a></li>
+      {% endif %}
+      <li class="current"><a href="">{{ applications.number }} of {{ applications.paginator.num_pages }}</a></li>
+      {% if applications.has_next %}
+      <li class="arrow"><a href="?page={{ applications.next_page_number }}">Next &raquo;</a></li>
+      {% endif %}
+    </ul>
+    {% else %}
+    <strong>There are no applications. <a href="/tracker/application/add/">Go ahead and create one!</a></strong>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <a href="/tracker/application/add/" class="button">Create an Application</a>
+  </div>
+</div>
+{% endblock %}
