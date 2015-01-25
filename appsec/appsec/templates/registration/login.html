@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="large-6 large-centered columns">
+    <div class="panel">
+      <h2>Bag of Holding</h2>
+      {% if form.errors %}
+      <div data-alert class="alert-box alert">
+        The username or password you entered is not valid.
+      </div>
+      {% endif %}
+
+      <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <div class="row">
+          <div class="large-12 columns">
+            <label>{{ form.username.label_tag }}
+              {{ form.username }}
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <label>{{ form.password.label_tag }}
+              {{ form.password }}
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <input class="button expand" type="submit" value="Sign In To Continue" />
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

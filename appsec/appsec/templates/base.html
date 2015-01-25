@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bag of Holding</title>
+
+  <link href="{% static 'foundation-5.5.0/css/foundation.css' %}" rel="stylesheet" media="screen">
+  <script src="{% static 'foundation-5.5.0/js/vendor/modernizr.js' %}"></script>
+</head>
+<body>
+  {% if user.is_authenticated %}
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name"><h1><a href="/">Bag of Holding</a></h1></li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+    <section class="top-bar-section">
+      <ul class="right">
+        {% if user.is_staff %}
+        <li><a href="/admin">Admin</a></li>
+        {% endif %}
+        <li><a href="#">Account</a></li>
+        <li class="has-form"><a href="/accounts/logout" class="button">Logout</a></li>
+      </ul>
+      <ul class="left">
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/tracker/applications">Applications</a></li>
+      </ul>
+    </section>
+  </nav>
+  {% endif %}
+
+  {% block content %}
+  {% endblock %}
+  <script src="{% static 'foundation-5.5.0/js/vendor/jquery.js' %}"></script>
+  <script src="{% static 'foundation-5.5.0/js/foundation.min.js' %}"></script>
+</body>
+</html>
