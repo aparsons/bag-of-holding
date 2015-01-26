@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ application.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="large-12 columns">
+    <h2>{{ application.name }}</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-4 columns">
+    <div class="panel">
+      <div class="row">
+        <div class="small-4 columns"><strong>Criticality:</strong></div>
+        <div class="small-8 columns">{{ application.get_business_criticality_display }}</div>
+      </div>
+      <div class="row">
+        <div class="small-4 columns"><strong>Platform:</strong></div>
+        <div class="small-8 columns">{{ application.get_platform_display }}</div>
+      </div>
+      <div class="row">
+        <div class="small-4 columns"><strong>Origin:</strong></div>
+        <div class="small-8 columns">{{ application.get_origin_display }}</div>
+      </div>
+    </div>
+    <a href="#" class="button tiny">Edit Application</a>
+  </div>
+  <div class="large-8 columns">
+    <p>{{ application.description }}</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <h3>Engagements</h3>
+  </div>
+  <div class="large-12 columns">
+    <h4>Open</h4>
+  </div>
+  <div class="large-12 columns">
+    <h4>Previous</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <h3>Environments</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <h3>People</h3>
+  </div>
+</div>
+{% endblock %}

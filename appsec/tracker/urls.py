@@ -5,6 +5,7 @@ from tracker import views
 
 urlpatterns = patterns('',
 
-    url(r'^applications/$', login_required(views.list_applications), name='applications'),
+    url(r'^applications/$', views.list_applications),
+    url(r'^applications/(?P<application_id>\d+)/$', views.application_detail),
 
 )

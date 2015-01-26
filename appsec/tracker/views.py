@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
 from django.shortcuts import render
 
 from tracker.models import Application
 
 # Create your views here.
-
 
 @login_required
 def list_applications(request):
@@ -21,3 +21,11 @@ def list_applications(request):
         applications = paginator.page(paginator.num_pages)
 
     return render(request, 'tracker/applications/list.html', {"applications": applications})
+
+@login_required
+def application_detail(request, application_id):
+    try:
+        application = Application.objects.get(pk=application_id)
+    except Application.DoesNotExist:
+        raise Http404("Application does not exist")
+    return render(request, 'tracker/applications/detail.html', {"application": application})

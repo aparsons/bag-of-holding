@@ -11,7 +11,7 @@
 
 <div class="row">
   <div class="large-12 columns">
-    {% if applications %}  
+    {% if applications %}
     <table>
       <thead>
         <tr>
@@ -33,13 +33,9 @@
       </tbody>
     </table>
     <ul class="pagination">
-      {% if applications.has_previous %}
-      <li class="arrow"><a href="?page={{ applications.previous_page_number }}">&laquo; Previous</a></li>
-      {% endif %}
+      <li class="arrow{% if not applications.has_previous %} unavailable{% endif %}"><a href="{% if applications.has_previous %}?page={{ applications.previous_page_number }}{% endif %}">&laquo; Previous</a></li>
       <li class="current"><a href="">{{ applications.number }} of {{ applications.paginator.num_pages }}</a></li>
-      {% if applications.has_next %}
-      <li class="arrow"><a href="?page={{ applications.next_page_number }}">Next &raquo;</a></li>
-      {% endif %}
+      <li class="arrow{% if not applications.has_next %} unavailable{% endif %}"><a href="{% if applications.has_next %}?page={{ applications.next_page_number }}{% endif %}">Next &raquo;</a></li>
     </ul>
     {% else %}
     <strong>There are no applications. <a href="/tracker/application/add/">Go ahead and create one!</a></strong>
