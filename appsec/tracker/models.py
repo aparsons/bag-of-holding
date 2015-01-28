@@ -348,7 +348,7 @@ class Activity(models.Model):
 
 
 class Note(models.Model):
-    """Message about an engagement or activity."""
+    """Abstract message about an engagement or activity."""
 
     message = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
@@ -373,3 +373,17 @@ class ActivityNote(Note): # Extends Note
     """Note for a specific activity."""
 
     activity = models.ForeignKey(Activity)
+
+
+class FileUpload(models.Model):
+    """Abstract file upload."""
+
+    file = models.FileField()
+    description = models.TextField(blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    class Meta:
+        abstract = True
