@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity
+from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementNote, ActivityNote
 
 # Register your models here.
 
@@ -48,6 +48,16 @@ class ActivityInline(admin.StackedInline):
     extra = 0
 
 
+class EngagementNoteInline(admin.StackedInline):
+    model = EngagementNote
+    extra = 0
+
+
+class ActivityNoteInline(admin.StackedInline):
+    model = ActivityNote
+    extra = 0
+
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'color']
     search_fields = ['^name']
@@ -88,7 +98,21 @@ class EngagementAdmin(admin.ModelAdmin):
             'fields': ['open_date', 'close_date']
         }),
     ]
-    list_display = ['start_date', 'end_date', 'status', 'application']
-    inlines = [ActivityInline]
+    list_display = ['__str__', 'start_date', 'end_date', 'status', 'application']
+    inlines = [ActivityInline, EngagementNoteInline]
 
 admin.site.register(Engagement, EngagementAdmin)
+
+
+class ActivityAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['engagement', 'activity_type', 'status', 'start_date', 'end_date']}),
+        ('Advanced options', {
+            'classes': ['collapse'],
+            'fields': ['open_date', 'close_date']
+        }),
+    ]
+    list_display = ['__str__', 'start_date', 'end_date', 'status', 'activity_type']
+    inlines = [ActivityNoteInline]
+
+admin.site.register(Activity, ActivityAdmin)

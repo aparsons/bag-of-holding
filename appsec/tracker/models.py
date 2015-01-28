@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 # Create your models here.
+
 class Tag(models.Model):
+    """Associated with application for search and catagorization."""
+
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the hex format: 'd94d59'. Only 6 characters allowed.")
 
     name = models.CharField(max_length=128, unique=True)
@@ -20,10 +23,13 @@ class Tag(models.Model):
 
 
 class Application(models.Model):
+    """Contains infomation about a software application."""
+
     WEB_PLATFORM = 1
     DESKTOP_PLATFORM = 2
     MOBILE_PLATFORM = 3
     PLATFORM_CHOICES = (
+        (None, 'Not Specified'),
         (WEB_PLATFORM, 'Web'),
         (DESKTOP_PLATFORM, 'Desktop'),
         (MOBILE_PLATFORM, 'Mobile'),
@@ -35,6 +41,7 @@ class Application(models.Model):
     DEPLOY_LIFECYCLE = 4
     MAINTAIN_LIFECYCLE = 5
     LIFECYCLE_CHOICES = (
+        (None, 'Not Specified'),
         (DEFINE_LIFECYCLE, 'Define'),
         (DESIGN_LIFECYCLE, 'Design'),
         (DEVELOP_LIFECYCLE, 'Develop'),
@@ -49,6 +56,7 @@ class Application(models.Model):
     OPEN_SOURCE_ORIGIN = 5
     OUTSOURCED_ORIGIN = 6
     ORIGIN_CHOICES = (
+        (None, 'Not Specified'),
         (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
         (PURCHASED_ORIGIN, 'Purchased'),
         (CONTRACTOR_ORIGIN, 'Contractor'),
@@ -104,6 +112,7 @@ class Application(models.Model):
     TRANSPORTATION_INDUSTRY = 45
     UTILITIES_INDUSTRY = 46
     INDUSTRY_CHOICES = (
+        (None, 'Not Specified'),
         (AEROSPACE_INDUSTRY, 'Aerospace'),
         (AGRICULTURE_INDUSTRY, 'Agriculture'),
         (APPAREL_INDUSTRY, 'Apparel'),
@@ -157,21 +166,24 @@ class Application(models.Model):
     MEDIUM_CRITICALITY = 3
     LOW_CRITICALITY = 4
     VERY_LOW_CRITICALITY = 5
+    NONE_CRITICALITY = 6
     BUSINESS_CRITICALITY_CHOICES = (
+        (None, 'Not Specified'),
         (VERY_HIGH_CRITICALITY, 'Very High'),
         (HIGH_CRITICALITY, 'High'),
         (MEDIUM_CRITICALITY, 'Medium'),
         (LOW_CRITICALITY, 'Low'),
         (VERY_LOW_CRITICALITY, 'Very Low'),
+        (NONE_CRITICALITY, 'None'),
     )
 
     name = models.CharField(max_length=128, unique=True)
     description = models.TextField(blank=True)
-    platform = models.IntegerField(choices=PLATFORM_CHOICES)
-    lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES)
-    origin = models.IntegerField(choices=ORIGIN_CHOICES)
-    industry = models.IntegerField(choices=INDUSTRY_CHOICES)
-    business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES)
+    platform = models.IntegerField(choices=PLATFORM_CHOICES, blank=True, null=True)
+    lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
+    origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
+    industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
+    business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     external_audience = models.BooleanField(default=False)
     internet_accessible = models.BooleanField(default=False)
     #threadfix_application_id = models.IntegerField(unique=True)
@@ -183,6 +195,8 @@ class Application(models.Model):
 
 
 class Environment(models.Model):
+    """Container for information about a web server environment."""
+
     DEVELOPMENT_ENVIRONMENT = 'DEV'
     INTEGRATION_ENVIRONMENT = 'INT'
     QUALITY_ASSURANCE_ENVIRONMENT = 'QA'
@@ -209,6 +223,8 @@ class Environment(models.Model):
 
 
 class EnvironmentLocation(models.Model):
+    """URL for a specific environment"""
+
     location = models.URLField()
     notes = models.TextField(blank=True)
 
@@ -219,6 +235,8 @@ class EnvironmentLocation(models.Model):
 
 
 class EnvironmentCredentials(models.Model):
+    """Credentials for a specific environment."""
+
     username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     notes = models.TextField(blank=True) # Needs to be encrypted
@@ -230,6 +248,8 @@ class EnvironmentCredentials(models.Model):
 
 
 class Person(models.Model):
+    """Information about a person."""
+
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
     first_name = models.CharField(max_length=50)
@@ -249,6 +269,8 @@ class Person(models.Model):
 
 
 class Relation(models.Model):
+    """Associates a person with an application with a role."""
+
     DEVELOPER_ROLE = 1
     QUALITY_ASSURANCE_ROLE = 2
     OPERATIONS_ROLE = 3
@@ -276,6 +298,8 @@ class Relation(models.Model):
 
 
 class Engagement(models.Model):
+    """Container for activities performed for an application over a duration."""
+
     OPEN_STATUS = 1
     CLOSED_STATUS = 2
     STATUS_CHOICES = (
@@ -293,6 +317,8 @@ class Engagement(models.Model):
 
 
 class Activity(models.Model):
+    """A unit of work performed for an application over a duration."""
+
     APPSCAN_ACTIVITY_TYPE = 1
     MANUAL_ASSESSMENT_ACTIVITY_TYPE = 2
     ACTIVITY_TYPE_CHOICES = (
@@ -319,3 +345,31 @@ class Activity(models.Model):
 
     class Meta:
         verbose_name_plural = 'Activities'
+
+
+class Note(models.Model):
+    """Message about an engagement or activity."""
+
+    message = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        abstract = True
+
+
+class EngagementNote(Note): # Extends Note
+    """Note for a specific engagement."""
+
+    engagement = models.ForeignKey(Engagement)
+
+
+class ActivityNote(Note): # Extends Note
+    """Note for a specific activity."""
+
+    activity = models.ForeignKey(Activity)
