@@ -91,3 +91,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'appsec/templates'),
     os.path.join(BASE_DIR, 'tracker/templates'),
 )
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

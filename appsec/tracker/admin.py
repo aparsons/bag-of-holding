@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementNote, ActivityNote
+from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementNote, ActivityNote, ApplicationFileUpload
 
 # Register your models here.
 
@@ -58,6 +58,11 @@ class ActivityNoteInline(admin.StackedInline):
     extra = 0
 
 
+class ApplicationFileUploadInline(admin.StackedInline):
+    model = ApplicationFileUpload
+    extra = 0
+
+
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'color']
     search_fields = ['^name']
@@ -68,7 +73,7 @@ admin.site.register(Tag, TagAdmin)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ['name', 'business_criticality', 'platform', 'origin', 'industry', 'external_audience', 'internet_accessible']
     list_filter = ('external_audience', 'internet_accessible')
-    inlines = [EnvironmentInline, RelationInline, EngagementInline]
+    inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
 
 admin.site.register(Application, ApplicationAdmin)

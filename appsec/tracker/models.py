@@ -376,10 +376,9 @@ class ActivityNote(Note): # Extends Note
 
 
 class FileUpload(models.Model):
-    """Abstract file upload."""
+    """Abstract file upload by a user."""
 
     file = models.FileField()
-    description = models.TextField(blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -387,3 +386,9 @@ class FileUpload(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ApplicationFileUpload(FileUpload):
+    """A file uploaded associated with an application."""
+
+    application = models.ForeignKey(Application)
