@@ -1,0 +1,17 @@
+[
+  {
+    "model": "tracker.application",
+    "pk": 1,
+    "fields": {
+      "name": "Demonstration Application",
+      "description": "This demonstration application will be automatically created each time the application is migrated. It can also be manually loaded via the \"python manage.py loaddata initial_data.json\" command.",
+      "platform": 1,
+      "lifecycle": 2,
+      "origin": 4,
+      "industry": 42,
+      "business_criticality": 6,
+      "external_audience": false,
+      "internet_accessible": false
+    }
+  }
+]
