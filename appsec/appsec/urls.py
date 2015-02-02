@@ -7,12 +7,12 @@ from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
 
-    url(r'^$', login_required(TemplateView.as_view(template_name="dashboard.html"))),
+    url(r'^$', login_required(TemplateView.as_view(template_name="tracker/dashboard.html")), name='dashboard'),
 
     url(r'^tracker/', include('tracker.urls', namespace="tracker")),
 
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),
 
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,48 +4,35 @@
 
 {% block content %}
 <div class="row">
-  <div class="large-12 columns">
-    <h2>Applications</h2>
+  <div class="col-md-12">
+    <div class="pull-right">
+      <nav>
+        <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
+        <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+      </nav>
+    </div>
   </div>
 </div>
 
+<hr />
+
 <div class="row">
-  <div class="large-12 columns">
+  <div class="col-sm-3 col-md-2">
+    <a href="{% url 'tracker:applications.add' %}" class="btn btn-success btn-sm btn-block" role="button"><i class="glyphicon glyphicon-edit"></i> Add Application</a>
+  </div>
+  <div class="col-sm-9 col-md-10">
     {% if applications %}
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Criticality</th>
-          <th>Platform</th>
-          <th>Origin</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for application in applications %}
-        <tr>
-          <td><a href="/tracker/applications/{{ application.id }}">{{ application.name }}</a></td>
-          <td>{{ application.get_business_criticality_display }}</td>
-          <td>{{ application.get_platform_display }}</td>
-          <td>{{ application.get_origin_display }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <ul class="pagination">
-      <li class="arrow{% if not applications.has_previous %} unavailable{% endif %}"><a href="{% if applications.has_previous %}?page={{ applications.previous_page_number }}{% endif %}">&laquo; Previous</a></li>
-      <li class="current"><a href="">{{ applications.number }} of {{ applications.paginator.num_pages }}</a></li>
-      <li class="arrow{% if not applications.has_next %} unavailable{% endif %}"><a href="{% if applications.has_next %}?page={{ applications.next_page_number }}{% endif %}">Next &raquo;</a></li>
+    <ul class="list-group">
+      {% for application in applications %}
+      <a href="{% url 'tracker:applications.detail' application.id %}" class="list-group-item">{{ application.name }}</a>
+      {% endfor %}
     </ul>
     {% else %}
-    <strong>There are no applications. <a href="/tracker/application/add/">Go ahead and create one!</a></strong>
+    <strong>There are no applications. <a href="{% url 'tracker:applications.add' %}">Go ahead and add one!</a></strong>
     {% endif %}
-  </div>
-</div>
-
-<div class="row">
-  <div class="large-12 columns">
-    <a href="/tracker/application/add/" class="button">Create an Application</a>
   </div>
 </div>
 {% endblock %}

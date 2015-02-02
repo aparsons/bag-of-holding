@@ -48,13 +48,20 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Django
 *.log
 db.sqlite3
 appsec/media/*
+!appsec/media/.gitkeep
 
 # Sphinx documentation
 docs/_build/
 
 # PyBuilder
 target/
+
+# Node
+node_modules
+.temp
+.sass-cache
+bower_components

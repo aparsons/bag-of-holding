@@ -4,54 +4,53 @@
 
 {% block content %}
 <div class="row">
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h2>{{ application.name }}</h2>
   </div>
 </div>
 
 <div class="row">
-  <div class="large-4 columns">
-    <div class="panel">
-      <div class="row">
-        <div class="small-4 columns"><strong>Criticality:</strong></div>
-        <div class="small-8 columns">{{ application.get_business_criticality_display }}</div>
-      </div>
-      <div class="row">
-        <div class="small-4 columns"><strong>Platform:</strong></div>
-        <div class="small-8 columns">{{ application.get_platform_display }}</div>
-      </div>
-      <div class="row">
-        <div class="small-4 columns"><strong>Origin:</strong></div>
-        <div class="small-8 columns">{{ application.get_origin_display }}</div>
-      </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-sm-4"><strong>Criticality:</strong></div>
+      <div class="col-sm-8">{{ application.get_business_criticality_display }}</div>
     </div>
-    <a href="#" class="button tiny">Edit Application</a>
+    <div class="row">
+      <div class="col-sm-4"><strong>Platform:</strong></div>
+      <div class="col-sm-8">{{ application.get_platform_display }}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4"><strong>Origin:</strong></div>
+      <div class="col-sm-8">{{ application.get_origin_display }}</div>
+    </div>
+    <a href="edit">Edit Application</a>
   </div>
-  <div class="large-8 columns">
-    <p>{{ application.description }}</p>
+  <div class="col-md-8">
+    <p>{% if application.description %}{{ application.description }}{% else %}Not Specified{% endif %}</p>
   </div>
 </div>
 
 <div class="row">
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h3>Engagements</h3>
+    <a href="engagements/add">Add Engagement</a>
   </div>
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h4>Open</h4>
   </div>
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h4>Previous</h4>
   </div>
 </div>
 
 <div class="row">
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h3>Environments</h3>
   </div>
 </div>
 
 <div class="row">
-  <div class="large-12 columns">
+  <div class="col-md-12">
     <h3>People</h3>
   </div>
 </div>
