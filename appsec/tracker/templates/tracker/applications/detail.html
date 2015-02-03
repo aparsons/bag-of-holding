@@ -6,52 +6,71 @@
 <div class="row">
   <div class="col-md-12">
     <h2>{{ application.name }}</h2>
+    {% if application.description %}<p>{{ application.description }}</p>{% endif %}
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-4">
-    <div class="row">
-      <div class="col-sm-4"><strong>Criticality:</strong></div>
-      <div class="col-sm-8">{{ application.get_business_criticality_display }}</div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4"><strong>Platform:</strong></div>
-      <div class="col-sm-8">{{ application.get_platform_display }}</div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4"><strong>Origin:</strong></div>
-      <div class="col-sm-8">{{ application.get_origin_display }}</div>
-    </div>
-    <a href="edit">Edit Application</a>
+  <div class="col-md-4 col-md-push-8">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td><strong>Platform</strong></td>
+          <td>{{ application.get_platform_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Lifecycle</strong></td>
+          <td>{{ application.get_lifecycle_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Origin</strong></td>
+          <td>{{ application.get_origin_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Industry</strong></td>
+          <td>{{ application.get_industry_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Business Criticality</strong></td>
+          <td>{{ application.get_business_criticality_display }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="edit" class="btn btn-default btn-block" role="button">Edit Application</a>
   </div>
-  <div class="col-md-8">
-    <p>{% if application.description %}{{ application.description }}{% else %}Not Specified{% endif %}</p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8 col-md-pull-4">
     <h3>Engagements</h3>
-    <a href="engagements/add">Add Engagement</a>
-  </div>
-  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+        <p class="text-muted">Engagements contain activities to be completed over a period of time.</p>
+      </div>
+      <div class="col-md-3">
+        <a href="engagements/add" class="btn btn-default btn-block" role="button">Add Engagement</a>
+      </div>
+    </div>
     <h4>Open</h4>
-  </div>
-  <div class="col-md-12">
-    <h4>Previous</h4>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
+    {% if open_engagements %}
+    <div class="list-group">
+      {% for engagement in open_engagements %}
+      <a href="#" class="list-group-item">{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No open engagements</p>
+    {% endif %}
+    <h4>Closed</h4>
+    {% if closed_engagements %}
+    <div class="list-group">
+      {% for engagement in closed_engagements %}
+      <a href="#" class="list-group-item">{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No closed engagements</p>
+    {% endif %}
     <h3>Environments</h3>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
     <h3>People</h3>
+    <h3>Files</h3>
   </div>
 </div>
 {% endblock %}

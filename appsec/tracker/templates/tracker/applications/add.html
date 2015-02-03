@@ -1,22 +1,74 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}Add Application{% endblock %}
 
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <h2>Add Application</h2>
     <form method="post" action="{% url 'tracker:applications.add' %}">
       {% csrf_token %}
+
+      <div class="form-group{% if form.name.errors %} has-error has-feedback{% endif %}">
+        <label class="control-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name | add_class:"form-control" | attr:"autofocus" }}
+        {% if form.name.errors %}
+        {% for error in form.name.errors %}
+        <p class="help-block">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+        {% if form.name.help_text %}<p class="help-block">{{ form.name.help_text }}</p>{% endif %}
+      </div>
+
       <div class="form-group">
-        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-        {{ form.name }}
+        <label class="control-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        {{ form.description | add_class:"form-control" }}
+        {% if form.description.help_text %}<p class="help-block">{{ form.description.help_text }}</p>{% endif %}
       </div>
       <div class="form-group">
-        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-        {{ form.description }}
+        <label class="control-label" for="{{ form.platform.id_for_label }}">{{ form.platform.label }}</label>
+        {{ form.platform | add_class:"form-control" }}
+        {% if form.platform.help_text %}<p class="help-block">{{ form.platform.help_text }}</p>{% endif %}
       </div>
-      <button class="btn btn-default" type="submit">Create</button>
+      <div class="form-group">
+        <label class="control-label" for="{{ form.lifecycle.id_for_label }}">{{ form.lifecycle.label }}</label>
+        {{ form.lifecycle | add_class:"form-control" }}
+        {% if form.lifecycle.help_text %}<p class="help-block">{{ form.lifecycle.help_text }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="{{ form.origin.id_for_label }}">{{ form.origin.label }}</label>
+        {{ form.origin | add_class:"form-control" }}
+        {% if form.origin.help_text %}<p class="help-block">{{ form.origin.help_text }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="{{ form.industry.id_for_label }}">{{ form.industry.label }}</label>
+        {{ form.industry | add_class:"form-control" }}
+        {% if form.industry.help_text %}<p class="help-block">{{ form.industry.help_text }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="{{ form.business_criticality.id_for_label }}">{{ form.business_criticality.label }}</label>
+        {{ form.business_criticality | add_class:"form-control" }}
+        {% if form.business_criticality.help_text %}<p class="help-block">{{ form.business_criticality.help_text }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            {{ form.external_audience }} {{ form.external_audience.label }}
+          </label>
+        </div>
+        {% if form.external_audience.help_text %}<p class="help-block">{{ form.external_audience.help_text }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            {{ form.internet_accessible }} {{ form.internet_accessible.label }}
+          </label>
+        </div>
+        {% if form.internet_accessible.help_text %}<p class="help-block">{{ form.internet_accessible.help_text }}</p>{% endif %}
+      </div>
+      <button class="btn btn-primary" type="submit">Add Application</button>
     </form>
   </div>
 </div>

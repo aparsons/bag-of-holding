@@ -177,15 +177,15 @@ class Application(models.Model):
         (NONE_CRITICALITY, 'None'),
     )
 
-    name = models.CharField(max_length=128, unique=True)
-    description = models.TextField(blank=True)
+    name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
+    description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
     platform = models.IntegerField(choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
     business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
-    external_audience = models.BooleanField(default=False)
-    internet_accessible = models.BooleanField(default=False)
+    external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
+    internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
     #threadfix_application_id = models.IntegerField(unique=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
@@ -314,6 +314,9 @@ class Engagement(models.Model):
     close_date = models.DateTimeField(blank=True, null=True)
 
     application = models.ForeignKey(Application)
+
+    def is_open(self):
+        return self.status == OPEN_STATUS
 
 
 class Activity(models.Model):

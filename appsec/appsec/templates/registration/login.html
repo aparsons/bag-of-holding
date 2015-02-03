@@ -1,32 +1,36 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}Login{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-
+    <h1 class="text-primary">Bag of Holding <small>Login</small></h1>
+    <div class="well well-lg">
       {% if form.errors %}
-      <div data-alert class="alert-box alert">
-        The username or password you entered is not valid.
-      </div>
+      <div class="alert alert-danger" role="alert">The username or password you entered is not valid.</div>
+      {% else %}
+      <blockquote>
+        <p>You're in the butter zone now, baby.</p>
+        <footer>Paul Cook (a.k.a. Lord Nikon) in <cite title="Source Title">Hackers</cite></footer>
+      </blockquote>
       {% endif %}
-
       <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}" />
         <div class="form-group">
-          <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-          {{ form.username }}
+          <label for="{{ form.username.id_for_label }}" class="sr-only">{{ form.username.label }}</label>
+          {{ form.username | add_class:"form-control" | attr:"placeholder:Username" | attr:"autofocus" }}
         </div>
         <div class="form-group">
-          <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-          {{ form.password }}
+          <label for="{{ form.password.id_for_label }}" class="sr-only">{{ form.password.label }}</label>
+          {{ form.password | add_class:"form-control" | attr:"placeholder:Password" }}
         </div>
-        <button class="btn btn-default" type="submit">Sign In To Continue</button>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
       </form>
-
-
+    </div>
   </div>
 </div>
 {% endblock %}
