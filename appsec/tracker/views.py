@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 
 from tracker.models import Application, Engagement
-from tracker.forms import AddApplicationForm
+from tracker.forms import ApplicationForm
 
 # Create your views here.
 
@@ -32,6 +32,7 @@ def application_detail(request, application_id):
         closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
     except Application.DoesNotExist:
         raise Http404("Application does not exist")
+
     return render(request, 'tracker/applications/detail.html', {
         'application': application,
         'open_engagements': open_engagements,
@@ -41,13 +42,26 @@ def application_detail(request, application_id):
 
 @login_required
 def add_application(request):
-    if request.method == 'POST':
-        form = AddApplicationForm(request.POST)
+    form = ApplicationForm(request.POST or None)
 
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('tracker:applications.list')
-    else:
-        form = AddApplicationForm()
+    if form.is_valid():
+        application = form.save()
+        return redirect('tracker:applications.detail', application_id=application.id)
 
     return render(request, 'tracker/applications/add.html', {'form': form})
+
+
+@login_required
+def edit_application(request, application_id):
+    try:
+        application = Application.objects.get(pk=application_id)
+    except Application.DoesNotExist:
+        raise Http404("Application does not exist")
+
+    form = ApplicationForm(request.POST or None, instance=application)
+
+    if request.method == 'POST' and form.is_valid():
+            application = form.save()
+            return redirect('tracker:applications.detail', application_id=application.id)
+
+    return render(request, 'tracker/applications/edit.html', {'form': form, 'application_id': application_id})

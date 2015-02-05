@@ -4,11 +4,16 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
-    <h2>{{ application.name }}</h2>
+  <div class="col-md-10">
+    <h2 class="no-margin-top">{{ application.name }}</h2>
     {% if application.description %}<p>{{ application.description }}</p>{% endif %}
   </div>
+  <div class="col-md-2">
+    <a href="{% url 'tracker:applications.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
+  </div>
 </div>
+
+<hr>
 
 <div class="row">
   <div class="col-md-4 col-md-push-8">
@@ -36,16 +41,15 @@
         </tr>
       </tbody>
     </table>
-    <a href="edit" class="btn btn-default btn-block" role="button">Edit Application</a>
   </div>
   <div class="col-md-8 col-md-pull-4">
-    <h3>Engagements</h3>
     <div class="row">
       <div class="col-md-9">
+        <h3 class="no-margin-top">Engagements</h3>
         <p class="text-muted">Engagements contain activities to be completed over a period of time.</p>
       </div>
       <div class="col-md-3">
-        <a href="engagements/add" class="btn btn-default btn-block" role="button">Add Engagement</a>
+        <a href="engagements/add" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Engagement</a>
       </div>
     </div>
     <h4>Open</h4>
