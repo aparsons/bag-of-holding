@@ -12,7 +12,6 @@
   </div>
 </div>
 
-<hr>
 
 <div class="row">
   <div class="col-md-4 col-md-push-8">
@@ -42,7 +41,7 @@
     </table>
   </div>
   <div class="col-md-8 col-md-pull-4">
-    {% if application.description %}<p>{{ application.description }}</p>{% endif %}
+    {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
     <hr>
     <div class="row">
       <div class="col-md-9">
@@ -73,7 +72,8 @@
     {% else %}
     <p class="text-muted">No closed engagements</p>
     {% endif %}
-    <h3>Environments</h3>
+    <hr>
+    <h3 class="no-margin-top">Environments</h3>
     <h3>People</h3>
     <h3>Files</h3>
   </div>
