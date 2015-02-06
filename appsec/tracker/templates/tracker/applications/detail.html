@@ -6,7 +6,6 @@
 <div class="row">
   <div class="col-md-10">
     <h2 class="no-margin-top">{{ application.name }}</h2>
-    {% if application.description %}<p>{{ application.description }}</p>{% endif %}
   </div>
   <div class="col-md-2">
     <a href="{% url 'tracker:applications.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
@@ -43,6 +42,8 @@
     </table>
   </div>
   <div class="col-md-8 col-md-pull-4">
+    {% if application.description %}<p>{{ application.description }}</p>{% endif %}
+    <hr>
     <div class="row">
       <div class="col-md-9">
         <h3 class="no-margin-top">Engagements</h3>

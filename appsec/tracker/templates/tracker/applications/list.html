@@ -22,12 +22,28 @@
 <div class="row">
   <div class="col-sm-3 col-md-2">
     <a href="{% url 'tracker:applications.add' %}" class="btn btn-success btn-sm btn-block" role="button"><i class="glyphicon glyphicon-plus"></i> Add Application</a>
+    <hr>
+    {% if tags %}
+    <ul class="nav nav-pills nav-stacked">
+      {% for tag in tags %}
+      <li><a href="#"><span class="badge pull-right" style="background-color: #{{ tag.color }};">{{ tag.total_applications }}</span> {{ tag.name }} </a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
   <div class="col-sm-9 col-md-10">
     {% if applications %}
     <ul class="list-group">
       {% for application in applications %}
-      <a href="{% url 'tracker:applications.detail' application.id %}" class="list-group-item">{{ application.name }}</a>
+      <a href="{% url 'tracker:applications.detail' application.id %}" class="list-group-item">
+        <span class="badge">{{ application.get_business_criticality_display }}</span>
+        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        <p class="list-group-item-text">
+          {% for tag in application.tags.all %}
+          <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+          {% endfor %}
+        </p>
+      </a>
       {% endfor %}
     </ul>
     {% else %}

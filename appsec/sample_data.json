@@ -1,17 +1,98 @@
 [
   {
+    "model": "tracker.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Important",
+      "color": "FF0066"
+    }
+  },
+  {
+    "model": "tracker.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Demonstration",
+      "color": "556270"
+    }
+  },
+  {
+    "model": "tracker.tag",
+    "pk": 3,
+    "fields": {
+      "name": "New",
+      "color": "77CCA4"
+    }
+  },
+  {
     "model": "tracker.application",
     "pk": 1,
     "fields": {
-      "name": "Demonstration Application",
-      "description": "This demonstration application will be automatically created each time the application is migrated. It can also be manually loaded via the \"python manage.py loaddata initial_data.json\" command.",
+      "name": "Alfa Application",
+      "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command.",
       "platform": 1,
       "lifecycle": 2,
       "origin": 4,
       "industry": 42,
       "business_criticality": 6,
       "external_audience": false,
-      "internet_accessible": false
+      "internet_accessible": false,
+      "tags": [2,3]
+    }
+  },
+  {
+    "model": "tracker.application",
+    "pk": 2,
+    "fields": {
+      "name": "Bravo Application",
+      "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command.",
+      "platform": 2,
+      "lifecycle": 3,
+      "origin": 3,
+      "industry": 22,
+      "business_criticality": 4,
+      "external_audience": false,
+      "internet_accessible": false,
+      "tags": [1,2]
+    }
+  },
+  {
+    "model": "tracker.engagement",
+    "pk": 1,
+    "fields": {
+      "application": 1,
+      "status": 1,
+      "start_date": "2015-02-23",
+      "end_date": "2015-02-27"
+    }
+  },
+  {
+    "model": "tracker.engagement",
+    "pk": 2,
+    "fields": {
+      "application": 1,
+      "status": 1,
+      "start_date": "2015-03-30",
+      "end_date": "2015-04-03"
+    }
+  },
+  {
+    "model": "tracker.engagement",
+    "pk": 3,
+    "fields": {
+      "application": 1,
+      "status": 2,
+      "start_date": "2015-01-05",
+      "end_date": "2015-01-09"
+    }
+  },
+  {
+    "model": "tracker.engagement",
+    "pk": 4,
+    "fields": {
+      "application": 1,
+      "status": 2,
+      "start_date": "2015-01-26",
+      "end_date": "2015-01-30"
     }
   }
 ]

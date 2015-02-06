@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import render, redirect
 
-from tracker.models import Application, Engagement
+from tracker.models import Application, Engagement, Tag
 from tracker.forms import ApplicationForm
 
 # Create your views here.
@@ -11,6 +12,8 @@ from tracker.forms import ApplicationForm
 @login_required
 def list_applications(request):
     application_list = Application.objects.all()
+    tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
+
     paginator = Paginator(application_list, 20)
 
     page = request.GET.get('page')
@@ -21,7 +24,7 @@ def list_applications(request):
     except EmptyPage:
         applications = paginator.page(paginator.num_pages)
 
-    return render(request, 'tracker/applications/list.html', {'applications': applications})
+    return render(request, 'tracker/applications/list.html', {'applications': applications, 'tags': tags})
 
 
 @login_required

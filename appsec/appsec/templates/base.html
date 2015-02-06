@@ -16,7 +16,7 @@
 <body>
   {% if user.is_authenticated %}
   <nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
+    <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
@@ -28,15 +28,15 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-          <li><a href="{% url 'tracker:applications.list' %}">Applications</a></li>
+          <li><a href="{% url 'dashboard' %}"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Dashboard</a></li>
+          <li><a href="{% url 'tracker:applications.list' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Applications</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_staff %}
-          <li><a href="/admin">Admin</a></li>
+          <li><a href="/admin"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Admin</a></li>
           {% endif %}
-          <li><a href="/accounts/profile">Account</a></li>
-          <li><a href="{% url 'logout' %}">Logout</a></li>
+          <li><a href="/accounts/profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Account</a></li>
+          <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
         </ul>
       </div>
     </div>
@@ -49,11 +49,5 @@
 
   <script src="{% static 'js/vendor/jquery-2.1.3.min.js' %}"></script>
   <script src="{% static 'js/vendor/bootstrap-3.3.2.min.js' %}"></script>
-
-  <!--
-  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-  <script src="{% static 'js/main.min.js' %}"></script>-->
 </body>
 </html>
