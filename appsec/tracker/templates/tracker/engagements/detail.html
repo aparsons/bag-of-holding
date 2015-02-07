@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Engagement{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <a href="{% url 'tracker:application.detail' engagement.application.id %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Application</a>
+
+    <h2>View Engagement</h2>
+    <p>Status: {{ engagement.get_status_display }}</p>
+    <p>Start: {{ engagement.start_date }}</p>
+    <p>End: {{ engagement.end_date }}</p>
+    <p>Opened: {{ engagement.open_date }}</p>
+    <p>Closed: {{ engagement.close_date }}</p>
+    {% for activity in open_activities %}
+      <li>{{ activity.get_activity_type_display }}</li>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

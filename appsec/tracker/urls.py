@@ -5,10 +5,13 @@ from tracker import views
 
 urlpatterns = patterns('',
 
-    url(r'^applications/$', views.list_applications, name='applications.list'),
-    url(r'^applications/(?P<application_id>\d+)/$', views.application_detail, name='applications.detail'),
-    url(r'^applications/add$', views.add_application, name='applications.add'),
-    url(r'^applications/(?P<application_id>\d+)/edit/$', views.edit_application, name='applications.edit'),
-    url(r'^applications/(?P<application_id>\d+)/delete/$', views.delete_application, name='applications.delete'),
+    url(r'^applications/$', views.application_list, name='applications.list'),
+    url(r'^applications/(?P<application_id>\d+)/$', views.application_detail, name='application.detail'),
+    url(r'^applications/add/$', views.application_add, name='application.add'),
+    url(r'^applications/(?P<application_id>\d+)/edit/$', views.application_edit, name='application.edit'),
+    url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),
+
+    url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),
+    url(r'^engagements/(?P<engagement_id>\d+)/$', views.engagement_detail, name='engagement.detail'),
 
 )

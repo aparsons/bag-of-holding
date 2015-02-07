@@ -76,15 +76,19 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+**Load some sample data**
+
+```sh
+python manage.py loaddata sample_data.json
+```
+
 **Create a super user account**
 
 ```sh
 python manage.py createsuperuser
 ```
 
-_You can login by going to /admin/_
-
-**Run the server**
+**Run the development server**
 
 ```sh
 python manage.py runserver

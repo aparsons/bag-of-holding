@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-md-6">
     <h2>Edit Application</h2>
-    <form method="post" action="{% url 'tracker:applications.edit' application_id %}">
+    <form method="post" action="{% url 'tracker:application.edit' application_id %}">
       {% csrf_token %}
 
       <div class="form-group{% if form.name.errors %} has-error has-feedback{% endif %}">
@@ -69,7 +69,7 @@
         {% if form.internet_accessible.help_text %}<p class="help-block">{{ form.internet_accessible.help_text }}</p>{% endif %}
       </div>
       <button class="btn btn-primary" type="submit">Update Application</button>
-      <a href="{% url 'tracker:applications.delete' application_id %}" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</a>
+      <a href="{% url 'tracker:application.delete' application_id %}" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</a>
     </form>
   </div>
 </div>

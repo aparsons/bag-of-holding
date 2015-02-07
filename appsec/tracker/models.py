@@ -324,9 +324,13 @@ class Activity(models.Model):
 
     APPSCAN_ACTIVITY_TYPE = 1
     MANUAL_ASSESSMENT_ACTIVITY_TYPE = 2
+    RETEST_PREVIOUS_ACTIVITY_TYPE = 3
+    THREAT_MODEL_ACTIVITY_TYPE = 4
     ACTIVITY_TYPE_CHOICES = (
         (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
         (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
+        (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
+        (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
     )
 
     OPEN_STATUS = 1
@@ -393,5 +397,14 @@ class FileUpload(models.Model):
 
 class ApplicationFileUpload(FileUpload):
     """A file uploaded associated with an application."""
+
+    REPORT_FILE_TYPE = 1
+    DOCUMENTATION_FILE_TYPE = 2
+    FILE_TYPE_CHOICES = (
+        (REPORT_FILE_TYPE, 'Report'),
+        (DOCUMENTATION_FILE_TYPE, 'Documentation'),
+    )
+
+    file_type = models.IntegerField(choices=FILE_TYPE_CHOICES)
 
     application = models.ForeignKey(Application)

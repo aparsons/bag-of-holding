@@ -21,7 +21,7 @@
 
 <div class="row">
   <div class="col-sm-3 col-md-2">
-    <a href="{% url 'tracker:applications.add' %}" class="btn btn-success btn-sm btn-block" role="button"><i class="glyphicon glyphicon-plus"></i> Add Application</a>
+    <a href="{% url 'tracker:application.add' %}" class="btn btn-success btn-sm btn-block" role="button"><i class="glyphicon glyphicon-plus"></i> Add Application</a>
     <hr>
     {% if tags %}
     <ul class="nav nav-pills nav-stacked">
@@ -35,7 +35,7 @@
     {% if applications %}
     <ul class="list-group">
       {% for application in applications %}
-      <a href="{% url 'tracker:applications.detail' application.id %}" class="list-group-item">
+      <a href="{% url 'tracker:application.detail' application.id %}" class="list-group-item">
         <span class="badge">{{ application.get_business_criticality_display }}</span>
         <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
         {% if application.tags %}
@@ -49,7 +49,7 @@
       {% endfor %}
     </ul>
     {% else %}
-    <strong>There are no applications. <a href="{% url 'tracker:applications.add' %}">Go ahead and add one!</a></strong>
+    <strong>There are no applications. <a href="{% url 'tracker:application.add' %}">Go ahead and add one!</a></strong>
     {% endif %}
   </div>
 </div>

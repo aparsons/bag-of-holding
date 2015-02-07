@@ -27,10 +27,10 @@ class RelationInline(admin.StackedInline):
 class EngagementInline(admin.StackedInline):
     model = Engagement
     fieldsets = [
-        (None, {'fields': ['application', 'status', 'start_date', 'end_date']}),
+        (None, {'fields': ['application', 'start_date', 'end_date']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['open_date', 'close_date']
+            'fields': ['status', 'open_date', 'close_date']
         }),
     ]
     extra = 0
@@ -39,10 +39,10 @@ class EngagementInline(admin.StackedInline):
 class ActivityInline(admin.StackedInline):
     model = Activity
     fieldsets = [
-        (None, {'fields': ['activity_type', 'status', 'start_date', 'end_date', 'users']}),
+        (None, {'fields': ['activity_type', 'start_date', 'end_date', 'users']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['open_date', 'close_date']
+            'fields': ['status', 'open_date', 'close_date']
         }),
     ]
     extra = 0
@@ -97,10 +97,10 @@ admin.site.register(Person, PersonAdmin)
 
 class EngagementAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['application', 'status', 'start_date', 'end_date']}),
+        (None, {'fields': ['application', 'start_date', 'end_date']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['open_date', 'close_date']
+            'fields': ['status', 'open_date', 'close_date']
         }),
     ]
     list_display = ['__str__', 'start_date', 'end_date', 'status', 'application']
@@ -111,10 +111,10 @@ admin.site.register(Engagement, EngagementAdmin)
 
 class ActivityAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['engagement', 'activity_type', 'status', 'start_date', 'end_date']}),
+        (None, {'fields': ['engagement', 'activity_type', 'start_date', 'end_date']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['open_date', 'close_date']
+            'fields': ['status', 'open_date', 'close_date']
         }),
     ]
     list_display = ['__str__', 'start_date', 'end_date', 'status', 'activity_type']
