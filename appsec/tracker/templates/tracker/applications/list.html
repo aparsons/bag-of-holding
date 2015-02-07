@@ -38,11 +38,13 @@
       <a href="{% url 'tracker:applications.detail' application.id %}" class="list-group-item">
         <span class="badge">{{ application.get_business_criticality_display }}</span>
         <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        {% if application.tags %}
         <p class="list-group-item-text">
           {% for tag in application.tags.all %}
           <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
           {% endfor %}
         </p>
+        {% endif %}
       </a>
       {% endfor %}
     </ul>

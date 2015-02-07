@@ -69,6 +69,7 @@
         {% if form.internet_accessible.help_text %}<p class="help-block">{{ form.internet_accessible.help_text }}</p>{% endif %}
       </div>
       <button class="btn btn-primary" type="submit">Update Application</button>
+      <a href="{% url 'tracker:applications.delete' application_id %}" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</a>
     </form>
   </div>
 </div>

@@ -68,3 +68,15 @@ def edit_application(request, application_id):
             return redirect('tracker:applications.detail', application_id=application.id)
 
     return render(request, 'tracker/applications/edit.html', {'form': form, 'application_id': application_id})
+
+
+@login_required
+def delete_application(request, application_id):
+    try:
+        application = Application.objects.get(pk=application_id)
+    except Application.DoesNotExist:
+        raise Http404("Application does not exist")
+
+    application.delete()
+
+    return redirect('tracker:applications.list')
