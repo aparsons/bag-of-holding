@@ -106,3 +106,6 @@ def engagement_detail(request, engagement_id):
         'open_activities': open_activities,
         'closed_activities': closed_activities
     })
+
+def activity_detail(request, activity_id):
+    return render(request, 'tracker/activities/detail.html')

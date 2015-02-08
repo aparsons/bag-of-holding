@@ -316,7 +316,10 @@ class Engagement(models.Model):
     application = models.ForeignKey(Application)
 
     def is_open(self):
-        return self.status == OPEN_STATUS
+        return self.status == Engagement.OPEN_STATUS
+
+    def is_closed(self):
+        return self.status == Engagement.CLOSED_STATUS
 
 
 class Activity(models.Model):
