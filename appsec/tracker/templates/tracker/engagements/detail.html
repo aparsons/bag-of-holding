@@ -8,16 +8,50 @@
 <div class="row">
   <div class="col-md-12">
     <a href="{% url 'tracker:application.detail' engagement.application.id %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Application</a>
+  </div>
+</div>
 
-    <h2>View Engagement</h2>
+<div class="row">
+  <div class="col-md-8">
+    <h2>Engagement <small>{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</small></h2>
     <p>Status: {{ engagement.get_status_display }}</p>
     <p>Start: {{ engagement.start_date }}</p>
     <p>End: {{ engagement.end_date }}</p>
     <p>Opened: {{ engagement.open_date }}</p>
     <p>Closed: {{ engagement.close_date }}</p>
-    {% for activity in open_activities %}
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group" role="group" aria-label="status">
+      <button type="button" class="btn btn-default">Open</button>
+      <button type="button" class="btn btn-default">Closed</button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h3>Activities</h3>
+    <p class="text-muted">TODO: Description</p>
+    <h4>Open</h4>
+    {% if open_activities %}
+      {% for activity in open_activities %}
+        <li>{{ activity.get_activity_type_display }}</li>
+      {% endfor %}
+    {% else %}
+    <p class="text-muted">No open activities</p>
+    {% endif %}
+    <h4>Closed</h4>
+    {% if closed_activities %}
+    {% for activity in closed_activities %}
       <li>{{ activity.get_activity_type_display }}</li>
     {% endfor %}
+    {% else %}
+    <p class="text-muted">No closed activities</p>
+    {% endif %}
   </div>
+</div>
+
+<div class="row">
+
 </div>
 {% endblock %}

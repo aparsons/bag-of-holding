@@ -70,29 +70,19 @@
     "pk": 2,
     "fields": {
       "application": 1,
-      "status": 1,
-      "start_date": "2015-03-30",
-      "end_date": "2015-04-03"
-    }
-  },
-  {
-    "model": "tracker.engagement",
-    "pk": 3,
-    "fields": {
-      "application": 1,
       "status": 2,
       "start_date": "2015-01-05",
       "end_date": "2015-01-09"
     }
   },
   {
-    "model": "tracker.engagement",
-    "pk": 4,
+    "model": "tracker.activity",
+    "pk": 1,
     "fields": {
-      "application": 1,
-      "status": 2,
-      "start_date": "2015-01-26",
-      "end_date": "2015-01-30"
+      "engagement": 1,
+      "activity_type": 1,
+      "start_date": "2015-02-23",
+      "end_date": "2015-02-27"
     }
   }
 ]

@@ -97,7 +97,12 @@ def engagement_detail(request, engagement_id):
     try:
         engagement = Engagement.objects.get(pk=engagement_id)
         open_activities = engagement.activity_set.filter(status=Activity.OPEN_STATUS)
+        closed_activities = engagement.activity_set.filter(status=Activity.CLOSED_STATUS)
     except Engagement.DoesNotExist:
         raise Http404("Engagement does not exist")
 
-    return render(request, 'tracker/engagements/detail.html', {'engagement': engagement, 'open_activities': open_activities})
+    return render(request, 'tracker/engagements/detail.html', {
+        'engagement': engagement,
+        'open_activities': open_activities,
+        'closed_activities': closed_activities
+    })
