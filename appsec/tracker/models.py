@@ -186,7 +186,12 @@ class Application(models.Model):
     business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
+    
+    #source code repo
+    #bug tracking tool
+    #threadfix data
     #threadfix_application_id = models.IntegerField(unique=True)
+    #data classification
 
     tags = models.ManyToManyField(Tag, blank=True)
 
@@ -300,20 +305,25 @@ class Relation(models.Model):
 class Engagement(models.Model):
     """Container for activities performed for an application over a duration."""
 
-    OPEN_STATUS = 1
-    CLOSED_STATUS = 2
+    PENDING_STATUS = 1
+    OPEN_STATUS = 2
+    CLOSED_STATUS = 3
     STATUS_CHOICES = (
+        (PENDING_STATUS, 'Pending'),
         (OPEN_STATUS, 'Open'),
-        (CLOSED_STATUS, 'Closed'),
+        (CLOSED_STATUS, 'Closed')
     )
 
-    status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
     start_date = models.DateField()
     end_date = models.DateField()
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 
     application = models.ForeignKey(Application)
+
+    def is_pending(self):
+        return self.status == Engagement.PENDING_STATUS
 
     def is_open(self):
         return self.status == Engagement.OPEN_STATUS
@@ -336,15 +346,17 @@ class Activity(models.Model):
         (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
     )
 
-    OPEN_STATUS = 1
-    CLOSED_STATUS = 2
+    PENDING_STATUS = 1
+    OPEN_STATUS = 2
+    CLOSED_STATUS = 3
     STATUS_CHOICES = (
+        (PENDING_STATUS, 'Pending'),
         (OPEN_STATUS, 'Open'),
-        (CLOSED_STATUS, 'Closed'),
+        (CLOSED_STATUS, 'Closed')
     )
 
     activity_type = models.IntegerField(choices=ACTIVITY_TYPE_CHOICES)
-    status = models.IntegerField(choices=STATUS_CHOICES, default=OPEN_STATUS)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
     start_date = models.DateField()
     end_date = models.DateField()
     open_date = models.DateTimeField(blank=True, null=True)
@@ -355,6 +367,15 @@ class Activity(models.Model):
 
     class Meta:
         verbose_name_plural = 'Activities'
+
+    def is_pending(self):
+        return self.status == Activity.PENDING_STATUS
+
+    def is_open(self):
+        return self.status == Activity.OPEN_STATUS
+
+    def is_closed(self):
+        return self.status == Activity.CLOSED_STATUS
 
 
 class Note(models.Model):

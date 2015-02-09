@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}{{ application.name }}{% endblock %}
 
 {% block content %}
@@ -11,7 +13,6 @@
     <a href="{% url 'tracker:application.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
   </div>
 </div>
-
 
 <div class="row">
   <div class="col-md-4 col-md-push-8">
@@ -52,6 +53,16 @@
         <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Engagement</a>
       </div>
     </div>
+    <h4>Pending</h4>
+    {% if pending_engagements %}
+    <div class="list-group">
+      {% for engagement in pending_engagements %}
+      <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No pending engagements</p>
+    {% endif %}
     <h4>Open</h4>
     {% if open_engagements %}
     <div class="list-group">

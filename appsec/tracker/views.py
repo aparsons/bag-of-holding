@@ -1,15 +1,18 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import info, warning, error
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag
-from tracker.forms import ApplicationForm
+from tracker.forms import ApplicationAddForm, ApplicationEditForm, EngagementAddForm
 
 # Create your views here.
 
 @login_required
+@require_http_methods(['GET'])
 def application_list(request):
     application_list = Application.objects.all()
     tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
@@ -28,24 +31,26 @@ def application_list(request):
 
 
 @login_required
+@require_http_methods(['GET'])
 def application_detail(request, application_id):
-    try:
-        application = Application.objects.get(pk=application_id)
-        open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
-        closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
-    except Application.DoesNotExist:
-        raise Http404("Application does not exist")
+    application = get_object_or_404(Application, pk=application_id)
+
+    pending_engagements = application.engagement_set.filter(status=Engagement.PENDING_STATUS)
+    open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
+    closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
 
     return render(request, 'tracker/applications/detail.html', {
         'application': application,
+        'pending_engagements': pending_engagements,
         'open_engagements': open_engagements,
         'closed_engagements': closed_engagements
     })
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def application_add(request):
-    form = ApplicationForm(request.POST or None)
+    form = ApplicationAddForm(request.POST or None)
 
     if form.is_valid():
         application = form.save()
@@ -55,27 +60,23 @@ def application_add(request):
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def application_edit(request, application_id):
-    try:
-        application = Application.objects.get(pk=application_id)
-    except Application.DoesNotExist:
-        raise Http404("Application does not exist")
+    application = get_object_or_404(Application, pk=application_id)
 
-    form = ApplicationForm(request.POST or None, instance=application)
+    form = ApplicationEditForm(request.POST or None, instance=application)
 
     if request.method == 'POST' and form.is_valid():
-            application = form.save()
-            return redirect('tracker:application.detail', application_id=application.id)
+        application = form.save()
+        return redirect('tracker:application.detail', application_id=application.id)
 
-    return render(request, 'tracker/applications/edit.html', {'form': form, 'application_id': application_id})
+    return render(request, 'tracker/applications/edit.html', {'form': form, 'application': application})
 
 
 @login_required
+#@require_http_methods(['POST']) -- TODO ONLY ACCEPT POST
 def application_delete(request, application_id):
-    try:
-        application = Application.objects.get(pk=application_id)
-    except Application.DoesNotExist:
-        raise Http404("Application does not exist")
+    application = get_object_or_404(Application, pk=application_id)
 
     application.delete()
 
@@ -83,16 +84,23 @@ def application_delete(request, application_id):
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def engagement_add(request, application_id):
-    try:
-        application = Application.objects.get(pk=application_id)
-    except Application.DoesNotExist:
-        raise Http404("Application does not exist")
+    application = get_object_or_404(Application, pk=application_id)
 
-    return render(request, 'tracker/engagements/add.html')
+    form = EngagementAddForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        engagement = form.save(commit=False)
+        engagement.application = application
+        engagement.save()
+        return redirect('tracker:engagement.detail', engagement_id=engagement.id)
+    else:
+        return render(request, 'tracker/engagements/add.html', {'form': form, 'application': application})
 
 
 @login_required
+@require_http_methods(['GET'])
 def engagement_detail(request, engagement_id):
     try:
         engagement = Engagement.objects.get(pk=engagement_id)
@@ -107,5 +115,7 @@ def engagement_detail(request, engagement_id):
         'closed_activities': closed_activities
     })
 
+@login_required
+@require_http_methods(['GET'])
 def activity_detail(request, activity_id):
     return render(request, 'tracker/activities/detail.html')
