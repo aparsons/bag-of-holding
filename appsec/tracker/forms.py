@@ -2,12 +2,6 @@ from django import forms
 
 from tracker.models import Application, Engagement
 
-# Deprecated
-class ApplicationEditForm(forms.ModelForm):
-    class Meta:
-        model = Application
-        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
-
 
 class ApplicationAddForm(forms.ModelForm):
 	class Meta:
@@ -15,10 +9,16 @@ class ApplicationAddForm(forms.ModelForm):
 		fields = ['name', 'description']
 
 
+class ApplicationEditForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+
+
 class ApplicationDeleteForm(forms.ModelForm):
 	class Meta:
 		model = Application
-		fields = ['id']
+		fields = []
 
 
 class EngagementAddForm(forms.ModelForm):

@@ -192,6 +192,8 @@ class Application(models.Model):
     #threadfix data
     #threadfix_application_id = models.IntegerField(unique=True)
     #data classification
+    #developer experience / familiarity
+    #finance data
 
     tags = models.ManyToManyField(Tag, blank=True)
 

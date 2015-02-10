@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag
-from tracker.forms import ApplicationAddForm, ApplicationEditForm, EngagementAddForm
+from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm
 
 # Create your views here.
 
@@ -74,13 +74,17 @@ def application_edit(request, application_id):
 
 
 @login_required
-#@require_http_methods(['POST']) -- TODO ONLY ACCEPT POST
+@require_http_methods(['POST'])
 def application_delete(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
-    application.delete()
+    form = ApplicationDeleteForm(request.POST or None)
 
-    return redirect('tracker:applications.list')
+    if form.is_valid():
+        application.delete()
+        return redirect('tracker:application.list')
+    else:
+        return redirect('tracker:applications.detail', application.id)
 
 
 @login_required
@@ -102,15 +106,15 @@ def engagement_add(request, application_id):
 @login_required
 @require_http_methods(['GET'])
 def engagement_detail(request, engagement_id):
-    try:
-        engagement = Engagement.objects.get(pk=engagement_id)
-        open_activities = engagement.activity_set.filter(status=Activity.OPEN_STATUS)
-        closed_activities = engagement.activity_set.filter(status=Activity.CLOSED_STATUS)
-    except Engagement.DoesNotExist:
-        raise Http404("Engagement does not exist")
+    engagement = get_object_or_404(Engagement, pk=engagement_id)
+
+    pending_activities = engagement.activity_set.filter(status=Activity.PENDING_STATUS)
+    open_activities = engagement.activity_set.filter(status=Activity.OPEN_STATUS)
+    closed_activities = engagement.activity_set.filter(status=Activity.CLOSED_STATUS)
 
     return render(request, 'tracker/engagements/detail.html', {
         'engagement': engagement,
+        'pending_activities': pending_activities,
         'open_activities': open_activities,
         'closed_activities': closed_activities
     })

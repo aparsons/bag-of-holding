@@ -16,17 +16,14 @@
 <div class="row">
   <div class="col-md-8">
     <h2 class="no-margin-top">Engagement <small>{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</small></h2>
-    <p>Status: {{ engagement.get_status_display }}</p>
-    <p>Start: {{ engagement.start_date }}</p>
-    <p>End: {{ engagement.end_date }}</p>
     <p>Opened: {{ engagement.open_date }}</p>
     <p>Closed: {{ engagement.close_date }}</p>
   </div>
   <div class="col-md-4">
     <div class="btn-group btn-group-justified" role="group" aria-label="status">
-      <a href="#" class="btn btn-default btn-lg{% if engagement.is_pending %} active{% endif %}" role="button">Pending</a>
-      <a href="#" class="btn btn-default btn-lg{% if engagement.is_open %} active{% endif %}" role="button">Open</a>
-      <a href="#" class="btn btn-default btn-lg{% if engagement.is_closed %} active{% endif %}" role="button">Closed</a>
+      <a href="#" class="btn btn-default{% if engagement.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
+      <a href="#" class="btn btn-default{% if engagement.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
+      <a href="#" class="btn btn-default{% if engagement.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
     </div>
   </div>
 </div>
@@ -37,6 +34,16 @@
   <div class="col-md-9">
     <h3 class="no-margin-top">Activities</h3>
     <p class="text-muted">TODO: Description</p>
+    <h4>Pending</h4>
+    {% if pending_activities %}
+      <div class="list-group">
+        {% for activity in pending_activities %}
+        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">{{ activity.get_activity_type_display }}</a>
+        {% endfor %}
+      </div>
+    {% else %}
+    <p class="text-muted">No pending activities</p>
+    {% endif %}
     <h4>Open</h4>
     {% if open_activities %}
       <div class="list-group">

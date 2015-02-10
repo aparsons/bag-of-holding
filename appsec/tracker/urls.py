@@ -6,7 +6,7 @@ from tracker import views
 urlpatterns = patterns('',
 
 	# Application Routes
-    url(r'^applications/$', views.application_list, name='applications.list'),
+    url(r'^applications/$', views.application_list, name='application.list'),
     url(r'^applications/(?P<application_id>\d+)/$', views.application_detail, name='application.detail'),
     url(r'^applications/add/$', views.application_add, name='application.add'),
     url(r'^applications/(?P<application_id>\d+)/edit/$', views.application_edit, name='application.edit'),
