@@ -12,7 +12,7 @@ class ApplicationAddForm(forms.ModelForm):
 class ApplicationEditForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible', 'data_classification_level', 'approximate_users', 'regulation']
 
 
 class ApplicationDeleteForm(forms.ModelForm):

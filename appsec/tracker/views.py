@@ -65,7 +65,7 @@ def application_edit(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
     form = ApplicationEditForm(request.POST or None, instance=application)
-
+    
     if request.method == 'POST' and form.is_valid():
         application = form.save()
         return redirect('tracker:application.detail', application_id=application.id)

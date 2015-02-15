@@ -38,6 +38,18 @@
           <td><strong>Business Criticality</strong></td>
           <td>{{ application.get_business_criticality_display }}</td>
         </tr>
+        <tr>
+          <td><strong>Data Classification</strong></td>
+          <td>{{ application.get_data_classification_level_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Approximate Users</strong></td>
+          <td>{{ application.get_approximate_users_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Reguation</strong></td>
+          <td>{{ application.get_regulation_display }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
