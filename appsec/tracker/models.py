@@ -177,39 +177,39 @@ class Application(models.Model):
         (NONE_CRITICALITY, 'None'),
     )
 
-    DCL_4 = 4
-    DCL_3 = 3
-    DCL_2 = 2
-    DCL_1 = 1
-    DATA_CLASSIFICATION_CHOICES = (
-        (None, 'Not Specified'),
-        (DCL_4, 'DCL 4'),
-        (DCL_3, 'DCL 3'),
-        (DCL_2, 'DCL 2'),
-        (DCL_1, 'DCL 1')
-    )
+    # DCL_4 = 4
+    # DCL_3 = 3
+    # DCL_2 = 2
+    # DCL_1 = 1
+    # DATA_CLASSIFICATION_CHOICES = (
+    #     (None, 'Not Specified'),
+    #     (DCL_4, 'DCL 4'),
+    #     (DCL_3, 'DCL 3'),
+    #     (DCL_2, 'DCL 2'),
+    #     (DCL_1, 'DCL 1')
+    # )
 
-    APPROXIMATE_1000 = 1
-    APPROXIMATE_10000 = 2
-    APPROXIMATE_50000 = 3
-    APPROXIMATE_50001 = 4
-    APPROXIMATE_USERS_CHOICES = (
-        (None, 'Not Specified'),
-        (APPROXIMATE_1000, '< 1,000'),
-        (APPROXIMATE_10000, '1,000 to 10,000'),
-        (APPROXIMATE_50000, '10,000 - 50,000'),
-        (APPROXIMATE_50001, '50,000+')
-    )
+    # APPROXIMATE_1000 = 1
+    # APPROXIMATE_10000 = 2
+    # APPROXIMATE_50000 = 3
+    # APPROXIMATE_50001 = 4
+    # APPROXIMATE_USERS_CHOICES = (
+    #     (None, 'Not Specified'),
+    #     (APPROXIMATE_1000, '< 1,000'),
+    #     (APPROXIMATE_10000, '1,000 to 10,000'),
+    #     (APPROXIMATE_50000, '10,000 to 50,000'),
+    #     (APPROXIMATE_50001, '50,000+')
+    # )
 
-    REGULATION_PCI = 1
-    REGULATION_HIPAA = 2
-    REGULATION_FERPA = 3
-    REGULATION_CHOICES = (
-        (None, 'Not Specified'),
-        (REGULATION_FERPA, 'FERPA'),
-        (REGULATION_HIPAA, 'HIPAA'),
-        (REGULATION_PCI, 'PCI')
-    )
+    # REGULATION_PCI = 1
+    # REGULATION_HIPAA = 2
+    # REGULATION_FERPA = 3
+    # REGULATION_CHOICES = (
+    #     (None, 'Not Specified'),
+    #     (REGULATION_FERPA, 'FERPA'),
+    #     (REGULATION_HIPAA, 'HIPAA'),
+    #     (REGULATION_PCI, 'PCI')
+    # )
 
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
@@ -220,9 +220,10 @@ class Application(models.Model):
     business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
-    data_classification_level = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Specify the data classifcation level.')
-    approximate_users = models.IntegerField(choices=APPROXIMATE_USERS_CHOICES, blank=True, null=True)
-    regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
+
+    #data_classification_level = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Specify the data classifcation level.')
+    #approximate_users = models.IntegerField(choices=APPROXIMATE_USERS_CHOICES, blank=True, null=True)
+    #regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
 
     #source code repo
     #bug tracking tool
@@ -230,6 +231,7 @@ class Application(models.Model):
     #threadfix_application_id = models.IntegerField(unique=True)
     #developer experience / familiarity
     #finance data
+    #programming language/s
 
     tags = models.ManyToManyField(Tag, blank=True)
 
@@ -353,8 +355,8 @@ class Engagement(models.Model):
     )
 
     status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
+    end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 
@@ -416,7 +418,7 @@ class Activity(models.Model):
         return self.status == Activity.CLOSED_STATUS
 
 
-class Note(models.Model):
+class Comment(models.Model):
     """Abstract message about an engagement or activity."""
 
     message = models.TextField()
@@ -432,14 +434,14 @@ class Note(models.Model):
         abstract = True
 
 
-class EngagementNote(Note): # Extends Note
-    """Note for a specific engagement."""
+class EngagementComment(Comment): # Extends Comment
+    """Comment for a specific engagement."""
 
     engagement = models.ForeignKey(Engagement)
 
 
-class ActivityNote(Note): # Extends Note
-    """Note for a specific activity."""
+class ActivityComment(Comment): # Extends Comment
+    """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)
 

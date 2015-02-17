@@ -15,8 +15,10 @@ urlpatterns = patterns('',
     # Engagement Routes
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),
     url(r'^engagements/(?P<engagement_id>\d+)/$', views.engagement_detail, name='engagement.detail'),
+    url(r'^engagements/(?P<engagement_id>\d+)/comments/add/$', views.engagement_comment_add, name='engagement.comment.add'),
 
     # Activity Routes
+    url(r'^engagements/(?P<engagement_id>\d+)/activities/add/$', views.activity_add, name='activity.add'),
     url(r'^activities/(?P<activity_id>\d+)/$', views.activity_detail, name='activity.detail'),
 
 )

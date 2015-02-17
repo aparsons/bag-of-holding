@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementNote, ActivityNote, ApplicationFileUpload
+from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementComment, ActivityComment, ApplicationFileUpload
 
 # Register your models here.
 
@@ -48,13 +48,13 @@ class ActivityInline(admin.StackedInline):
     extra = 0
 
 
-class EngagementNoteInline(admin.StackedInline):
-    model = EngagementNote
+class EngagementCommentInline(admin.StackedInline):
+    model = EngagementComment
     extra = 0
 
 
-class ActivityNoteInline(admin.StackedInline):
-    model = ActivityNote
+class ActivityCommentInline(admin.StackedInline):
+    model = ActivityComment
     extra = 0
 
 
@@ -104,7 +104,7 @@ class EngagementAdmin(admin.ModelAdmin):
         }),
     ]
     list_display = ['__str__', 'start_date', 'end_date', 'status', 'application']
-    inlines = [ActivityInline, EngagementNoteInline]
+    inlines = [ActivityInline, EngagementCommentInline]
 
 admin.site.register(Engagement, EngagementAdmin)
 
@@ -118,6 +118,6 @@ class ActivityAdmin(admin.ModelAdmin):
         }),
     ]
     list_display = ['__str__', 'start_date', 'end_date', 'status', 'activity_type']
-    inlines = [ActivityNoteInline]
+    inlines = [ActivityCommentInline]
 
 admin.site.register(Activity, ActivityAdmin)

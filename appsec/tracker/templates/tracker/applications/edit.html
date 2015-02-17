@@ -8,21 +8,24 @@
 <div class="row">
   <div class="col-md-12">
     <h2>Edit Application</h2>
+
     <div role="tabpanel">
       <form method="post" action="{% url 'tracker:application.edit' application.id %}">
         {% csrf_token %}
 
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+              <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+              <li role="presentation"><a href="#meta" aria-controls="meta" role="tab" data-toggle="tab">Metadata</a></li>
+            </ul>
+            <hr>
             <div class="well">
-              <ul class="nav nav-pills nav-stacked" role="tablist">
-                <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
-                <li role="presentation"><a href="#meta" aria-controls="meta" role="tab" data-toggle="tab">Metadata</a></li>
-                <li role="presentation"><a href="#tags" aria-controls="tags" role="tab" data-toggle="tab">Tags</a></li>
-              </ul>
+              <button class="btn btn-primary btn-block" type="submit">Update Application</button>
+              <a href="{% url 'tracker:application.detail' application.id %}" class="btn btn-default btn-block" role="button">Cancel</a>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane fade in active" id="general">
                 <div class="panel panel-default">
@@ -52,6 +55,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               <div role="tabpanel" class="tab-pane fade" id="meta">
                 <div class="panel panel-default">
@@ -85,21 +89,6 @@
                       {% if form.business_criticality.help_text %}<p class="help-block">{{ form.business_criticality.help_text }}</p>{% endif %}
                     </div>
                     <div class="form-group">
-                      <label class="control-label" for="{{ form.data_classification_level.id_for_label }}">{{ form.data_classification_level.label }}</label>
-                      {{ form.data_classification_level | add_class:"form-control" }}
-                      {% if form.data_classification_level.help_text %}<p class="help-block">{{ form.data_classification_level.help_text }}</p>{% endif %}
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label" for="{{ form.approximate_users.id_for_label }}">{{ form.approximate_users.label }}</label>
-                      {{ form.approximate_users | add_class:"form-control" }}
-                      {% if form.approximate_users.help_text %}<p class="help-block">{{ form.approximate_users.help_text }}</p>{% endif %}
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label" for="{{ form.regulation.id_for_label }}">{{ form.regulation.label }}</label>
-                      {{ form.regulation | add_class:"form-control" }}
-                      {% if form.regulation.help_text %}<p class="help-block">{{ form.regulation.help_text }}</p>{% endif %}
-                    </div>
-                    <div class="form-group">
                       <div class="checkbox">
                         <label>
                           {{ form.external_audience }} {{ form.external_audience.label }}
@@ -118,43 +107,37 @@
                   </div>
                 </div>
               </div>
-
-              <div role="tabpanel" class="tab-pane fade" id="tags">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Tags</h3>
-                  </div>
-                  <div class="panel-body">
-                    {% if tags %}
-                    <ul class="nav nav-pills nav-stacked">
-                      {% for tag in tags %}
-                      <li><a href="#"><span class="badge pull-right" style="background-color: #{{ tag.color }};">{{ tag.total_applications }}</span> {{ tag.name }} </a></li>
-                      {% endfor %}
-                    </ul>
-                    {% endif %}
-
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
 
-        
-
-        
-        
-        <button class="btn btn-primary" type="submit">Update Application</button>
-        <a href="{% url 'tracker:application.detail' application.id %}" class="btn btn-primary" role="button">Cancel</a>
       </form>
     </div>
-    <hr>
 
-    <form method="post" action="{% url 'tracker:application.delete' application.id %}">
-      {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</button>
-    </form>
+    <div class="row">
+      <div class="col-md-9 col-md-offset-3">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Danger Zone</h3>
+          </div>
+          <div class="panel-body">
+            <form method="post" action="{% url 'tracker:application.delete' application.id %}">
+              {% csrf_token %}
+              <div class="pull-left">
+                <strong>Delete this application</strong><br>
+                <span class="text-muted">Once you delete an application, there is no going back. Please be certain.</span>
+              </div>
+              <div class="pull-right">
+                <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 
   </div>
 </div>

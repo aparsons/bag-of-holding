@@ -6,13 +6,15 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-10">
-    <h2 class="no-margin-top">{{ application.name }}</h2>
+  <div class="col-md-6">
+    <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Application List</a>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-6">
     <a href="{% url 'tracker:application.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
   </div>
 </div>
+
+<hr>
 
 <div class="row">
   <div class="col-md-4 col-md-push-8">
@@ -38,22 +40,11 @@
           <td><strong>Business Criticality</strong></td>
           <td>{{ application.get_business_criticality_display }}</td>
         </tr>
-        <tr>
-          <td><strong>Data Classification</strong></td>
-          <td>{{ application.get_data_classification_level_display }}</td>
-        </tr>
-        <tr>
-          <td><strong>Approximate Users</strong></td>
-          <td>{{ application.get_approximate_users_display }}</td>
-        </tr>
-        <tr>
-          <td><strong>Reguation</strong></td>
-          <td>{{ application.get_regulation_display }}</td>
-        </tr>
       </tbody>
     </table>
   </div>
   <div class="col-md-8 col-md-pull-4">
+    <h2 class="no-margin-top">{{ application.name }}</h2>
     {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
     <hr>
     <div class="row">
@@ -65,7 +56,7 @@
         <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Engagement</a>
       </div>
     </div>
-    <h4>Pending</h4>
+    <h4>Pending <small>Engagements that have not yet started</small></h4>
     {% if pending_engagements %}
     <div class="list-group">
       {% for engagement in pending_engagements %}
@@ -75,7 +66,7 @@
     {% else %}
     <p class="text-muted">No pending engagements</p>
     {% endif %}
-    <h4>Open</h4>
+    <h4>Open <small>Engagements that are in progress</small></h4>
     {% if open_engagements %}
     <div class="list-group">
       {% for engagement in open_engagements %}
@@ -85,7 +76,7 @@
     {% else %}
     <p class="text-muted">No open engagements</p>
     {% endif %}
-    <h4>Closed</h4>
+    <h4>Closed <small>Engagements that have finished</small></h4>
     {% if closed_engagements %}
     <div class="list-group">
       {% for engagement in closed_engagements %}
@@ -97,6 +88,8 @@
     {% endif %}
     <hr>
     <h3 class="no-margin-top">Environments</h3>
+    <p class="text-muted">Environments contains locations and credentials.</p>
+    <hr>
     <h3>People</h3>
     <h3>Files</h3>
   </div>
