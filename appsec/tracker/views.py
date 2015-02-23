@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag
-from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementCommentAddForm, ActivityAddForm
+from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm
 
 # Create your views here.
 
@@ -88,22 +88,6 @@ def application_delete(request, application_id):
 
 
 @login_required
-@require_http_methods(['GET', 'POST'])
-def engagement_add(request, application_id):
-    application = get_object_or_404(Application, pk=application_id)
-
-    form = EngagementAddForm(request.POST or None)
-
-    if request.method == 'POST' and form.is_valid():
-        engagement = form.save(commit=False)
-        engagement.application = application
-        engagement.save()
-        return redirect('tracker:engagement.detail', engagement_id=engagement.id)
-    else:
-        return render(request, 'tracker/engagements/add.html', {'form': form, 'application': application})
-
-
-@login_required
 @require_http_methods(['GET'])
 def engagement_detail(request, engagement_id):
     engagement = get_object_or_404(Engagement, pk=engagement_id)
@@ -124,6 +108,50 @@ def engagement_detail(request, engagement_id):
         'comments': comments,
         'form': form
     })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def engagement_add(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    form = EngagementAddForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        engagement = form.save(commit=False)
+        engagement.application = application
+        engagement.save()
+        return redirect('tracker:engagement.detail', engagement_id=engagement.id)
+    else:
+        return render(request, 'tracker/engagements/add.html', {'form': form, 'application': application})
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def engagement_edit(request, engagement_id):
+    engagement = get_object_or_404(Engagement, pk=engagement_id)
+
+    form = EngagementEditForm(request.POST or None, instance=engagement)
+
+    if request.method == 'POST' and form.is_valid():
+        engagement = form.save()
+        return redirect('tracker:engagement.detail', engagement_id=engagement.id)
+
+    return render(request, 'tracker/engagements/edit.html', {'form': form, 'engagement': engagement})
+
+
+@login_required
+@require_http_methods(['POST'])
+def engagement_delete(request, engagement_id):
+    engagement = get_object_or_404(Engagement, pk=engagement_id)
+
+    form = EngagementDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        engagement.delete()
+        return redirect('tracker:application.detail', engagement.application.id)
+    else:
+        return redirect('tracker:engagement.detail', engagement.id)
 
 
 @login_required

@@ -27,6 +27,18 @@ class EngagementAddForm(forms.ModelForm):
         fields = ['start_date', 'end_date']
 
 
+class EngagementEditForm(forms.ModelForm):
+    class Meta:
+        model = Engagement
+        fields = ['status', 'start_date', 'end_date']
+
+
+class EngagementDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Engagement
+        fields = []
+
+
 class EngagementCommentAddForm(forms.ModelForm):
     class Meta:
         model = EngagementComment

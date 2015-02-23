@@ -232,6 +232,7 @@ class Application(models.Model):
     #developer experience / familiarity
     #finance data
     #programming language/s
+    #id for whitehat + checkmarx (third-party ids)
 
     tags = models.ManyToManyField(Tag, blank=True)
 
