@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load widget_tweaks %}
+{% load humanize %}
 
 {% block title %}{{ application.name }}{% endblock %}
 
@@ -50,6 +51,20 @@
     {% else %}
     <p class="text-muted">No tags</p>
     {% endif %}
+    <hr>
+    <h4><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Miscellaneous</h4>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td><strong>Created</strong></td>
+          <td>{{ application.created_date|naturaltime }}</td>
+        </tr>
+        <tr>
+          <td><strong>Modified</strong></td>
+          <td>{{ application.modified_date|naturaltime }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div class="col-md-8 col-md-pull-4">
     <h2 class="no-margin-top">{{ application.name }}</h2>

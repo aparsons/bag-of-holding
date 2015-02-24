@@ -25,12 +25,20 @@ class EngagementAddForm(forms.ModelForm):
     class Meta:
         model = Engagement
         fields = ['start_date', 'end_date']
+        labels = {
+            'start_date': 'Scheduled start date',
+            'end_date': 'Scheduled end date'
+        }
 
 
 class EngagementEditForm(forms.ModelForm):
     class Meta:
         model = Engagement
         fields = ['status', 'start_date', 'end_date']
+        labels = {
+            'start_date': 'Scheduled start date',
+            'end_date': 'Scheduled end date'
+        }
 
 
 class EngagementDeleteForm(forms.ModelForm):
@@ -52,12 +60,22 @@ class ActivityAddForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = ['activity_type', 'start_date', 'end_date', 'users']
+        labels = {
+            'start_date': 'Scheduled start date',
+            'end_date': 'Scheduled end date',
+            'users': 'Assigned users'
+        }
 
 
 class ActivityEditForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = ['status', 'activity_type', 'start_date', 'end_date', 'users']
+        labels = {
+            'start_date': 'Scheduled start date',
+            'end_date': 'Scheduled end date',
+            'users': 'Assigned users'
+        }
 
 
 class ActivityDeleteForm(forms.ModelForm):

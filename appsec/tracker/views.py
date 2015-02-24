@@ -197,6 +197,7 @@ def activity_add(request, engagement_id):
         activity = form.save(commit=False)
         activity.engagement = engagement
         activity.save()
+        form.save_m2m() # https://docs.djangoproject.com/en/1.7/topics/forms/modelforms/#the-save-method
         return redirect('tracker:activity.detail', activity_id=activity.id)
     else:
         return render(request, 'tracker/activities/add.html', {'form': form, 'engagement': engagement})

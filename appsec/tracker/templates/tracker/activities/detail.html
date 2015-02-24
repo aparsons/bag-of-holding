@@ -20,6 +20,15 @@
     <h2 class="no-margin-top">{{ activity.get_activity_type_display }} <small>{{ activity.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ activity.end_date }}</small></h2>
     <p>Opened: {{ activity.open_date }}</p>
     <p>Closed: {{ activity.close_date }}</p>
+    <hr>
+    <h3>Assigned Users</h3>
+    {% if activity.users.all %}
+    {% for user in activity.users.all %}
+    <p>{{ user.username }}</p>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">No assigned users</p>
+    {% endif %}
   </div>
   <div class="col-md-4">
     <div class="btn-group btn-group-justified" role="group" aria-label="status">
@@ -30,7 +39,6 @@
   </div>
 </div>
 
-<hr>
 
 <div class="row">
   <div class="col-md-12">

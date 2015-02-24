@@ -221,6 +221,9 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
     #data_classification_level = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Specify the data classifcation level.')
     #approximate_users = models.IntegerField(choices=APPROXIMATE_USERS_CHOICES, blank=True, null=True)
     #regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
@@ -238,6 +241,10 @@ class Application(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        get_latest_by = "modified_date"
+        ordering = ['name']
 
 
 class Environment(models.Model):
@@ -363,6 +370,9 @@ class Engagement(models.Model):
 
     application = models.ForeignKey(Application)
 
+    class Meta:
+        ordering = ['start_date']
+
     def is_pending(self):
         return self.status == Engagement.PENDING_STATUS
 
@@ -407,6 +417,7 @@ class Activity(models.Model):
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     class Meta:
+        ordering = ['start_date']
         verbose_name_plural = 'Activities'
 
     def is_pending(self):
