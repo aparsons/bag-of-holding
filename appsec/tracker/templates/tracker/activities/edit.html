@@ -2,15 +2,15 @@
 
 {% load widget_tweaks %}
 
-{% block title %}Edit Engagement{% endblock %}
+{% block title %}Edit Activity{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-12">
-    <h2>Edit Engagement</h2>
+    <h2>Edit Activity</h2>
 
     <div role="tabpanel">
-      <form method="post" action="{% url 'tracker:engagement.edit' engagement.id %}">
+      <form method="post" action="{% url 'tracker:activity.edit' activity.id %}">
         {% csrf_token %}
 
         <div class="form-group{% if form.status.errors %} has-error has-feedback{% endif %}">
@@ -22,6 +22,17 @@
           {% endfor %}
           {% endif %}
           {% if form.status.help_text %}<p class="help-block">{{ form.status.help_text }}</p>{% endif %}
+        </div>
+
+        <div class="form-group{% if form.activity_type.errors %} has-error has-feedback{% endif %}">
+          <label class="control-label" for="{{ form.start_date.id_for_label }}">{{ form.activity_type.label }}</label>
+          {{ form.activity_type | add_class:"form-control" | attr:"autofocus" }}
+          {% if form.activity_type.errors %}
+          {% for error in form.activity_type.errors %}
+          <p class="help-block">{{ error }}</p>
+          {% endfor %}
+          {% endif %}
+          {% if form.activity_type.help_text %}<p class="help-block">{{ form.activity_type.help_text }}</p>{% endif %}
         </div>
 
         <div class="form-group{% if form.start_date.errors %} has-error has-feedback{% endif %}">
@@ -46,17 +57,28 @@
           {% if form.end_date.help_text %}<p class="help-block">{{ form.end_date.help_text }}</p>{% endif %}
         </div>
 
+        <div class="form-group{% if form.users.errors %} has-error has-feedback{% endif %}">
+          <label class="control-label" for="{{ form.users.id_for_label }}">{{ form.users.label }}</label>
+          {{ form.users | add_class:"form-control" }}
+          {% if form.users.errors %}
+          {% for error in form.users.errors %}
+          <p class="help-block">{{ error }}</p>
+          {% endfor %}
+          {% endif %}
+          {% if form.users.help_text %}<p class="help-block">{{ form.users.help_text }}</p>{% endif %}
+        </div>
+
         <div class="well">
-          <button class="btn btn-primary btn-block" type="submit">Update Application</button>
-          <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="btn btn-default btn-block" role="button">Cancel</a>
+          <button class="btn btn-primary btn-block" type="submit">Update Activity</button>
+          <a href="{% url 'tracker:activity.detail' activity.id %}" class="btn btn-default btn-block" role="button">Cancel</a>
         </div>
 
       </form>
     </div>
 
-    <form method="post" action="{% url 'tracker:engagement.delete' engagement.id %}">
+    <form method="post" action="{% url 'tracker:activity.delete' activity.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this engagement?');">Delete Engagement</button>
+      <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this activity?');">Delete Activity</button>
     </form>
 
   </div>

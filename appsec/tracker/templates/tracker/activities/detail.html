@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load widget_tweaks %}
+{% load humanize %}
 
 {% block title %}Activity{% endblock %}
 
@@ -8,7 +9,7 @@
 <div class="row">
   <div class="col-md-12">
     <a href="{% url 'tracker:engagement.detail' activity.engagement.id %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Engagement</a>
-    <a href="" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Activity</a>
+    <a href="{% url 'tracker:activity.edit' activity.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Activity</a>
   </div>
 </div>
 
@@ -17,14 +18,50 @@
 <div class="row">
   <div class="col-md-8">
     <h2 class="no-margin-top">{{ activity.get_activity_type_display }} <small>{{ activity.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ activity.end_date }}</small></h2>
+    <p>Opened: {{ activity.open_date }}</p>
+    <p>Closed: {{ activity.close_date }}</p>
   </div>
   <div class="col-md-4">
-
     <div class="btn-group btn-group-justified" role="group" aria-label="status">
       <a href="#" class="btn btn-default{% if activity.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
       <a href="#" class="btn btn-default{% if activity.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
       <a href="#" class="btn btn-default{% if activity.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
     </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-12">
+    <h3 class="no-margin-top"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Comments</h3>
+    {% if comments %}
+    {% for comment in comments %}
+    <blockquote>
+      <p>{{ comment.message }}</p>
+      <footer>{{ comment.user.first_name }} {{ comment.user.last_name }}, {{ comment.modified_date|naturaltime }}</footer>
+    </blockquote>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">No comments</p>
+    {% endif %}
+    <h4>Add Comment</h4>
+    <form method="post" action="{% url 'tracker:activity.comment.add' activity.id %}">
+      {% csrf_token %}
+
+      <div class="form-group{% if form.message.errors %} has-error has-feedback{% endif %}">
+        <label class="control-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+        {{ form.message | add_class:"form-control" }}
+        {% if form.message.errors %}
+        {% for error in form.message.errors %}
+        <p class="help-block">{{ error }}</p>
+        {% endfor %}
+        {% endif %}
+        {% if form.message.help_text %}<p class="help-block">{{ form.message.help_text }}</p>{% endif %}
+      </div>
+
+      <button class="btn btn-primary" type="submit">Add Comment</button>
+    </form>
   </div>
 </div>
 {% endblock %}

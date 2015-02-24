@@ -22,5 +22,8 @@ urlpatterns = patterns('',
     # Activity Routes
     url(r'^engagements/(?P<engagement_id>\d+)/activities/add/$', views.activity_add, name='activity.add'),
     url(r'^activities/(?P<activity_id>\d+)/$', views.activity_detail, name='activity.detail'),
+    url(r'^activities/(?P<activity_id>\d+)/edit/$', views.activity_edit, name='activity.edit'),
+    url(r'^activities/(?P<activity_id>\d+)/delete/$', views.activity_delete, name='activity.delete'),
+    url(r'^activities/(?P<activity_id>\d+)/comments/add/$', views.activity_comment_add, name='activity.comment.add'),
 
 )

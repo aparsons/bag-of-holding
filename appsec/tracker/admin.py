@@ -111,7 +111,7 @@ admin.site.register(Engagement, EngagementAdmin)
 
 class ActivityAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['engagement', 'activity_type', 'start_date', 'end_date']}),
+        (None, {'fields': ['engagement', 'activity_type', 'start_date', 'end_date', 'users']}),
         ('Advanced options', {
             'classes': ['collapse'],
             'fields': ['status', 'open_date', 'close_date']

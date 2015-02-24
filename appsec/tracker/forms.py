@@ -1,6 +1,6 @@
 from django import forms
 
-from tracker.models import Application, Engagement, EngagementComment, Activity
+from tracker.models import Application, Engagement, EngagementComment, Activity, ActivityComment
 
 
 class ApplicationAddForm(forms.ModelForm):
@@ -12,7 +12,7 @@ class ApplicationAddForm(forms.ModelForm):
 class ApplicationEditForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible', 'tags']
 
 
 class ApplicationDeleteForm(forms.ModelForm):
@@ -52,3 +52,24 @@ class ActivityAddForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = ['activity_type', 'start_date', 'end_date', 'users']
+
+
+class ActivityEditForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ['status', 'activity_type', 'start_date', 'end_date', 'users']
+
+
+class ActivityDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = []
+
+
+class ActivityCommentAddForm(forms.ModelForm):
+    class Meta:
+        model = ActivityComment
+        fields = ['message']
+        widgets = {
+            'message': forms.Textarea(attrs = {'rows': 3})
+        }

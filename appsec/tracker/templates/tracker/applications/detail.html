@@ -13,11 +13,10 @@
     <a href="{% url 'tracker:application.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
   </div>
 </div>
-
 <hr>
-
 <div class="row">
   <div class="col-md-4 col-md-push-8">
+    <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata</h4>
     <table class="table table-striped">
       <tbody>
         <tr>
@@ -42,6 +41,15 @@
         </tr>
       </tbody>
     </table>
+    <hr>
+    <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</h4>
+    {% if application.tags.all %}
+    {% for tag in application.tags.all %}
+    <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">No tags</p>
+    {% endif %}
   </div>
   <div class="col-md-8 col-md-pull-4">
     <h2 class="no-margin-top">{{ application.name }}</h2>
@@ -49,7 +57,7 @@
     <hr>
     <div class="row">
       <div class="col-md-9">
-        <h3 class="no-margin-top">Engagements</h3>
+        <h3 class="no-margin-top"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Engagements</h3>
         <p class="text-muted">Engagements contain activities to be completed over a period of time.</p>
       </div>
       <div class="col-md-3">
@@ -87,11 +95,11 @@
     <p class="text-muted">No closed engagements</p>
     {% endif %}
     <hr>
-    <h3 class="no-margin-top">Environments</h3>
+    <h3 class="no-margin-top"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Environments</h3>
     <p class="text-muted">Environments contain locations and credentials.</p>
     <hr>
-    <h3>People</h3>
-    <h3>Files</h3>
+    <h3><span class="glyphicon glyphicon-user" aria-hidden="true"></span> People</h3>
+    <h3><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Files</h3>
   </div>
 </div>
 {% endblock %}

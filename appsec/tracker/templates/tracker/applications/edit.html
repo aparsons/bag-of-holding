@@ -16,8 +16,9 @@
         <div class="row">
           <div class="col-md-3">
             <ul class="nav nav-pills nav-stacked" role="tablist">
-              <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
-              <li role="presentation"><a href="#meta" aria-controls="meta" role="tab" data-toggle="tab">Metadata</a></li>
+              <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> General</a></li>
+              <li role="presentation"><a href="#meta" aria-controls="meta" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata</a></li>
+              <li role="presentation"><a href="#tags" aria-controls="tags" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</a></li>
             </ul>
             <hr>
             <div class="well">
@@ -30,7 +31,7 @@
               <div role="tabpanel" class="tab-pane fade in active" id="general">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="panel-title">General Information</h3>
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> General Information</h3>
                   </div>
                   <div class="panel-body">
                     <div class="form-group{% if form.name.errors %} has-error has-feedback{% endif %}">
@@ -55,12 +56,11 @@
                     </div>
                   </div>
                 </div>
-
               </div>
               <div role="tabpanel" class="tab-pane fade" id="meta">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="panel-title">Metadata Information</h3>
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata Information</h3>
                   </div>
                   <div class="panel-body">
                     <div class="form-group">
@@ -103,6 +103,25 @@
                         </label>
                       </div>
                       {% if form.internet_accessible.help_text %}<p class="help-block">{{ form.internet_accessible.help_text }}</p>{% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="tags">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group{% if form.tags.errors %} has-error has-feedback{% endif %}">
+                      <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}</label>
+                      {{ form.tags | add_class:"form-control" }}
+                      {% if form.tags.errors %}
+                      {% for error in form.tags.errors %}
+                      <p class="help-block">{{ error }}</p>
+                      {% endfor %}
+                      {% endif %}
+                      {% if form.tags.help_text %}<p class="help-block">{{ form.tags.help_text }}</p>{% endif %}
                     </div>
                   </div>
                 </div>

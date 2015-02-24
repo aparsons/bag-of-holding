@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag
-from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm
+from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 
 # Create your views here.
 
@@ -175,7 +175,15 @@ def engagement_comment_add(request, engagement_id):
 def activity_detail(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
-    return render(request, 'tracker/activities/detail.html', {'activity': activity})
+    comments = activity.activitycomment_set.all()
+
+    form = ActivityCommentAddForm()
+
+    return render(request, 'tracker/activities/detail.html', {
+        'activity': activity,
+        'comments': comments,
+        'form': form
+    })
 
 
 @login_required
@@ -192,3 +200,47 @@ def activity_add(request, engagement_id):
         return redirect('tracker:activity.detail', activity_id=activity.id)
     else:
         return render(request, 'tracker/activities/add.html', {'form': form, 'engagement': engagement})
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def activity_edit(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+
+    form = ActivityEditForm(request.POST or None, instance=activity)
+
+    if request.method == 'POST' and form.is_valid():
+        activity = form.save()
+        return redirect('tracker:activity.detail', activity_id=activity.id)
+
+    return render(request, 'tracker/activities/edit.html', {'form': form, 'activity': activity})
+
+
+@login_required
+@require_http_methods(['POST'])
+def activity_delete(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+
+    form = ActivityDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        activity.delete()
+        return redirect('tracker:engagement.detail', activity.engagement.id)
+    else:
+        return redirect('tracker:activity.detail', activity.id)
+
+
+@login_required
+@require_http_methods(['POST'])
+def activity_comment_add(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+
+    form = ActivityCommentAddForm(request.POST)
+
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.activity = activity
+        comment.user = request.user
+        comment.save()
+
+    return redirect('tracker:activity.detail', activity_id=activity.id)
