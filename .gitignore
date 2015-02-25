@@ -1,6 +1,6 @@
 # Excluding migrations until model is finalized
-appsec/tracker/migrations/*
-!appsec/tracker/migrations/__init__.py
+appsec/*/migrations/*
+!appsec/*/migrations/__init__.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

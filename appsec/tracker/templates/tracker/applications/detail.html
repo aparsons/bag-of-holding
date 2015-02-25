@@ -11,7 +11,7 @@
     <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Application List</a>
   </div>
   <div class="col-md-6">
-    <a href="{% url 'tracker:application.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Application</a>
+    <a href="{% url 'tracker:application.edit' application.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Application</a>
   </div>
 </div>
 <hr>
@@ -72,11 +72,11 @@
     <hr>
     <div class="row">
       <div class="col-md-9">
-        <h3 class="no-margin-top"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Engagements</h3>
+        <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
         <p class="text-muted">Engagements contain activities to be completed over a period of time.</p>
       </div>
       <div class="col-md-3">
-        <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Engagement</a>
+        <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Engagement</a>
       </div>
     </div>
     <h4>Pending <small>Engagements that have not yet started</small></h4>

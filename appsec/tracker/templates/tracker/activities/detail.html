@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-md-12">
     <a href="{% url 'tracker:engagement.detail' activity.engagement.id %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Engagement</a>
-    <a href="{% url 'tracker:activity.edit' activity.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Activity</a>
+    <a href="{% url 'tracker:activity.edit' activity.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Activity</a>
   </div>
 </div>
 
@@ -17,7 +17,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <h2 class="no-margin-top">{{ activity.get_activity_type_display }} <small>{{ activity.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ activity.end_date }}</small></h2>
+    <h2 class="no-margin-top">{{ activity.get_activity_type_display }}</h2>
     <p>Opened: {{ activity.open_date }}</p>
     <p>Closed: {{ activity.close_date }}</p>
     <hr>
@@ -42,7 +42,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h3 class="no-margin-top"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Comments</h3>
+    <h3 class="no-margin-top"><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
     {% if comments %}
     {% for comment in comments %}
     <blockquote>

@@ -23,28 +23,6 @@
           {% if form.activity_type.help_text %}<p class="help-block">{{ form.activity_type.help_text }}</p>{% endif %}
         </div>
 
-        <div class="form-group{% if form.start_date.errors %} has-error has-feedback{% endif %}">
-          <label class="control-label" for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
-          {{ form.start_date | add_class:"form-control" }}
-          {% if form.start_date.errors %}
-          {% for error in form.start_date.errors %}
-          <p class="help-block">{{ error }}</p>
-          {% endfor %}
-          {% endif %}
-          {% if form.start_date.help_text %}<p class="help-block">{{ form.start_date.help_text }}</p>{% endif %}
-        </div>
-
-        <div class="form-group{% if form.end_date.errors %} has-error has-feedback{% endif %}">
-          <label class="control-label" for="{{ form.end_date.id_for_label }}">{{ form.end_date.label }}</label>
-          {{ form.end_date | add_class:"form-control" }}
-          {% if form.end_date.errors %}
-          {% for error in form.end_date.errors %}
-          <p class="help-block">{{ error }}</p>
-          {% endfor %}
-          {% endif %}
-          {% if form.end_date.help_text %}<p class="help-block">{{ form.end_date.help_text }}</p>{% endif %}
-        </div>
-
         <div class="form-group{% if form.users.errors %} has-error has-feedback{% endif %}">
           <label class="control-label" for="{{ form.users.id_for_label }}">{{ form.users.label }}</label>
           {{ form.users | add_class:"form-control" }}

@@ -6,10 +6,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from tracker.models import Application, Engagement, Activity, Tag
+from tracker.models import Application, Engagement, Activity, Tag, Person
 from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 
-# Create your views here.
+# Application
+
 
 @login_required
 @require_http_methods(['GET'])
@@ -85,6 +86,9 @@ def application_delete(request, application_id):
         return redirect('tracker:application.list')
     else:
         return redirect('tracker:applications.detail', application.id)
+
+
+# Engagement
 
 
 @login_required
@@ -170,6 +174,9 @@ def engagement_comment_add(request, engagement_id):
     return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
 
+# Activity
+
+
 @login_required
 @require_http_methods(['GET'])
 def activity_detail(request, activity_id):
@@ -245,3 +252,24 @@ def activity_comment_add(request, activity_id):
         comment.save()
 
     return redirect('tracker:activity.detail', activity_id=activity.id)
+
+
+# People
+
+
+@login_required
+@require_http_methods(['GET'])
+def people_list(request):
+    person_list = Person.objects.all()
+
+    paginator = Paginator(person_list, 5)
+
+    page = request.GET.get('page')
+    try:
+        people = paginator.page(page)
+    except PageNotAnInteger:
+        people = paginator.page(1)
+    except EmptyPage:
+        people = paginator.page(paginator.num_pages)
+
+    return render(request, 'tracker/people/list.html', {'people': people})

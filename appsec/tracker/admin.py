@@ -39,7 +39,7 @@ class EngagementInline(admin.StackedInline):
 class ActivityInline(admin.StackedInline):
     model = Activity
     fieldsets = [
-        (None, {'fields': ['activity_type', 'start_date', 'end_date', 'users']}),
+        (None, {'fields': ['activity_type', 'users']}),
         ('Advanced options', {
             'classes': ['collapse'],
             'fields': ['status', 'open_date', 'close_date']
@@ -111,13 +111,13 @@ admin.site.register(Engagement, EngagementAdmin)
 
 class ActivityAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['engagement', 'activity_type', 'start_date', 'end_date', 'users']}),
+        (None, {'fields': ['engagement', 'activity_type', 'users']}),
         ('Advanced options', {
             'classes': ['collapse'],
             'fields': ['status', 'open_date', 'close_date']
         }),
     ]
-    list_display = ['__str__', 'start_date', 'end_date', 'status', 'activity_type']
+    list_display = ['__str__', 'status', 'activity_type']
     inlines = [ActivityCommentInline]
 
 admin.site.register(Activity, ActivityAdmin)

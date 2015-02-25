@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required
 
 from tracker import views
 
@@ -25,5 +24,8 @@ urlpatterns = patterns('',
     url(r'^activities/(?P<activity_id>\d+)/edit/$', views.activity_edit, name='activity.edit'),
     url(r'^activities/(?P<activity_id>\d+)/delete/$', views.activity_delete, name='activity.delete'),
     url(r'^activities/(?P<activity_id>\d+)/comments/add/$', views.activity_comment_add, name='activity.comment.add'),
+
+    # People Routes
+    url(r'^people/$', views.people_list, name='people.list'),
 
 )

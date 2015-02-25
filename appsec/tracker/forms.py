@@ -59,10 +59,8 @@ class EngagementCommentAddForm(forms.ModelForm):
 class ActivityAddForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['activity_type', 'start_date', 'end_date', 'users']
+        fields = ['activity_type', 'users']
         labels = {
-            'start_date': 'Scheduled start date',
-            'end_date': 'Scheduled end date',
             'users': 'Assigned users'
         }
 
@@ -70,10 +68,8 @@ class ActivityAddForm(forms.ModelForm):
 class ActivityEditForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['status', 'activity_type', 'start_date', 'end_date', 'users']
+        fields = ['status', 'activity_type', 'users']
         labels = {
-            'start_date': 'Scheduled start date',
-            'end_date': 'Scheduled end date',
             'users': 'Assigned users'
         }
 

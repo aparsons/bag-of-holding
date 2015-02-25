@@ -37,8 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
+    # Third-Party
     'widget_tweaks',
 
+    # Internal
+    'accounts',
     'tracker'
 )
 
@@ -93,6 +96,7 @@ STATICFILES_DIRS = (
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'appsec/templates'),
+    os.path.join(BASE_DIR, 'accounts/templates'),
     os.path.join(BASE_DIR, 'tracker/templates'),
 )
 

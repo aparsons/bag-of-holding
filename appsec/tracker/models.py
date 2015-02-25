@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 # Create your models here.
@@ -25,9 +24,9 @@ class Tag(models.Model):
 class Application(models.Model):
     """Contains infomation about a software application."""
 
-    WEB_PLATFORM = 1
-    DESKTOP_PLATFORM = 2
-    MOBILE_PLATFORM = 3
+    WEB_PLATFORM = 'web'
+    DESKTOP_PLATFORM = 'desktop'
+    MOBILE_PLATFORM = 'mobile'
     PLATFORM_CHOICES = (
         (None, 'Not Specified'),
         (WEB_PLATFORM, 'Web'),
@@ -213,7 +212,7 @@ class Application(models.Model):
 
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
-    platform = models.IntegerField(choices=PLATFORM_CHOICES, blank=True, null=True)
+    platform = models.CharField(max_length=7, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
@@ -396,6 +395,7 @@ class Activity(models.Model):
         (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
         (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
     )
+    # Setup Tasks - WhiteHat, Checkmarx
 
     PENDING_STATUS = 1
     OPEN_STATUS = 2
@@ -408,8 +408,6 @@ class Activity(models.Model):
 
     activity_type = models.IntegerField(choices=ACTIVITY_TYPE_CHOICES)
     status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
-    start_date = models.DateField()
-    end_date = models.DateField()
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 
@@ -417,7 +415,6 @@ class Activity(models.Model):
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     class Meta:
-        ordering = ['start_date']
         verbose_name_plural = 'Activities'
 
     def is_pending(self):

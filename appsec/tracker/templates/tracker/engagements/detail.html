@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-md-12">
     <a href="{% url 'tracker:application.detail' engagement.application.id %}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return to Application</a>
-    <a href="{% url 'tracker:engagement.edit' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Engagement</a>
+    <a href="{% url 'tracker:engagement.edit' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Engagement</a>
   </div>
 </div>
 
@@ -17,7 +17,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <h2 class="no-margin-top"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Engagement <small>{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</small></h2>
+    <h2 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> Engagement <small>{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</small></h2>
     <p>Opened: {{ engagement.open_date }}</p>
     <p>Closed: {{ engagement.close_date }}</p>
   </div>
@@ -68,7 +68,7 @@
     {% endif %}
   </div>
   <div class="col-md-3">
-    <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Activity</a>
+    <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Activity</a>
   </div>
 </div>
 
@@ -76,7 +76,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h3 class="no-margin-top"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Comments</h3>
+    <h3 class="no-margin-top"><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
     {% if comments %}
     {% for comment in comments %}
     <blockquote>

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1 class="text-primary">Welcome to the <strong>Bag of Holding</strong>.</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="jumbotron">
+      <p class="lead text-muted">The <strong>Bag of Holding</strong> is an application security utility to assist in the organization and prioritization of software security activities.</p>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="well">
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">The username or password you entered is not valid.</div>
+      {% endif %}
+      <form method="post" action="{% url 'accounts:django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <div class="form-group">
+          <label for="{{ form.username.id_for_label }}" class="sr-only">{{ form.username.label }}</label>
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
+            {{ form.username | add_class:"form-control" | attr:"placeholder:Username" | attr:"autofocus" }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="{{ form.password.id_for_label }}" class="sr-only">{{ form.password.label }}</label>
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+            {{ form.password | add_class:"form-control" | attr:"placeholder:Password" }}
+          </div>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Log in</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <p class="text-muted"><i class="fa fa-copyright" aria-hidden="true"></i> 2015 Pearson</p>
+  </div>
+</div>
+{% endblock %}
