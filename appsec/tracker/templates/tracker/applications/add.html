@@ -12,31 +12,11 @@
       <form method="post" action="{% url 'tracker:application.add' %}">
         {% csrf_token %}
 
-        <div class="form-group{% if form.name.errors %} has-error has-feedback{% endif %}">
-          <label class="control-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-          {{ form.name | add_class:"form-control" | attr:"autofocus" }}
-          {% if form.name.errors %}
-          {% for error in form.name.errors %}
-          <p class="help-block">{{ error }}</p>
-          {% endfor %}
-          {% endif %}
-          {% if form.name.help_text %}<p class="help-block">{{ form.name.help_text }}</p>{% endif %}
-        </div>
+        {% include "forms/form_snippet.html" with control=form.name %}
+        {% include "forms/form_snippet.html" with control=form.description %}
 
-        <div class="form-group">
-          <label class="control-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-          {{ form.description | add_class:"form-control" }}
-          {% if form.description.errors %}
-          {% for error in form.description.errors %}
-          <p class="help-block">{{ error }}</p>
-          {% endfor %}
-          {% endif %}
-          {% if form.description.help_text %}<p class="help-block">{{ form.description.help_text }}</p>{% endif %}
-        </div>
-        
         <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button">Cancel</a>
         <button class="btn btn-primary" type="submit">Add Application</button>
-        
       </form>
     </div>
   </div>

@@ -1,5 +1,5 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.messages import info, warning, error
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.http import Http404
@@ -8,6 +8,21 @@ from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag, Person
 from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+
+
+# Dashboard
+
+
+@login_required
+@require_http_methods(['GET'])
+def dashboard_detail(request):
+
+    activities = Activity.objects.filter(users__id=request.user.id)
+
+    return render(request, 'tracker/dashboard.html', {
+        'activities': activities
+    })
+
 
 # Application
 
@@ -55,6 +70,7 @@ def application_add(request):
 
     if form.is_valid():
         application = form.save()
+        messages.success(request, 'You successfully created this application.', extra_tags='Well done!')
         return redirect('tracker:application.detail', application_id=application.id)
 
     return render(request, 'tracker/applications/add.html', {'form': form})
@@ -69,6 +85,7 @@ def application_edit(request, application_id):
 
     if request.method == 'POST' and form.is_valid():
         application = form.save()
+        messages.success(request, 'You successfully updated this application.', extra_tags='Yay!')
         return redirect('tracker:application.detail', application_id=application.id)
 
     return render(request, 'tracker/applications/edit.html', {'form': form, 'application': application})
@@ -83,6 +100,7 @@ def application_delete(request, application_id):
 
     if form.is_valid():
         application.delete()
+        messages.success(request, 'You successfully deleted the "' + application.name + '" application.', extra_tags='Hey!')
         return redirect('tracker:application.list')
     else:
         return redirect('tracker:applications.detail', application.id)
@@ -125,6 +143,7 @@ def engagement_add(request, application_id):
         engagement = form.save(commit=False)
         engagement.application = application
         engagement.save()
+        messages.success(request, 'You successfully created this engagement.', extra_tags='Alrighty!')
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
     else:
         return render(request, 'tracker/engagements/add.html', {'form': form, 'application': application})
@@ -139,6 +158,7 @@ def engagement_edit(request, engagement_id):
 
     if request.method == 'POST' and form.is_valid():
         engagement = form.save()
+        messages.success(request, 'You successfully updated this engagement.', extra_tags='Success!')
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
     return render(request, 'tracker/engagements/edit.html', {'form': form, 'engagement': engagement})
@@ -153,6 +173,7 @@ def engagement_delete(request, engagement_id):
 
     if form.is_valid():
         engagement.delete()
+        messages.success(request, 'You successfully deleted the engagement.', extra_tags='Boom!')
         return redirect('tracker:application.detail', engagement.application.id)
     else:
         return redirect('tracker:engagement.detail', engagement.id)
@@ -170,6 +191,7 @@ def engagement_comment_add(request, engagement_id):
         comment.engagement = engagement
         comment.user = request.user
         comment.save()
+        messages.success(request, 'You successfully added a comment to this engagement.', extra_tags='Thank you!')
 
     return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
@@ -205,6 +227,7 @@ def activity_add(request, engagement_id):
         activity.engagement = engagement
         activity.save()
         form.save_m2m() # https://docs.djangoproject.com/en/1.7/topics/forms/modelforms/#the-save-method
+        messages.success(request, 'You successfully added this activity.', extra_tags='Nice!')
         return redirect('tracker:activity.detail', activity_id=activity.id)
     else:
         return render(request, 'tracker/activities/add.html', {'form': form, 'engagement': engagement})
@@ -219,6 +242,7 @@ def activity_edit(request, activity_id):
 
     if request.method == 'POST' and form.is_valid():
         activity = form.save()
+        messages.success(request, 'You successfully updated this activity.', extra_tags='Cheers!')
         return redirect('tracker:activity.detail', activity_id=activity.id)
 
     return render(request, 'tracker/activities/edit.html', {'form': form, 'activity': activity})
@@ -233,6 +257,7 @@ def activity_delete(request, activity_id):
 
     if form.is_valid():
         activity.delete()
+        messages.success(request, 'You successfully deleted the activity.', extra_tags='Bam!')
         return redirect('tracker:engagement.detail', activity.engagement.id)
     else:
         return redirect('tracker:activity.detail', activity.id)
@@ -250,6 +275,7 @@ def activity_comment_add(request, activity_id):
         comment.activity = activity
         comment.user = request.user
         comment.save()
+        messages.success(request, 'You successfully added a comment to this activity.', extra_tags='Behold!')
 
     return redirect('tracker:activity.detail', activity_id=activity.id)
 

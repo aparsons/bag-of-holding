@@ -3,10 +3,11 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
+
+from tracker.views import dashboard_detail
 
 urlpatterns = patterns('',
-    url(r'^$', login_required(TemplateView.as_view(template_name="tracker/dashboard.html")), name='dashboard'),
+    url(r'^$', dashboard_detail, name='dashboard'),
 
     url(r'^accounts/', include('accounts.urls', namespace="accounts")),
     url(r'^tracker/', include('tracker.urls', namespace="tracker")),

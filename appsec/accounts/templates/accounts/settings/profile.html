@@ -1,0 +1,24 @@
+{% extends "base_settings.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}User Settings | Profile{% endblock %}
+
+{% block settings_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Profile</h3>
+  </div>
+  <div class="panel-body">
+    <form method="post" action="{% url 'accounts:settings.profile' %}">
+      {% csrf_token %}
+
+      {% include "forms/form_snippet.html" with control=user_form.first_name %}
+      {% include "forms/form_snippet.html" with control=user_form.last_name %}
+      {% include "forms/form_snippet.html" with control=user_form.email %}
+
+      <button class="btn btn-default" name="profile" type="submit">Update profile</button>
+    </form>
+  </div>
+</div>
+{% endblock settings_content %}

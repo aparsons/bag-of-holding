@@ -2,3 +2,33 @@
 .no-margin-top {
   margin-top: 0px;
 }
+
+.no-margin-bottom {
+  margin-bottom: 0px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.wrapper {
+  padding-bottom: 20px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.footer p {
+  margin: 20px 0;
+}

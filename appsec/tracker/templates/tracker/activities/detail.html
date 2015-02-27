@@ -23,26 +23,18 @@
     <hr>
     <h3>Assigned Users</h3>
     {% if activity.users.all %}
-    {% for user in activity.users.all %}
-    <p>{{ user.username }}</p>
-    {% endfor %}
+    <ul class="list-group">
+      {% for user in activity.users.all %}
+      <li class="list-group-item">{{ user.first_name }} {{ user.last_name }}</li>
+        {% endfor %}
+    </ul>
     {% else %}
     <p class="text-muted">No assigned users</p>
     {% endif %}
-  </div>
-  <div class="col-md-4">
-    <div class="btn-group btn-group-justified" role="group" aria-label="status">
-      <a href="#" class="btn btn-default{% if activity.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
-      <a href="#" class="btn btn-default{% if activity.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
-      <a href="#" class="btn btn-default{% if activity.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
-    </div>
-  </div>
-</div>
 
+    <hr>
 
-<div class="row">
-  <div class="col-md-12">
-    <h3 class="no-margin-top"><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
+    <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
     {% if comments %}
     {% for comment in comments %}
     <blockquote>
@@ -53,23 +45,27 @@
     {% else %}
     <p class="text-muted">No comments</p>
     {% endif %}
-    <h4>Add Comment</h4>
-    <form method="post" action="{% url 'tracker:activity.comment.add' activity.id %}">
-      {% csrf_token %}
 
-      <div class="form-group{% if form.message.errors %} has-error has-feedback{% endif %}">
-        <label class="control-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
-        {{ form.message | add_class:"form-control" }}
-        {% if form.message.errors %}
-        {% for error in form.message.errors %}
-        <p class="help-block">{{ error }}</p>
-        {% endfor %}
-        {% endif %}
-        {% if form.message.help_text %}<p class="help-block">{{ form.message.help_text }}</p>{% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Add comment</h3>
       </div>
+      <div class="panel-body">
+        <form method="post" action="{% url 'tracker:activity.comment.add' activity.id %}">
+          {% csrf_token %}
+          {% include "forms/form_snippet.html" with control=form.message %}
 
-      <button class="btn btn-primary" type="submit">Add Comment</button>
-    </form>
+          <button class="btn btn-default" type="submit">Post comment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group btn-group-justified" role="group" aria-label="status">
+      <a href="#" class="btn btn-default{% if activity.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
+      <a href="#" class="btn btn-default{% if activity.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
+      <a href="#" class="btn btn-default{% if activity.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
+    </div>
   </div>
 </div>
 {% endblock %}

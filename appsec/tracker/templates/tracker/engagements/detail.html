@@ -20,39 +20,29 @@
     <h2 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> Engagement <small>{{ engagement.start_date }} <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ engagement.end_date }}</small></h2>
     <p>Opened: {{ engagement.open_date }}</p>
     <p>Closed: {{ engagement.close_date }}</p>
-  </div>
-  <div class="col-md-4">
-    <div class="btn-group btn-group-justified" role="group" aria-label="status">
-      <a href="#" class="btn btn-default{% if engagement.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
-      <a href="#" class="btn btn-default{% if engagement.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
-      <a href="#" class="btn btn-default{% if engagement.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
-    </div>
-  </div>
-</div>
 
-<hr>
+    <hr>
 
-<div class="row">
-  <div class="col-md-9">
-    <h3 class="no-margin-top"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Activities</h3>
-    <p class="text-muted">Activities are units of work performed over a duration.</p>
+    <h3><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Activities</h3>
+    <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Activity</a>
+    <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
     <h4>Pending <small>Activities that have not yet started</small></h4>
     {% if pending_activities %}
-      <div class="list-group">
-        {% for activity in pending_activities %}
-        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">{{ activity.get_activity_type_display }}</a>
-        {% endfor %}
-      </div>
+    <div class="list-group">
+      {% for activity in pending_activities %}
+      <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">{{ activity.get_activity_type_display }}</a>
+      {% endfor %}
+    </div>
     {% else %}
     <p class="text-muted">No pending activities</p>
     {% endif %}
     <h4>Open <small>Activities that are in progress</small></h4>
     {% if open_activities %}
-      <div class="list-group">
-        {% for activity in open_activities %}
-        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">{{ activity.get_activity_type_display }}</a>
-        {% endfor %}
-      </div>
+    <div class="list-group">
+      {% for activity in open_activities %}
+      <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">{{ activity.get_activity_type_display }}</a>
+      {% endfor %}
+    </div>
     {% else %}
     <p class="text-muted">No open activities</p>
     {% endif %}
@@ -66,17 +56,10 @@
     {% else %}
     <p class="text-muted">No closed activities</p>
     {% endif %}
-  </div>
-  <div class="col-md-3">
-    <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Activity</a>
-  </div>
-</div>
 
-<hr>
+    <hr>
 
-<div class="row">
-  <div class="col-md-12">
-    <h3 class="no-margin-top"><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
+    <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
     {% if comments %}
     {% for comment in comments %}
     <blockquote>
@@ -87,23 +70,27 @@
     {% else %}
     <p class="text-muted">No comments</p>
     {% endif %}
-    <h4>Add Comment</h4>
-    <form method="post" action="{% url 'tracker:engagement.comment.add' engagement.id %}">
-      {% csrf_token %}
 
-      <div class="form-group{% if form.message.errors %} has-error has-feedback{% endif %}">
-        <label class="control-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
-        {{ form.message | add_class:"form-control" }}
-        {% if form.message.errors %}
-        {% for error in form.message.errors %}
-        <p class="help-block">{{ error }}</p>
-        {% endfor %}
-        {% endif %}
-        {% if form.message.help_text %}<p class="help-block">{{ form.message.help_text }}</p>{% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Add comment</h3>
       </div>
+      <div class="panel-body">
+        <form method="post" action="{% url 'tracker:engagement.comment.add' engagement.id %}">
+          {% csrf_token %}
+          {% include "forms/form_snippet.html" with control=form.message %}
 
-      <button class="btn btn-primary" type="submit">Add Comment</button>
-    </form>
+          <button class="btn btn-default" type="submit">Post comment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group btn-group-justified" role="group" aria-label="status">
+      <a href="#" class="btn btn-default{% if engagement.is_pending %} active{% endif %}" role="button"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pending</a>
+      <a href="#" class="btn btn-default{% if engagement.is_open %} active{% endif %}" role="button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Open</a>
+      <a href="#" class="btn btn-default{% if engagement.is_closed %} active{% endif %}" role="button"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Closed</a>
+    </div>
   </div>
 </div>
 {% endblock %}

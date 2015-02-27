@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+from django.contrib import messages
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -42,7 +44,8 @@ INSTALLED_APPS = (
 
     # Internal
     'accounts',
-    'tracker'
+    'tracker',
+    'services'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,3 +106,8 @@ TEMPLATE_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
