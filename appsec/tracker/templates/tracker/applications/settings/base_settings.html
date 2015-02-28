@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Application Settings{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <a href="{% url 'tracker:application.detail' application.id %}" class="btn btn-default" role="button"><span class="fa fa-arrow-left" aria-hidden="true"></span> Return to Application</a>
+  </div>
+  <div class="col-md-6">
+    <form method="post" action="{% url 'tracker:application.delete' application.id %}">
+      {% csrf_token %}
+      <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this application?');"><span class="fa fa-bomb" aria-hidden="true"></span> Delete this application</button>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Application settings</h3>
+      </div>
+      <div class="list-group">
+        <a href="{% url 'tracker:application.settings.general' application.id %}" class="list-group-item{% if active == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
+        <a href="{% url 'tracker:application.settings.metadata' application.id %}" class="list-group-item{% if active == 'metadata' %} active{% endif %}"><span class="fa fa-info-circle" aria-hidden="true"></span> Metadata</a>
+        <a href="{% url 'tracker:application.settings.services' application.id %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    {% block settings_content %}
+    {% endblock settings_content %}
+  </div>
+</div>
+{% endblock content %}

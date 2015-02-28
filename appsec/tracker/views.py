@@ -7,7 +7,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag, Person
-from tracker.forms import ApplicationAddForm, ApplicationEditForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+from tracker.forms import ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
 
 
 # Dashboard
@@ -78,17 +79,59 @@ def application_add(request):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def application_edit(request, application_id):
+def application_settings_general(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
-    form = ApplicationEditForm(request.POST or None, instance=application)
+    general_form = ApplicationSettingsGeneralForm(request.POST or None, instance=application)
 
-    if request.method == 'POST' and form.is_valid():
-        application = form.save()
-        messages.success(request, 'You successfully updated this application.', extra_tags='Yay!')
-        return redirect('tracker:application.detail', application_id=application.id)
+    if request.method == 'POST' and general_form.is_valid():
+        general_form.save()
+        messages.success(request, 'You successfully updated this application\'s general information.', extra_tags='Yay!')
 
-    return render(request, 'tracker/applications/edit.html', {'form': form, 'application': application})
+    return render(request, 'tracker/applications/settings/general.html', {
+        'application': application,
+        'general_form': general_form,
+        'active': 'general'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_settings_metadata(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    metadata_form = ApplicationSettingsMetadataForm(instance=application)
+    tags_form = ApplicationSettingsTagsForm(instance=application)
+
+    if request.method == 'POST':
+        if 'submit-metadata' in request.POST:
+            metadata_form = ApplicationSettingsMetadataForm(request.POST, instance=application)
+            if metadata_form.is_valid():
+                metadata_form.save()
+                messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags='Yay!')
+        elif 'submit-tags' in request.POST:
+            tags_form = ApplicationSettingsTagsForm(request.POST, instance=application)
+            if tags_form.is_valid():
+                tags_form.save()
+                messages.success(request, 'You successfully updated this application\'s tags.', extra_tags='Yay!')
+
+    return render(request, 'tracker/applications/settings/metadata.html', {
+        'application': application,
+        'metadata_form': metadata_form,
+        'tags_form': tags_form,
+        'active': 'metadata'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_settings_services(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    return render(request, 'tracker/applications/settings/services.html', {
+        'application': application,
+        'active': 'services'
+    })
 
 
 @login_required

@@ -1,0 +1,11 @@
+{% if control.errors %}<div class="has-error">{% endif %}
+<div class="form-group">
+  <div class="checkbox">
+    <label>
+      {{ control }}
+      {{ control.label }}
+    </label>
+  </div>
+  {% if control.help_text %}<p class="help-block">{{ control.help_text }}</p>{% endif %}
+</div>
+{% if control.errors %}</div>{% endif %}

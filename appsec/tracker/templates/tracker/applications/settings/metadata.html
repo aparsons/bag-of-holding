@@ -1,0 +1,43 @@
+{% extends "tracker/applications/settings/base_settings.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Application settings | Metadata{% endblock %}
+
+{% block settings_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Metadata</h3>
+  </div>
+  <div class="panel-body">
+    <form method="post" action="{% url 'tracker:application.settings.metadata' application.id %}">
+      {% csrf_token %}
+
+      {% include "forms/form_snippet.html" with control=metadata_form.platform %}
+      {% include "forms/form_snippet.html" with control=metadata_form.lifecycle %}
+      {% include "forms/form_snippet.html" with control=metadata_form.origin %}
+      {% include "forms/form_snippet.html" with control=metadata_form.industry %}
+      {% include "forms/form_snippet.html" with control=metadata_form.business_criticality %}
+      {% include "forms/form_checkbox_snippet.html" with control=metadata_form.external_audience %}
+      {% include "forms/form_checkbox_snippet.html" with control=metadata_form.internet_accessible %}
+
+      <button class="btn btn-default" name="submit-metadata" type="submit">Update metadata</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Tags</h3>
+  </div>
+  <div class="panel-body">
+    <form method="post" action="{% url 'tracker:application.settings.metadata' application.id %}">
+      {% csrf_token %}
+
+      {% include "forms/form_snippet.html" with control=tags_form.tags %}
+
+      <button class="btn btn-default" name="submit-tags" type="submit">Update tags</button>
+    </form>
+  </div>
+</div>
+{% endblock settings_content %}

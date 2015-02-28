@@ -8,8 +8,11 @@ urlpatterns = patterns('',
     url(r'^applications/$', views.application_list, name='application.list'),
     url(r'^applications/add/$', views.application_add, name='application.add'),
     url(r'^applications/(?P<application_id>\d+)/$', views.application_detail, name='application.detail'),
-    url(r'^applications/(?P<application_id>\d+)/edit/$', views.application_edit, name='application.edit'),
     url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),
+
+    url(r'^applications/(?P<application_id>\d+)/settings/general/$', views.application_settings_general, name='application.settings.general'),
+    url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
+    url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
 
     # Engagement Routes
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),

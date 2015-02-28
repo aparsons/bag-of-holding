@@ -9,10 +9,22 @@ class ApplicationAddForm(forms.ModelForm):
         fields = ['name', 'description']
 
 
-class ApplicationEditForm(forms.ModelForm):
+class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['name', 'description', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible', 'tags']
+        fields = ['name', 'description']
+
+
+class ApplicationSettingsMetadataForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+
+
+class ApplicationSettingsTagsForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['tags']
 
 
 class ApplicationDeleteForm(forms.ModelForm):
