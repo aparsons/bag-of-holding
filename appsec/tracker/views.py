@@ -7,8 +7,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from tracker.models import Application, Engagement, Activity, Tag, Person
+
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 from tracker.forms import ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
+from tracker.forms import PersonAddForm
 
 
 # Dashboard
@@ -31,7 +33,16 @@ def dashboard_detail(request):
 @login_required
 @require_http_methods(['GET'])
 def application_list(request):
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+
     application_list = Application.objects.all()
+
+    tag_id = request.GET.get('tag', 0)
+    if tag_id:
+        application_list = application_list.filter(tags__id=tag_id)
+
     tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
 
     paginator = Paginator(application_list, 20)
@@ -44,7 +55,12 @@ def application_list(request):
     except EmptyPage:
         applications = paginator.page(paginator.num_pages)
 
-    return render(request, 'tracker/applications/list.html', {'applications': applications, 'tags': tags})
+    return render(request, 'tracker/applications/list.html', {
+        'applications': applications,
+        'tags': tags,
+        'queries': queries,
+        'active_filter_tag': int(tag_id)
+    })
 
 
 @login_required
@@ -342,3 +358,26 @@ def people_list(request):
         people = paginator.page(paginator.num_pages)
 
     return render(request, 'tracker/people/list.html', {'people': people})
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def people_add(request):
+    form = PersonAddForm(request.POST or None)
+
+    if form.is_valid():
+        person = form.save()
+        messages.success(request, 'You successfully created this person.', extra_tags='Good show!')
+        return redirect('tracker:people.list')
+
+    return render(request, 'tracker/people/add.html', {'form': form})
+
+
+@login_required
+@require_http_methods(['GET'])
+def people_detail(request, person_id):
+    person = get_object_or_404(Person, pk=person_id)
+
+    return render(request, 'tracker/people/detail.html', {
+        'person': person
+    })

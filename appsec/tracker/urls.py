@@ -30,5 +30,6 @@ urlpatterns = patterns('',
 
     # People Routes
     url(r'^people/$', views.people_list, name='people.list'),
-
+    url(r'^people/add/$', views.people_add, name='people.add'),
+    url(r'^people/(?P<person_id>\d+)/$', views.people_detail, name='people.detail'),
 )

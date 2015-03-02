@@ -27,11 +27,13 @@ class Application(models.Model):
     WEB_PLATFORM = 'web'
     DESKTOP_PLATFORM = 'desktop'
     MOBILE_PLATFORM = 'mobile'
+    WEB_SERVICE_PLATFORM = 'web service'
     PLATFORM_CHOICES = (
         (None, 'Not Specified'),
         (WEB_PLATFORM, 'Web'),
         (DESKTOP_PLATFORM, 'Desktop'),
         (MOBILE_PLATFORM, 'Mobile'),
+        (WEB_SERVICE_PLATFORM, 'Web Service'),
     )
 
     DEFINE_LIFECYCLE = 1
@@ -212,7 +214,7 @@ class Application(models.Model):
 
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
-    platform = models.CharField(max_length=7, choices=PLATFORM_CHOICES, blank=True, null=True)
+    platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)

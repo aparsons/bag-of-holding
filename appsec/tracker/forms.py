@@ -1,6 +1,6 @@
 from django import forms
 
-from tracker.models import Application, Engagement, EngagementComment, Activity, ActivityComment
+from tracker.models import Application, Engagement, EngagementComment, Activity, ActivityComment, Person
 
 
 class ApplicationAddForm(forms.ModelForm):
@@ -99,3 +99,9 @@ class ActivityCommentAddForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs = {'rows': 3})
         }
+
+
+class PersonAddForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile']

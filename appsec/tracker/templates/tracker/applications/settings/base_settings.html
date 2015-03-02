@@ -29,6 +29,11 @@
         <a href="{% url 'tracker:application.settings.services' application.id %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-danger{% if active == 'test' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
+      </div>
+    </div>
   </div>
   <div class="col-md-9">
     {% block settings_content %}

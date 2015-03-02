@@ -9,8 +9,8 @@
       <nav>
         <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
         <div class="btn-group" role="group" aria-label="...">
-          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a>
-          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
       </nav>
     </div>
@@ -21,15 +21,21 @@
 
 <div class="row">
   <div class="col-md-3">
-    <a href="{% url 'tracker:application.add' %}" class="btn btn-success btn-block" role="button"><i class="fa fa-plus"></i> Add Application</a>
+    <a href="{% url 'tracker:application.add' %}" class="btn btn-primary btn-block" role="button"><i class="fa fa-plus"></i> Add Application</a>
     <hr>
-    <strong>Filter by tag:</strong>
+    <a href="{% url 'tracker:application.list' %}" class="btn btn-default btn-block" role="button">Show all applications</a>
+    <hr>
     {% if tags %}
-    <ul class="nav nav-pills nav-stacked">
-      {% for tag in tags %}
-      <li><a href="#"><span class="badge pull-right" style="background-color: #{{ tag.color }};">{{ tag.total_applications }}</span> {{ tag.name }} </a></li>
-      {% endfor %}
-    </ul>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Filter by tag</h3>
+      </div>
+      <div class="list-group">
+        {% for tag in tags %}
+        <a href="?tag={{ tag.id }}" class="list-group-item{% if active_filter_tag == tag.id %} active{% endif %}"><span class="badge pull-right" style="background-color: #{{ tag.color }};">{{ tag.total_applications }}</span> {{ tag.name }} </a>
+        {% endfor %}
+      </div>
+    </div>
     {% endif %}
   </div>
   <div class="col-md-9">

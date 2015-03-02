@@ -62,7 +62,7 @@
     <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
     {% if comments %}
     {% for comment in comments %}
-    <blockquote>
+    <blockquote{% cycle '' ' class="blockquote-reverse"' %}>
       <p>{{ comment.message }}</p>
       <footer>{{ comment.user.first_name }} {{ comment.user.last_name }}, {{ comment.modified_date|naturaltime }}</footer>
     </blockquote>

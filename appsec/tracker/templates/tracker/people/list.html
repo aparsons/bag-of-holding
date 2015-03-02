@@ -21,7 +21,7 @@
 
 <div class="row">
   <div class="col-md-3">
-    <a href="" class="btn btn-success btn-block" role="button"><i class="fa fa-plus"></i> Add Person</a>
+    <a href="{% url 'tracker:people.add' %}" class="btn btn-success btn-block" role="button"><i class="fa fa-plus"></i> Add Person</a>
     <hr>
   </div>
   <div class="col-md-9">
@@ -37,7 +37,7 @@
       <tbody>
         {% for person in people %}
         <tr>
-          <td>{{ person.last_name }}</td>
+          <td><a href="{% url 'tracker:people.detail' person.id %}">{{ person.last_name }}</a></td>
           <td>{{ person.first_name }}</td>
           <td>{{ person.email }}</td>
         </tr>
