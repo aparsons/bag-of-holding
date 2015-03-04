@@ -35,7 +35,7 @@
       </div>
       <div class="list-group">
         {% for tag in tags %}
-        <a href="?tag={{ tag.id }}" class="list-group-item{% if active_filter_tag == tag.id %} active{% endif %}"><span class="badge pull-right" style="background-color: #{{ tag.color }};">{{ tag.total_applications }}</span> {{ tag.name }} </a>
+        <a href="?tag={{ tag.id }}" class="list-group-item{% if active_filter_tag == tag.id %} active{% endif %}"><span class="badge pull-right"{% if active_filter_tag != tag.id %}style="background-color: #{{ tag.color }};"{% endif %}>{{ tag.total_applications }}</span> {{ tag.name }} </a>
         {% endfor %}
       </div>
     </div>
