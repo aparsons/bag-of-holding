@@ -48,6 +48,15 @@ class EngagementAddForm(forms.ModelForm):
             'end_date': 'Scheduled end date'
         }
 
+    def clean(self):
+        cleaned = super(EngagementEditForm, self).clean()
+        start_date = cleaned.get('start_date')
+        end_date = cleaned.get('end_date')
+
+        if start_date and end_date:
+            if end_date < start_date:
+                self.add_error('end_date', "End date cannot be before start date.")
+
 
 class EngagementEditForm(forms.ModelForm):
     class Meta:
@@ -57,6 +66,15 @@ class EngagementEditForm(forms.ModelForm):
             'start_date': 'Scheduled start date',
             'end_date': 'Scheduled end date'
         }
+
+    def clean(self):
+        cleaned = super(EngagementEditForm, self).clean()
+        start_date = cleaned.get('start_date')
+        end_date = cleaned.get('end_date')
+
+        if start_date and end_date:
+            if end_date < start_date:
+                self.add_error('end_date', "End date cannot be before start date.")
 
 
 class EngagementDeleteForm(forms.ModelForm):
