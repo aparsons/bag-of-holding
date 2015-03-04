@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Environment{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top">{{ environment.get_environment_type_display }} Environment</h2>
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    {% if environment.description %}<p>{{ environment.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+
+    <hr>
+
+    <h3><span class="fa fa-globe" aria-hidden="true"></span> Locations</h3>
+    {% if environment.environmentlocation_set.all %}
+    <ul class="list-group">
+    {% for location in environment.environmentlocation_set.all %}
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading{% if not location.notes %} no-margin-bottom{% endif %}"><a href="{{ location.location }}" target="_blank">{{ location.location }}</a></h4>
+      {% if location.notes %}<p class="list-group-item-text">{{ location.notes }}</p>{% endif %}
+    </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">No environment locations</p>
+    {% endif %}
+
+    <a href="{% url 'tracker:environment.location.add' environment.id %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Location</a>
+
+    <hr>
+
+    <h3><span class="fa fa-users" aria-hidden="true"></span> Credentials</h3>
+    <a href="" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Credentials</a>
+  </div>
+</div>
+{% endblock %}

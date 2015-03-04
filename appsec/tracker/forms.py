@@ -1,12 +1,16 @@
 from django import forms
 
-from tracker.models import Organization, Application, Engagement, EngagementComment, Activity, ActivityComment, Person
+from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
 
+# Organization
 
 class OrganizationAddForm(forms.ModelForm):
     class Meta:
         model = Organization
         fields = ['name', 'description']
+
+
+# Application
 
 
 class ApplicationAddForm(forms.ModelForm):
@@ -37,6 +41,30 @@ class ApplicationDeleteForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = []
+
+
+# Environment
+
+
+class EnvironmentAddForm(forms.ModelForm):
+    class Meta:
+        model = Environment
+        fields = ['environment_type', 'description', 'testing_approved']
+
+
+class EnvironmentEditForm(forms.ModelForm):
+    class Meta:
+        model = Environment
+        fields = ['environment_type', 'description', 'testing_approved']
+
+
+class EnvironmentLocationAddForm(forms.ModelForm):
+    class Meta:
+        model = EnvironmentLocation
+        fields = ['location', 'notes']
+
+
+# Engagement
 
 
 class EngagementAddForm(forms.ModelForm):
@@ -92,10 +120,13 @@ class EngagementCommentAddForm(forms.ModelForm):
         }
 
 
+# Activity
+
+
 class ActivityAddForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['activity_type', 'users']
+        fields = ['activity_type', 'description', 'users']
         labels = {
             'users': 'Assigned users'
         }
@@ -104,7 +135,7 @@ class ActivityAddForm(forms.ModelForm):
 class ActivityEditForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['status', 'activity_type', 'users']
+        fields = ['status', 'activity_type', 'description', 'users']
         labels = {
             'users': 'Assigned users'
         }
@@ -123,6 +154,9 @@ class ActivityCommentAddForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs = {'rows': 3})
         }
+
+
+# Person
 
 
 class PersonAddForm(forms.ModelForm):

@@ -90,7 +90,7 @@
     "pk": 1,
     "fields": {
       "application": 1,
-      "status": 1,
+      "status": "pending",
       "start_date": "2015-02-23",
       "end_date": "2015-02-27"
     }
@@ -100,7 +100,7 @@
     "pk": 2,
     "fields": {
       "application": 1,
-      "status": 2,
+      "status": "open",
       "start_date": "2015-01-05",
       "end_date": "2015-01-09"
     }
@@ -110,7 +110,7 @@
     "pk": 1,
     "fields": {
       "engagement": 1,
-      "activity_type": 1
+      "activity_type": "appscan"
     }
   },
   {

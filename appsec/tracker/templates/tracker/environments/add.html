@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Add Activity{% endblock %}
+{% block title %}Add Environment{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <form method="post" action="{% url 'tracker:activity.add' engagement.id %}">
+    <form method="post" action="">
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Add Activity</h3>
+          <h3 class="panel-title">Add Environment</h3>
         </div>
         <div class="panel-body">
-          {% include "forms/form_snippet.html" with control=form.activity_type %}
+          {% include "forms/form_snippet.html" with control=form.environment_type %}
           {% include "forms/form_snippet.html" with control=form.description %}
-          {% include "forms/form_snippet.html" with control=form.users %}
+          {% include "forms/form_checkbox_snippet.html" with control=form.testing_approved %}
         </div>
         <div class="panel-footer">
           <div class="pull-right">
-            <button class="btn btn-primary" type="submit">Add Activity</button>
-            <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="btn btn-default" role="button">Cancel</a>
+            <button class="btn btn-primary" type="submit">Add Environment</button>
+            <a href="" class="btn btn-default" role="button">Cancel</a>
           </div>
           <div class="clearfix"></div>
         </div>

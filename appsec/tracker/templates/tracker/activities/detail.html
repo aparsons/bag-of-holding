@@ -20,7 +20,12 @@
     <h2 class="no-margin-top">{{ activity.get_activity_type_display }}</h2>
     <p>Opened: {{ activity.open_date }}</p>
     <p>Closed: {{ activity.close_date }}</p>
+
+    {% if activity.description %}<p>{{ activity.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+
     <hr>
+
+
     <h3>Assigned Users</h3>
     {% if activity.users.all %}
     <ul class="list-group">

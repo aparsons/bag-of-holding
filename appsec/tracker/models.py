@@ -262,12 +262,12 @@ class Application(models.Model):
 class Environment(models.Model):
     """Container for information about a web server environment."""
 
-    DEVELOPMENT_ENVIRONMENT = 'DEV'
-    INTEGRATION_ENVIRONMENT = 'INT'
-    QUALITY_ASSURANCE_ENVIRONMENT = 'QA'
-    PRE_PRODUCTION_ENVIRONMENT = 'PPE'
-    CUSTOMER_ACCEPTANCE_ENVIRONMENT = 'CAT'
-    PRODUCTION_ENVIRONMENT = 'PROD'
+    DEVELOPMENT_ENVIRONMENT = 'dev'
+    INTEGRATION_ENVIRONMENT = 'int'
+    QUALITY_ASSURANCE_ENVIRONMENT = 'qa'
+    PRE_PRODUCTION_ENVIRONMENT = 'ppe'
+    CUSTOMER_ACCEPTANCE_ENVIRONMENT = 'cat'
+    PRODUCTION_ENVIRONMENT = 'prod'
     ENVIRONMENT_CHOICES = (
         (DEVELOPMENT_ENVIRONMENT, 'Development'),
         (INTEGRATION_ENVIRONMENT, 'Integration'),
@@ -278,8 +278,8 @@ class Environment(models.Model):
     )
 
     environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES)
-    description = models.TextField(blank=True)
-    testing_approved = models.BooleanField(default=False)
+    description = models.TextField(blank=True, help_text='Information about the environment\'s purpose, physical location, and deployment.')
+    testing_approved = models.BooleanField(default=False, help_text='Specify if security testing has been approved for this environment.')
 
     application = models.ForeignKey(Application)
 
@@ -365,16 +365,16 @@ class Relation(models.Model):
 class Engagement(models.Model):
     """Container for activities performed for an application over a duration."""
 
-    PENDING_STATUS = 1
-    OPEN_STATUS = 2
-    CLOSED_STATUS = 3
+    PENDING_STATUS = 'pending'
+    OPEN_STATUS = 'open'
+    CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
         (PENDING_STATUS, 'Pending'),
         (OPEN_STATUS, 'Open'),
         (CLOSED_STATUS, 'Closed')
     )
 
-    status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
+    status = models.CharField(max_length=7, choices=STATUS_CHOICES, default=PENDING_STATUS)
     start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
     end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
     open_date = models.DateTimeField(blank=True, null=True)
@@ -398,10 +398,10 @@ class Engagement(models.Model):
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
-    APPSCAN_ACTIVITY_TYPE = 1
-    MANUAL_ASSESSMENT_ACTIVITY_TYPE = 2
-    RETEST_PREVIOUS_ACTIVITY_TYPE = 3
-    THREAT_MODEL_ACTIVITY_TYPE = 4
+    APPSCAN_ACTIVITY_TYPE = 'appscan'
+    MANUAL_ASSESSMENT_ACTIVITY_TYPE = 'manual assessment'
+    RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest issues'
+    THREAT_MODEL_ACTIVITY_TYPE = 'threat model'
     ACTIVITY_TYPE_CHOICES = (
         (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
         (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
@@ -410,17 +410,18 @@ class Activity(models.Model):
     )
     # Setup Tasks - WhiteHat, Checkmarx
 
-    PENDING_STATUS = 1
-    OPEN_STATUS = 2
-    CLOSED_STATUS = 3
+    PENDING_STATUS = 'pending'
+    OPEN_STATUS = 'open'
+    CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
         (PENDING_STATUS, 'Pending'),
         (OPEN_STATUS, 'Open'),
         (CLOSED_STATUS, 'Closed')
     )
 
-    activity_type = models.IntegerField(choices=ACTIVITY_TYPE_CHOICES)
-    status = models.IntegerField(choices=STATUS_CHOICES, default=PENDING_STATUS)
+    activity_type = models.CharField(max_length=17, choices=ACTIVITY_TYPE_CHOICES)
+    status = models.CharField(max_length=7, choices=STATUS_CHOICES, default=PENDING_STATUS)
+    description = models.TextField(blank=True)
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 

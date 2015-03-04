@@ -1,17 +1,19 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from tracker.models import Organization, Application, Engagement, Activity, Tag, Person
-
-from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, Activity, Tag, Person
 
 from tracker.forms import OrganizationAddForm
-from tracker.forms import ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
+from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
+from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentLocationAddForm
+from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
+from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 from tracker.forms import PersonAddForm
 
 
@@ -26,6 +28,29 @@ def dashboard_detail(request):
 
     return render(request, 'tracker/dashboard.html', {
         'activities': activities
+    })
+
+
+# Management
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_services(request):
+
+    return render(request, 'tracker/management/services.html', {
+        'active': 'services'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_users(request):
+
+    return render(request, 'tracker/management/users.html', {
+        'active': 'users'
     })
 
 
@@ -105,11 +130,14 @@ def application_detail(request, application_id):
     open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
     closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
 
+    environments = application.environment_set.all()
+
     return render(request, 'tracker/applications/detail.html', {
         'application': application,
         'pending_engagements': pending_engagements,
         'open_engagements': open_engagements,
-        'closed_engagements': closed_engagements
+        'closed_engagements': closed_engagements,
+        'environments': environments
     })
 
 
@@ -207,6 +235,59 @@ def application_delete(request, application_id):
         return redirect('tracker:application.list')
     else:
         return redirect('tracker:applications.detail', application.id)
+
+
+# Environment
+
+
+@login_required
+@require_http_methods(['GET'])
+def environment_detail(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    return render(request, 'tracker/environments/detail.html', {
+        'environment': environment
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def environment_add(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    form = EnvironmentAddForm(request.POST or None)
+
+    if form.is_valid():
+        environment = form.save(commit=False)
+        environment.application = application
+        environment.save()
+        messages.success(request, 'You successfully created this environment.', extra_tags='Woah!')
+        return redirect('tracker:environment.detail', environment_id=environment.id)
+
+    return render(request, 'tracker/environments/add.html', {
+        'form': form,
+        'application': application
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def environment_location_add(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    form = EnvironmentLocationAddForm(request.POST or None)
+
+    if form.is_valid():
+        environment_location = form.save(commit=False)
+        environment_location.environment = environment
+        environment_location.save()
+        messages.success(request, 'You successfully created this environment location.', extra_tags='Shazzam!')
+        return redirect('tracker:environment.detail', environment_id=environment.id)
+
+    return render(request, 'tracker/environments/locations/add.html', {
+        'form': form,
+        'environment': environment
+    })
 
 
 # Engagement

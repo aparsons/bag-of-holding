@@ -125,14 +125,28 @@
         <p class="text-muted">Environments contain locations and credentials.</p>
       </div>
       <div class="col-sm-4">
-        <a href="#" class="btn btn-default btn-block" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Environment</a>
+        <a href="{% url 'tracker:environment.add' application.id %}" class="btn btn-default btn-block" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Environment</a>
       </div>
     </div>
 
+    {% if environments %}
+    <div class="list-group">
+      {% for environment in environments %}
+      <a href="{% url 'tracker:environment.detail' environment.id %}" class="list-group-item">{{ environment.get_environment_type_display }} Environment</a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No environments</p>
+    {% endif %}
+
     <hr>
 
-    <h3><span class="glyphicon glyphicon-user" aria-hidden="true"></span> People</h3>
-    <h3><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Files</h3>
+    <h3 class="no-margin-top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> People</h3>
+    <p class="text-muted">An association between a person and an application.</p>
+    <hr>
+
+    <h3 class="no-margin-top"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Files</h3>
+    <p class="text-muted">Uploaded files</p>
   </div>
 </div>
 {% endblock %}

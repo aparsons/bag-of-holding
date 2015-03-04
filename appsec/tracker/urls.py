@@ -20,6 +20,12 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
 
+    # Environment Routes
+    url(r'^applications/(?P<application_id>\d+)/environments/add/$', views.environment_add, name='environment.add'),
+    url(r'^environments/(?P<environment_id>\d+)/$', views.environment_detail, name='environment.detail'),
+    url(r'^environments/(?P<environment_id>\d+)/locations/add/$', views.environment_location_add, name='environment.location.add'),
+
+
     # Engagement Routes
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),
     url(r'^engagements/(?P<engagement_id>\d+)/$', views.engagement_detail, name='engagement.detail'),
