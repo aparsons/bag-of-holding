@@ -13,6 +13,7 @@
     <form method="post" action="{% url 'tracker:application.settings.general' application.id %}">
       {% csrf_token %}
 
+      {% include "forms/form_snippet.html" with control=general_form.organization %}
       {% include "forms/form_snippet.html" with control=general_form.name %}
       {% include "forms/form_snippet.html" with control=general_form.description %}
 
@@ -29,24 +30,4 @@
     <span class="text-muted">Nothing here yet.</span>
   </div>
 </div>
-
-<!--
-<div class="panel panel-danger">
-  <div class="panel-heading">
-    <h3 class="panel-title">Danger Zone</h3>
-  </div>
-  <div class="panel-body">
-    <form method="post" action="{% url 'tracker:application.delete' application.id %}">
-      {% csrf_token %}
-      <div class="pull-left">
-        <strong>Delete this application</strong><br>
-        <span class="text-muted">Once you delete an application, there is no going back. Please be certain.</span>
-      </div>
-      <div class="pull-right">
-        <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this application?');">Delete this application</button>
-      </div>
-    </form>
-  </div>
-</div>
--->
 {% endblock settings_content %}

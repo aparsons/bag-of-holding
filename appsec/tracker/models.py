@@ -21,6 +21,16 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
 
+class Organization(models.Model):
+    """Entities under which applications belong."""
+
+    name = models.CharField(max_length=32, unique=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Application(models.Model):
     """Contains infomation about a software application."""
 
@@ -162,12 +172,12 @@ class Application(models.Model):
         (UTILITIES_INDUSTRY, 'Utilities'),
     )
 
-    VERY_HIGH_CRITICALITY = 1
-    HIGH_CRITICALITY = 2
-    MEDIUM_CRITICALITY = 3
-    LOW_CRITICALITY = 4
-    VERY_LOW_CRITICALITY = 5
-    NONE_CRITICALITY = 6
+    VERY_HIGH_CRITICALITY = 'very high'
+    HIGH_CRITICALITY = 'high'
+    MEDIUM_CRITICALITY = 'medium'
+    LOW_CRITICALITY = 'low'
+    VERY_LOW_CRITICALITY = 'very low'
+    NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
         (None, 'Not Specified'),
         (VERY_HIGH_CRITICALITY, 'Very High'),
@@ -218,7 +228,7 @@ class Application(models.Model):
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
-    business_criticality = models.IntegerField(choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
@@ -238,6 +248,7 @@ class Application(models.Model):
     #programming language/s
     #id for whitehat + checkmarx (third-party ids)
 
+    organization = models.ForeignKey(Organization)
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):

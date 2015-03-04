@@ -1,23 +1,20 @@
 {% extends "base.html" %}
 
-{% load widget_tweaks %}
 {% load humanize %}
 
 {% block title %}{{ application.name }}{% endblock %}
 
 {% block content %}
 <div class="row">
-  <div class="col-md-6">
-    <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-arrow-left" aria-hidden="true"></span> Return to Application List</a>
-  </div>
-  <div class="col-md-6">
-    <a href="{% url 'tracker:application.settings.general' application.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Application</a>
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><a href="{% url 'tracker:organization.detail' application.organization.id %}">{{ application.organization.name }}</a> <span class="text-muted">/</span> <strong><a href="{% url 'tracker:application.detail' application.id %}">{{ application.name }}</a></strong></h2>
+    <hr>
   </div>
 </div>
-<hr>
+
 <div class="row">
   <div class="col-md-4 col-md-push-8">
-    <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata</h4>
+    <h4><span class="fa fa-info-circle" aria-hidden="true"></span> Metadata</h4>
     <table class="table table-striped">
       <tbody>
         <tr>
@@ -42,7 +39,9 @@
         </tr>
       </tbody>
     </table>
+
     <hr>
+
     <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</h4>
     {% if application.tags.all %}
     {% for tag in application.tags.all %}
@@ -51,7 +50,9 @@
     {% else %}
     <p class="text-muted">No tags</p>
     {% endif %}
+
     <hr>
+
     <h4><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Miscellaneous</h4>
     <table class="table table-striped">
       <tbody>
@@ -65,20 +66,26 @@
         </tr>
       </tbody>
     </table>
+
+    <a href="{% url 'tracker:application.settings.general' application.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Application</a>
+
   </div>
+
   <div class="col-md-8 col-md-pull-4">
-    <h2 class="no-margin-top">{{ application.name }}</h2>
     {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+
     <hr>
+
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-sm-8">
         <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
         <p class="text-muted">Engagements contain activities to be completed over a period of time.</p>
       </div>
-      <div class="col-md-3">
-        <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Engagement</a>
+      <div class="col-sm-4">
+        <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-default btn-block" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Engagement</a>
       </div>
     </div>
+
     <h4>Pending <small>Engagements that have not yet started</small></h4>
     {% if pending_engagements %}
     <div class="list-group">
@@ -109,10 +116,21 @@
     {% else %}
     <p class="text-muted">No closed engagements</p>
     {% endif %}
+
     <hr>
-    <h3 class="no-margin-top"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Environments</h3>
-    <p class="text-muted">Environments contain locations and credentials.</p>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <h3 class="no-margin-top"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Environments</h3>
+        <p class="text-muted">Environments contain locations and credentials.</p>
+      </div>
+      <div class="col-sm-4">
+        <a href="#" class="btn btn-default btn-block" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Environment</a>
+      </div>
+    </div>
+
     <hr>
+
     <h3><span class="glyphicon glyphicon-user" aria-hidden="true"></span> People</h3>
     <h3><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Files</h3>
   </div>

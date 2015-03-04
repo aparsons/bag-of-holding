@@ -1,0 +1,5 @@
+{% extends "tracker/applications/detail/base_detail.html" %}
+
+{% block detail_content %}
+{% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+{% endblock detail_content %}

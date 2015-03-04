@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 <div class="form-group{% if control.errors %} has-error has-feedback{% endif %}">
-  <label class="control-label" for="{{ control.id_for_label }}">{{ control.label }}</label>
+  <label class="control-label" for="{{ control.id_for_label }}">{{ control.label }}{% if control.field.required %} <sup><span class="fa fa-exclamation-circle text-danger"></span></sup>{% endif %}</label>
   {{ control | add_class:"form-control" }}
   {% if control.errors %}
   {% for error in control.errors %}

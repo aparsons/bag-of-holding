@@ -40,10 +40,10 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_staff %}
-            <li><a href="/admin"><span class="fa fa-cogs" aria-hidden="true"></span> Admin</a></li>
+            <li><a href="/admin"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Admin</span></a></li>
             {% endif %}
-            <li><a href="{% url 'accounts:settings.profile' %}"><span class="fa fa-cog" aria-hidden="true"></span> Settings</a></li>
-            <li><a href="{% url 'accounts:logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</a></li>
+            <li><a href="{% url 'accounts:settings.profile' %}"><span class="fa fa-cog" aria-hidden="true"></span><span class="hidden-sm"> Settings</span></a></li>
+            <li><a href="{% url 'accounts:logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span><span class="hidden-sm">  Logout</span></a></li>
           </ul>
         </div>
       </div>

@@ -6,9 +6,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from tracker.models import Application, Engagement, Activity, Tag, Person
+from tracker.models import Organization, Application, Engagement, Activity, Tag, Person
 
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm, ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+
+from tracker.forms import OrganizationAddForm
 from tracker.forms import ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
 from tracker.forms import PersonAddForm
 
@@ -24,6 +26,37 @@ def dashboard_detail(request):
 
     return render(request, 'tracker/dashboard.html', {
         'activities': activities
+    })
+
+
+# Organization
+
+
+@login_required
+@require_http_methods(['GET'])
+def organization_detail(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    applications = organization.application_set.all()
+
+    return render(request, 'tracker/organizations/detail.html', {
+        'organization': organization,
+        'applications': applications
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def organization_add(request):
+    form = OrganizationAddForm(request.POST or None)
+
+    if form.is_valid():
+        organization = form.save()
+        messages.success(request, 'You successfully created this organization.', extra_tags='Excellent!')
+        return redirect('tracker:application.list')
+
+    return render(request, 'tracker/organizations/add.html', {
+        'form': form
     })
 
 
@@ -147,6 +180,17 @@ def application_settings_services(request, application_id):
     return render(request, 'tracker/applications/settings/services.html', {
         'application': application,
         'active': 'services'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_settings_danger(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    return render(request, 'tracker/applications/settings/danger.html', {
+        'application': application,
+        'active': 'danger'
     })
 
 

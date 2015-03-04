@@ -3,7 +3,7 @@
   <div class="checkbox">
     <label>
       {{ control }}
-      {{ control.label }}
+      {{ control.label }}{% if control.field.required %} <sup><span class="fa fa-exclamation-circle text-danger"></span></sup>{% endif %}
     </label>
   </div>
   {% if control.help_text %}<p class="help-block">{{ control.help_text }}</p>{% endif %}

@@ -4,13 +4,18 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
+    <a href="{% url 'tracker:organization.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Organization</a>
+    <a href="{% url 'tracker:application.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Application</a>
+
+  </div>
+  <div class="col-md-4">
     <div class="pull-right">
       <nav>
         <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
         <div class="btn-group" role="group" aria-label="...">
-          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a>
-          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
         </div>
       </nav>
     </div>
@@ -21,8 +26,6 @@
 
 <div class="row">
   <div class="col-md-3">
-    <a href="{% url 'tracker:application.add' %}" class="btn btn-primary btn-block" role="button"><i class="fa fa-plus"></i> Add Application</a>
-    <hr>
     <a href="{% url 'tracker:application.list' %}" class="btn btn-default btn-block" role="button">Show all applications</a>
     <hr>
     {% if tags %}
@@ -44,7 +47,7 @@
       {% for application in applications %}
       <a href="{% url 'tracker:application.detail' application.id %}" class="list-group-item">
         <span class="badge">{{ application.get_business_criticality_display }}</span>
-        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
         {% if application.tags.all %}
         <p class="list-group-item-text">
           {% for tag in application.tags.all %}

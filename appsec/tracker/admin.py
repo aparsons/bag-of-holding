@@ -1,4 +1,5 @@
 from django.contrib import admin
+from tracker.models import Organization
 from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementComment, ActivityComment, ApplicationFileUpload
 
 # Register your models here.
@@ -68,6 +69,9 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ['^name']
 
 admin.site.register(Tag, TagAdmin)
+
+
+admin.site.register(Organization)
 
 
 class ApplicationAdmin(admin.ModelAdmin):

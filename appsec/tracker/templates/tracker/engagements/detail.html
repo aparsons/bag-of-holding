@@ -23,9 +23,16 @@
 
     <hr>
 
-    <h3><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Activities</h3>
-    <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Activity</a>
-    <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="no-margin-top"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Activities</h3>
+        <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
+      </div>
+      <div class="col-md-3">
+        <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-default pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Activity</a>
+      </div>
+    </div>
+
     <h4>Pending <small>Activities that have not yet started</small></h4>
     {% if pending_activities %}
     <div class="list-group">

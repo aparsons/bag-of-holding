@@ -1,18 +1,24 @@
 from django import forms
 
-from tracker.models import Application, Engagement, EngagementComment, Activity, ActivityComment, Person
+from tracker.models import Organization, Application, Engagement, EngagementComment, Activity, ActivityComment, Person
+
+
+class OrganizationAddForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ['name', 'description']
 
 
 class ApplicationAddForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['name', 'description']
+        fields = ['organization', 'name', 'description']
 
 
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['name', 'description']
+        fields = ['organization', 'name', 'description']
 
 
 class ApplicationSettingsMetadataForm(forms.ModelForm):

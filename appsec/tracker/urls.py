@@ -4,6 +4,11 @@ from tracker import views
 
 urlpatterns = patterns('',
 
+    # Organization Routes
+
+    url(r'^organizations/add/$', views.organization_add, name='organization.add'),
+    url(r'^organizations/(?P<organization_id>\d+)/$', views.organization_detail, name='organization.detail'),
+
 	# Application Routes
     url(r'^applications/$', views.application_list, name='application.list'),
     url(r'^applications/add/$', views.application_add, name='application.add'),
@@ -13,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>\d+)/settings/general/$', views.application_settings_general, name='application.settings.general'),
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
+    url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
 
     # Engagement Routes
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),

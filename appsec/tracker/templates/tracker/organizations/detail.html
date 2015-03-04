@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ organization.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><a href="{% url 'tracker:organization.detail' organization.id %}">{{ organization.name }}</a></h2>
+    <hr>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    {% if organization.description %}<p>{{ organization.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+
+    <hr>
+
+    <h3>Applications</h3>
+    {% if applications %}
+    <ul class="list-group">
+      {% for application in applications %}
+      <a href="{% url 'tracker:application.detail' application.id %}" class="list-group-item">
+        <span class="badge">{{ application.get_business_criticality_display }}</span>
+        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        {% if application.tags.all %}
+        <p class="list-group-item-text">
+          {% for tag in application.tags.all %}
+          <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">No Applications</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

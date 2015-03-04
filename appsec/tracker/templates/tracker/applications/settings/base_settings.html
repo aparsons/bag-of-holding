@@ -7,12 +7,6 @@
   <div class="col-md-6">
     <a href="{% url 'tracker:application.detail' application.id %}" class="btn btn-default" role="button"><span class="fa fa-arrow-left" aria-hidden="true"></span> Return to Application</a>
   </div>
-  <div class="col-md-6">
-    <form method="post" action="{% url 'tracker:application.delete' application.id %}">
-      {% csrf_token %}
-      <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this application?');"><span class="fa fa-bomb" aria-hidden="true"></span> Delete this application</button>
-    </form>
-  </div>
 </div>
 
 <hr>
@@ -31,7 +25,7 @@
     </div>
     <div class="panel panel-default">
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-danger{% if active == 'test' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
+        <a href="{% url 'tracker:application.settings.danger' application.id %}" class="list-group-item{% if active == 'danger' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
       </div>
     </div>
   </div>
