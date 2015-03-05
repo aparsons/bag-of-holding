@@ -22,7 +22,13 @@ class ApplicationAddForm(forms.ModelForm):
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['organization', 'name', 'description']
+        fields = ['name', 'description']
+
+
+class ApplicationSettingsOrganizationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['organization']
 
 
 class ApplicationSettingsMetadataForm(forms.ModelForm):
@@ -77,7 +83,7 @@ class EngagementAddForm(forms.ModelForm):
         }
 
     def clean(self):
-        cleaned = super(EngagementEditForm, self).clean()
+        cleaned = super(EngagementAddForm, self).clean()
         start_date = cleaned.get('start_date')
         end_date = cleaned.get('end_date')
 

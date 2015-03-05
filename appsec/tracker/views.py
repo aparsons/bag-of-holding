@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, Activity, Tag, Person
 
 from tracker.forms import OrganizationAddForm
-from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
+from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
 from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentLocationAddForm
 from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
 from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
@@ -120,24 +120,75 @@ def application_list(request):
         'active_filter_tag': int(tag_id)
     })
 
+# DEPRECATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# @login_required
+# @require_http_methods(['GET'])
+# def application_detail(request, application_id):
+#     application = get_object_or_404(Application, pk=application_id)
+#
+#     pending_engagements = application.engagement_set.filter(status=Engagement.PENDING_STATUS)
+#     open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
+#     closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
+#
+#     environments = application.environment_set.all()
+#
+#     return render(request, 'tracker/applications/detail.html', {
+#         'application': application,
+#         'pending_engagements': pending_engagements,
+#         'open_engagements': open_engagements,
+#         'closed_engagements': closed_engagements,
+#         'environments': environments
+#     })
+
 
 @login_required
 @require_http_methods(['GET'])
-def application_detail(request, application_id):
+def application_overview(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    return render(request, 'tracker/applications/overview.html', {
+        'application': application,
+        'active_tab': 'overview'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_engagements(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
     pending_engagements = application.engagement_set.filter(status=Engagement.PENDING_STATUS)
     open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
     closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
 
-    environments = application.environment_set.all()
-
-    return render(request, 'tracker/applications/detail.html', {
+    return render(request, 'tracker/applications/engagements.html', {
         'application': application,
         'pending_engagements': pending_engagements,
         'open_engagements': open_engagements,
         'closed_engagements': closed_engagements,
-        'environments': environments
+        'active_tab': 'engagements'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_environments(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    return render(request, 'tracker/applications/environments.html', {
+        'application': application,
+        'active_tab': 'environments'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_people(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    return render(request, 'tracker/applications/people.html', {
+        'application': application,
+        'active_tab': 'people'
     })
 
 
@@ -149,7 +200,7 @@ def application_add(request):
     if form.is_valid():
         application = form.save()
         messages.success(request, 'You successfully created this application.', extra_tags='Well done!')
-        return redirect('tracker:application.detail', application_id=application.id)
+        return redirect('tracker:application.overview', application_id=application.id)
 
     return render(request, 'tracker/applications/add.html', {'form': form})
 
@@ -159,16 +210,27 @@ def application_add(request):
 def application_settings_general(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
-    general_form = ApplicationSettingsGeneralForm(request.POST or None, instance=application)
+    general_form = ApplicationSettingsGeneralForm(instance=application)
+    organization_form = ApplicationSettingsOrganizationForm(instance=application)
 
-    if request.method == 'POST' and general_form.is_valid():
-        general_form.save()
-        messages.success(request, 'You successfully updated this application\'s general information.', extra_tags='Yay!')
+    if request.method == 'POST':
+        if 'submit-general' in request.POST:
+            general_form = ApplicationSettingsGeneralForm(request.POST, instance=application)
+            if general_form.is_valid():
+                general_form.save()
+                messages.success(request, 'You successfully updated this application\'s general information.', extra_tags='Yay!')
+        elif 'submit-organization' in request.POST:
+            organization_form = ApplicationSettingsOrganizationForm(request.POST, instance=application)
+            if organization_form.is_valid():
+                organization_form.save()
+                messages.success(request, 'You successfully updated this application\'s organization.', extra_tags='Choo Choo!')
 
     return render(request, 'tracker/applications/settings/general.html', {
         'application': application,
         'general_form': general_form,
-        'active': 'general'
+        'organization_form': organization_form,
+        'active': 'general',
+        'active_tab': 'settings'
     })
 
 
@@ -196,7 +258,8 @@ def application_settings_metadata(request, application_id):
         'application': application,
         'metadata_form': metadata_form,
         'tags_form': tags_form,
-        'active': 'metadata'
+        'active': 'metadata',
+        'active_tab': 'settings'
     })
 
 
@@ -207,7 +270,8 @@ def application_settings_services(request, application_id):
 
     return render(request, 'tracker/applications/settings/services.html', {
         'application': application,
-        'active': 'services'
+        'active': 'services',
+        'active_tab': 'settings'
     })
 
 
@@ -218,7 +282,8 @@ def application_settings_danger(request, application_id):
 
     return render(request, 'tracker/applications/settings/danger.html', {
         'application': application,
-        'active': 'danger'
+        'active': 'danger',
+        'active_tab': 'settings'
     })
 
 
@@ -358,7 +423,7 @@ def engagement_delete(request, engagement_id):
     if form.is_valid():
         engagement.delete()
         messages.success(request, 'You successfully deleted the engagement.', extra_tags='Boom!')
-        return redirect('tracker:application.detail', engagement.application.id)
+        return redirect('tracker:application.overview', engagement.application.id)
     else:
         return redirect('tracker:engagement.detail', engagement.id)
 

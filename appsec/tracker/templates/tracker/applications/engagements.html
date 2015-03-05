@@ -1,0 +1,100 @@
+{% extends "tracker/applications/base_applications.html" %}
+
+{% block title %}{{ application.name }} | Engagements{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="btn-toolbar" role="toolbar" aria-label="...">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default disabled"><span class="fa fa-info-circle" aria-hidden="true"></span> {{ pending_engagements.count }}<span class="hidden-xs"> Pending</span></button>
+        <button type="button" class="btn btn-default disabled"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ open_engagements.count }}<span class="hidden-xs"> Open</span></button>
+        <button type="button" class="btn btn-default disabled"><span class="fa fa-check-circle" aria-hidden="true"></span> {{ closed_engagements.count }}<span class="hidden-xs"> Closed</span></button>
+      </div>
+      <a href="{% url 'tracker:engagement.add' application.id %}" class="btn btn-success pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Engagement</span></a>
+    </div>
+
+    <hr>
+
+    <h3><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
+    {% if pending_engagements %}
+    <div class="list-group">
+      {% for engagement in pending_engagements %}
+      <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
+        {% if engagement.engagementcomment_set.all %}
+        <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{engagement.engagementcomment_set.count}}</span>
+        {% endif %}
+        <p class="list-group-item-text">{{ engagement.start_date }} <span class="fa fa-chevron-right text-muted" aria-hidden="true"></span> {{ engagement.end_date }}</p>
+        {% if engagement.activity_set.all %}
+        <p class="list-group-item-text hidden-xs">
+          {% for activity in engagement.activity_set.all %}
+          <span class="label label-default">{{ activity.get_activity_type_display }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted"><small><em>There are no pending engagements.</em></small></p>
+    {% endif %}
+
+    <h3><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open <small class="hidden-xs">Engagements that are in progress</small></h3>
+    {% if open_engagements %}
+    <div class="list-group">
+      {% for engagement in open_engagements %}
+      <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
+        {% if engagement.engagementcomment_set.all %}
+        <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{engagement.engagementcomment_set.count}}</span>
+        {% endif %}
+        <p class="list-group-item-text">{{ engagement.start_date }} <span class="fa fa-chevron-right text-muted" aria-hidden="true"></span> {{ engagement.end_date }}</p>
+        {% if engagement.activity_set.all %}
+        <p class="list-group-item-text hidden-xs">
+          {% for activity in engagement.activity_set.all %}
+          <span class="label label-default">{{ activity.get_activity_type_display }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted"><small><em>There are no open engagements.</em></small></p>
+    {% endif %}
+
+    <h3><span class="fa fa-check-circle" aria-hidden="true"></span> Closed <small class="hidden-xs">Engagements that have been completed</small></h3>
+    {% if closed_engagements %}
+    <div class="list-group">
+      {% for engagement in closed_engagements %}
+      <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
+        {% if engagement.engagementcomment_set.all %}
+        <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{engagement.engagementcomment_set.count}}</span>
+        {% endif %}
+        <p class="list-group-item-text">{{ engagement.start_date }} <span class="fa fa-chevron-right text-muted" aria-hidden="true"></span> {{ engagement.end_date }}</p>
+        {% if engagement.activity_set.all %}
+        <p class="list-group-item-text hidden-xs">
+          {% for activity in engagement.activity_set.all %}
+          <span class="label label-default">{{ activity.get_activity_type_display }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted"><small><em>There are no closed engagements.</em></small></p>
+    {% endif %}
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how engagements work here.</p>
+      <p>TODO:</p>
+      <ul>
+        <li>convert to panels</li>
+        <li>row coloration based off date</li>
+        <li>label coloration based of activity status</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock application_content %}

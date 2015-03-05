@@ -1,0 +1,13 @@
+{% extends "tracker/applications/base_applications.html" %}
+
+{% block title %}{{ application.name }} | Environments{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
+  </div>
+  <div class="col-md-4">
+  </div>
+</div>
+{% endblock application_content %}

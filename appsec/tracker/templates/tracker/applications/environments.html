@@ -1,0 +1,68 @@
+{% extends "tracker/applications/base_applications.html" %}
+
+{% block title %}{{ application.name }} | Environments{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="btn-toolbar" role="toolbar" aria-label="...">
+      <a href="{% url 'tracker:environment.add' application.id %}" class="btn btn-success pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Environment</span></a>
+    </div>
+
+    <hr>
+
+    {% if application.environment_set.all %}
+    {% for environment in application.environment_set.all %}
+    <div class="panel {% if environment.testing_approved %}panel-success{% else %}panel-danger{% endif %}">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>{{ environment.get_environment_type_display }}<span class="hidden-xs"> Environment</span></strong> {% if environment.testing_approved %}<span class="label label-success hidden-xs pull-right"><span class="fa fa-thumbs-up" aria-hidden="true"></span> Approved for Security Testing</span>{% else %}<span class="label label-danger hidden-xs pull-right"><span class="fa fa-thumbs-down" aria-hidden="true"></span> Not Approved for Security Testing</span>{% endif %}</h3>
+      </div>
+      <ul class="list-group">
+        {% if environment.description %}
+        <li class="list-group-item"><span class="text-muted">{{ environment.description }}</span></li>
+        {% endif %}
+        {% for location in environment.environmentlocation_set.all %}
+        <a href="{{ location.location }}" target="_blank" class="list-group-item">
+          <p class="list-group-item-heading no-margin-bottom"><strong class="text-primary">{{ location.location }}</strong></p>
+          {% if location.notes %}
+          <p class="list-group-item-text"><small class="text-muted">{{ location.notes }}</small></p>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </ul>
+      {% if environment.environmentcredentials_set.all %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for credential in environment.environmentcredentials_set.all %}
+            <tr>
+              <td>{{ credential.username }}</td>
+              <td>{{ credential.password }}</td>
+              <td><small class="text-muted">{{ credential.notes }}</small></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted"><small><em>There are no environments.</em></small></p>
+    {% endif %}
+  </div>
+
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how environments work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock application_content %}

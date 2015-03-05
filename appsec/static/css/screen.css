@@ -7,6 +7,13 @@
   margin-bottom: 0px;
 }
 
+
+.horizontal-bar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
 html {
   position: relative;
   min-height: 100%;

@@ -12,13 +12,19 @@ urlpatterns = patterns('',
 	# Application Routes
     url(r'^applications/$', views.application_list, name='application.list'),
     url(r'^applications/add/$', views.application_add, name='application.add'),
-    url(r'^applications/(?P<application_id>\d+)/$', views.application_detail, name='application.detail'),
-    url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),
 
-    url(r'^applications/(?P<application_id>\d+)/settings/general/$', views.application_settings_general, name='application.settings.general'),
+    url(r'^applications/(?P<application_id>\d+)/$', views.application_overview, name='application.overview'),
+    url(r'^applications/(?P<application_id>\d+)/engagements/$', views.application_engagements, name='application.engagements'),
+    url(r'^applications/(?P<application_id>\d+)/environments/$', views.application_environments, name='application.environments'),
+    url(r'^applications/(?P<application_id>\d+)/people/$', views.application_people, name='application.people'),
+    url(r'^applications/(?P<application_id>\d+)/settings/$', views.application_settings_general, name='application.settings.general'),
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
+
+    url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),
+
+
 
     # Environment Routes
     url(r'^applications/(?P<application_id>\d+)/environments/add/$', views.environment_add, name='environment.add'),
