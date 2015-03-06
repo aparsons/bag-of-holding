@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from tracker.views import dashboard_detail, management_services, management_users
 
-urlpatterns = patterns('',
+base_urlpatterns = patterns('',
     url(r'^$', dashboard_detail, name='dashboard'),
 
     url(r'^manage/services/$', management_services, name='management.services'),
@@ -17,3 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns = patterns('',
+  url(r'^' + settings.URL_PREFIX + '', include(base_urlpatterns))
+)
