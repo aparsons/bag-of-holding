@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load admin_urls %}
+
 {% block title %}Management settings{% endblock %}
 
 {% block content %}
@@ -16,7 +18,7 @@
     </div>
     <div class="panel panel-default">
       <div class="list-group">
-        <a href="/admin" target="_blank" class="list-group-item"><span class="fa fa-user-secret" aria-hidden="true"></span> Django Site Admin</a>
+        <a href="{% url 'admin:index' %}" target="_blank" class="list-group-item"><span class="fa fa-user-secret" aria-hidden="true"></span> Django Site Admin</a>
       </div>
     </div>
   </div>
