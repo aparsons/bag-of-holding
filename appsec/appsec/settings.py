@@ -86,7 +86,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Used for adding a site-wide prefix. Example: 'boh/'
+# Used for appending a site-wide prefix to all URLs. Example: 'boh/'
 URL_PREFIX = ''
 
 LOGIN_REDIRECT_URL = '/'
@@ -110,7 +110,7 @@ TEMPLATE_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
+# Changing error to danger for bootstrap compatability
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
