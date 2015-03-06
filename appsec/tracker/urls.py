@@ -29,8 +29,9 @@ urlpatterns = patterns('',
     url(r'^environments/(?P<environment_id>\d+)/edit/locations/$', views.environment_edit_locations, name='environment.edit.locations'),
     url(r'^environments/(?P<environment_id>\d+)/edit/credentials/$', views.environment_edit_credentials, name='environment.edit.credentials'),
     url(r'^environments/(?P<environment_id>\d+)/edit/danger/$', views.environment_edit_danger, name='environment.edit.danger'),
+    url(r'^environments/(?P<environment_id>\d+)/delete/$', views.environment_delete, name='environment.delete'),
 
-    url(r'^environments/(?P<environment_id>\d+)/$', views.environment_detail, name='environment.detail'), # DEPRECATED
+    #url(r'^environments/(?P<environment_id>\d+)/$', views.environment_detail, name='environment.detail'), # DEPRECATED
     url(r'^environments/(?P<environment_id>\d+)/locations/add/$', views.environment_location_add, name='environment.location.add'), # DEPRECATED
 
     # Engagement Routes

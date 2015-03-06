@@ -1,5 +1,21 @@
 {% extends "tracker/environments/edit/base_edit.html" %}
 
 {% block edit_content %}
-Danger
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Danger Zone</h3>
+  </div>
+  <div class="panel-body">
+    <form method="post" action="{% url 'tracker:environment.delete' environment.id %}">
+      {% csrf_token %}
+      <div class="pull-left">
+        <strong>Delete this environment</strong><br>
+        <span class="text-muted">Once you delete this environment, there is no going back. Please be certain.</span>
+      </div>
+      <div class="pull-right">
+        <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this environment?');">Delete this environment</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock edit_content %}

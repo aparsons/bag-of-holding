@@ -2,6 +2,7 @@ from django import forms
 
 from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
 
+
 # Organization
 
 class OrganizationAddForm(forms.ModelForm):
@@ -12,8 +13,8 @@ class OrganizationAddForm(forms.ModelForm):
             'description': forms.Textarea(attrs = {'rows': 3})
         }
 
-# Application
 
+# Application
 
 class ApplicationAddForm(forms.ModelForm):
     class Meta:
@@ -57,7 +58,6 @@ class ApplicationDeleteForm(forms.ModelForm):
 
 # Environment
 
-
 class EnvironmentAddForm(forms.ModelForm):
     class Meta:
         model = Environment
@@ -76,6 +76,12 @@ class EnvironmentEditForm(forms.ModelForm):
         }
 
 
+class EnvironmentDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Environment
+        fields = []
+
+
 class EnvironmentLocationAddForm(forms.ModelForm):
     class Meta:
         model = EnvironmentLocation
@@ -85,8 +91,16 @@ class EnvironmentLocationAddForm(forms.ModelForm):
         }
 
 
-# Engagement
+class EnvironmentLocationEditForm(forms.ModelForm):
+    class Meta:
+        model = EnvironmentLocation
+        fields = ['location', 'notes']
+        widgets = {
+            'notes': forms.Textarea(attrs = {'rows': 3})
+        }
 
+
+# Engagement
 
 class EngagementAddForm(forms.ModelForm):
     class Meta:
@@ -149,7 +163,6 @@ class EngagementCommentAddForm(forms.ModelForm):
 
 # Activity
 
-
 class ActivityAddForm(forms.ModelForm):
     class Meta:
         model = Activity
@@ -190,7 +203,6 @@ class ActivityCommentAddForm(forms.ModelForm):
 
 
 # Person
-
 
 class PersonAddForm(forms.ModelForm):
     class Meta:

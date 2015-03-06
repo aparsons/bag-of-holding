@@ -16,14 +16,14 @@
         <h3 class="panel-title"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Environment</h3>
       </div>
       <div class="list-group">
-        <a href="{% url 'tracker:environment.edit.general' application.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
-        <a href="{% url 'tracker:environment.edit.locations' application.id %}" class="list-group-item{% if active_side == 'locations' %} active{% endif %}"><span class="fa fa-globe" aria-hidden="true"></span> Locations</a>
-        <a href="{% url 'tracker:environment.edit.credentials' application.id %}" class="list-group-item{% if active_side == 'credentials' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Credentials</a>
+        <a href="{% url 'tracker:environment.edit.general' environment.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
+        <a href="{% url 'tracker:environment.edit.locations' environment.id %}" class="list-group-item{% if active_side == 'locations' %} active{% endif %}"><span class="fa fa-globe" aria-hidden="true"></span> Locations</a>
+        <a href="{% url 'tracker:environment.edit.credentials' environment.id %}" class="list-group-item{% if active_side == 'credentials' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Credentials</a>
       </div>
     </div>
     <div class="panel panel-default">
       <div class="list-group">
-        <a href="{% url 'tracker:environment.edit.danger' application.id %}" class="list-group-item{% if active_side == 'danger' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
+        <a href="{% url 'tracker:environment.edit.danger' environment.id %}" class="list-group-item{% if active_side == 'danger' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
       </div>
     </div>
   </div>

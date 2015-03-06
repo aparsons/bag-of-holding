@@ -1,8 +1,10 @@
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
+from django.forms.models import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
@@ -11,7 +13,7 @@ from tracker.models import Organization, Application, Environment, EnvironmentLo
 
 from tracker.forms import OrganizationAddForm
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
-from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentLocationAddForm
+from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
 from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
 from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 from tracker.forms import PersonAddForm
@@ -286,16 +288,6 @@ def application_delete(request, application_id):
 
 # Environment
 
-# DEPRECATED!!!!!
-@login_required
-@require_http_methods(['GET'])
-def environment_detail(request, environment_id):
-    environment = get_object_or_404(Environment, pk=environment_id)
-
-    return render(request, 'tracker/environments/detail.html', {
-        'environment': environment
-    })
-
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -309,7 +301,7 @@ def environment_add(request, application_id):
         environment.application = application
         environment.save()
         messages.success(request, 'You successfully created this environment.', extra_tags='Woah!')
-        return redirect('tracker:environment.detail', environment_id=environment.id)  # CHANGE MEEEEE
+        return redirect('tracker:application.environments', application_id=application.id)
 
     return render(request, 'tracker/environments/add.html', {
         'application': application,
@@ -328,7 +320,7 @@ def environment_edit_general(request, environment_id):
     if form.is_valid():
         environment = form.save()
         messages.success(request, 'You successfully updated this environment.', extra_tags='Awesome!')
-        #return redirect('tracker:environment.edit.general', environment_id=environment.id)
+        return redirect('tracker:environment.edit.general', environment_id=environment.id)
 
     return render(request, 'tracker/environments/edit/general.html', {
         'application': environment.application,
@@ -344,9 +336,21 @@ def environment_edit_general(request, environment_id):
 def environment_edit_locations(request, environment_id):
     environment = get_object_or_404(Environment, pk=environment_id)
 
+    EnvironmentLocationInlineFormSet = inlineformset_factory(Environment, EnvironmentLocation, extra=1, widgets = {
+        'notes': forms.Textarea(attrs = {'rows': 2})
+    })
+
+    formset = EnvironmentLocationInlineFormSet(request.POST or None, instance=environment)
+
+    if formset.is_valid():
+        formset.save()
+        messages.success(request, 'You successfully updated these locations.', extra_tags='Huzzah!')
+        return redirect('tracker:environment.edit.locations', environment_id=environment.id)
+
     return render(request, 'tracker/environments/edit/locations.html', {
         'application': environment.application,
         'environment': environment,
+        'formset': formset,
         'active_tab': 'environments',
         'active_side': 'locations'
     })
@@ -376,6 +380,21 @@ def environment_edit_danger(request, environment_id):
         'active_tab': 'environments',
         'active_side': 'danger'
     })
+
+
+@login_required
+@require_http_methods(['POST'])
+def environment_delete(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    form = EnvironmentDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        environment.delete()
+        messages.success(request, 'You successfully deleted the "' + environment.get_environment_type_display() + '" application.', extra_tags='Whack!')
+        return redirect('tracker:application.environments', environment.application.id)
+    else:
+        return redirect('tracker:environment.edit.danger', environment.id)
 
 
 @login_required

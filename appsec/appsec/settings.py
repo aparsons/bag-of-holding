@@ -89,12 +89,13 @@ USE_TZ = True
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
 URL_PREFIX = ''
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/' + URL_PREFIX + 'accounts/login/'
+LOGIN_REDIRECT_URL = '/' + URL_PREFIX
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/' + URL_PREFIX + 'static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

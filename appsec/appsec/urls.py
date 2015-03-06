@@ -19,5 +19,5 @@ base_urlpatterns = patterns('',
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = patterns('',
-  url(r'^' + settings.URL_PREFIX + '', include(base_urlpatterns))
+  url(r'^' + settings.URL_PREFIX, include(base_urlpatterns))
 )
