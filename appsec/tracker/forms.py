@@ -56,18 +56,27 @@ class EnvironmentAddForm(forms.ModelForm):
     class Meta:
         model = Environment
         fields = ['environment_type', 'description', 'testing_approved']
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 
 class EnvironmentEditForm(forms.ModelForm):
     class Meta:
         model = Environment
         fields = ['environment_type', 'description', 'testing_approved']
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 
 class EnvironmentLocationAddForm(forms.ModelForm):
     class Meta:
         model = EnvironmentLocation
         fields = ['location', 'notes']
+        widgets = {
+            'notes': forms.Textarea(attrs = {'rows': 3})
+        }
 
 
 # Engagement
@@ -76,10 +85,13 @@ class EnvironmentLocationAddForm(forms.ModelForm):
 class EngagementAddForm(forms.ModelForm):
     class Meta:
         model = Engagement
-        fields = ['start_date', 'end_date']
+        fields = ['start_date', 'end_date', 'description']
         labels = {
             'start_date': 'Scheduled start date',
             'end_date': 'Scheduled end date'
+        }
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
         }
 
     def clean(self):
@@ -95,10 +107,13 @@ class EngagementAddForm(forms.ModelForm):
 class EngagementEditForm(forms.ModelForm):
     class Meta:
         model = Engagement
-        fields = ['status', 'start_date', 'end_date']
+        fields = ['status', 'start_date', 'end_date', 'description']
         labels = {
             'start_date': 'Scheduled start date',
             'end_date': 'Scheduled end date'
+        }
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
         }
 
     def clean(self):
@@ -136,6 +151,9 @@ class ActivityAddForm(forms.ModelForm):
         labels = {
             'users': 'Assigned users'
         }
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 
 class ActivityEditForm(forms.ModelForm):
@@ -144,6 +162,9 @@ class ActivityEditForm(forms.ModelForm):
         fields = ['status', 'activity_type', 'description', 'users']
         labels = {
             'users': 'Assigned users'
+        }
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
         }
 
 

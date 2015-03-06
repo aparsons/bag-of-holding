@@ -1,5 +1,19 @@
 [
   {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "aparsons",
+      "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
+      "first_name": "Adam",
+      "last_name": "Parsons",
+      "email": "adam.parsons@pearson.com",
+      "is_staff": 1,
+      "is_active": 1,
+      "is_superuser": 1
+    }
+  },
+  {
     "model": "tracker.tag",
     "pk": 1,
     "fields": {
@@ -28,7 +42,7 @@
     "pk": 1,
     "fields": {
       "name": "Professional",
-      "description": ""
+      "description": "of, relating to, or connected with a profession."
     }
   },
   {
@@ -36,7 +50,7 @@
     "pk": 2,
     "fields": {
       "name": "Higher Education",
-      "description": ""
+      "description": "Higher education, post-secondary education, tertiary education or third level education is an optional final stage of formal learning that occurs after secondary education. Often delivered at universities, academies, colleges, seminaries, and institutes of technology, higher education is also available through certain college-level institutions, including vocational schools, trade schools, and other career colleges that award academic degrees or professional certifications. Tertiary education at non-degree level is sometimes referred to as further education or continuing education as distinct from higher education."
     }
   },
   {
@@ -44,7 +58,7 @@
     "pk": 3,
     "fields": {
       "name": "School",
-      "description": ""
+      "description": "A school is an institution designed for the teaching of students under the direction of teachers"
     }
   },
   {
@@ -52,7 +66,7 @@
     "pk": 1,
     "fields": {
       "name": "Alfa Application",
-      "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command.",
+      "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command. What do you call a fake noodle? An Impasta!",
       "platform": "web",
       "lifecycle": 2,
       "origin": 4,
@@ -92,7 +106,8 @@
       "application": 1,
       "status": "pending",
       "start_date": "2015-02-23",
-      "end_date": "2015-02-27"
+      "end_date": "2015-02-27",
+      "description": "This is a demonstration engagement with the sole purpose of delivering engaging demonstrations."
     }
   },
   {
@@ -110,7 +125,19 @@
     "pk": 1,
     "fields": {
       "engagement": 1,
-      "activity_type": "appscan"
+      "activity_type": "appscan",
+      "description": "Scan all the things!",
+      "users": [1]
+    }
+  },
+  {
+    "model": "tracker.activity",
+    "pk": 2,
+    "fields": {
+      "engagement": 1,
+      "status": "open",
+      "activity_type": "threat model",
+      "description": "Model all the things!"
     }
   },
   {
@@ -122,6 +149,103 @@
       "email": "noreply@pearson.com",
       "phone_work": "3193396400",
       "phone_mobile": "3193396400"
+    }
+  },
+  {
+    "model": "tracker.environment",
+    "pk": 1,
+    "fields": {
+      "application": 1,
+      "environment_type": "ppe",
+      "description": "This is a demonstration pre-production environment that is approved for all demonstration purposes.",
+      "testing_approved": 1
+    }
+  },
+  {
+    "model": "tracker.environment",
+    "pk": 2,
+    "fields": {
+      "application": 1,
+      "environment_type": "int",
+      "testing_approved": 1
+    }
+  },
+  {
+    "model": "tracker.environment",
+    "pk": 3,
+    "fields": {
+      "application": 1,
+      "environment_type": "prod",
+      "description": "This is a demonstration production environment that is approved for no demonstration purposes.",
+      "testing_approved": 0
+    }
+  },
+  {
+    "model": "tracker.environmentlocation",
+    "pk": 1,
+    "fields": {
+      "environment": 1,
+      "location": "https://neo.pearson.com/"
+    }
+  },
+  {
+    "model": "tracker.environmentlocation",
+    "pk": 2,
+    "fields": {
+      "environment": 1,
+      "location": "https://mycloud.pearson.com/",
+      "notes": "Single Sign-On"
+    }
+  },
+  {
+    "model": "tracker.environmentcredentials",
+    "pk": 1,
+    "fields": {
+      "environment": 1,
+      "username": "test_user_1",
+      "password": "YYO1bP6XlFjzmKFLFhw6EoJ83",
+      "notes": "Remember to use the secret handshake!",
+      "created_date": "2015-03-03T13:20:30+03:00",
+      "modified_date": "2015-03-05T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "tracker.environmentcredentials",
+    "pk": 2,
+    "fields": {
+      "environment": 1,
+      "username": "test_user_2",
+      "password": "2Cj6zWOTvozjm6e59qR3A97cc",
+      "role_description": "Super Admin",
+      "created_date": "2015-01-01T00:00:00-05:00",
+      "modified_date": "2015-01-01T00:00:00-05:00"
+    }
+  },
+  {
+    "model": "tracker.environmentcredentials",
+    "pk": 3,
+    "fields": {
+      "environment": 1,
+      "username": "test_user_3",
+      "role_description": "Guest",
+      "created_date": "2015-01-01T00:00:00-05:00",
+      "modified_date": "2015-01-01T00:00:00-05:00"
+    }
+  },
+  {
+    "model": "tracker.environmentlocation",
+    "pk": 3,
+    "fields": {
+      "environment": 3,
+      "location": "http://www.pearson.com/"
+    }
+  },
+  {
+    "model": "tracker.environmentlocation",
+    "pk": 4,
+    "fields": {
+      "environment": 3,
+      "location": "http://parcc.pearson.com/"
     }
   }
 ]

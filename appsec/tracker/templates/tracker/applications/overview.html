@@ -8,6 +8,39 @@
     {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted">No description</p>{% endif %}
   </div>
   <div class="col-md-4">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td><strong>Platform</strong></td>
+          <td>{{ application.get_platform_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Lifecycle</strong></td>
+          <td>{{ application.get_lifecycle_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Origin</strong></td>
+          <td>{{ application.get_origin_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Industry</strong></td>
+          <td>{{ application.get_industry_display }}</td>
+        </tr>
+        <tr>
+          <td><strong>Business Criticality</strong></td>
+          <td>{{ application.get_business_criticality_display }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4><span class="fa fa-tags" aria-hidden="true"></span> Tags</h4>
+    {% if application.tags.all %}
+    {% for tag in application.tags.all %}
+    <a href="{% url 'tracker:application.list' %}?tag={{ tag.id }}" class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</a> 
+    {% endfor %}
+    {% else %}
+    <p class="text-muted"><small><em>There are no tags.</em></small></p>
+    {% endif %}
   </div>
 </div>
 {% endblock application_content %}

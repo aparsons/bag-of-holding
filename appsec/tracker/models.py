@@ -286,6 +286,9 @@ class Environment(models.Model):
     def __str__(self):
         return self.application.name + ' ' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type]
 
+    class Meta:
+        ordering = ['-testing_approved', 'environment_type']
+
 
 class EnvironmentLocation(models.Model):
     """URL for a specific environment"""
@@ -304,12 +307,17 @@ class EnvironmentCredentials(models.Model):
 
     username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
+    role_description = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     notes = models.TextField(blank=True) # Needs to be encrypted
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     environment = models.ForeignKey(Environment)
 
     class Meta:
         verbose_name_plural = 'Environment credentials'
+        ordering = ['username', 'password']
 
 
 class Person(models.Model):
@@ -377,6 +385,7 @@ class Engagement(models.Model):
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default=PENDING_STATUS)
     start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
     end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
+    description = models.TextField(blank=True)
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 
@@ -402,13 +411,14 @@ class Activity(models.Model):
     MANUAL_ASSESSMENT_ACTIVITY_TYPE = 'manual assessment'
     RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest issues'
     THREAT_MODEL_ACTIVITY_TYPE = 'threat model'
+    TRAINING_ACTIVITY_TYPE = 'training'
     ACTIVITY_TYPE_CHOICES = (
         (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
         (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
         (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
         (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
+        (TRAINING_ACTIVITY_TYPE, 'Training')
     )
-    # Setup Tasks - WhiteHat, Checkmarx
 
     PENDING_STATUS = 'pending'
     OPEN_STATUS = 'open'

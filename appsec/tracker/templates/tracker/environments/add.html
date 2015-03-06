@@ -1,15 +1,15 @@
-{% extends "base.html" %}
+{% extends "tracker/environments/base_environments.html" %}
 
-{% block title %}Add Environment{% endblock %}
+{% block title %}{{ application.name }} | New Environment{% endblock %}
 
-{% block content %}
+{% block environment_content %}
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <form method="post" action="">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'tracker:environment.add' application.id %}">
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Add Environment</h3>
+          <h3 class="panel-title">New Environment</h3>
         </div>
         <div class="panel-body">
           {% include "forms/form_snippet.html" with control=form.environment_type %}
@@ -17,14 +17,16 @@
           {% include "forms/form_checkbox_snippet.html" with control=form.testing_approved %}
         </div>
         <div class="panel-footer">
-          <div class="pull-right">
-            <button class="btn btn-primary" type="submit">Add Environment</button>
-            <a href="" class="btn btn-default" role="button">Cancel</a>
-          </div>
-          <div class="clearfix"></div>
+          <button class="btn btn-primary" type="submit">Create Environment</button>
+          <a href="{% url 'tracker:application.environments' application.id %}" class="btn btn-default" role="button">Cancel</a>
         </div>
       </div>
     </form>
   </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how environment work here.</p>
+    </div>
+  </div>
 </div>
-{% endblock %}
+{% endblock environment_content %}

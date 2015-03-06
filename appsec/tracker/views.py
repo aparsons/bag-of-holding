@@ -120,26 +120,6 @@ def application_list(request):
         'active_filter_tag': int(tag_id)
     })
 
-# DEPRECATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# @login_required
-# @require_http_methods(['GET'])
-# def application_detail(request, application_id):
-#     application = get_object_or_404(Application, pk=application_id)
-#
-#     pending_engagements = application.engagement_set.filter(status=Engagement.PENDING_STATUS)
-#     open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
-#     closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
-#
-#     environments = application.environment_set.all()
-#
-#     return render(request, 'tracker/applications/detail.html', {
-#         'application': application,
-#         'pending_engagements': pending_engagements,
-#         'open_engagements': open_engagements,
-#         'closed_engagements': closed_engagements,
-#         'environments': environments
-#     })
-
 
 @login_required
 @require_http_methods(['GET'])
@@ -304,7 +284,7 @@ def application_delete(request, application_id):
 
 # Environment
 
-
+# DEPRECATED!!!!!
 @login_required
 @require_http_methods(['GET'])
 def environment_detail(request, environment_id):
@@ -327,11 +307,12 @@ def environment_add(request, application_id):
         environment.application = application
         environment.save()
         messages.success(request, 'You successfully created this environment.', extra_tags='Woah!')
-        return redirect('tracker:environment.detail', environment_id=environment.id)
+        return redirect('tracker:environment.detail', environment_id=environment.id)  # CHANGE MEEEEE
 
     return render(request, 'tracker/environments/add.html', {
+        'application': application,
         'form': form,
-        'application': application
+        'active_tab': 'environments'
     })
 
 
@@ -367,17 +348,16 @@ def engagement_detail(request, engagement_id):
     open_activities = engagement.activity_set.filter(status=Activity.OPEN_STATUS)
     closed_activities = engagement.activity_set.filter(status=Activity.CLOSED_STATUS)
 
-    comments = engagement.engagementcomment_set.all()
-
     form = EngagementCommentAddForm()
 
     return render(request, 'tracker/engagements/detail.html', {
+        'application': engagement.application,
         'engagement': engagement,
         'pending_activities': pending_activities,
         'open_activities': open_activities,
         'closed_activities': closed_activities,
-        'comments': comments,
-        'form': form
+        'form': form,
+        'active_tab': 'engagements'
     })
 
 
@@ -395,7 +375,11 @@ def engagement_add(request, application_id):
         messages.success(request, 'You successfully created this engagement.', extra_tags='Alrighty!')
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
     else:
-        return render(request, 'tracker/engagements/add.html', {'form': form, 'application': application})
+        return render(request, 'tracker/engagements/add.html', {
+            'application': application,
+            'form': form,
+            'active_tab': 'engagements'
+        })
 
 
 @login_required
@@ -410,7 +394,12 @@ def engagement_edit(request, engagement_id):
         messages.success(request, 'You successfully updated this engagement.', extra_tags='Success!')
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
-    return render(request, 'tracker/engagements/edit.html', {'form': form, 'engagement': engagement})
+    return render(request, 'tracker/engagements/edit.html', {
+        'application': engagement.application,
+        'engagement': engagement,
+        'form': form,
+        'active_tab': 'engagements'
+    })
 
 
 @login_required
@@ -453,14 +442,13 @@ def engagement_comment_add(request, engagement_id):
 def activity_detail(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
-    comments = activity.activitycomment_set.all()
-
     form = ActivityCommentAddForm()
 
     return render(request, 'tracker/activities/detail.html', {
+        'application': activity.engagement.application,
         'activity': activity,
-        'comments': comments,
-        'form': form
+        'form': form,
+        'active_tab': 'engagements'
     })
 
 
@@ -479,7 +467,12 @@ def activity_add(request, engagement_id):
         messages.success(request, 'You successfully added this activity.', extra_tags='Nice!')
         return redirect('tracker:activity.detail', activity_id=activity.id)
     else:
-        return render(request, 'tracker/activities/add.html', {'form': form, 'engagement': engagement})
+        return render(request, 'tracker/activities/add.html', {
+            'application': engagement.application,
+            'engagement': engagement,
+            'form': form,
+            'active_tab': 'engagements'
+        })
 
 
 @login_required
@@ -494,7 +487,12 @@ def activity_edit(request, activity_id):
         messages.success(request, 'You successfully updated this activity.', extra_tags='Cheers!')
         return redirect('tracker:activity.detail', activity_id=activity.id)
 
-    return render(request, 'tracker/activities/edit.html', {'form': form, 'activity': activity})
+    return render(request, 'tracker/activities/edit.html', {
+        'application': activity.engagement.application,
+        'activity': activity,
+        'form': form,
+        'active_tab': 'engagements'
+    })
 
 
 @login_required
