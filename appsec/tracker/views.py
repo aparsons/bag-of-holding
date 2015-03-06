@@ -182,7 +182,9 @@ def application_add(request):
         messages.success(request, 'You successfully created this application.', extra_tags='Well done!')
         return redirect('tracker:application.overview', application_id=application.id)
 
-    return render(request, 'tracker/applications/add.html', {'form': form})
+    return render(request, 'tracker/applications/add.html', {
+        'form': form
+    })
 
 
 @login_required
@@ -209,8 +211,8 @@ def application_settings_general(request, application_id):
         'application': application,
         'general_form': general_form,
         'organization_form': organization_form,
-        'active': 'general',
-        'active_tab': 'settings'
+        'active_tab': 'settings',
+        'active_side': 'general'
     })
 
 
@@ -238,8 +240,8 @@ def application_settings_metadata(request, application_id):
         'application': application,
         'metadata_form': metadata_form,
         'tags_form': tags_form,
-        'active': 'metadata',
-        'active_tab': 'settings'
+        'active_tab': 'settings',
+        'active_side': 'metadata'
     })
 
 
@@ -250,8 +252,8 @@ def application_settings_services(request, application_id):
 
     return render(request, 'tracker/applications/settings/services.html', {
         'application': application,
-        'active': 'services',
-        'active_tab': 'settings'
+        'active_tab': 'settings',
+        'active_side': 'services'
     })
 
 
@@ -262,8 +264,8 @@ def application_settings_danger(request, application_id):
 
     return render(request, 'tracker/applications/settings/danger.html', {
         'application': application,
-        'active': 'danger',
-        'active_tab': 'settings'
+        'active_tab': 'settings',
+        'active_side': 'danger'
     })
 
 
@@ -313,6 +315,66 @@ def environment_add(request, application_id):
         'application': application,
         'form': form,
         'active_tab': 'environments'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def environment_edit_general(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    form = EnvironmentEditForm(request.POST or None, instance=environment)
+
+    if form.is_valid():
+        environment = form.save()
+        messages.success(request, 'You successfully updated this environment.', extra_tags='Awesome!')
+        #return redirect('tracker:environment.edit.general', environment_id=environment.id)
+
+    return render(request, 'tracker/environments/edit/general.html', {
+        'application': environment.application,
+        'environment': environment,
+        'form': form,
+        'active_tab': 'environments',
+        'active_side': 'general'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def environment_edit_locations(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    return render(request, 'tracker/environments/edit/locations.html', {
+        'application': environment.application,
+        'environment': environment,
+        'active_tab': 'environments',
+        'active_side': 'locations'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def environment_edit_credentials(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    return render(request, 'tracker/environments/edit/credentials.html', {
+        'application': environment.application,
+        'environment': environment,
+        'active_tab': 'environments',
+        'active_side': 'credentials'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def environment_edit_danger(request, environment_id):
+    environment = get_object_or_404(Environment, pk=environment_id)
+
+    return render(request, 'tracker/environments/edit/danger.html', {
+        'application': environment.application,
+        'environment': environment,
+        'active_tab': 'environments',
+        'active_side': 'danger'
     })
 
 

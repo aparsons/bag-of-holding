@@ -21,16 +21,17 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
-
     url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),
-
-
 
     # Environment Routes
     url(r'^applications/(?P<application_id>\d+)/environments/add/$', views.environment_add, name='environment.add'),
-    url(r'^environments/(?P<environment_id>\d+)/$', views.environment_detail, name='environment.detail'),
-    url(r'^environments/(?P<environment_id>\d+)/locations/add/$', views.environment_location_add, name='environment.location.add'),
+    url(r'^environments/(?P<environment_id>\d+)/edit/$', views.environment_edit_general, name='environment.edit.general'),
+    url(r'^environments/(?P<environment_id>\d+)/edit/locations/$', views.environment_edit_locations, name='environment.edit.locations'),
+    url(r'^environments/(?P<environment_id>\d+)/edit/credentials/$', views.environment_edit_credentials, name='environment.edit.credentials'),
+    url(r'^environments/(?P<environment_id>\d+)/edit/danger/$', views.environment_edit_danger, name='environment.edit.danger'),
 
+    url(r'^environments/(?P<environment_id>\d+)/$', views.environment_detail, name='environment.detail'), # DEPRECATED
+    url(r'^environments/(?P<environment_id>\d+)/locations/add/$', views.environment_location_add, name='environment.location.add'), # DEPRECATED
 
     # Engagement Routes
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),

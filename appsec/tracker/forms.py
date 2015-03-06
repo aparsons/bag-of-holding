@@ -8,7 +8,9 @@ class OrganizationAddForm(forms.ModelForm):
     class Meta:
         model = Organization
         fields = ['name', 'description']
-
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 # Application
 
@@ -17,13 +19,17 @@ class ApplicationAddForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ['organization', 'name', 'description']
-
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ['name', 'description']
-
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
 
 class ApplicationSettingsOrganizationForm(forms.ModelForm):
     class Meta:

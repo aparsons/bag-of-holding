@@ -63,6 +63,9 @@
         </table>
       </div>
       {% endif %}
+      <div class="panel-footer">
+        <a class="btn btn-sm btn-default" href="{% url 'tracker:environment.edit.general' environment.id %}" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Environment</a>
+      </div>
     </div>
     {% endfor %}
     {% else %}
