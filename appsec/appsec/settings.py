@@ -86,6 +86,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Used for adding a site-wide prefix. Example: 'boh/'
 URL_PREFIX = ''
 
 LOGIN_REDIRECT_URL = '/'
