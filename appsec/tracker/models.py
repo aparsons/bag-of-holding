@@ -222,8 +222,11 @@ class Application(models.Model):
     #     (REGULATION_PCI, 'PCI')
     # )
 
+    # General
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
+
+    # Metadata
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
@@ -232,6 +235,11 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
+    # ThreadFix
+    threadfix_organization_id = models.PositiveIntegerField(blank=True, null=True)
+    threadfix_application_id = models.PositiveIntegerField(blank=True, null=True)
+
+    # Misc
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -247,6 +255,7 @@ class Application(models.Model):
     #finance data
     #programming language/s
     #id for whitehat + checkmarx (third-party ids)
+    #password policy
 
     organization = models.ForeignKey(Organization)
     tags = models.ManyToManyField(Tag, blank=True)
@@ -277,8 +286,8 @@ class Environment(models.Model):
         (PRODUCTION_ENVIRONMENT, 'Production'),
     )
 
-    environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES)
-    description = models.TextField(blank=True, help_text='Information about the environment\'s purpose, physical location, and deployment.')
+    environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES, help_text='Specify the type of environment.')
+    description = models.TextField(blank=True, help_text='Information about the environment\'s purpose, physical location, hardware, and deployment.')
     testing_approved = models.BooleanField(default=False, help_text='Specify if security testing has been approved for this environment.')
 
     application = models.ForeignKey(Application)
@@ -293,8 +302,8 @@ class Environment(models.Model):
 class EnvironmentLocation(models.Model):
     """URL for a specific environment"""
 
-    location = models.URLField()
-    notes = models.TextField(blank=True)
+    location = models.URLField(help_text='A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)')
+    notes = models.TextField(blank=True, help_text='Information about the location\'s purpose, physical location, and deployment.')
 
     environment = models.ForeignKey(Environment)
 
@@ -307,8 +316,8 @@ class EnvironmentCredentials(models.Model):
 
     username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
-    role_description = models.CharField(max_length=255, blank=True) # Needs to be encrypted
-    notes = models.TextField(blank=True) # Needs to be encrypted
+    role_description = models.CharField(max_length=255, blank=True, help_text='A brief description of the user\'s role or permissions.') # Needs to be encrypted
+    notes = models.TextField(blank=True, help_text='Additional information about these credentials.') # Needs to be encrypted
 
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)

@@ -9,7 +9,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, Activity, Tag, Person
+from tracker.models import Organization, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
 
 from tracker.forms import OrganizationAddForm
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
@@ -336,9 +336,11 @@ def environment_edit_general(request, environment_id):
 def environment_edit_locations(request, environment_id):
     environment = get_object_or_404(Environment, pk=environment_id)
 
-    EnvironmentLocationInlineFormSet = inlineformset_factory(Environment, EnvironmentLocation, extra=1, widgets = {
-        'notes': forms.Textarea(attrs = {'rows': 2})
-    })
+    EnvironmentLocationInlineFormSet = inlineformset_factory(Environment, EnvironmentLocation, extra=1,
+        widgets = {
+            'notes': forms.Textarea(attrs = {'rows': 2})
+        }
+    )
 
     formset = EnvironmentLocationInlineFormSet(request.POST or None, instance=environment)
 
@@ -361,9 +363,23 @@ def environment_edit_locations(request, environment_id):
 def environment_edit_credentials(request, environment_id):
     environment = get_object_or_404(Environment, pk=environment_id)
 
+    EnvironmentCredentialsInlineFormSet = inlineformset_factory(Environment, EnvironmentCredentials, extra=1,
+        widgets = {
+            'notes': forms.Textarea(attrs = {'rows': 2})
+        }
+    )
+
+    formset = EnvironmentCredentialsInlineFormSet(request.POST or None, instance=environment)
+
+    if formset.is_valid():
+        formset.save()
+        messages.success(request, 'You successfully updated these credentials.', extra_tags=':D')
+        return redirect('tracker:environment.edit.credentials', environment_id=environment.id)
+
     return render(request, 'tracker/environments/edit/credentials.html', {
         'application': environment.application,
         'environment': environment,
+        'formset': formset,
         'active_tab': 'environments',
         'active_side': 'credentials'
     })

@@ -5,7 +5,11 @@
 {% block environment_content %}
 <div class="row">
   <div class="col-md-12">
-    <h3 class="no-margin-top">{{ environment.get_environment_type_display }} Environment</h3>
+    <ol class="breadcrumb">
+      <li><a href="{% url 'tracker:application.environments' application.id %}">Environments</a></li>
+      <li class="active">{{ environment.get_environment_type_display }} Environment</li>
+    </ol>
+    <hr>
   </div>
 </div>
 
@@ -17,8 +21,8 @@
       </div>
       <div class="list-group">
         <a href="{% url 'tracker:environment.edit.general' environment.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
-        <a href="{% url 'tracker:environment.edit.locations' environment.id %}" class="list-group-item{% if active_side == 'locations' %} active{% endif %}"><span class="fa fa-globe" aria-hidden="true"></span> Locations</a>
-        <a href="{% url 'tracker:environment.edit.credentials' environment.id %}" class="list-group-item{% if active_side == 'credentials' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Credentials</a>
+        <a href="{% url 'tracker:environment.edit.locations' environment.id %}" class="list-group-item{% if active_side == 'locations' %} active{% endif %}"><span class="fa fa-globe" aria-hidden="true"></span> Locations <span class="badge">{{ environment.environmentlocation_set.count }}</span></a>
+        <a href="{% url 'tracker:environment.edit.credentials' environment.id %}" class="list-group-item{% if active_side == 'credentials' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Credentials<span class="badge">{{ environment.environmentcredentials_set.count }}</span></a>
       </div>
     </div>
     <div class="panel panel-default">

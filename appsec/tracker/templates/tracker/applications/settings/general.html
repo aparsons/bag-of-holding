@@ -5,35 +5,36 @@
 {% block title %}Application Settings | General{% endblock %}
 
 {% block settings_content %}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">General Information</h3>
-  </div>
-  <div class="panel-body">
-    <form method="post" action="{% url 'tracker:application.settings.general' application.id %}">
-      {% csrf_token %}
-
+<form method="post" action="{% url 'tracker:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">General Information</h3>
+    </div>
+    <div class="panel-body">
       {% include "forms/form_snippet.html" with control=general_form.name %}
       {% include "forms/form_snippet.html" with control=general_form.description %}
-
-      <button class="btn btn-default" name="submit-general" type="submit">Update general information</button>
-    </form>
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-general" type="submit">Update General Information</button>
+    </div>
   </div>
-</div>
+</form>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Change Organization</h3>
-  </div>
-  <div class="panel-body">
-    <form method="post" action="{% url 'tracker:application.settings.general' application.id %}">
-      {% csrf_token %}
-
+<form method="post" action="{% url 'tracker:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Change Organization</h3>
+    </div>
+    <div class="panel-body">
       {% include "forms/form_snippet.html" with control=organization_form.organization %}
-
-      <button class="btn btn-default" name="submit-organization" type="submit">Update organization</button>
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-organization" type="submit">Update Organization</button>
+    </div>
   </div>
-</div>
+</form>
 
 <div class="panel panel-default">
   <div class="panel-heading">

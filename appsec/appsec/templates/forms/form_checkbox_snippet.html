@@ -1,5 +1,5 @@
 {% if control.errors %}<div class="has-error">{% endif %}
-<div class="form-group">
+<div class="form-group{% if class %} {{ class }}{% endif %}">
   <div class="checkbox">
     <label>
       {{ control }}
