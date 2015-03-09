@@ -90,7 +90,7 @@ USE_TZ = True
 URL_PREFIX = ''
 
 LOGIN_URL = '/' + URL_PREFIX + 'accounts/login/'
-LOGIN_REDIRECT_URL = '/' + URL_PREFIX
+LOGIN_REDIRECT_URL = '/' + URL_PREFIX + 'tracker/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

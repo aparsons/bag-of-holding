@@ -24,12 +24,40 @@ from tracker.forms import PersonAddForm
 
 @login_required
 @require_http_methods(['GET'])
-def dashboard_detail(request):
+def dashboard_personal(request):
 
     activities = Activity.objects.filter(users__id=request.user.id)
 
-    return render(request, 'tracker/dashboard.html', {
-        'activities': activities
+    return render(request, 'tracker/dashboard/my_dashboard.html', {
+        'activities': activities,
+        'active_tab': 'personal'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def dashboard_team(request):
+
+    return render(request, 'tracker/dashboard/team_dashboard.html', {
+        'active_tab': 'team'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def dashboard_metrics(request):
+
+    return render(request, 'tracker/dashboard/metrics.html', {
+        'active_tab': 'metrics'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def dashboard_reports(request):
+
+    return render(request, 'tracker/dashboard/reports.html', {
+        'active_tab': 'reports'
     })
 
 

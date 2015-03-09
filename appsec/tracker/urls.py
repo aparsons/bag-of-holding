@@ -4,6 +4,12 @@ from tracker import views
 
 urlpatterns = patterns('',
 
+    # Dashboard
+    url(r'^$', views.dashboard_personal, name='dashboard.personal'),
+    url(r'^team/$', views.dashboard_team, name='dashboard.team'),
+    url(r'^metrics/$', views.dashboard_metrics, name='dashboard.metrics'),
+    url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
+
     # Organization Routes
 
     url(r'^organizations/add/$', views.organization_add, name='organization.add'),
