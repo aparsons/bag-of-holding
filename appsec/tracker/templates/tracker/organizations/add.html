@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8">
     <form method="post" action="{% url 'tracker:organization.add' %}">
       {% csrf_token %}
       <div class="panel panel-default">
@@ -18,11 +18,8 @@
           {% include "forms/form_snippet.html" with control=form.description %}
         </div>
         <div class="panel-footer">
-          <div class="pull-right">
-            <button class="btn btn-primary" type="submit">Add Organization</button>
-            <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button">Cancel</a>
-          </div>
-          <div class="clearfix"></div>
+          <button class="btn btn-primary" type="submit">Add Organization</button>
+          <a href="{% url 'tracker:application.list' %}" class="btn btn-default" role="button">Cancel</a>
         </div>
       </div>
     </form>

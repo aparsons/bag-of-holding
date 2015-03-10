@@ -5,20 +5,25 @@
 {% block dashboard_content %}
 <div class="row">
   <div class="col-md-6">
-    <h3>Activities Assigned to You <small>These are your problems</small></h3>
+    <h3>Current Activities Assigned to You <small>These are your problems</small></h3>
     {% if activities %}
     <div class="list-group">
       {% for activity in activities %}
+      {% if activity.is_pending or activity.is_open %}
       <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
         <span class="badge">{{ activity.get_status_display }}</span>
         <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }} <small>{{ activity.engagement.application.name }}</small></h4>
         <p class="list-group-item-text">...</p>
       </a>
+      {% endif %}
       {% endfor %}
     </div>
     {% else %}
     <p class="text-muted">No activities</p>
     {% endif %}
+  </div>
+  <div class="col-md-6">
+    <h3>Your Upcoming Activities</h3>
   </div>
 </div>
 {% endblock dashboard_content %}

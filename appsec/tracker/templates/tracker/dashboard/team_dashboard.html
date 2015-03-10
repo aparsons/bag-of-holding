@@ -3,5 +3,34 @@
 {% block title %}Team Dashboard{% endblock %}
 
 {% block dashboard_content %}
-Team Dashboard
+<div class="row">
+  <div class="col-md-6">
+    <h3>Activities by User</h3>
+    {% for user in users %}
+    <h4>{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</h4>
+    <div class="list-group">
+      {% for activity in user.activity_set.all %}
+      {% if activity.is_pending or activity.is_open %}
+      <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
+        <span class="badge">{{ activity.get_status_display }}</span>
+        <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }} <small>{{ activity.engagement.application.name }}</small></h4>
+        <p class="list-group-item-text">...</p>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-md-6">
+    <h3>All Open Engagements</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>Activities without any assigned users</h3>
+  </div>
+  <div class="col-md-6">
+    <h3>Engagements without any activities</h3>
+  </div>
+</div>
 {% endblock dashboard_content %}

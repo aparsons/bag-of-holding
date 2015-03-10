@@ -14,6 +14,34 @@
     }
   },
   {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "mbrown",
+      "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
+      "first_name": "Matt",
+      "last_name": "Brown",
+      "email": "matt.brown@pearson.com",
+      "is_staff": 1,
+      "is_active": 1,
+      "is_superuser": 1
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "aweaver",
+      "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
+      "first_name": "Aaron",
+      "last_name": "Weaver",
+      "email": "aaron.weaver@pearson.com",
+      "is_staff": 1,
+      "is_active": 1,
+      "is_superuser": 1
+    }
+  },
+  {
     "model": "tracker.tag",
     "pk": 1,
     "fields": {
@@ -137,7 +165,8 @@
       "engagement": 1,
       "status": "open",
       "activity_type": "threat model",
-      "description": "Model all the things!"
+      "description": "Model all the things!",
+      "users": [2]
     }
   },
   {

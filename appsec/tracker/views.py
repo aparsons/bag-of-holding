@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
@@ -38,7 +39,10 @@ def dashboard_personal(request):
 @require_http_methods(['GET'])
 def dashboard_team(request):
 
+    users = User.objects.all()
+
     return render(request, 'tracker/dashboard/team_dashboard.html', {
+        'users': users,
         'active_tab': 'team'
     })
 

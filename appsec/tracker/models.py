@@ -24,8 +24,8 @@ class Tag(models.Model):
 class Organization(models.Model):
     """Entities under which applications belong."""
 
-    name = models.CharField(max_length=32, unique=True)
-    description = models.TextField(blank=True)
+    name = models.CharField(max_length=32, unique=True, help_text='A unique name for the organization.')
+    description = models.TextField(blank=True, help_text='Information about the organization\'s purpose, history, and structure.')
 
     def __str__(self):
         return self.name
@@ -316,7 +316,7 @@ class EnvironmentCredentials(models.Model):
 
     username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
     password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
-    role_description = models.CharField(max_length=255, blank=True, help_text='A brief description of the user\'s role or permissions.') # Needs to be encrypted
+    role_description = models.CharField(max_length=255, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)') # Needs to be encrypted
     notes = models.TextField(blank=True, help_text='Additional information about these credentials.') # Needs to be encrypted
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -446,6 +446,9 @@ class Activity(models.Model):
 
     engagement = models.ForeignKey(Engagement)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+
+    def __str__(self):
+        return dict(Activity.ACTIVITY_TYPE_CHOICES)[self.activity_type]
 
     class Meta:
         verbose_name_plural = 'Activities'
