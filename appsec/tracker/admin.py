@@ -1,7 +1,7 @@
 from django.contrib import admin
-from tracker.models import Organization
+from tracker.models import Organization, DataElement
 from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementComment, ActivityComment, ApplicationFileUpload
-
+from tracker.models import ThreadFix
 # Register your models here.
 
 class EnvironmentCredentials(admin.StackedInline):
@@ -74,6 +74,12 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Organization)
 
 
+class DataElementAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'weight']
+    list_filter = ['category']
+
+admin.site.register(DataElement, DataElementAdmin)
+
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ['name', 'business_criticality', 'platform', 'origin', 'industry', 'external_audience', 'internet_accessible']
     list_filter = ('external_audience', 'internet_accessible')
@@ -125,3 +131,5 @@ class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityCommentInline]
 
 admin.site.register(Activity, ActivityAdmin)
+
+admin.site.register(ThreadFix)

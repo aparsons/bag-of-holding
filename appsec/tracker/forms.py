@@ -50,6 +50,17 @@ class ApplicationSettingsTagsForm(forms.ModelForm):
         fields = ['tags']
 
 
+class ApplicationSettingsThreadFixForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['threadfix', 'threadfix_organization_id', 'threadfix_application_id']
+        labels = {
+            'threadfix': 'Server',
+            'threadfix_organization_id': 'Organization identifier',
+            'threadfix_application_id': 'Application identifier'
+        }
+
+
 class ApplicationDeleteForm(forms.ModelForm):
     class Meta:
         model = Application

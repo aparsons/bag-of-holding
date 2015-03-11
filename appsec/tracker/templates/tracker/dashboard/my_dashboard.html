@@ -1,29 +1,43 @@
 {% extends "tracker/dashboard/base_dashboard.html" %}
 
+{% load humanize %}
+
 {% block title %}My Dashboard{% endblock %}
 
 {% block dashboard_content %}
 <div class="row">
   <div class="col-md-6">
-    <h3>Current Activities Assigned to You <small>These are your problems</small></h3>
-    {% if activities %}
-    <div class="list-group">
-      {% for activity in activities %}
-      {% if activity.is_pending or activity.is_open %}
-      <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
-        <span class="badge">{{ activity.get_status_display }}</span>
-        <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }} <small>{{ activity.engagement.application.name }}</small></h4>
-        <p class="list-group-item-text">...</p>
-      </a>
-      {% endif %}
-      {% endfor %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> My Open Activities <small class="hidden-xs">Activities that are in progress</small></h3>
+      </div>
+      <div class="list-group">
+        {% if open_activities %}
+        {% for activity in open_activities %}
+        {% include "tracker/snippets/activity_dash_snippet.html" with activity=activity %}
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item"><small><em class="text-muted">You have no open activities.</em></small></li>
+        {% endif %}
+      </div>
     </div>
-    {% else %}
-    <p class="text-muted">No activities</p>
-    {% endif %}
   </div>
+
   <div class="col-md-6">
-    <h3>Your Upcoming Activities</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> My Pending Activities <small class="hidden-xs">Activities that have not yet started</small></h3>
+      </div>
+      <div class="list-group">
+        {% if pending_activities %}
+        {% for activity in pending_activities %}
+        {% include "tracker/snippets/activity_dash_snippet.html" with activity=activity %}
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item"><small><em class="text-muted">You have no pending activities.</em></small></li>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock dashboard_content %}

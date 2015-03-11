@@ -12,7 +12,7 @@
 {% block engagement_content %}
 <div class="row">
   <div class="col-md-8">
-    <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }}</h2>
+    <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }} <small>({% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %})</small></h2>
     <p>{{ engagement.description }}</p>
 
     <div class="btn-toolbar" role="toolbar" aria-label="...">
@@ -31,26 +31,12 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> <strong>Pending</strong> <small class="hidden-xs">Activities that have not yet started</small></h3>
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">Activities that have not yet started</small></h3>
       </div>
       <div class="list-group">
         {% if pending_activities %}
         {% for activity in pending_activities %}
-        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
-          {% if activity.activitycomment_set.all %}
-          <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
-          {% endif %}
-          <p class="list-group-item-text"><strong>{{ activity.get_activity_type_display }}</strong>{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
-            {% if activity.users.all %}
-            {% for user in activity.users.all %}
-            <span class="label label-default">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</span>
-            {% endfor %}
-            {% else %}
-            <span class="label label-danger">No users have been assigned to this activity</span>
-            {% endif %}
-          </p>
-        </a>
+        {% include "tracker/snippets/activity_users_snippet.html" with activity=activity %}
         {% endfor %}
         {% else %}
         <li class="list-group-item"><small><em class="text-muted">There are no pending activities.</em></small></li>
@@ -60,26 +46,12 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> <strong>Open</strong> <small class="hidden-xs">Activities that are in progress</small></h3>
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open <small class="hidden-xs">Activities that are in progress</small></h3>
       </div>
       <div class="list-group">
         {% if open_activities %}
         {% for activity in open_activities %}
-        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
-          {% if activity.activitycomment_set.all %}
-          <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
-          {% endif %}
-          <p class="list-group-item-text"><strong>{{ activity.get_activity_type_display }}</strong>{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
-            {% if activity.users.all %}
-            {% for user in activity.users.all %}
-            <span class="label label-default">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</span>
-            {% endfor %}
-            {% else %}
-            <span class="label label-danger">No users have been assigned to this activity</span>
-            {% endif %}
-          </p>
-        </a>
+        {% include "tracker/snippets/activity_users_snippet.html" with activity=activity %}
         {% endfor %}
         {% else %}
         <li class="list-group-item"><small><em class="text-muted">There are no open activities.</em></small></li>
@@ -89,26 +61,12 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> <strong>Closed</strong> <small class="hidden-xs">Activities that have been completed</small></h3>
+        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> Closed <small class="hidden-xs">Activities that have been completed</small></h3>
       </div>
       <div class="list-group">
         {% if closed_activities %}
         {% for activity in closed_activities %}
-        <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
-          {% if activity.activitycomment_set.all %}
-          <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
-          {% endif %}
-          <p class="list-group-item-text"><strong>{{ activity.get_activity_type_display }}</strong>{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
-            {% if activity.users.all %}
-            {% for user in activity.users.all %}
-            <span class="label label-default">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</span>
-            {% endfor %}
-            {% else %}
-            <span class="label label-danger">No users have been assigned to this activity</span>
-            {% endif %}
-          </p>
-        </a>
+        {% include "tracker/snippets/activity_users_snippet.html" with activity=activity %}
         {% endfor %}
         {% else %}
         <li class="list-group-item"><small><em class="text-muted">There are no closed activities.</em></small></li>
@@ -147,7 +105,10 @@
 
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how engagement work here.</p>
+      <p>Documentation:</p>
+      <p>If a pending activity is yellow it is within the scheduled dates and needs to be opened and worked on.</p>
+      <p>If a pending or open activity is red it past its scheduled end date and needs to be completed and closed.</p>
+      <hr>
       <p>Opened: {{ engagement.open_date }}</p>
       <p>Closed: {{ engagement.close_date }}</p>
     </div>

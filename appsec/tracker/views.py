@@ -1,3 +1,5 @@
+import random
+
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,11 +15,37 @@ from django.views.decorators.http import require_http_methods
 from tracker.models import Organization, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
 
 from tracker.forms import OrganizationAddForm
-from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm
+from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
 from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
 from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
 from tracker.forms import PersonAddForm
+
+
+# Messages shown on successful actions
+action_messages = [
+    'Excellent!',
+    'Well Done!',
+    'Yay!',
+    'Choo Choo!',
+    'Kudos!',
+    'Hey!',
+    'Whoa!',
+    'Awesome!',
+    'Huzzah!',
+    ':D',
+    'Whack!',
+    'Shazzam!',
+    'Success!',
+    'Alrighty Then!',
+    'Thank You!',
+    'Nice!',
+    'Cheers!',
+    'Bam!',
+    'Behold!',
+    'Good Show!',
+    'Boom Chuck!'
+]
 
 
 # Dashboard
@@ -27,10 +55,12 @@ from tracker.forms import PersonAddForm
 @require_http_methods(['GET'])
 def dashboard_personal(request):
 
-    activities = Activity.objects.filter(users__id=request.user.id)
+    pending_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.PENDING_STATUS)
+    open_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.OPEN_STATUS)
 
     return render(request, 'tracker/dashboard/my_dashboard.html', {
-        'activities': activities,
+        'pending_activities': pending_activities,
+        'open_activities': open_activities,
         'active_tab': 'personal'
     })
 
@@ -38,11 +68,15 @@ def dashboard_personal(request):
 @login_required
 @require_http_methods(['GET'])
 def dashboard_team(request):
-
     users = User.objects.all()
+
+    open_engagements = Engagement.objects.filter(status=Engagement.OPEN_STATUS)
+    pending_engagements = Engagement.objects.filter(status=Engagement.PENDING_STATUS)
 
     return render(request, 'tracker/dashboard/team_dashboard.html', {
         'users': users,
+        'open_engagements': open_engagements,
+        'pending_engagements': pending_engagements,
         'active_tab': 'team'
     })
 
@@ -93,25 +127,27 @@ def management_users(request):
 
 @login_required
 @require_http_methods(['GET'])
-def organization_detail(request, organization_id):
+def organization_overview(request, organization_id):
     organization = get_object_or_404(Organization, pk=organization_id)
 
     applications = organization.application_set.all()
 
-    return render(request, 'tracker/organizations/detail.html', {
+    return render(request, 'tracker/organizations/overview.html', {
         'organization': organization,
-        'applications': applications
+        'applications': applications,
+        'active_tab': 'overview'
     })
 
 
 @login_required
+@staff_member_required
 @require_http_methods(['GET', 'POST'])
 def organization_add(request):
     form = OrganizationAddForm(request.POST or None)
 
     if form.is_valid():
         organization = form.save()
-        messages.success(request, 'You successfully created this organization.', extra_tags='Excellent!')
+        messages.success(request, 'You successfully created this organization.', extra_tags=random.choice(action_messages))
         return redirect('tracker:application.list')
 
     return render(request, 'tracker/organizations/add.html', {
@@ -213,7 +249,7 @@ def application_add(request):
 
     if form.is_valid():
         application = form.save()
-        messages.success(request, 'You successfully created this application.', extra_tags='Well done!')
+        messages.success(request, 'You successfully created this application.', extra_tags=random.choice(action_messages))
         return redirect('tracker:application.overview', application_id=application.id)
 
     return render(request, 'tracker/applications/add.html', {
@@ -234,12 +270,12 @@ def application_settings_general(request, application_id):
             general_form = ApplicationSettingsGeneralForm(request.POST, instance=application)
             if general_form.is_valid():
                 general_form.save()
-                messages.success(request, 'You successfully updated this application\'s general information.', extra_tags='Yay!')
+                messages.success(request, 'You successfully updated this application\'s general information.', extra_tags=random.choice(action_messages))
         elif 'submit-organization' in request.POST:
             organization_form = ApplicationSettingsOrganizationForm(request.POST, instance=application)
             if organization_form.is_valid():
                 organization_form.save()
-                messages.success(request, 'You successfully updated this application\'s organization.', extra_tags='Choo Choo!')
+                messages.success(request, 'You successfully updated this application\'s organization.', extra_tags=random.choice(action_messages))
 
     return render(request, 'tracker/applications/settings/general.html', {
         'application': application,
@@ -263,12 +299,12 @@ def application_settings_metadata(request, application_id):
             metadata_form = ApplicationSettingsMetadataForm(request.POST, instance=application)
             if metadata_form.is_valid():
                 metadata_form.save()
-                messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags='Yay!')
+                messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(action_messages))
         elif 'submit-tags' in request.POST:
             tags_form = ApplicationSettingsTagsForm(request.POST, instance=application)
             if tags_form.is_valid():
                 tags_form.save()
-                messages.success(request, 'You successfully updated this application\'s tags.', extra_tags='Yay!')
+                messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(action_messages))
 
     return render(request, 'tracker/applications/settings/metadata.html', {
         'application': application,
@@ -284,8 +320,18 @@ def application_settings_metadata(request, application_id):
 def application_settings_services(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
+    threadfix_form = ApplicationSettingsThreadFixForm(instance=application)
+
+    if request.method == 'POST':
+        if 'submit-threadfix' in request.POST:
+            threadfix_form = ApplicationSettingsThreadFixForm(request.POST, instance=application)
+            if threadfix_form.is_valid():
+                threadfix_form.save()
+                messages.success(request, 'You successfully updated this application\'s ThreadFix information.', extra_tags=random.choice(action_messages))
+
     return render(request, 'tracker/applications/settings/services.html', {
         'application': application,
+        'threadfix_form': threadfix_form,
         'active_tab': 'settings',
         'active_side': 'services'
     })
@@ -312,7 +358,7 @@ def application_delete(request, application_id):
 
     if form.is_valid():
         application.delete()
-        messages.success(request, 'You successfully deleted the "' + application.name + '" application.', extra_tags='Hey!')
+        messages.success(request, 'You successfully deleted the "' + application.name + '" application.', extra_tags=random.choice(action_messages))
         return redirect('tracker:application.list')
     else:
         return redirect('tracker:applications.detail', application.id)
@@ -332,7 +378,7 @@ def environment_add(request, application_id):
         environment = form.save(commit=False)
         environment.application = application
         environment.save()
-        messages.success(request, 'You successfully created this environment.', extra_tags='Woah!')
+        messages.success(request, 'You successfully created this environment.', extra_tags=random.choice(action_messages))
         return redirect('tracker:application.environments', application_id=application.id)
 
     return render(request, 'tracker/environments/add.html', {
@@ -351,7 +397,7 @@ def environment_edit_general(request, environment_id):
 
     if form.is_valid():
         environment = form.save()
-        messages.success(request, 'You successfully updated this environment.', extra_tags='Awesome!')
+        messages.success(request, 'You successfully updated this environment.', extra_tags=random.choice(action_messages))
         return redirect('tracker:environment.edit.general', environment_id=environment.id)
 
     return render(request, 'tracker/environments/edit/general.html', {
@@ -378,7 +424,7 @@ def environment_edit_locations(request, environment_id):
 
     if formset.is_valid():
         formset.save()
-        messages.success(request, 'You successfully updated these locations.', extra_tags='Huzzah!')
+        messages.success(request, 'You successfully updated these locations.', extra_tags=random.choice(action_messages))
         return redirect('tracker:environment.edit.locations', environment_id=environment.id)
 
     return render(request, 'tracker/environments/edit/locations.html', {
@@ -405,7 +451,7 @@ def environment_edit_credentials(request, environment_id):
 
     if formset.is_valid():
         formset.save()
-        messages.success(request, 'You successfully updated these credentials.', extra_tags=':D')
+        messages.success(request, 'You successfully updated these credentials.', extra_tags=random.choice(action_messages))
         return redirect('tracker:environment.edit.credentials', environment_id=environment.id)
 
     return render(request, 'tracker/environments/edit/credentials.html', {
@@ -439,7 +485,7 @@ def environment_delete(request, environment_id):
 
     if form.is_valid():
         environment.delete()
-        messages.success(request, 'You successfully deleted the "' + environment.get_environment_type_display() + '" application.', extra_tags='Whack!')
+        messages.success(request, 'You successfully deleted the "' + environment.get_environment_type_display() + '" application.', extra_tags=random.choice(action_messages))
         return redirect('tracker:application.environments', environment.application.id)
     else:
         return redirect('tracker:environment.edit.danger', environment.id)
@@ -456,7 +502,7 @@ def environment_location_add(request, environment_id):
         environment_location = form.save(commit=False)
         environment_location.environment = environment
         environment_location.save()
-        messages.success(request, 'You successfully created this environment location.', extra_tags='Shazzam!')
+        messages.success(request, 'You successfully created this environment location.', extra_tags=random.choice(action_messages))
         return redirect('tracker:environment.detail', environment_id=environment.id)
 
     return render(request, 'tracker/environments/locations/add.html', {
@@ -501,7 +547,7 @@ def engagement_add(request, application_id):
         engagement = form.save(commit=False)
         engagement.application = application
         engagement.save()
-        messages.success(request, 'You successfully created this engagement.', extra_tags='Alrighty!')
+        messages.success(request, 'You successfully created this engagement.', extra_tags=random.choice(action_messages))
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
     else:
         return render(request, 'tracker/engagements/add.html', {
@@ -520,7 +566,7 @@ def engagement_edit(request, engagement_id):
 
     if request.method == 'POST' and form.is_valid():
         engagement = form.save()
-        messages.success(request, 'You successfully updated this engagement.', extra_tags='Success!')
+        messages.success(request, 'You successfully updated this engagement.', extra_tags=random.choice(action_messages))
         return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
     return render(request, 'tracker/engagements/edit.html', {
@@ -558,7 +604,7 @@ def engagement_comment_add(request, engagement_id):
         comment.engagement = engagement
         comment.user = request.user
         comment.save()
-        messages.success(request, 'You successfully added a comment to this engagement.', extra_tags='Thank you!')
+        messages.success(request, 'You successfully added a comment to this engagement.', extra_tags=random.choice(action_messages))
 
     return redirect('tracker:engagement.detail', engagement_id=engagement.id)
 
@@ -593,7 +639,7 @@ def activity_add(request, engagement_id):
         activity.engagement = engagement
         activity.save()
         form.save_m2m() # https://docs.djangoproject.com/en/1.7/topics/forms/modelforms/#the-save-method
-        messages.success(request, 'You successfully added this activity.', extra_tags='Nice!')
+        messages.success(request, 'You successfully added this activity.', extra_tags=random.choice(action_messages))
         return redirect('tracker:activity.detail', activity_id=activity.id)
     else:
         return render(request, 'tracker/activities/add.html', {
@@ -613,7 +659,7 @@ def activity_edit(request, activity_id):
 
     if request.method == 'POST' and form.is_valid():
         activity = form.save()
-        messages.success(request, 'You successfully updated this activity.', extra_tags='Cheers!')
+        messages.success(request, 'You successfully updated this activity.', extra_tags=random.choice(action_messages))
         return redirect('tracker:activity.detail', activity_id=activity.id)
 
     return render(request, 'tracker/activities/edit.html', {
@@ -633,7 +679,7 @@ def activity_delete(request, activity_id):
 
     if form.is_valid():
         activity.delete()
-        messages.success(request, 'You successfully deleted the activity.', extra_tags='Bam!')
+        messages.success(request, 'You successfully deleted the activity.', extra_tags=random.choice(action_messages))
         return redirect('tracker:engagement.detail', activity.engagement.id)
     else:
         return redirect('tracker:activity.detail', activity.id)
@@ -651,7 +697,7 @@ def activity_comment_add(request, activity_id):
         comment.activity = activity
         comment.user = request.user
         comment.save()
-        messages.success(request, 'You successfully added a comment to this activity.', extra_tags='Behold!')
+        messages.success(request, 'You successfully added a comment to this activity.', extra_tags=random.choice(action_messages))
 
     return redirect('tracker:activity.detail', activity_id=activity.id)
 
@@ -684,7 +730,7 @@ def people_add(request):
 
     if form.is_valid():
         person = form.save()
-        messages.success(request, 'You successfully created this person.', extra_tags='Good show!')
+        messages.success(request, 'You successfully created this person.', extra_tags=random.choice(action_messages))
         return redirect('tracker:people.list')
 
     return render(request, 'tracker/people/add.html', {'form': form})

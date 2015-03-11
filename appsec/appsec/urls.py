@@ -9,8 +9,8 @@ from tracker.views import dashboard_personal, management_services, management_us
 base_urlpatterns = patterns('',
     url(r'^tracker/', include('tracker.urls', namespace="tracker")),
 
-    url(r'^manage/services/$', management_services, name='management.services'),
-    url(r'^manage/users/$', management_users, name='management.users'),
+    #url(r'^manage/services/$', management_services, name='management.services'),
+    #url(r'^manage/users/$', management_users, name='management.users'),
 
     url(r'^accounts/', include('accounts.urls', namespace="accounts")),
 

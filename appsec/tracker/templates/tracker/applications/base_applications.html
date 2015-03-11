@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
   <div class="col-md-12">
-    <h2 class="no-margin-top"><span class="hidden-xs"><a href="{% url 'tracker:organization.detail' application.organization.id %}">{{ application.organization.name }}</a> / </span><strong><a href="{% url 'tracker:application.overview' application.id %}">{{ application.name }}</a></strong></h2>
+    <h2 class="no-margin-top"><span class="hidden-xs"><a href="{% url 'tracker:organization.overview' application.organization.id %}">{{ application.organization.name }}</a> / </span><strong><a href="{% url 'tracker:application.overview' application.id %}">{{ application.name }}</a></strong></h2>
     <ul class="nav nav-tabs horizontal-bar">
       <li role="presentation"{% if active_tab == 'overview' %} class="active"{% endif %}><a href="{% url 'tracker:application.overview' application.id %}"><span class="fa fa-home" aria-hidden="true"></span><span class="hidden-xs"> Overview</span></a></li>
       <li role="presentation"{% if active_tab == 'engagements' %} class="active"{% endif %}><a href="{% url 'tracker:application.engagements' application.id %}"><span class="fa fa-calendar" aria-hidden="true"></span><span class="hidden-xs">  Engagements{% if application.engagement_set.all %} <span class="badge">{{ application.engagement_set.count }}</span>{% endif %}</span></a></li>

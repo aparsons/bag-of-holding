@@ -4,12 +4,13 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-sm-8 col-md-8">
+    {% if user.is_staff %}
     <a href="{% url 'tracker:organization.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Organization</a>
+    {% endif %}
     <a href="{% url 'tracker:application.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Application</a>
-
   </div>
-  <div class="col-md-4">
+  <div class="col-sm-4 col-md-4">
     <div class="pull-right">
       <nav>
         <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>

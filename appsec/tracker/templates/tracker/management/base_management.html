@@ -12,8 +12,11 @@
         <h3 class="panel-title">Manage settings</h3>
       </div>
       <div class="list-group">
-        <a href="{% url 'management.services' %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
-        <a href="{% url 'management.users' %}" class="list-group-item{% if active == 'users' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Users</a>
+        <a href="#" class="list-group-item{% if active == 'organizations' %} active{% endif %} disabled"><span class="fa fa-building" aria-hidden="true"></span> Organizations</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-tags" aria-hidden="true"></span> Application Tags</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Levels</a>
+        <a href="{% url 'tracker:management.services' %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
+        <a href="{% url 'tracker:management.users' %}" class="list-group-item{% if active == 'users' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Users</a>
       </div>
     </div>
     <div class="panel panel-default">

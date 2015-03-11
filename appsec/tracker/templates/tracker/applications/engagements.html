@@ -18,17 +18,17 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> <strong>Pending</strong> <small class="hidden-xs">Engagements that have not yet started</small></h3>
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
       </div>
       <div class="list-group">
         {% if pending_engagements %}
         {% for engagement in pending_engagements %}
-        <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
+        <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% elif engagement.is_ready_for_work %} list-group-item-warning{% endif %}">
           {% if engagement.engagementcomment_set.all %}
           <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.engagementcomment_set.count }}</span>
           {% endif %}
-          <p class="list-group-item-text"><strong>{{ engagement.start_date }} - {{ engagement.end_date }}</strong>{% if engagement.description %} <small class="text-muted hidden-xs">{{ engagement.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
+          <h4 class="list-group-item-heading">{{ engagement.start_date }} - {{ engagement.end_date }}{% if engagement.description %} <small class="hidden-xs">{{ engagement.description|truncatechars:45 }}</small>{% endif %}</h4>
+          <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
             {% if engagement.activity_set.all %}
             {% for activity in engagement.activity_set.all %}
             <span class="label label-default hidden-xs">{{ activity.get_activity_type_display }}</span>
@@ -47,20 +47,20 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> <strong>Open</strong> <small class="hidden-xs">Engagements that are in progress</small></h3>
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open <small class="hidden-xs">Engagements that are in progress</small></h3>
       </div>
       <div class="list-group">
         {% if open_engagements %}
         {% for engagement in open_engagements %}
-        <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
+        <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% endif %}">
           {% if engagement.engagementcomment_set.all %}
           <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.engagementcomment_set.count }}</span>
           {% endif %}
-          <p class="list-group-item-text"><strong>{{ engagement.start_date }} - {{ engagement.end_date }}</strong>{% if engagement.description %} <small class="text-muted hidden-xs">{{ engagement.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
+          <h4 class="list-group-item-heading">{{ engagement.start_date }} - {{ engagement.end_date }}{% if engagement.description %} <small class="hidden-xs">{{ engagement.description|truncatechars:45 }}</small>{% endif %}</h4>
+          <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
             {% if engagement.activity_set.all %}
             {% for activity in engagement.activity_set.all %}
-            <span class="label label-default">{{ activity.get_activity_type_display }}</span>
+            <span class="label label-default hidden-xs">{{ activity.get_activity_type_display }}</span>
             {% endfor %}
             {% else %}
             <span class="label label-danger">No activities for this engagement</span>
@@ -76,7 +76,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> <strong>Closed</strong> <small class="hidden-xs">Engagements that have been completed</small></h3>
+        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> Closed <small class="hidden-xs">Engagements that have been completed</small></h3>
       </div>
       <div class="list-group">
         {% if closed_engagements %}
@@ -85,11 +85,11 @@
           {% if engagement.engagementcomment_set.all %}
           <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.engagementcomment_set.count }}</span>
           {% endif %}
-          <p class="list-group-item-text"><strong>{{ engagement.start_date }} - {{ engagement.end_date }}</strong>{% if engagement.description %} <small class="text-muted hidden-xs">{{ engagement.description|truncatechars:70 }}</small>{% endif %}</p>
-          <p class="list-group-item-text">
+          <h4 class="list-group-item-heading">{{ engagement.start_date }} - {{ engagement.end_date }}{% if engagement.description %} <small class="hidden-xs">{{ engagement.description|truncatechars:45 }}</small>{% endif %}</h4>
+          <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
             {% if engagement.activity_set.all %}
             {% for activity in engagement.activity_set.all %}
-            <span class="label label-default">{{ activity.get_activity_type_display }}</span>
+            <span class="label label-default hidden-xs">{{ activity.get_activity_type_display }}</span>
             {% endfor %}
             {% else %}
             <span class="label label-danger">No activities for this engagement</span>
@@ -105,11 +105,13 @@
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how engagements work here.</p>
+      <p>Documentation:</p>
+      <p>If a pending engagement is yellow it is within the scheduled dates and needs to be opened and worked on.</p>
+      <p>If a pending or open engagement is red it past its scheduled end date and needs to be completed and closed.</p>
+      <hr>
       <p>TODO:</p>
       <ul>
-        <li>row coloration based off date</li>
-        <li>label coloration based of activity status</li>
+        <li>label coloration based of activity status?</li>
       </ul>
     </div>
   </div>

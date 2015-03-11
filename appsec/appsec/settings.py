@@ -44,8 +44,7 @@ INSTALLED_APPS = (
 
     # Internal
     'accounts',
-    'tracker',
-    'services'
+    'tracker'
 )
 
 MIDDLEWARE_CLASSES = (

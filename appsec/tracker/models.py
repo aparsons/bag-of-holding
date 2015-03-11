@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
@@ -29,6 +31,48 @@ class Organization(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class DataElement(models.Model):
+    GLOBAL_CATEGORY = 'global'
+    PERSONAL_CATEGORY = 'personal'
+    COMPANY_CATEGORY = 'company'
+    EDUCATION_CATEGORY = 'education'
+    GOVERNMENT_CATEGORY = 'government'
+    PCI_CATEGORY = 'pci'
+    MEDICAL_CATEGORY = 'medical'
+    CATEGORY_CHOICES = (
+        (GLOBAL_CATEGORY, 'Global'),
+        (PERSONAL_CATEGORY, 'Personal'),
+        (COMPANY_CATEGORY, 'Company'),
+        (EDUCATION_CATEGORY, 'Education'),
+        (GOVERNMENT_CATEGORY, 'Government'),
+        (PCI_CATEGORY, 'Payment Card Industry'),
+        (MEDICAL_CATEGORY, 'Medical'),
+    )
+
+    name = models.CharField(max_length=128, unique=True)
+    description = models.TextField(blank=True)
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
+    weight = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class ThreadFix(models.Model):
+    """ThreadFix server connection information."""
+
+    name = models.CharField(max_length=32, unique=True, help_text='A unique name describing the ThreadFix server.')
+    host = models.URLField(help_text='The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)')
+    api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.') # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "ThreadFix"
+        verbose_name_plural = 'ThreadFix'
 
 
 class Application(models.Model):
@@ -235,7 +279,10 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
+    data_classification = models.ManyToManyField(DataElement, blank=True)
+
     # ThreadFix
+    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True)
     threadfix_organization_id = models.PositiveIntegerField(blank=True, null=True)
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True)
 
@@ -412,21 +459,52 @@ class Engagement(models.Model):
     def is_closed(self):
         return self.status == Engagement.CLOSED_STATUS
 
+    def is_ready_for_work(self):
+        """If the engagement is pending on or after the start date."""
+        if self.status == Engagement.PENDING_STATUS:
+            if datetime.date.today() >= self.start_date:
+                return True
+        return False
+
+    def is_past_due(self):
+        """If the engagement is not closed by the end date."""
+        if self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS:
+            if datetime.date.today() > self.end_date:
+                return True
+        return False
+
 
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
     APPSCAN_ACTIVITY_TYPE = 'appscan'
+    CHECKMARX_ONBOARDING_ACTIVITY_TYPE = 'checkmarx'
     MANUAL_ASSESSMENT_ACTIVITY_TYPE = 'manual assessment'
+    REPORTING_ACTIVITY_TYPE = 'reporting'
     RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest issues'
     THREAT_MODEL_ACTIVITY_TYPE = 'threat model'
     TRAINING_ACTIVITY_TYPE = 'training'
+    VERACODE_ONBOARDING_ACTIVITY_TYPE = 'veracode'
+    WHITEHAT_ONBOARDING_ACTIVITY_TYPE = 'whitehat'
     ACTIVITY_TYPE_CHOICES = (
-        (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
-        (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
-        (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
-        (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
-        (TRAINING_ACTIVITY_TYPE, 'Training')
+        ('Assessments', (
+                (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
+                (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
+                (REPORTING_ACTIVITY_TYPE, 'Reporting'),
+                (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
+            )
+        ),
+        ('Third-Party Services', (
+                (CHECKMARX_ONBOARDING_ACTIVITY_TYPE, 'Checkmarx Onboarding'),
+                (VERACODE_ONBOARDING_ACTIVITY_TYPE, 'Veracode Onboarding'),
+                (WHITEHAT_ONBOARDING_ACTIVITY_TYPE, 'WhiteHat Sentinel Onboarding'),
+            )
+        ),
+        ('Other', (
+                (TRAINING_ACTIVITY_TYPE, 'Training'),
+                (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
+            )
+        ),
     )
 
     PENDING_STATUS = 'pending'
@@ -451,6 +529,7 @@ class Activity(models.Model):
         return dict(Activity.ACTIVITY_TYPE_CHOICES)[self.activity_type]
 
     class Meta:
+        ordering = ['engagement__start_date']
         verbose_name_plural = 'Activities'
 
     def is_pending(self):
@@ -461,6 +540,20 @@ class Activity(models.Model):
 
     def is_closed(self):
         return self.status == Activity.CLOSED_STATUS
+
+    def is_ready_for_work(self):
+        """If the activity is pending on or after the engagement's start date."""
+        if self.status == Activity.PENDING_STATUS:
+            if datetime.date.today() >= self.engagement.start_date:
+                return True
+        return False
+
+    def is_past_due(self):
+        """If the activity is not closed by the engagement's end date."""
+        if self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS:
+            if datetime.date.today() > self.engagement.end_date:
+                return True
+        return False
 
 
 class Comment(models.Model):

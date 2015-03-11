@@ -6,23 +6,54 @@
 <div class="row">
   <div class="col-md-6">
     <h3>Activities by User</h3>
+    <p class="text-muted">Find open and ready-to-open activities for each user.</p>
     {% for user in users %}
-    <h4>{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</h4>
-    <div class="list-group">
-      {% for activity in user.activity_set.all %}
-      {% if activity.is_pending or activity.is_open %}
-      <a href="{% url 'tracker:activity.detail' activity.id %}" class="list-group-item">
-        <span class="badge">{{ activity.get_status_display }}</span>
-        <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }} <small>{{ activity.engagement.application.name }}</small></h4>
-        <p class="list-group-item-text">...</p>
-      </a>
-      {% endif %}
-      {% endfor %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</h4>
+      </div>
+      <div class="list-group">
+        {% for activity in user.activity_set.all %}
+        {% if activity.is_open or activity.is_ready_for_work or activity.is_past_due %}
+        {% include "tracker/snippets/activity_dash_snippet.html" with activity=activity %}
+        {% endif %}
+        {% endfor %}
+      </div>
     </div>
     {% endfor %}
   </div>
   <div class="col-md-6">
-    <h3>All Open Engagements</h3>
+    <h3>All Engagements</h3>
+    <p class="text-muted">A list of open and pending engagements.</p>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ open_engagements.count }} Open <small class="hidden-xs">Engagements that are in progress</small></h3>
+      </div>
+      <div class="list-group">
+        {% if open_engagements %}
+        {% for engagement in open_engagements %}
+        {% include "tracker/snippets/engagement_dash_snippet.html" with engagement=engagement %}
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item"><small><em class="text-muted">There are no open engagements.</em></small></li>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> {{ pending_engagements.count }} Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
+      </div>
+      <div class="list-group">
+        {% if pending_engagements %}
+        {% for engagement in pending_engagements %}
+        {% include "tracker/snippets/engagement_dash_snippet.html" with engagement=engagement %}
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item"><small><em class="text-muted">There are no pending engagements.</em></small></li>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </div>
 <div class="row">
