@@ -9,7 +9,7 @@ from django.core.validators import RegexValidator
 class Tag(models.Model):
     """Associated with application for search and catagorization."""
 
-    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the hex format: 'd94d59'. Only 6 characters allowed.")
+    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 characters hex format. (e.g., 'd94d59')")
 
     name = models.CharField(max_length=128, unique=True)
     color = models.CharField(max_length=6, validators=[color_regex])
@@ -37,7 +37,7 @@ class DataElement(models.Model):
     GLOBAL_CATEGORY = 'global'
     PERSONAL_CATEGORY = 'personal'
     COMPANY_CATEGORY = 'company'
-    EDUCATION_CATEGORY = 'education'
+    STUDENT_CATEGORY = 'student'
     GOVERNMENT_CATEGORY = 'government'
     PCI_CATEGORY = 'pci'
     MEDICAL_CATEGORY = 'medical'
@@ -45,7 +45,7 @@ class DataElement(models.Model):
         (GLOBAL_CATEGORY, 'Global'),
         (PERSONAL_CATEGORY, 'Personal'),
         (COMPANY_CATEGORY, 'Company'),
-        (EDUCATION_CATEGORY, 'Education'),
+        (STUDENT_CATEGORY, 'Student'),
         (GOVERNMENT_CATEGORY, 'Government'),
         (PCI_CATEGORY, 'Payment Card Industry'),
         (MEDICAL_CATEGORY, 'Medical'),
@@ -58,6 +58,9 @@ class DataElement(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['id']
 
 
 class ThreadFix(models.Model):
@@ -232,29 +235,18 @@ class Application(models.Model):
         (NONE_CRITICALITY, 'None'),
     )
 
-    # DCL_4 = 4
-    # DCL_3 = 3
-    # DCL_2 = 2
-    # DCL_1 = 1
-    # DATA_CLASSIFICATION_CHOICES = (
-    #     (None, 'Not Specified'),
-    #     (DCL_4, 'DCL 4'),
-    #     (DCL_3, 'DCL 3'),
-    #     (DCL_2, 'DCL 2'),
-    #     (DCL_1, 'DCL 1')
-    # )
+    DCL_1 = 1
+    DCL_2 = 2
+    DCL_3 = 3
+    DCL_4 = 4
+    DATA_CLASSIFICATION_CHOICES = (
+        (None, 'Not Specified'),
+        (DCL_1, 'DCL 1'),
+        (DCL_2, 'DCL 2'),
+        (DCL_3, 'DCL 3'),
+        (DCL_4, 'DCL 4'),
+    )
 
-    # APPROXIMATE_1000 = 1
-    # APPROXIMATE_10000 = 2
-    # APPROXIMATE_50000 = 3
-    # APPROXIMATE_50001 = 4
-    # APPROXIMATE_USERS_CHOICES = (
-    #     (None, 'Not Specified'),
-    #     (APPROXIMATE_1000, '< 1,000'),
-    #     (APPROXIMATE_10000, '1,000 to 10,000'),
-    #     (APPROXIMATE_50000, '10,000 to 50,000'),
-    #     (APPROXIMATE_50001, '50,000+')
-    # )
 
     # REGULATION_PCI = 1
     # REGULATION_HIPAA = 2
@@ -276,10 +268,14 @@ class Application(models.Model):
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    approximate_users = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
-    data_classification = models.ManyToManyField(DataElement, blank=True)
+    # Data Classification
+    data_elements = models.ManyToManyField(DataElement, blank=True, null=True)
+    override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Overrides the calculated data classification level.')
+    override_reason = models.TextField(blank=True, help_text='Specify why the calculated data classification level is being overridden.')
 
     # ThreadFix
     threadfix = models.ForeignKey(ThreadFix, blank=True, null=True)
@@ -290,14 +286,12 @@ class Application(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    #data_classification_level = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Specify the data classifcation level.')
     #approximate_users = models.IntegerField(choices=APPROXIMATE_USERS_CHOICES, blank=True, null=True)
     #regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
 
     #source code repo
     #bug tracking tool
     #threadfix data
-    #threadfix_application_id = models.IntegerField(unique=True)
     #developer experience / familiarity
     #finance data
     #programming language/s
@@ -313,6 +307,42 @@ class Application(models.Model):
     class Meta:
         get_latest_by = "modified_date"
         ordering = ['name']
+
+    def data_sensitivity_value(self):
+        """
+        Calculates the data sensitivity value.
+        DSV = Global * (Personal + Student + Government) + PCI + Health + Company
+        """
+        vector = {
+            DataElement.GLOBAL_CATEGORY: 1.0,
+            DataElement.PERSONAL_CATEGORY: 0.0,
+            DataElement.COMPANY_CATEGORY: 0.0,
+            DataElement.STUDENT_CATEGORY: 0.0,
+            DataElement.GOVERNMENT_CATEGORY: 0.0,
+            DataElement.PCI_CATEGORY: 0.0,
+            DataElement.MEDICAL_CATEGORY: 0.0,
+        }
+
+        for data_element in self.data_elements.all():
+            vector[data_element.category] += data_element.weight
+
+        dsv = vector[DataElement.GLOBAL_CATEGORY] * (vector[DataElement.PERSONAL_CATEGORY] + vector[DataElement.STUDENT_CATEGORY] + vector[DataElement.GOVERNMENT_CATEGORY]) + vector[DataElement.PCI_CATEGORY] + vector[DataElement.MEDICAL_CATEGORY] + vector[DataElement.COMPANY_CATEGORY]
+
+        #if dsv > 200:
+        #    dsv = 200
+
+        return dsv
+
+    def data_classification_level(self):
+        dsv = self.data_sensitivity_value()
+        if dsv < 15:
+            return Application.DCL_1
+        elif dsv >= 15 and dsv < 100:
+            return Application.DCL_2
+        elif dsv >= 100 and dsv < 150:
+            return Application.DCL_3
+        else:
+            return Application.DCL_4
 
 
 class Environment(models.Model):
@@ -361,9 +391,9 @@ class EnvironmentLocation(models.Model):
 class EnvironmentCredentials(models.Model):
     """Credentials for a specific environment."""
 
-    username = models.CharField(max_length=255, blank=True) # Needs to be encrypted
-    password = models.CharField(max_length=255, blank=True) # Needs to be encrypted
-    role_description = models.CharField(max_length=255, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)') # Needs to be encrypted
+    username = models.CharField(max_length=128, blank=True) # Needs to be encrypted
+    password = models.CharField(max_length=128, blank=True) # Needs to be encrypted
+    role_description = models.CharField(max_length=128, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)') # Needs to be encrypted
     notes = models.TextField(blank=True, help_text='Additional information about these credentials.') # Needs to be encrypted
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -445,6 +475,7 @@ class Engagement(models.Model):
     open_date = models.DateTimeField(blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
 
+    requestor = models.ForeignKey(Person, blank=True, null=True)
     application = models.ForeignKey(Application)
 
     class Meta:
@@ -474,6 +505,16 @@ class Engagement(models.Model):
         return False
 
 
+class ActivityType(models.Model): # Incomplete
+    """Types of work."""
+
+    name = models.CharField(max_length=128, unique=True, help_text='A unique name for this activity.')
+    documentation = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
@@ -481,26 +522,29 @@ class Activity(models.Model):
     CHECKMARX_ONBOARDING_ACTIVITY_TYPE = 'checkmarx'
     MANUAL_ASSESSMENT_ACTIVITY_TYPE = 'manual assessment'
     REPORTING_ACTIVITY_TYPE = 'reporting'
-    RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest issues'
+    RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest'
     THREAT_MODEL_ACTIVITY_TYPE = 'threat model'
     TRAINING_ACTIVITY_TYPE = 'training'
     VERACODE_ONBOARDING_ACTIVITY_TYPE = 'veracode'
     WHITEHAT_ONBOARDING_ACTIVITY_TYPE = 'whitehat'
     ACTIVITY_TYPE_CHOICES = (
         ('Assessments', (
+                ('external', 'External Penetration Test'),
                 (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
                 (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
+                ('peer review', 'Peer Review'),
                 (REPORTING_ACTIVITY_TYPE, 'Reporting'),
-                (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Previously Found Issues'),
+                (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Known Issues'),
             )
         ),
         ('Third-Party Services', (
                 (CHECKMARX_ONBOARDING_ACTIVITY_TYPE, 'Checkmarx Onboarding'),
                 (VERACODE_ONBOARDING_ACTIVITY_TYPE, 'Veracode Onboarding'),
-                (WHITEHAT_ONBOARDING_ACTIVITY_TYPE, 'WhiteHat Sentinel Onboarding'),
+                (WHITEHAT_ONBOARDING_ACTIVITY_TYPE, 'WhiteHat Onboarding'),
             )
         ),
         ('Other', (
+                ('consulting', 'Consulting'),
                 (TRAINING_ACTIVITY_TYPE, 'Training'),
                 (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
             )

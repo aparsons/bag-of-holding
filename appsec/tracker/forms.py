@@ -1,6 +1,7 @@
 from django import forms
+from django.db.models import Q
 
-from tracker.models import Organization, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
+from tracker.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
 
 
 # Organization
@@ -14,6 +15,21 @@ class OrganizationAddForm(forms.ModelForm):
         }
 
 
+class OrganizationSettingsGeneralForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ['name', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs = {'rows': 3})
+        }
+
+
+class OrganizationDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = []
+
+
 # Application
 
 class ApplicationAddForm(forms.ModelForm):
@@ -24,6 +40,7 @@ class ApplicationAddForm(forms.ModelForm):
             'description': forms.Textarea(attrs = {'rows': 3})
         }
 
+
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = Application
@@ -31,6 +48,7 @@ class ApplicationSettingsGeneralForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 3})
         }
+
 
 class ApplicationSettingsOrganizationForm(forms.ModelForm):
     class Meta:
@@ -41,13 +59,34 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+        fields = ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'approximate_users', 'external_audience', 'internet_accessible']
 
 
 class ApplicationSettingsTagsForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ['tags']
+
+
+class ApplicationSettingsDataElementsForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['data_elements']
+        widgets = {
+            'data_elements': forms.SelectMultiple(attrs = {'size': 15})
+        }
+
+
+class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['override_dcl', 'override_reason']
+        labels = {
+            'override_dcl': 'Override data classification level'
+        }
+        widgets = {
+            'override_reason': forms.Textarea(attrs = {'rows': 3})
+        }
 
 
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
@@ -116,7 +155,7 @@ class EnvironmentLocationEditForm(forms.ModelForm):
 class EngagementAddForm(forms.ModelForm):
     class Meta:
         model = Engagement
-        fields = ['start_date', 'end_date', 'description']
+        fields = ['start_date', 'end_date', 'description', 'requestor']
         labels = {
             'start_date': 'Scheduled start date',
             'end_date': 'Scheduled end date'
@@ -138,7 +177,7 @@ class EngagementAddForm(forms.ModelForm):
 class EngagementEditForm(forms.ModelForm):
     class Meta:
         model = Engagement
-        fields = ['status', 'start_date', 'end_date', 'description']
+        fields = ['status', 'start_date', 'end_date', 'description', 'requestor']
         labels = {
             'start_date': 'Scheduled start date',
             'end_date': 'Scheduled end date'

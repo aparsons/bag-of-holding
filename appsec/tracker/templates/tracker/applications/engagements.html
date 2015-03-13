@@ -21,7 +21,6 @@
         <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
       </div>
       <div class="list-group">
-        {% if pending_engagements %}
         {% for engagement in pending_engagements %}
         <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% elif engagement.is_ready_for_work %} list-group-item-warning{% endif %}">
           {% if engagement.engagementcomment_set.all %}
@@ -38,10 +37,9 @@
             {% endif %}
           </p>
         </a>
-        {% endfor %}
-        {% else %}
+        {% empty %}
         <li class="list-group-item"><small><em class="text-muted">There are no pending engagements.</em></small></li>
-        {% endif %}
+        {% endfor %}
       </div>
     </div>
 
@@ -50,7 +48,6 @@
         <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open <small class="hidden-xs">Engagements that are in progress</small></h3>
       </div>
       <div class="list-group">
-        {% if open_engagements %}
         {% for engagement in open_engagements %}
         <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% endif %}">
           {% if engagement.engagementcomment_set.all %}
@@ -67,10 +64,9 @@
             {% endif %}
           </p>
         </a>
-        {% endfor %}
-        {% else %}
+        {% empty %}
         <li class="list-group-item"><small><em class="text-muted">There are no open engagements.</em></small></li>
-        {% endif %}
+        {% endfor %}
       </div>
     </div>
 
@@ -79,7 +75,6 @@
         <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> Closed <small class="hidden-xs">Engagements that have been completed</small></h3>
       </div>
       <div class="list-group">
-        {% if closed_engagements %}
         {% for engagement in closed_engagements %}
         <a href="{% url 'tracker:engagement.detail' engagement.id %}" class="list-group-item">
           {% if engagement.engagementcomment_set.all %}
@@ -96,10 +91,9 @@
             {% endif %}
           </p>
         </a>
-        {% endfor %}
-        {% else %}
+        {% empty %}
         <li class="list-group-item"><small><em class="text-muted">There are no closed engagements.</em></small></li>
-        {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>

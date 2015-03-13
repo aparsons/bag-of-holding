@@ -27,15 +27,12 @@
     <h3><span class="fa fa-users" aria-hidden="true"></span> Assigned Users</h3>
     <p class="text-muted">Users designated to complete this activity.</p>
     <ul class="list-group">
-      {% if activity.users.all %}
       {% for user in activity.users.all %}
       <li class="list-group-item">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</li>
-      {% endfor %}
-      {% else %}
+      {% empty %}
       <li class="list-group-item list-group-item-danger">No users have been assigned to this activity</li>
-      {% endif %}
+      {% endfor %}
     </ul>
-
 
     <hr>
 

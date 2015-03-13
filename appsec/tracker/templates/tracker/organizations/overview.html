@@ -10,7 +10,6 @@
     <hr>
 
     <h3>Applications</h3>
-    {% if applications %}
     <ul class="list-group">
       {% for application in applications %}
       <a href="{% url 'tracker:application.overview' application.id %}" class="list-group-item">
@@ -24,11 +23,10 @@
         </p>
         {% endif %}
       </a>
+      {% empty %}
+      <li class="list-group-item"><small><em class="text-muted">There are no applications.</em></small></li>
       {% endfor %}
     </ul>
-    {% else %}
-    <p class="text-muted">No Applications</p>
-    {% endif %}
   </div>
 </div>
 

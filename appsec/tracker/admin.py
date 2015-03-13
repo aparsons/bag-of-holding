@@ -77,14 +77,37 @@ admin.site.register(Organization)
 class DataElementAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'weight']
     list_filter = ['category']
+    search_fields = ['^name']
 
 admin.site.register(DataElement, DataElementAdmin)
 
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'business_criticality', 'platform', 'origin', 'industry', 'external_audience', 'internet_accessible']
+    fieldsets = [
+        (None, {'fields': ['organization', 'name', 'description']}),
+        ('Metadata', {
+            'classes': ['collapse'],
+            'fields': ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+        }),
+        ('Tags', {
+            'classes': ['collapse'],
+            'fields': ['tags']
+        }),
+        ('Data Classification', {
+            'classes': ['collapse'],
+            'fields': ['data_elements']
+        }),
+        ('ThreadFix', {
+            'classes': ['collapse'],
+            'fields': ['threadfix', 'threadfix_organization_id', 'threadfix_application_id']
+        }),
+    ]
+    list_display = ['name', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']
     list_filter = ('external_audience', 'internet_accessible')
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
+
+    def data_elements_list(self, obj):
+        return ", ".join([data_element.name for data_element in obj.data_elements.all()])
 
 admin.site.register(Application, ApplicationAdmin)
 

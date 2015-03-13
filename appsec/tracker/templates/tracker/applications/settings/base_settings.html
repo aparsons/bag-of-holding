@@ -12,7 +12,7 @@
       <div class="list-group">
         <a href="{% url 'tracker:application.settings.general' application.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
         <a href="{% url 'tracker:application.settings.metadata' application.id %}" class="list-group-item{% if active_side == 'metadata' %} active{% endif %}"><span class="fa fa-info-circle" aria-hidden="true"></span> Metadata</a>
-        <a href="" class="list-group-item disabled{% if active_side == 'data' %} active{% endif %}"><span class="fa fa-tachometer" aria-hidden="true"></span> Data Classification</a>
+        <a href="{% url 'tracker:application.settings.data-elements' application.id %}" class="list-group-item{% if active_side == 'data_elements' %} active{% endif %}"><span class="fa fa-cubes" aria-hidden="true"></span> Data Elements</a>
         <a href="" class="list-group-item disabled{% if active_side == 'sla' %} active{% endif %}"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Level Agreements</a>
         <a href="{% url 'tracker:application.settings.services' application.id %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
       </div>

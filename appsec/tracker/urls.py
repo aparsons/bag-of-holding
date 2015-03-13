@@ -17,6 +17,9 @@ urlpatterns = patterns('',
     # Organization
     url(r'^organizations/add/$', views.organization_add, name='organization.add'),
     url(r'^organizations/(?P<organization_id>\d+)/$', views.organization_overview, name='organization.overview'),
+    url(r'^organizations/(?P<organization_id>\d+)/people/$', views.organization_people, name='organization.people'),
+    url(r'^organizations/(?P<organization_id>\d+)/settings/$', views.organization_settings_general, name='organization.settings.general'),
+    url(r'^organizations/(?P<organization_id>\d+)/settings/danger/$', views.organization_settings_danger, name='organization.settings.danger'),
 
 	# Application
     url(r'^applications/$', views.application_list, name='application.list'),
@@ -27,6 +30,8 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>\d+)/people/$', views.application_people, name='application.people'),
     url(r'^applications/(?P<application_id>\d+)/settings/$', views.application_settings_general, name='application.settings.general'),
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
+    url(r'^applications/(?P<application_id>\d+)/settings/data-elements/$', views.application_settings_data_elements, name='application.settings.data-elements'),
+    url(r'^applications/(?P<application_id>\d+)/settings/data-elements/override/$', views.application_settings_data_elements_override, name='application.settings.data-elements.override'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
     url(r'^applications/(?P<application_id>\d+)/delete/$', views.application_delete, name='application.delete'),

@@ -6,16 +6,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.forms.models import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from tracker.models import Organization, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
+from tracker.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
 
-from tracker.forms import OrganizationAddForm
+from tracker.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationDeleteForm
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
+from tracker.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDCLOverrideForm
 from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
 from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
 from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
@@ -54,6 +55,7 @@ action_messages = [
 @login_required
 @require_http_methods(['GET'])
 def dashboard_personal(request):
+    """The personal dashboard with information relevant to the current user."""
 
     pending_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.PENDING_STATUS)
     open_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.OPEN_STATUS)
@@ -72,11 +74,15 @@ def dashboard_team(request):
 
     open_engagements = Engagement.objects.filter(status=Engagement.OPEN_STATUS)
     pending_engagements = Engagement.objects.filter(status=Engagement.PENDING_STATUS)
+    unassigned_activities = Activity.objects.filter(users=None)
+    empty_engagements = Engagement.objects.filter(activity__isnull=True)
 
     return render(request, 'tracker/dashboard/team_dashboard.html', {
         'users': users,
         'open_engagements': open_engagements,
         'pending_engagements': pending_engagements,
+        'unassigned_activities': unassigned_activities,
+        'empty_engagements': empty_engagements,
         'active_tab': 'team'
     })
 
@@ -84,6 +90,11 @@ def dashboard_team(request):
 @login_required
 @require_http_methods(['GET'])
 def dashboard_metrics(request):
+    # Current Number of Pending/Open/Closed Activities - This week/month/year/alltime
+    # Current Number of Pending/Open/Closed Engagements
+    # Average Engagement Lengths
+    # Average Activity Lengths By Activity
+
 
     return render(request, 'tracker/dashboard/metrics.html', {
         'active_tab': 'metrics'
@@ -140,6 +151,57 @@ def organization_overview(request, organization_id):
 
 
 @login_required
+@require_http_methods(['GET'])
+def organization_people(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    return render(request, 'tracker/organizations/people.html', {
+        'organization': organization,
+        'active_tab': 'people'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def organization_settings_general(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    form = OrganizationSettingsGeneralForm(request.POST or None, instance=organization)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'You successfully update this organization\'s general information.', extra_tags=random.choice(action_messages))
+
+    return render(request, 'tracker/organizations/settings/general.html', {
+        'organization': organization,
+        'form': form,
+        'active_tab': 'settings',
+        'active_side': 'general'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def organization_settings_danger(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    form = OrganizationDeleteForm(request.POST or None, instance=organization)
+
+    if request.method == 'POST' and form.is_valid():
+        organization.delete()
+        messages.success(request, 'You successfully deleted the "' + organization.name + '" organization.', extra_tags=random.choice(action_messages))
+        return redirect('tracker:dashboard.personal')
+
+    return render(request, 'tracker/organizations/settings/danger.html', {
+        'organization': organization,
+        'active_tab': 'settings',
+        'active_side': 'danger'
+    })
+
+
+@login_required
 @staff_member_required
 @require_http_methods(['GET', 'POST'])
 def organization_add(request):
@@ -148,7 +210,7 @@ def organization_add(request):
     if form.is_valid():
         organization = form.save()
         messages.success(request, 'You successfully created this organization.', extra_tags=random.choice(action_messages))
-        return redirect('tracker:application.list')
+        return redirect('tracker:organization.overview', organization.id)
 
     return render(request, 'tracker/organizations/add.html', {
         'form': form
@@ -294,17 +356,16 @@ def application_settings_metadata(request, application_id):
     metadata_form = ApplicationSettingsMetadataForm(instance=application)
     tags_form = ApplicationSettingsTagsForm(instance=application)
 
-    if request.method == 'POST':
-        if 'submit-metadata' in request.POST:
-            metadata_form = ApplicationSettingsMetadataForm(request.POST, instance=application)
-            if metadata_form.is_valid():
-                metadata_form.save()
-                messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(action_messages))
-        elif 'submit-tags' in request.POST:
-            tags_form = ApplicationSettingsTagsForm(request.POST, instance=application)
-            if tags_form.is_valid():
-                tags_form.save()
-                messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(action_messages))
+    if 'submit-metadata' in request.POST:
+        metadata_form = ApplicationSettingsMetadataForm(request.POST, instance=application)
+        if metadata_form.is_valid():
+            metadata_form.save()
+            messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(action_messages))
+    elif 'submit-tags' in request.POST:
+        tags_form = ApplicationSettingsTagsForm(request.POST, instance=application)
+        if tags_form.is_valid():
+            tags_form.save()
+            messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(action_messages))
 
     return render(request, 'tracker/applications/settings/metadata.html', {
         'application': application,
@@ -317,17 +378,55 @@ def application_settings_metadata(request, application_id):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
+def application_settings_data_elements(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    data_elements_form = ApplicationSettingsDataElementsForm(request.POST or None, instance=application)
+    dcl_override_form = ApplicationSettingsDCLOverrideForm(instance=application)
+
+    if request.method == 'POST':
+        if data_elements_form.is_valid():
+            data_elements_form.save()
+            messages.success(request, 'You successfully updated this application\'s data elements.', extra_tags=random.choice(action_messages))
+        return redirect('tracker:application.settings.data-elements', application.id)
+
+    return render(request, 'tracker/applications/settings/data_elements.html', {
+        'application': application,
+        'data_elements_form': data_elements_form,
+        'dcl_override_form': dcl_override_form,
+        'dcl': application.data_classification_level,
+        'dsv': application.data_sensitivity_value,
+        'active_tab': 'settings',
+        'active_side': 'data_elements'
+    })
+
+
+@login_required
+@require_http_methods(['POST'])
+def application_settings_data_elements_override(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    dcl_override_form = ApplicationSettingsDCLOverrideForm(request.POST or None, instance=application)
+
+    if dcl_override_form.is_valid():
+        dcl_override_form.save()
+        messages.success(request, 'This application\'s data classification override has been updated.', extra_tags=random.choice(action_messages))
+
+    return redirect('tracker:application.settings.data-elements', application.id)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
 def application_settings_services(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
     threadfix_form = ApplicationSettingsThreadFixForm(instance=application)
 
-    if request.method == 'POST':
-        if 'submit-threadfix' in request.POST:
-            threadfix_form = ApplicationSettingsThreadFixForm(request.POST, instance=application)
-            if threadfix_form.is_valid():
-                threadfix_form.save()
-                messages.success(request, 'You successfully updated this application\'s ThreadFix information.', extra_tags=random.choice(action_messages))
+    if 'submit-threadfix' in request.POST:
+        threadfix_form = ApplicationSettingsThreadFixForm(request.POST, instance=application)
+        if threadfix_form.is_valid():
+            threadfix_form.save()
+            messages.success(request, 'You successfully updated this application\'s ThreadFix information.', extra_tags=random.choice(action_messages))
 
     return render(request, 'tracker/applications/settings/services.html', {
         'application': application,

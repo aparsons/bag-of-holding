@@ -21,7 +21,6 @@
         {% if environment.description %}
         <li class="list-group-item"><span class="text-muted">{{ environment.description }}</span></li>
         {% endif %}
-        {% if environment.environmentlocation_set.all %}
         {% for location in environment.environmentlocation_set.all %}
         <a href="{{ location.location }}" target="_blank" class="list-group-item">
           <p class="list-group-item-heading no-margin-bottom"><strong class="text-primary">{{ location.location }}</strong></p>
@@ -29,10 +28,9 @@
           <p class="list-group-item-text"><small class="text-muted">{{ location.notes }}</small></p>
           {% endif %}
         </a>
-        {% endfor %}
-        {% else %}
+        {% empty %}
         <li class="list-group-item"><small class="text-muted"><em>There are no locations for this {{ environment.get_environment_type_display|lower }} environment.</em></small></li>
-        {% endif %}
+        {% endfor %}
       </ul>
       {% if environment.environmentcredentials_set.all %}
       <div class="table-responsive">

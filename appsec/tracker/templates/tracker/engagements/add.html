@@ -26,8 +26,9 @@
           <div class="input-daterange">
             {% include "forms/form_snippet.html" with control=form.start_date %}
             {% include "forms/form_snippet.html" with control=form.end_date %}
-            {% include "forms/form_snippet.html" with control=form.description %}
           </div>
+          {% include "forms/form_snippet.html" with control=form.description %}
+          {% include "forms/form_snippet.html" with control=form.requestor %}
         </div>
         <div class="panel-footer">
           <button class="btn btn-primary" type="submit">Create Engagement</button>

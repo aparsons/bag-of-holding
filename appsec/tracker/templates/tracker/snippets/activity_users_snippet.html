@@ -4,12 +4,10 @@
   {% endif %}
   <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }}{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:45 }}</small>{% endif %}</h4>
   <p class="list-group-item-text">
-    {% if activity.users.all %}
     {% for user in activity.users.all %}
     <span class="label label-default">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</span>
-    {% endfor %}
-    {% else %}
+    {% empty %}
     <span class="label label-danger">No users have been assigned to this activity</span>
-    {% endif %}
+    {% endfor %}
   </p>
 </a>

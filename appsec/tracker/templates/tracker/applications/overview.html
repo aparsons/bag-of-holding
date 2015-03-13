@@ -1,5 +1,7 @@
 {% extends "tracker/applications/base_applications.html" %}
 
+{% load humanize %}
+
 {% block title %}{{ application.name }} | Environments{% endblock %}
 
 {% block application_content %}
@@ -30,17 +32,19 @@
           <td><strong>Business Criticality</strong></td>
           <td>{{ application.get_business_criticality_display }}</td>
         </tr>
+        <tr>
+          <td><strong>Approximate Users</strong></td>
+          <td>{{ application.approximate_users|intcomma }}</td>
+        </tr>
       </tbody>
     </table>
 
     <h4><span class="fa fa-tags" aria-hidden="true"></span> Tags</h4>
-    {% if application.tags.all %}
     {% for tag in application.tags.all %}
-    <a href="{% url 'tracker:application.list' %}?tag={{ tag.id }}" class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</a> 
-    {% endfor %}
-    {% else %}
+    <a href="{% url 'tracker:application.list' %}?tag={{ tag.id }}" class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</a>
+    {% empty %}
     <p class="text-muted"><small><em>There are no tags.</em></small></p>
-    {% endif %}
+    {% endfor %}
   </div>
 </div>
 {% endblock application_content %}
