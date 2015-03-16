@@ -608,6 +608,7 @@ class Comment(models.Model):
     """Abstract message about an engagement or activity."""
 
     message = models.TextField()
+
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -636,6 +637,7 @@ class FileUpload(models.Model):
     """Abstract file upload by a user."""
 
     file = models.FileField()
+    
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
