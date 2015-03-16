@@ -34,6 +34,8 @@ class Organization(models.Model):
 
 
 class DataElement(models.Model):
+    """An individual data element stored within an application. Used for data classification."""
+
     GLOBAL_CATEGORY = 'global'
     PERSONAL_CATEGORY = 'personal'
     COMPANY_CATEGORY = 'company'
@@ -286,12 +288,10 @@ class Application(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    #approximate_users = models.IntegerField(choices=APPROXIMATE_USERS_CHOICES, blank=True, null=True)
     #regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
 
     #source code repo
     #bug tracking tool
-    #threadfix data
     #developer experience / familiarity
     #finance data
     #programming language/s
@@ -411,11 +411,28 @@ class Person(models.Model):
 
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    DEVELOPER_ROLE = 'developer'
+    QUALITY_ASSURANCE_ROLE = 'qa'
+    OPERATIONS_ROLE = 'operations'
+    MANAGER_ROLE = 'manager'
+    SECURITY_OFFICER_ROLE = 'security officer'
+    SECURITY_CHAMPION_ROLE = 'security champion'
+    ROLE_CHOICES = (
+        (DEVELOPER_ROLE, 'Developer'),
+        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
+        (OPERATIONS_ROLE, 'Operations'),
+        (MANAGER_ROLE, 'Manager'),
+        (SECURITY_OFFICER_ROLE, 'Security Officer'),
+        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
+    )
+
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
     email = models.EmailField()
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+    job_title = models.CharField(max_length=128, blank=True)
+    role = models.CharField(max_length=17, choices=ROLE_CHOICES)
 
     application = models.ManyToManyField(Application, through='Relation')
 
@@ -430,30 +447,14 @@ class Person(models.Model):
 class Relation(models.Model):
     """Associates a person with an application with a role."""
 
-    DEVELOPER_ROLE = 1
-    QUALITY_ASSURANCE_ROLE = 2
-    OPERATIONS_ROLE = 3
-    MANAGER_ROLE = 4
-    SECURITY_OFFICER_ROLE = 5
-    SECURITY_CHAMPION_ROLE = 6
-    ROLE_CHOICES = (
-        (DEVELOPER_ROLE, 'Developer'),
-        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
-        (OPERATIONS_ROLE, 'Operations'),
-        (MANAGER_ROLE, 'Manager'),
-        (SECURITY_OFFICER_ROLE, 'Security Officer'),
-        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
-    )
-
     owner = models.BooleanField(default=False)
-    role = models.IntegerField(choices=ROLE_CHOICES)
     notes = models.TextField(blank=True)
 
     person = models.ForeignKey(Person)
     application = models.ForeignKey(Application)
 
     def __str__(self):
-        return self.person.first_name + ' ' + self.person.last_name + ', ' + self.application.name + ' ' + dict(Relation.ROLE_CHOICES)[self.role]
+        return self.person.first_name + ' ' + self.person.last_name + ', ' + self.application.name
 
 
 class Engagement(models.Model):
@@ -477,6 +478,9 @@ class Engagement(models.Model):
 
     requestor = models.ForeignKey(Person, blank=True, null=True)
     application = models.ForeignKey(Application)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['start_date']

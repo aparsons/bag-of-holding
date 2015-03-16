@@ -17,6 +17,8 @@
         {% include "forms/form_snippet.html" with control=form.email %}
         {% include "forms/form_snippet.html" with control=form.phone_work %}
         {% include "forms/form_snippet.html" with control=form.phone_mobile %}
+        {% include "forms/form_snippet.html" with control=form.job_title %}
+        {% include "forms/form_snippet.html" with control=form.role %}
 
         <a href="{% url 'tracker:people.list' %}" class="btn btn-default" role="button">Cancel</a>
         <button class="btn btn-primary" type="submit">Add Person</button>

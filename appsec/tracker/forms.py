@@ -257,4 +257,4 @@ class ActivityCommentAddForm(forms.ModelForm):
 class PersonAddForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile']
+        fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile', 'job_title', 'role']
