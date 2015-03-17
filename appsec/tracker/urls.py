@@ -44,17 +44,21 @@ urlpatterns = patterns('',
     url(r'^environments/(?P<environment_id>\d+)/edit/danger/$', views.environment_edit_danger, name='environment.edit.danger'),
     url(r'^environments/(?P<environment_id>\d+)/delete/$', views.environment_delete, name='environment.delete'),
 
-    # Engagement Routes
+    # Engagement
     url(r'^applications/(?P<application_id>\d+)/engagements/add/$', views.engagement_add, name='engagement.add'),
     url(r'^engagements/(?P<engagement_id>\d+)/$', views.engagement_detail, name='engagement.detail'),
     url(r'^engagements/(?P<engagement_id>\d+)/edit/$', views.engagement_edit, name='engagement.edit'),
+    url(r'^engagements/(?P<engagement_id>\d+)/status/$', views.engagement_status, name='engagement.status'),
     url(r'^engagements/(?P<engagement_id>\d+)/delete/$', views.engagement_delete, name='engagement.delete'),
     url(r'^engagements/(?P<engagement_id>\d+)/comments/add/$', views.engagement_comment_add, name='engagement.comment.add'),
+
+
 
     # Activity Routes
     url(r'^engagements/(?P<engagement_id>\d+)/activities/add/$', views.activity_add, name='activity.add'),
     url(r'^activities/(?P<activity_id>\d+)/$', views.activity_detail, name='activity.detail'),
     url(r'^activities/(?P<activity_id>\d+)/edit/$', views.activity_edit, name='activity.edit'),
+    url(r'^activities/(?P<activity_id>\d+)/status/$', views.activity_status, name='activity.status'),
     url(r'^activities/(?P<activity_id>\d+)/delete/$', views.activity_delete, name='activity.delete'),
     url(r'^activities/(?P<activity_id>\d+)/comments/add/$', views.activity_comment_add, name='activity.comment.add'),
 

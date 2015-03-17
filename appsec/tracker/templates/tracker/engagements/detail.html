@@ -15,19 +15,12 @@
     <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }} <small>({% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %})</small></h2>
     <p>{{ engagement.description }}</p>
     {% if engagement.requestor %}<p>Requested by <strong><a href="{% url 'tracker:people.detail' engagement.requestor.id %}">{{ engagement.requestor.first_name }} {{ engagement.requestor.last_name }}</a></strong>.</p>{% endif %}
-    <div class="btn-toolbar" role="toolbar" aria-label="...">
-      <div class="btn-group" role="group" aria-label="status">
-        <a href="#" class="btn btn-default{% if engagement.is_pending %} active{% endif %}" role="button"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="hidden-xs"> Pending</span></a>
-        <a href="#" class="btn btn-default{% if engagement.is_open %} active{% endif %}" role="button"><span class="fa fa-exclamation-circle" aria-hidden="true"></span><span class="hidden-xs"> Open</span></a>
-        <a href="#" class="btn btn-default{% if engagement.is_closed %} active{% endif %}" role="button"><span class="fa fa-check-circle" aria-hidden="true"></span><span class="hidden-xs"> Closed</span></a>
-      </div>
-      <a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-success pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Activity</span></a>
-    </div>
 
     <hr>
 
     <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h2>
     <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
+    <p><a href="{% url 'tracker:activity.add' engagement.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Activity</span></a></p>
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -98,15 +91,36 @@
   </div>
 
   <div class="col-md-4">
+    <div class="panel {% if engagement.is_pending %}panel-info{% elif engagement.is_open %}panel-primary{% elif engagement.is_closed %}panel-success{% endif %} hidden-sm hidden-xs">
+      <div class="panel-heading">
+        <h4 class="panel-title">{% if engagement.is_pending %}<span class="fa fa-info-circle" aria-hidden="true"></span>{% elif engagement.is_open %}<span class="fa fa-exclamation-circle" aria-hidden="true"></span>{% elif engagement.is_closed %}<span class="fa fa-check-circle" aria-hidden="true"></span>{% endif %} {{ engagement.get_status_display }}</h4>
+      </div>
+      <div class="panel-body">
+        <form method="post" action="{% url 'tracker:engagement.status' engagement.id %}" class="form-inline">
+          {% csrf_token %}
+          {% include "forms/form_snippet.html" with control=status_form.status required=False %}
+          <button class="btn btn-default pull-right" type="submit">Change Status</button>
+        </form>
+      </div>
+      {% if engagement.open_date or engagement.close_date %}
+      <ul class="list-group">
+        {% if engagement.open_date %}
+        <li class="list-group-item"><strong>Opened:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.open_date }}">{{ engagement.open_date|naturaltime }}</span></li>
+        {% endif %}
+        {% if engagement.close_date %}
+        <li class="list-group-item"><strong>Closed:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.close_date }}">{{ engagement.close_date|naturaltime }}</span></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <p><a href="{% url 'tracker:engagement.edit' engagement.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Engagement</a></p>
+
     <div class="well hidden-sm hidden-xs">
       <p>Documentation:</p>
       <p>If a pending activity is yellow it is within the scheduled dates and needs to be opened and worked on.</p>
       <p>If a pending or open activity is red it past its scheduled end date and needs to be completed and closed.</p>
-      <hr>
-      <p>Opened: {{ engagement.open_date }}</p>
-      <p>Closed: {{ engagement.close_date }}</p>
     </div>
-    <a href="{% url 'tracker:engagement.edit' engagement.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Engagement</a>
   </div>
 </div>
 {% endblock engagement_content %}

@@ -16,12 +16,6 @@
     <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> {{ activity.activity_type.name }}</h3>
     {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
 
-    <div class="btn-group" role="group" aria-label="status">
-      <a href="#" class="btn btn-default{% if activity.is_pending %} active{% endif %}" role="button"><span class="fa fa-info-circle" aria-hidden="true"></span><span class="hidden-xs"> Pending</span></a>
-      <a href="#" class="btn btn-default{% if activity.is_open %} active{% endif %}" role="button"><span class="fa fa-exclamation-circle" aria-hidden="true"></span><span class="hidden-xs"> Open</span></a>
-      <a href="#" class="btn btn-default{% if activity.is_closed %} active{% endif %}" role="button"><span class="fa fa-check-circle" aria-hidden="true"></span><span class="hidden-xs"> Closed</span></a>
-    </div>
-
     <hr>
 
     <h3><span class="fa fa-users" aria-hidden="true"></span> Assigned Users</h3>
@@ -33,6 +27,12 @@
       <li class="list-group-item list-group-item-danger">No users have been assigned to this activity</li>
       {% endfor %}
     </ul>
+
+    {% if activity.activity_type.documentation %}
+    <hr>
+    <h3><span class="fa fa-file-text-o" aria-hidden="true"></span> {{ activity.activity_type.name }} Documentation</h3>
+    <p>{{ activity.activity_type.documentation }}</p>
+    {% endif %}
 
     <hr>
 
@@ -61,12 +61,34 @@
     </div>
   </div>
   <div class="col-md-4">
+    <div class="panel {% if activity.is_pending %}panel-info{% elif activity.is_open %}panel-primary{% elif activity.is_closed %}panel-success{% endif %} hidden-sm hidden-xs">
+      <div class="panel-heading">
+        <h4 class="panel-title">{% if activity.is_pending %}<span class="fa fa-info-circle" aria-hidden="true"></span>{% elif activity.is_open %}<span class="fa fa-exclamation-circle" aria-hidden="true"></span>{% elif activity.is_closed %}<span class="fa fa-check-circle" aria-hidden="true"></span>{% endif %} {{ activity.get_status_display }}</h4>
+      </div>
+      <div class="panel-body">
+        <form method="post" action="{% url 'tracker:activity.status' activity.id %}" class="form-inline">
+          {% csrf_token %}
+          {% include "forms/form_snippet.html" with control=status_form.status required=False %}
+          <button class="btn btn-default pull-right" type="submit">Change Status</button>
+        </form>
+      </div>
+      {% if activity.open_date or activity.close_date %}
+      <ul class="list-group">
+        {% if activity.open_date %}
+        <li class="list-group-item"><strong>Opened:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.open_date }}">{{ activity.open_date|naturaltime }}</span></li>
+        {% endif %}
+        {% if activity.close_date %}
+        <li class="list-group-item"><strong>Closed:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.close_date }}">{{ activity.close_date|naturaltime }}</span></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <p><a href="{% url 'tracker:activity.edit' activity.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Activity</a></p>
+
     <div class="well hidden-sm hidden-xs">
       <p>Documentation about how activity work here.</p>
-      <p>Opened: {{ activity.open_date }}</p>
-      <p>Closed: {{ activity.close_date }}</p>
     </div>
-    <a href="{% url 'tracker:activity.edit' activity.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Activity</a>
   </div>
 </div>
 {% endblock activity_content %}

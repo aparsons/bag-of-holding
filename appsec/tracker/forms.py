@@ -196,6 +196,12 @@ class EngagementEditForm(forms.ModelForm):
                 self.add_error('end_date', "End date cannot be before start date.")
 
 
+class EngagementStatusForm(forms.ModelForm):
+    class Meta:
+        model = Engagement
+        fields = ['status']
+
+
 class EngagementDeleteForm(forms.ModelForm):
     class Meta:
         model = Engagement
@@ -237,10 +243,10 @@ class ActivityEditForm(forms.ModelForm):
         }
 
 
-class ActivityDeleteForm(forms.ModelForm):
+class ActivityStatusForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = []
+        fields = ['status']
 
 
 class ActivityCommentAddForm(forms.ModelForm):
@@ -250,6 +256,12 @@ class ActivityCommentAddForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs = {'rows': 3})
         }
+
+
+class ActivityDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = []
 
 
 # Person

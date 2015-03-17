@@ -18,8 +18,8 @@ from tracker.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, 
 from tracker.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from tracker.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDCLOverrideForm
 from tracker.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
-from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementDeleteForm, EngagementCommentAddForm
-from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityDeleteForm, ActivityCommentAddForm
+from tracker.forms import EngagementAddForm, EngagementEditForm, EngagementStatusForm, EngagementDeleteForm, EngagementCommentAddForm
+from tracker.forms import ActivityAddForm, ActivityEditForm, ActivityStatusForm, ActivityDeleteForm, ActivityCommentAddForm
 from tracker.forms import PersonAddForm
 
 
@@ -622,7 +622,9 @@ def engagement_detail(request, engagement_id):
     open_activities = engagement.activity_set.filter(status=Activity.OPEN_STATUS)
     closed_activities = engagement.activity_set.filter(status=Activity.CLOSED_STATUS)
 
-    form = EngagementCommentAddForm()
+    status_form = EngagementStatusForm(instance=engagement)
+
+    comment_form = EngagementCommentAddForm()
 
     return render(request, 'tracker/engagements/detail.html', {
         'application': engagement.application,
@@ -630,7 +632,8 @@ def engagement_detail(request, engagement_id):
         'pending_activities': pending_activities,
         'open_activities': open_activities,
         'closed_activities': closed_activities,
-        'form': form,
+        'status_form': status_form,
+        'form': comment_form,
         'active_tab': 'engagements'
     })
 
@@ -678,6 +681,20 @@ def engagement_edit(request, engagement_id):
 
 @login_required
 @require_http_methods(['POST'])
+def engagement_status(request, engagement_id):
+    engagement = get_object_or_404(Engagement, pk=engagement_id)
+
+    status_form = EngagementStatusForm(request.POST, instance=engagement)
+
+    if status_form.is_valid():
+        engagement = status_form.save()
+        messages.success(request, 'You successfully updated this engagement\'s status to ' + engagement.get_status_display().lower() + '.', extra_tags=random.choice(action_messages))
+
+    return redirect('tracker:engagement.detail', engagement_id=engagement.id)
+
+
+@login_required
+@require_http_methods(['POST'])
 def engagement_delete(request, engagement_id):
     engagement = get_object_or_404(Engagement, pk=engagement_id)
 
@@ -716,12 +733,14 @@ def engagement_comment_add(request, engagement_id):
 def activity_detail(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
-    form = ActivityCommentAddForm()
+    status_form = ActivityStatusForm(instance=activity)
+    comment_form = ActivityCommentAddForm()
 
     return render(request, 'tracker/activities/detail.html', {
         'application': activity.engagement.application,
         'activity': activity,
-        'form': form,
+        'status_form': status_form,
+        'form': comment_form,
         'active_tab': 'engagements'
     })
 
@@ -767,6 +786,20 @@ def activity_edit(request, activity_id):
         'form': form,
         'active_tab': 'engagements'
     })
+
+
+@login_required
+@require_http_methods(['POST'])
+def activity_status(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+
+    status_form = ActivityStatusForm(request.POST, instance=activity)
+
+    if status_form.is_valid():
+        activity = status_form.save()
+        messages.success(request, 'You successfully updated this activity\'s status to ' + activity.get_status_display().lower() + '.', extra_tags=random.choice(action_messages))
+
+    return redirect('tracker:activity.detail', activity_id=activity.id)
 
 
 @login_required
