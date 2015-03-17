@@ -18,10 +18,45 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    # Overriding
     def save(self, *args, **kwargs):
-        self.color = self.color.lower() # Convert to lowercase
+        self.color = self.color.lower() # Convert color to lowercase
         super(Tag, self).save(*args, **kwargs)
+
+
+class Person(models.Model):
+    """Information about a person."""
+
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+
+    DEVELOPER_ROLE = 'developer'
+    QUALITY_ASSURANCE_ROLE = 'qa'
+    OPERATIONS_ROLE = 'operations'
+    MANAGER_ROLE = 'manager'
+    SECURITY_OFFICER_ROLE = 'security officer'
+    SECURITY_CHAMPION_ROLE = 'security champion'
+    ROLE_CHOICES = (
+        (DEVELOPER_ROLE, 'Developer'),
+        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
+        (OPERATIONS_ROLE, 'Operations'),
+        (MANAGER_ROLE, 'Manager'),
+        (SECURITY_OFFICER_ROLE, 'Security Officer'),
+        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
+    )
+
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
+    email = models.EmailField()
+    phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+    phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+    job_title = models.CharField(max_length=128, blank=True)
+    role = models.CharField(max_length=17, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return self.last_name + ', ' + self.first_name
+
+    class Meta:
+        ordering = ['last_name']
+        verbose_name_plural = 'People'
 
 
 class Organization(models.Model):
@@ -29,6 +64,8 @@ class Organization(models.Model):
 
     name = models.CharField(max_length=32, unique=True, help_text='A unique name for the organization.')
     description = models.TextField(blank=True, help_text='Information about the organization\'s purpose, history, and structure.')
+
+    people = models.ManyToManyField(Person, blank=True)
 
     def __str__(self):
         return self.name
@@ -154,17 +191,6 @@ class Application(models.Model):
         (DCL_4, 'DCL 4'),
     )
 
-
-    # REGULATION_PCI = 1
-    # REGULATION_HIPAA = 2
-    # REGULATION_FERPA = 3
-    # REGULATION_CHOICES = (
-    #     (None, 'Not Specified'),
-    #     (REGULATION_FERPA, 'FERPA'),
-    #     (REGULATION_HIPAA, 'HIPAA'),
-    #     (REGULATION_PCI, 'PCI')
-    # )
-
     # General
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
@@ -192,8 +218,6 @@ class Application(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    #regulation = models.IntegerField(choices=REGULATION_CHOICES, blank=True, null=True)
-
     #source code repo
     #bug tracking tool
     #developer experience / familiarity
@@ -203,6 +227,7 @@ class Application(models.Model):
     #password policy
 
     organization = models.ForeignKey(Organization)
+    people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
@@ -247,6 +272,22 @@ class Application(models.Model):
             return Application.DCL_3
         else:
             return Application.DCL_4
+
+
+class Relation(models.Model):
+    """Associates a person with an application with a role."""
+
+    owner = models.BooleanField(default=False)
+    notes = models.TextField(blank=True)
+
+    person = models.ForeignKey(Person)
+    application = models.ForeignKey(Application)
+
+    def __str__(self):
+        return self.person.first_name + ' ' + self.person.last_name + ' - ' + self.application.name
+
+    class Meta:
+        unique_together = ('person', 'application')
 
 
 class Environment(models.Model):
@@ -308,57 +349,6 @@ class EnvironmentCredentials(models.Model):
     class Meta:
         verbose_name_plural = 'Environment credentials'
         ordering = ['username', 'password']
-
-
-class Person(models.Model):
-    """Information about a person."""
-
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-
-    DEVELOPER_ROLE = 'developer'
-    QUALITY_ASSURANCE_ROLE = 'qa'
-    OPERATIONS_ROLE = 'operations'
-    MANAGER_ROLE = 'manager'
-    SECURITY_OFFICER_ROLE = 'security officer'
-    SECURITY_CHAMPION_ROLE = 'security champion'
-    ROLE_CHOICES = (
-        (DEVELOPER_ROLE, 'Developer'),
-        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
-        (OPERATIONS_ROLE, 'Operations'),
-        (MANAGER_ROLE, 'Manager'),
-        (SECURITY_OFFICER_ROLE, 'Security Officer'),
-        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
-    )
-
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email = models.EmailField()
-    phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
-    phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
-    job_title = models.CharField(max_length=128, blank=True)
-    role = models.CharField(max_length=17, choices=ROLE_CHOICES)
-
-    application = models.ManyToManyField(Application, through='Relation')
-
-    def __str__(self):
-        return self.last_name + ', ' + self.first_name
-
-    class Meta:
-        ordering = ['last_name']
-        verbose_name_plural = 'People'
-
-
-class Relation(models.Model):
-    """Associates a person with an application with a role."""
-
-    owner = models.BooleanField(default=False)
-    notes = models.TextField(blank=True)
-
-    person = models.ForeignKey(Person)
-    application = models.ForeignKey(Application)
-
-    def __str__(self):
-        return self.person.first_name + ' ' + self.person.last_name + ', ' + self.application.name
 
 
 class Engagement(models.Model):
