@@ -133,18 +133,20 @@ class Application(models.Model):
         (WEB_SERVICE_PLATFORM, 'Web Service'),
     )
 
-    DEFINE_LIFECYCLE = 1
-    DESIGN_LIFECYCLE = 2
-    DEVELOP_LIFECYCLE = 3
-    DEPLOY_LIFECYCLE = 4
-    MAINTAIN_LIFECYCLE = 5
+    IDEA_LIFECYCLE = 'idea'
+    EXPLORE_LIFECYCLE = 'explore'
+    VALIDATE_LIFECYCLE = 'validate'
+    GROW_LIFECYCLE = 'grow'
+    SUSTAIN_LIFECYCLE = 'sustain'
+    RETIRE_LIFECYCLE = 'retire'
     LIFECYCLE_CHOICES = (
         (None, 'Not Specified'),
-        (DEFINE_LIFECYCLE, 'Define'),
-        (DESIGN_LIFECYCLE, 'Design'),
-        (DEVELOP_LIFECYCLE, 'Develop'),
-        (DEPLOY_LIFECYCLE, 'Deploy'),
-        (MAINTAIN_LIFECYCLE, 'Maintain'),
+        (IDEA_LIFECYCLE, 'Idea'),
+        (EXPLORE_LIFECYCLE, 'Explore'),
+        (VALIDATE_LIFECYCLE, 'Validate'),
+        (GROW_LIFECYCLE, 'Grow'),
+        (SUSTAIN_LIFECYCLE, 'Sustain'),
+        (RETIRE_LIFECYCLE, 'Retire'),
     )
 
     THIRD_PARTY_LIBRARY_ORIGIN = 1
@@ -197,7 +199,7 @@ class Application(models.Model):
 
     # Metadata
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
-    lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
+    lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     approximate_users = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')

@@ -96,7 +96,7 @@
       "name": "Alfa Application",
       "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command. What do you call a fake noodle? An Impasta!",
       "platform": "web",
-      "lifecycle": 2,
+      "lifecycle": "idea",
       "origin": 4,
       "business_criticality": "none",
       "external_audience": false,
@@ -114,7 +114,7 @@
       "name": "Bravo Application",
       "description": "This is a demonstration application. It is pre-populated with data to show how most use cases function. It can be manually loaded via the \"python manage.py loaddata sample_data.json\" command.",
       "platform": "desktop",
-      "lifecycle": 3,
+      "lifecycle": "retire",
       "origin": 3,
       "business_criticality": "very low",
       "external_audience": false,
@@ -186,7 +186,8 @@
       "last_name": "Doe",
       "email": "noreply@pearson.com",
       "phone_work": "3193396400",
-      "phone_mobile": "3193396400"
+      "phone_mobile": "3193396400",
+      "job_title": "Example Person"
     }
   },
   {
