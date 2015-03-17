@@ -149,12 +149,12 @@ class Application(models.Model):
         (RETIRE_LIFECYCLE, 'Retire'),
     )
 
-    THIRD_PARTY_LIBRARY_ORIGIN = 1
-    PURCHASED_ORIGIN = 2
-    CONTRACTOR_ORIGIN = 3
-    INTERNALLY_DEVELOPED_ORIGIN = 4
-    OPEN_SOURCE_ORIGIN = 5
-    OUTSOURCED_ORIGIN = 6
+    THIRD_PARTY_LIBRARY_ORIGIN = 'third party library'
+    PURCHASED_ORIGIN = 'purchased'
+    CONTRACTOR_ORIGIN = 'contractor'
+    INTERNALLY_DEVELOPED_ORIGIN = 'internal'
+    OPEN_SOURCE_ORIGIN = 'open source'
+    OUTSOURCED_ORIGIN = 'outsourced'
     ORIGIN_CHOICES = (
         (None, 'Not Specified'),
         (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
@@ -200,7 +200,7 @@ class Application(models.Model):
     # Metadata
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
-    origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
+    origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     approximate_users = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
