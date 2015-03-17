@@ -29,8 +29,12 @@
           <td>{{ application.get_business_criticality_display }}</td>
         </tr>
         <tr>
-          <td><strong>Approximate Users</strong></td>
-          <td>{{ application.approximate_users|intcomma }}</td>
+          <td><strong>User Records</strong></td>
+          <td>{{ application.users_records|intcomma }}</td>
+        </tr>
+        <tr>
+          <td><strong>Revenue</strong></td>
+          <td>${% if application.revenue < 1000000 %}{{ application.revenue|intcomma }}{% else %}{{ application.revenue|intword }}{% endif %}</td>
         </tr>
       </tbody>
     </table>

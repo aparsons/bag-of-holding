@@ -202,7 +202,8 @@ class Application(models.Model):
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
-    approximate_users = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
+    users_records = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
+    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text='Estimate the application\'s revenue in USD.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 

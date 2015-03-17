@@ -87,7 +87,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         (None, {'fields': ['organization', 'name', 'description']}),
         ('Metadata', {
             'classes': ['collapse'],
-            'fields': ['platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible']
+            'fields': ['platform', 'lifecycle', 'origin', 'business_criticality', 'approximate_users', 'approximate_revenue', 'external_audience', 'internet_accessible']
         }),
         ('Tags', {
             'classes': ['collapse'],
