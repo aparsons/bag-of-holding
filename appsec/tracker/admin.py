@@ -1,6 +1,7 @@
 from django.contrib import admin
 from tracker.models import Organization, DataElement
 from tracker.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementComment, ActivityComment, ApplicationFileUpload
+from tracker.models import ActivityType
 from tracker.models import ThreadFix
 # Register your models here.
 
@@ -21,7 +22,7 @@ class EnvironmentLocationInline(admin.StackedInline):
 
 class RelationInline(admin.StackedInline):
     model = Relation
-    fields = ['application', 'person', 'role', 'owner', 'notes']
+    fields = ['application', 'person', 'owner', 'notes']
     extra = 0
 
 
@@ -86,7 +87,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         (None, {'fields': ['organization', 'name', 'description']}),
         ('Metadata', {
             'classes': ['collapse'],
-            'fields': ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible']
+            'fields': ['platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible']
         }),
         ('Tags', {
             'classes': ['collapse'],
@@ -101,7 +102,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             'fields': ['threadfix', 'threadfix_organization_id', 'threadfix_application_id']
         }),
     ]
-    list_display = ['name', 'platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']
+    list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']
     list_filter = ('external_audience', 'internet_accessible')
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
@@ -140,6 +141,9 @@ class EngagementAdmin(admin.ModelAdmin):
     inlines = [ActivityInline, EngagementCommentInline]
 
 admin.site.register(Engagement, EngagementAdmin)
+
+
+admin.site.register(ActivityType)
 
 
 class ActivityAdmin(admin.ModelAdmin):

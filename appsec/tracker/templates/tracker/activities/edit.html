@@ -1,11 +1,11 @@
 {% extends "tracker/activities/base_activities.html" %}
 
-{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.get_activity_type_display }} | Edit Activity{% endblock %}
+{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }} | Edit Activity{% endblock %}
 
 {% block engagement_breadcrumb %}
 <li><a href="{% url 'tracker:application.engagements' application.id %}">Engagements</a></li>
 <li><a href="{% url 'tracker:engagement.detail' activity.engagement.id %}">{{ activity.engagement.start_date }} - {{ activity.engagement.end_date }}</a></li>
-<li><a href="{% url 'tracker:activity.detail' activity.id %}">{{ activity.get_activity_type_display }}</a></li>
+<li><a href="{% url 'tracker:activity.detail' activity.id %}">{{ activity.activity_type.name }}</a></li>
 <li class="active">Edit Activity</li>
 {% endblock engagement_breadcrumb %}
 

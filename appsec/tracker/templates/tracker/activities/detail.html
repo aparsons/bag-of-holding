@@ -2,18 +2,18 @@
 
 {% load humanize %}
 
-{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.get_activity_type_display }}{% endblock %}
+{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }}{% endblock %}
 
 {% block engagement_breadcrumb %}
 <li><a href="{% url 'tracker:application.engagements' application.id %}">Engagements</a></li>
 <li><a href="{% url 'tracker:engagement.detail' activity.engagement.id %}">{{ activity.engagement.start_date }} - {{ activity.engagement.end_date }}</a></li>
-<li class="active">{{ activity.get_activity_type_display }}</li>
+<li class="active">{{ activity.activity_type.name }}</li>
 {% endblock engagement_breadcrumb %}
 
 {% block activity_content %}
 <div class="row">
   <div class="col-md-8">
-    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> {{ activity.get_activity_type_display }}</h3>
+    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> {{ activity.activity_type.name }}</h3>
     {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
 
     <div class="btn-group" role="group" aria-label="status">

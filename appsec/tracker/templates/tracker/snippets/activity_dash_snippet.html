@@ -2,7 +2,7 @@
   {% if activity.activitycomment_set.all %}
   <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
   {% endif %}
-  <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }} <small class="hidden-xs">{{ activity.engagement.application.name }}</small></h4>
+  <h4 class="list-group-item-heading">{{ activity.activity_type.name }} <small class="hidden-xs">{{ activity.engagement.application.name }}</small></h4>
   <p class="list-group-item-text">
     {{ activity.engagement.start_date|date:"M. j, Y" }} - {{ activity.engagement.end_date|date:"M. j, Y" }} <span class="hidden-xs">({% if activity.engagement.start_date == activity.engagement.end_date %}1 day{% else %}{{ activity.engagement.start_date|timesince:activity.engagement.end_date }}{% endif %})</span>
   </p>

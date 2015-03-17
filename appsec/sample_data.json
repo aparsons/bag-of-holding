@@ -98,7 +98,6 @@
       "platform": "web",
       "lifecycle": 2,
       "origin": 4,
-      "industry": 42,
       "business_criticality": "none",
       "external_audience": false,
       "internet_accessible": false,
@@ -117,7 +116,6 @@
       "platform": "desktop",
       "lifecycle": 3,
       "origin": 3,
-      "industry": 22,
       "business_criticality": "very low",
       "external_audience": false,
       "internet_accessible": false,
@@ -135,7 +133,9 @@
       "status": "pending",
       "start_date": "2015-02-23",
       "end_date": "2015-02-27",
-      "description": "This is a demonstration engagement with the sole purpose of delivering engaging demonstrations."
+      "description": "This is a demonstration engagement with the sole purpose of delivering engaging demonstrations.",
+      "created_date": "2015-03-03T13:20:30+03:00",
+      "modified_date": "2015-03-05T13:20:30+03:00"
     }
   },
   {
@@ -145,7 +145,16 @@
       "application": 1,
       "status": "open",
       "start_date": "2015-01-05",
-      "end_date": "2015-01-09"
+      "end_date": "2015-01-09",
+      "created_date": "2015-03-03T13:20:30+03:00",
+      "modified_date": "2015-03-05T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "tracker.activitytype",
+    "pk": 1,
+    "fields": {
+      "name": "External Penetration Test"
     }
   },
   {
@@ -153,7 +162,7 @@
     "pk": 1,
     "fields": {
       "engagement": 1,
-      "activity_type": "appscan",
+      "activity_type": 1,
       "description": "Scan all the things!",
       "users": [1]
     }
@@ -164,7 +173,7 @@
     "fields": {
       "engagement": 1,
       "status": "open",
-      "activity_type": "threat model",
+      "activity_type": 1,
       "description": "Model all the things!",
       "users": [2]
     }

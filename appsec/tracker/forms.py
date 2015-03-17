@@ -59,7 +59,7 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['platform', 'lifecycle', 'origin', 'industry', 'business_criticality', 'approximate_users', 'external_audience', 'internet_accessible']
+        fields = ['platform', 'lifecycle', 'origin', 'business_criticality', 'approximate_users', 'external_audience', 'internet_accessible']
 
 
 class ApplicationSettingsTagsForm(forms.ModelForm):

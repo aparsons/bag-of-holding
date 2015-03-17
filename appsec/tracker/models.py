@@ -3,6 +3,7 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -125,102 +126,6 @@ class Application(models.Model):
         (OUTSOURCED_ORIGIN, 'Outsourced'),
     )
 
-    AEROSPACE_INDUSTRY = 1
-    AGRICULTURE_INDUSTRY = 2
-    APPAREL_INDUSTRY = 3
-    AUTOMOTIVE_TRANSPORT_INDUSTRY = 4
-    BANKING_INDUSTRY = 5
-    BEVERAGES_INDUSTRY = 6
-    BIOTECHNOLOGY_INDUSTRY = 7
-    BUSINESS_SERVICES_INDUSTRY = 8
-    CHARITABLE_ORGANIZATIONS_INDUSTRY = 9
-    CHEMICALS_INDUSTRY = 10
-    COMMUNICATIONS_INDUSTRY = 11
-    COMPUTER_HARDWARE_INDUSTRY = 12
-    CONSULTING_INDUSTRY = 13
-    CONSTRUCTION_INDUSTRY = 14
-    CONSUMER_PRODUCTS_MANUFACTURERS_INDUSTRY = 15
-    CONSUMER_SERVICES_INDUSTRY = 16
-    CULTURAL_INSTITUTIONS_INDUSTRY = 17
-    EDUCATION_INDUSTRY = 18
-    ELECTRONICS_INDUSTRY = 19
-    ENERGY_INDUSTRY = 20
-    ENGINEERING_INDUSTRY = 21
-    ENVIRONMENTAL_INDUSTRY = 22
-    FINANCE_INDUSTRY = 23
-    FOOD_BEVERAGE_INDUSTRY = 24
-    FOUNDATIONS_INDUSTRY = 25
-    GOVERNMENT_INDUSTRY = 26
-    HEALTHCARE_INDUSTRY = 27
-    HOSPITALITY_INDUSTRY = 28
-    INSURANCE_INDUSTRY = 29
-    MANUFACTURING_INDUSTRY = 30
-    MACHINERY_INDUSTRY = 31
-    MEDIA_ENTERTAINMENT_INDUSTRY = 32
-    MEMBERSHIP_ORGANIZATIONS_INDUSTRY = 33
-    METALS_MINING_INDUSTRY = 34
-    OTHER_INDUSTRY = 35
-    PHARMACEUTICALS_INDUSTRY = 36
-    REAL_ESTATE_INDUSTRY = 37
-    RECREATION_INDUSTRY = 38
-    RETAIL_INDUSTRY = 39
-    SECURITY_PRODUCTS_SERVICES_INDUSTRY = 40
-    SOFTWARE_INDUSTRY = 41
-    TECHNOLOGY_INDUSTRY = 42
-    TELECOMMUNICATIONS_EQUIPMENT_INDUSTRY = 43
-    TELECOMMUNICATIONS_INDUSTRY = 44
-    TRANSPORTATION_INDUSTRY = 45
-    UTILITIES_INDUSTRY = 46
-    INDUSTRY_CHOICES = (
-        (None, 'Not Specified'),
-        (AEROSPACE_INDUSTRY, 'Aerospace'),
-        (AGRICULTURE_INDUSTRY, 'Agriculture'),
-        (APPAREL_INDUSTRY, 'Apparel'),
-        (AUTOMOTIVE_TRANSPORT_INDUSTRY, 'Automotive and Transport'),
-        (BANKING_INDUSTRY, 'Banking'),
-        (BEVERAGES_INDUSTRY, 'Beverages'),
-        (BIOTECHNOLOGY_INDUSTRY, 'Biotechnology'),
-        (BUSINESS_SERVICES_INDUSTRY, 'Business Services'),
-        (CHARITABLE_ORGANIZATIONS_INDUSTRY, 'Charitable Organizations'),
-        (CHEMICALS_INDUSTRY, 'Chemicals'),
-        (COMMUNICATIONS_INDUSTRY, 'Communications'),
-        (COMPUTER_HARDWARE_INDUSTRY, 'Computer Hardware'),
-        (CONSULTING_INDUSTRY, 'Consulting'),
-        (CONSTRUCTION_INDUSTRY, 'Construction'),
-        (CONSUMER_PRODUCTS_MANUFACTURERS_INDUSTRY, 'Consumer Products Manufacturers'),
-        (CONSUMER_SERVICES_INDUSTRY, 'Consumer Services'),
-        (CULTURAL_INSTITUTIONS_INDUSTRY, 'Cultural Institutions'),
-        (EDUCATION_INDUSTRY, 'Education'),
-        (ELECTRONICS_INDUSTRY, 'Electronics'),
-        (ENERGY_INDUSTRY, 'Energy'),
-        (ENGINEERING_INDUSTRY, 'Engineering'),
-        (ENVIRONMENTAL_INDUSTRY, 'Environmental'),
-        (FINANCE_INDUSTRY, 'Finance'),
-        (FOOD_BEVERAGE_INDUSTRY, 'Food and Beverage'),
-        (FOUNDATIONS_INDUSTRY, 'Foundations'),
-        (GOVERNMENT_INDUSTRY, 'Government'),
-        (HEALTHCARE_INDUSTRY, 'Healthcare'),
-        (HOSPITALITY_INDUSTRY, 'Hospitality'),
-        (INSURANCE_INDUSTRY, 'Insurance'),
-        (MANUFACTURING_INDUSTRY, 'Manufacturing'),
-        (MACHINERY_INDUSTRY, 'Machinery'),
-        (MEDIA_ENTERTAINMENT_INDUSTRY, 'Media and Entertainment'),
-        (MEMBERSHIP_ORGANIZATIONS_INDUSTRY, 'Membership Organizations'),
-        (METALS_MINING_INDUSTRY, 'Metals and Mining'),
-        (OTHER_INDUSTRY, 'Other'),
-        (PHARMACEUTICALS_INDUSTRY, 'Pharmaceuticals'),
-        (REAL_ESTATE_INDUSTRY, 'Real Estate'),
-        (RECREATION_INDUSTRY, 'Recreation'),
-        (RETAIL_INDUSTRY, 'Retail'),
-        (SECURITY_PRODUCTS_SERVICES_INDUSTRY, 'Security Products and Services'),
-        (SOFTWARE_INDUSTRY, 'Software'),
-        (TECHNOLOGY_INDUSTRY, 'Technology'),
-        (TELECOMMUNICATIONS_EQUIPMENT_INDUSTRY, 'Telecommunications Equipment'),
-        (TELECOMMUNICATIONS_INDUSTRY, 'Telecommunications'),
-        (TRANSPORTATION_INDUSTRY, 'Transportation'),
-        (UTILITIES_INDUSTRY, 'Utilities'),
-    )
-
     VERY_HIGH_CRITICALITY = 'very high'
     HIGH_CRITICALITY = 'high'
     MEDIUM_CRITICALITY = 'medium'
@@ -268,7 +173,6 @@ class Application(models.Model):
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.IntegerField(choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.IntegerField(choices=ORIGIN_CHOICES, blank=True, null=True)
-    industry = models.IntegerField(choices=INDUSTRY_CHOICES, blank=True, null=True)
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     approximate_users = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
@@ -473,8 +377,8 @@ class Engagement(models.Model):
     start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
     end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
     description = models.TextField(blank=True)
-    open_date = models.DateTimeField(blank=True, null=True)
-    close_date = models.DateTimeField(blank=True, null=True)
+    open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
+    close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
 
     requestor = models.ForeignKey(Person, blank=True, null=True)
     application = models.ForeignKey(Application)
@@ -484,6 +388,24 @@ class Engagement(models.Model):
 
     class Meta:
         ordering = ['start_date']
+
+    def save(self, *args, **kwargs):
+        """Automatically sets the open and closed dates when the status changes."""
+        if self.pk is not None:
+            engagement = Engagement.objects.get(pk=self.pk)
+            if engagement.status != self.status:
+                if self.status == Engagement.PENDING_STATUS:
+                    self.open_date = None
+                    self.close_date = None
+                elif self.status == Engagement.OPEN_STATUS:
+                    self.open_date = timezone.now()
+                    self.close_date = None
+                elif self.status == Engagement.CLOSED_STATUS:
+                    if self.open_date is None:
+                        self.open_date = timezone.now()
+                    self.close_date = timezone.now()
+
+        super(Engagement, self).save(*args, **kwargs)
 
     def is_pending(self):
         return self.status == Engagement.PENDING_STATUS
@@ -522,39 +444,6 @@ class ActivityType(models.Model): # Incomplete
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
-    APPSCAN_ACTIVITY_TYPE = 'appscan'
-    CHECKMARX_ONBOARDING_ACTIVITY_TYPE = 'checkmarx'
-    MANUAL_ASSESSMENT_ACTIVITY_TYPE = 'manual assessment'
-    REPORTING_ACTIVITY_TYPE = 'reporting'
-    RETEST_PREVIOUS_ACTIVITY_TYPE = 'retest'
-    THREAT_MODEL_ACTIVITY_TYPE = 'threat model'
-    TRAINING_ACTIVITY_TYPE = 'training'
-    VERACODE_ONBOARDING_ACTIVITY_TYPE = 'veracode'
-    WHITEHAT_ONBOARDING_ACTIVITY_TYPE = 'whitehat'
-    ACTIVITY_TYPE_CHOICES = (
-        ('Assessments', (
-                ('external', 'External Penetration Test'),
-                (APPSCAN_ACTIVITY_TYPE, 'IBM AppScan Dynamic Scan'),
-                (MANUAL_ASSESSMENT_ACTIVITY_TYPE, 'Manual Assessment'),
-                ('peer review', 'Peer Review'),
-                (REPORTING_ACTIVITY_TYPE, 'Reporting'),
-                (RETEST_PREVIOUS_ACTIVITY_TYPE, 'Retest Known Issues'),
-            )
-        ),
-        ('Third-Party Services', (
-                (CHECKMARX_ONBOARDING_ACTIVITY_TYPE, 'Checkmarx Onboarding'),
-                (VERACODE_ONBOARDING_ACTIVITY_TYPE, 'Veracode Onboarding'),
-                (WHITEHAT_ONBOARDING_ACTIVITY_TYPE, 'WhiteHat Onboarding'),
-            )
-        ),
-        ('Other', (
-                ('consulting', 'Consulting'),
-                (TRAINING_ACTIVITY_TYPE, 'Training'),
-                (THREAT_MODEL_ACTIVITY_TYPE, 'Threat Model'),
-            )
-        ),
-    )
-
     PENDING_STATUS = 'pending'
     OPEN_STATUS = 'open'
     CLOSED_STATUS = 'closed'
@@ -564,21 +453,39 @@ class Activity(models.Model):
         (CLOSED_STATUS, 'Closed')
     )
 
-    activity_type = models.CharField(max_length=17, choices=ACTIVITY_TYPE_CHOICES)
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default=PENDING_STATUS)
     description = models.TextField(blank=True)
-    open_date = models.DateTimeField(blank=True, null=True)
-    close_date = models.DateTimeField(blank=True, null=True)
+    open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
+    close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
 
+    activity_type = models.ForeignKey(ActivityType)
     engagement = models.ForeignKey(Engagement)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     def __str__(self):
-        return dict(Activity.ACTIVITY_TYPE_CHOICES)[self.activity_type]
+        return dict(activity.activity_type.name_CHOICES)[self.activity_type]
 
     class Meta:
         ordering = ['engagement__start_date']
         verbose_name_plural = 'Activities'
+
+    def save(self, *args, **kwargs):
+        """Automatically sets the open and closed dates when the status changes."""
+        if self.pk is not None:
+            activity = Activity.objects.get(pk=self.pk)
+            if activity.status != self.status:
+                if self.status == Activity.PENDING_STATUS:
+                    self.open_date = None
+                    self.close_date = None
+                elif self.status == Activity.OPEN_STATUS:
+                    self.open_date = timezone.now()
+                    self.close_date = None
+                elif self.status == Activity.CLOSED_STATUS:
+                    if self.open_date is None:
+                        self.open_date = timezone.now()
+                    self.close_date = timezone.now()
+
+        super(Activity, self).save(*args, **kwargs)
 
     def is_pending(self):
         return self.status == Activity.PENDING_STATUS
@@ -637,7 +544,7 @@ class FileUpload(models.Model):
     """Abstract file upload by a user."""
 
     file = models.FileField()
-    
+
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

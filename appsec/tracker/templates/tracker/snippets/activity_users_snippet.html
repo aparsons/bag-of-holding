@@ -2,7 +2,7 @@
   {% if activity.activitycomment_set.all %}
   <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
   {% endif %}
-  <h4 class="list-group-item-heading">{{ activity.get_activity_type_display }}{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:45 }}</small>{% endif %}</h4>
+  <h4 class="list-group-item-heading">{{ activity.activity_type.name }}{% if activity.description %} <small class="text-muted hidden-xs">{{ activity.description|truncatechars:45 }}</small>{% endif %}</h4>
   <p class="list-group-item-text">
     {% for user in activity.users.all %}
     <span class="label label-default">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</span>

@@ -5,7 +5,7 @@
   <h4 class="list-group-item-heading">{{ engagement.start_date|date:"M. j, Y" }} - {{ engagement.end_date|date:"M. j, Y" }} <small class="hidden-xs">{{ engagement.application.name }}</small></h4>
   <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
     {% for activity in engagement.activity_set.all %}
-    <span class="label label-default hidden-xs">{{ activity.get_activity_type_display }}</span>
+    <span class="label label-default hidden-xs">{{ activity.activity_type.name }}</span>
     {% empty %}
     <span class="label label-danger">No activities for this engagement</span>
     {% endfor %}
