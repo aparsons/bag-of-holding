@@ -1,6 +1,8 @@
 # Excluding migrations until model is finalized
 project/*/migrations/*
 !project/*/migrations/__init__.py
+!project/boh/migrations/0001_initial.py
+!project/boh/migrations/0002_load_data.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
