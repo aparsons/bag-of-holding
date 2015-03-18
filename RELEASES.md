@@ -10,7 +10,7 @@ Thank you everyone who inspired, provided feedback, and contributed to this proj
 
 ### What's New
 
-1. **Everything!** At a high-level, within the application you can do the following:
+- **Everything!** At a high-level, within the application you can do the following:
   - Manage software applications
     - Track important metadata information for future reference
     - Retain application environment URLs, credentials, and notes
@@ -23,7 +23,7 @@ Thank you everyone who inspired, provided feedback, and contributed to this proj
 
 ### Known Issues
 
-1. Full functionality for some features are not available through the web interface. Until this is fixed you can edit the data using the **Django Site Admin** found on the **Manage** page. The features missing are listed below:
+- Full functionality for some features are not available through the web interface. Until this is fixed you can edit the data using the **Django Site Admin** found on the **Manage** page. The features missing are listed below:
   - User account settings
     - Password Change
     - User Profile
@@ -32,6 +32,6 @@ Thank you everyone who inspired, provided feedback, and contributed to this proj
     - CRUD Views
     - Relation to Organizations
     - Relation to Applications
-2. Not all form fields have a description describing their purpose. These will be improved over time but if you find a particular field menacing please let us know so we can prioritize clarifying its purpose.
+- Not all form fields have a description describing their purpose. These will be improved over time but if you find a particular field menacing please let us know so we can prioritize clarifying its purpose.
 
 *If you run into any issues please report it so we can fix it!*
