@@ -11,6 +11,7 @@ Thank you everyone who inspired, provided feedback, and contributed to this proj
 ### What's New
 
 **Everything!** At a high-level, within the application you can do the following:
+
   * Manage software applications
     * Track important metadata information for future reference
     * Retain application environment URLs, credentials, and notes
@@ -24,6 +25,7 @@ Thank you everyone who inspired, provided feedback, and contributed to this proj
 ### Known Issues
 
 Full functionality for some features are not available through the web interface. Until this is fixed you can edit the data using the **Django Site Admin** found on the **Manage** page. The features missing are listed below:
+
   * User account settings
     * Password Change
     * User Profile
