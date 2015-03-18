@@ -9,10 +9,10 @@ from django.utils import timezone
 class Tag(models.Model):
     """Associated with application for search and catagorization."""
 
-    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 characters hex format. (e.g., 'd94d59')")
+    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 character hex format.")
 
-    name = models.CharField(max_length=128, unique=True)
-    color = models.CharField(max_length=6, validators=[color_regex])
+    name = models.CharField(max_length=64, unique=True, help_text='A unique name for this tag.')
+    color = models.CharField(max_length=6, validators=[color_regex], help_text='Specify a 6 character hex color value. (e.g., \'d94d59\')')
 
     def __str__(self):
         return self.name
@@ -223,7 +223,6 @@ class Application(models.Model):
     #source code repo
     #bug tracking tool
     #developer experience / familiarity
-    #finance data
     #programming language/s
     #id for whitehat + checkmarx (third-party ids)
     #password policy
@@ -423,11 +422,11 @@ class Engagement(models.Model):
         return False
 
 
-class ActivityType(models.Model): # Incomplete
+class ActivityType(models.Model):
     """Types of work."""
 
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for this activity.')
-    documentation = models.TextField(blank=True)
+    documentation = models.TextField(blank=True, help_text='Guidelines, procedures, and techniques for this activity type.')
 
     def __str__(self):
         return self.name
@@ -549,13 +548,13 @@ class FileUpload(models.Model):
 class ApplicationFileUpload(FileUpload):
     """A file uploaded associated with an application."""
 
-    REPORT_FILE_TYPE = 1
-    DOCUMENTATION_FILE_TYPE = 2
+    REPORT_FILE_TYPE = 'report'
+    DOCUMENTATION_FILE_TYPE = 'documentation'
     FILE_TYPE_CHOICES = (
         (REPORT_FILE_TYPE, 'Report'),
         (DOCUMENTATION_FILE_TYPE, 'Documentation'),
     )
 
-    file_type = models.IntegerField(choices=FILE_TYPE_CHOICES)
+    file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
 
     application = models.ForeignKey(Application)

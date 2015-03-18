@@ -1,6 +1,6 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}Application Settings | Services{% endblock %}
+{% block title %}{{ application.name }} | Settings | Services{% endblock %}
 
 {% block settings_content %}
 <form method="post" action="{% url 'boh:application.settings.services' application.id %}">

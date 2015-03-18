@@ -83,7 +83,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
-URL_PREFIX = 'test/'
+URL_PREFIX = ''
 
 LOGIN_URL = os.path.join('/', URL_PREFIX, 'accounts/login')
 LOGIN_REDIRECT_URL = os.path.join('/', URL_PREFIX)

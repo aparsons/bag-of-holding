@@ -1,6 +1,6 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}Application Settings | Metadata{% endblock %}
+{% block title %}{{ application.name }} | Settings | Metadata{% endblock %}
 
 {% block settings_content %}
 <form method="post" action="{% url 'boh:application.settings.metadata' application.id %}">

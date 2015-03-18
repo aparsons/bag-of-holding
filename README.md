@@ -2,7 +2,11 @@
 
 The **Bag of Holding** is an internal project designed to track application security information.
 
-## Installation
+## Deployment
+
+For information about how to create a deployment, see [DEPLOY.md](DEPLOY.md).
+
+## Development Setup
 
 For information on setting up a development environment, see [INSTALL.md](INSTALL.md).
 
