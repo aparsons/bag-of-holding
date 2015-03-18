@@ -1,6 +1,10 @@
 # Bag of Holding
 
-The **Bag of Holding** is an internal project designed to track application security information.
+The **Bag of Holding** is an application security utility to assist in the organization and prioritization of software security activities.
+
+## Releases
+
+For information about **what's new** as well as **known issues**, see [RELEASES.md](RELEASES.md)
 
 ## Deployment
 
