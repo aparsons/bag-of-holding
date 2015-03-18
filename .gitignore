@@ -1,6 +1,6 @@
 # Excluding migrations until model is finalized
-appsec/*/migrations/*
-!appsec/*/migrations/__init__.py
+project/*/migrations/*
+!project/*/migrations/__init__.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -51,8 +51,6 @@ coverage.xml
 # Django
 *.log
 db.sqlite3
-appsec/media/*
-!appsec/media/.gitkeep
 /static/
 /media/
 
