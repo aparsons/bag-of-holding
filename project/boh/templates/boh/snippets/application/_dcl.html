@@ -1,0 +1,15 @@
+<div class="panel panel-default hidden-sm hidden-xs">
+  {% if title %}
+  <div class="panel-heading text-center">
+    <h3 class="panel-title">{{ title }}</h3>
+  </div>
+  {% endif %}
+  <div class="panel-body text-center">
+    <span class="text-{% if dcl == 1 %}success{% elif dcl == 2 %}info{% elif dcl == 3 %}warning{% elif dcl == 4 %}danger{% endif %}" style="font-size: 250%; font-weight: bold;">{{ dcl }}</span>
+  </div>
+  {% if footer %}
+  <div class="panel-footer text-center">
+    <span class="text-muted">{{ footer }}</span>
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,53 @@
+{% extends "boh/base.html" %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="pull-right">
+      <nav>
+        <span class="text-muted"><b>{{ people.start_index }}</b> - <b>{{ people.end_index }}</b> of <b>{{ people.paginator.count }}</b></span>
+        <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-default{% if not people.has_previous %} disabled{% endif %}" href="{% if people.has_previous %}?page={{ people.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="btn btn-default{% if not people.has_next %} disabled{% endif %}" href="{% if people.has_next %}?page={{ people.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-md-3">
+    <a href="{% url 'boh:people.add' %}" class="btn btn-success btn-block" role="button"><i class="fa fa-plus"></i> Add Person</a>
+    <hr>
+  </div>
+  <div class="col-md-9">
+    {% if people %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for person in people %}
+        <tr>
+          <td><a href="{% url 'boh:people.detail' person.id %}">{{ person.last_name }}</a></td>
+          <td>{{ person.first_name }}</td>
+          <td>{{ person.email }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <strong>There are no people. <a href="">Go ahead and add one!</a></strong>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

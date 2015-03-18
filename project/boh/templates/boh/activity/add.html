@@ -1,0 +1,38 @@
+{% extends "boh/activity/base_activities.html" %}
+
+{% block title %}{{ application.name }} | {{ engagement.start_date }} - {{ engagement.end_date }} | New Activity{% endblock %}
+
+{% block engagement_breadcrumb %}
+<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:engagement.detail' engagement.id %}">{{ engagement.start_date }} - {{ engagement.end_date }}</a></li>
+<li class="active">New Activity</li>
+{% endblock engagement_breadcrumb %}
+
+{% block activity_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:activity.add' engagement.id %}">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Activity</h3>
+        </div>
+        <div class="panel-body">
+          {% include "boh/snippets/form/_general.html" with control=form.activity_type %}
+          {% include "boh/snippets/form/_general.html" with control=form.description %}
+          {% include "boh/snippets/form/_general.html" with control=form.users %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Create Activity</button>
+          <a href="{% url 'boh:engagement.detail' engagement.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how activity work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock activity_content %}

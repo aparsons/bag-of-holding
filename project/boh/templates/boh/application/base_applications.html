@@ -1,0 +1,19 @@
+{% extends "boh/base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><span class="hidden-xs"><a href="{% url 'boh:organization.overview' application.organization.id %}">{{ application.organization.name }}</a> / </span><strong><a href="{% url 'boh:application.overview' application.id %}">{{ application.name }}</a></strong></h2>
+    <ul class="nav nav-tabs horizontal-bar">
+      <li role="presentation"{% if active_tab == 'overview' %} class="active"{% endif %}><a href="{% url 'boh:application.overview' application.id %}"><span class="fa fa-home" aria-hidden="true"></span><span class="hidden-xs"> Overview</span></a></li>
+      <li role="presentation"{% if active_tab == 'engagements' %} class="active"{% endif %}><a href="{% url 'boh:application.engagements' application.id %}"><span class="fa fa-calendar" aria-hidden="true"></span><span class="hidden-xs">  Engagements{% if application.engagement_set.all %} <span class="badge">{{ application.engagement_set.count }}</span>{% endif %}</span></a></li>
+      <li role="presentation"{% if active_tab == 'environments' %} class="active"{% endif %}><a href="{% url 'boh:application.environments' application.id %}"><span class="fa fa-globe" aria-hidden="true"></span><span class="hidden-xs">  Environments{% if application.environment_set.all %} <span class="badge">{{ application.environment_set.count }}</span>{% endif %}</span></a></li>
+      <li role="presentation"{% if active_tab == 'people' %} class="active"{% endif %}><a href="{% url 'boh:application.people' application.id %}"><span class="fa fa-users" aria-hidden="true"></span><span class="hidden-xs">  People{% if application.relation_set.all %} <span class="badge">{{ application.relation_set.count }}</span>{% endif %}</span></a></li>
+      <li role="presentation"{% if active_tab == 'settings' %} class="active"{% endif %}><a href="{% url 'boh:application.settings.general' application.id %}"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs">  Settings</span></a></li>
+    </ul>
+  </div>
+</div>
+
+{% block application_content %}
+{% endblock application_content %}
+{% endblock content %}

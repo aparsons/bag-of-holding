@@ -1,0 +1,82 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Bag of Holding | {% block title %}{% endblock %}</title>
+
+  <link href="{% static 'boh/css/vendor/bootstrap-3.3.2.min.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'boh/css/vendor/bootstrap-theme-3.3.2.min.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'boh/css/vendor/font-awesome-4.3.0.min.css' %}" rel="stylesheet" media="screen">
+  {% block css %}
+  {% endblock css %}
+  <link href="{% static 'boh/css/screen.css' %}" rel="stylesheet" media="screen">
+
+</head>
+<body>
+  <div class="wrapper">
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'boh:dashboard.personal' %}">Bag of Holding</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-tasks" aria-hidden="true"></span> Dashboard</a></li>
+            <li><a href="{% url 'boh:application.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</a></li>
+            <li><a href="{% url 'boh:people.list' %}"><i class="fa fa-users" aria-hidden="true"></i> People</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_staff %}
+            <li><a href="{% url 'boh:management.services' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
+            {% endif %}
+            <li><a href=""><span class="fa fa-cog" aria-hidden="true"></span><span class="hidden-sm"> Settings</span></a></li>
+            <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span><span class="hidden-sm"> Logout</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endif %}
+    <div class="container">
+      {% if messages %}
+      <div class="row">
+        <div class="col-md-12">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.level_tag }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times" aria-hidden="true"></span></button>
+            {% if message.extra_tags %}<strong>{{ message.extra_tags }}</strong> {% endif %}{{ message }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted pull-right">CONFIDENTIAL</p>
+      <p class="text-muted"><span class="fa fa-copyright" aria-hidden="true"></span> 2015 Pearson</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'boh/js/vendor/jquery-2.1.3.min.js' %}"></script>
+  <script src="{% static 'boh/js/vendor/bootstrap-3.3.2.min.js' %}"></script>
+  <script src="{% static 'boh/js/application.js' %}"></script>
+  {% block js %}
+  {% endblock js %}
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "boh/base.html" %}
+
+{% block title %}Add Person{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h2>Add Person</h2>
+    <div class="well well-lg">
+      <form method="post" action="{% url 'boh:people.add' %}">
+        {% csrf_token %}
+
+        {% include "boh/snippets/form/_general.html" with control=form.first_name %}
+        {% include "boh/snippets/form/_general.html" with control=form.last_name %}
+        {% include "boh/snippets/form/_general.html" with control=form.email %}
+        {% include "boh/snippets/form/_general.html" with control=form.phone_work %}
+        {% include "boh/snippets/form/_general.html" with control=form.phone_mobile %}
+        {% include "boh/snippets/form/_general.html" with control=form.job_title %}
+        {% include "boh/snippets/form/_general.html" with control=form.role %}
+
+        <a href="{% url 'boh:people.list' %}" class="btn btn-default" role="button">Cancel</a>
+        <button class="btn btn-primary" type="submit">Add Person</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

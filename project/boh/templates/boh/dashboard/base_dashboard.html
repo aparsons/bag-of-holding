@@ -1,0 +1,18 @@
+{% extends "boh/base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><a href="{% url 'boh:dashboard.personal' %}">Dashboards</a></h2>
+    <ul class="nav nav-tabs horizontal-bar">
+      <li role="presentation"{% if active_tab == 'personal' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-user" aria-hidden="true"></span><span class="hidden-xs"> My Dashboard</span></a></li>
+      <li role="presentation"{% if active_tab == 'team' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.team' %}"><span class="fa fa-users" aria-hidden="true"></span><span class="hidden-xs"> Team Dashboard</span></a></li>
+      <li role="presentation"{% if active_tab == 'metrics' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.metrics' %}"><span class="fa fa-bar-chart" aria-hidden="true"></span><span class="hidden-xs"> Metrics</span></a></li>
+      <li role="presentation"{% if active_tab == 'reports' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.reports' %}"><span class="fa fa-file-text" aria-hidden="true"></span><span class="hidden-xs"> Reports</span></a></li>
+    </ul>
+  </div>
+</div>
+
+{% block dashboard_content %}
+{% endblock dashboard_content %}
+{% endblock content %}

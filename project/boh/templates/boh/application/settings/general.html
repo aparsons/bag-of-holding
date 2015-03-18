@@ -1,0 +1,45 @@
+{% extends "boh/application/settings/base_settings.html" %}
+
+{% block title %}Application Settings | General{% endblock %}
+
+{% block settings_content %}
+<form method="post" action="{% url 'boh:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">General Information</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=general_form.name %}
+      {% include "boh/snippets/form/_general.html" with control=general_form.description %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-general" type="submit">Update General Information</button>
+    </div>
+  </div>
+</form>
+
+<form method="post" action="{% url 'boh:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Change Organization</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=organization_form.organization %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-organization" type="submit">Update Organization</button>
+    </div>
+  </div>
+</form>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Features</h3>
+  </div>
+  <div class="panel-body">
+    <span class="text-muted">Nothing here yet.</span>
+  </div>
+</div>
+{% endblock settings_content %}

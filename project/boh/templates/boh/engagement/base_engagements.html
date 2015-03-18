@@ -1,0 +1,16 @@
+{% extends "boh/application/base_applications.html" %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-12">
+    <ol class="breadcrumb">
+      {% block engagement_breadcrumb %}
+      {% endblock engagement_breadcrumb %}
+    </ol>
+    <hr>
+  </div>
+</div>
+
+{% block engagement_content %}
+{% endblock engagement_content %}
+{% endblock application_content %}

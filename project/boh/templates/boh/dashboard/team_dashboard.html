@@ -1,0 +1,82 @@
+{% extends "boh/dashboard/base_dashboard.html" %}
+
+{% block title %}Team Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="row">
+  <div class="col-md-6">
+    <h3>Activities by User</h3>
+    <p class="text-muted">Find open and pending activities for each user.</p>
+    {% for user in users %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user }}{% endif %}</h4>
+      </div>
+      <div class="list-group">
+        {% for activity in user.activity_set.all %}
+        {% if activity.is_open or activity.is_pending %}
+        {% include "boh/snippets/dashboard/_activity.html" with activity=activity %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-md-6">
+    <h3>All Engagements</h3>
+    <p class="text-muted">A list of open and pending engagements.</p>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ open_engagements.count }} Open <small class="hidden-xs">Engagements that are in progress</small></h3>
+      </div>
+      <div class="list-group">
+        {% for engagement in open_engagements %}
+        {% include "boh/snippets/dashboard/_engagement.html" with engagement=engagement %}
+        {% empty %}
+        <li class="list-group-item"><small><em class="text-muted">There are no open engagements.</em></small></li>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> {{ pending_engagements.count }} Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
+      </div>
+      <div class="list-group">
+        {% for engagement in pending_engagements %}
+        {% include "boh/snippets/dashboard/_engagement.html" with engagement=engagement %}
+        {% empty %}
+        <li class="list-group-item"><small><em class="text-muted">There are no pending engagements.</em></small></li>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="hidden-sm hidden-xs">
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Unassigned Activities</h3>
+    <p class="text-muted">These activities need to have users assigned to them.</p>
+    <div class="list-group">
+      {% for activity in unassigned_activities %}
+      {% include "boh/snippets/dashboard/_activity.html" with activity=activity %}
+      {% empty %}
+      <li class="list-group-item"><small><em class="text-muted">There are no unassigned activities.</em></small></li>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h3>Empty Engagements</h3>
+    <p class="text-muted">These engagements have no activities within them.</p>
+    <div class="list-group">
+      {% for engagement in empty_engagements %}
+      {% include "boh/snippets/dashboard/_engagement.html" with engagement=engagement %}
+      {% empty %}
+      <li class="list-group-item"><small><em class="text-muted">There are no empty engagements.</em></small></li>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock dashboard_content %}

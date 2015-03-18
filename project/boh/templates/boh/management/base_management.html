@@ -1,0 +1,33 @@
+{% extends "boh/base.html" %}
+
+{% block title %}Management Settings{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Manage Settings</h3>
+      </div>
+      <div class="list-group">
+        <a href="#" class="list-group-item{% if active == 'organizations' %} active{% endif %} disabled"><span class="fa fa-building" aria-hidden="true"></span> Organizations</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-tags" aria-hidden="true"></span> Application Tags</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-clock-o" aria-hidden="true"></span> Activity Types</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-cubes" aria-hidden="true"></span> Data Elements</a>
+        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Levels</a>
+        <a href="{% url 'boh:management.services' %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
+        <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active == 'users' %} active{% endif %}"><span class="fa fa-users" aria-hidden="true"></span> Users</a>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="list-group">
+        <a href="{% url 'admin:index' %}" target="_blank" class="list-group-item"><span class="fa fa-user-secret" aria-hidden="true"></span> Django Site Admin</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    {% block manage_content %}
+    {% endblock manage_content %}
+  </div>
+</div>
+{% endblock content %}

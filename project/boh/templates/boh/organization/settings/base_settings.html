@@ -1,0 +1,25 @@
+{% extends "boh/organization/base_organizations.html" %}
+
+{% block organization_content %}
+<div class="row">
+  <div class="col-sm-4 col-md-4 col-lg-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-cogs" aria-hidden="true"></span> Organization Settings</h3>
+      </div>
+      <div class="list-group">
+        <a href="{% url 'boh:organization.settings.general' organization.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="list-group">
+        <a href="{% url 'boh:organization.settings.danger' organization.id %}" class="list-group-item{% if active_side == 'danger' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8 col-md-8 col-lg-9">
+    {% block settings_content %}
+    {% endblock settings_content %}
+  </div>
+</div>
+{% endblock organization_content %}

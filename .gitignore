@@ -53,6 +53,8 @@ coverage.xml
 db.sqlite3
 appsec/media/*
 !appsec/media/.gitkeep
+/static/
+/media/
 
 # Sphinx documentation
 docs/_build/

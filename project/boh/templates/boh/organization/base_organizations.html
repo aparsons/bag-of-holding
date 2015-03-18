@@ -1,0 +1,19 @@
+{% extends "boh/base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><a href="{% url 'boh:organization.overview' organization.id %}">{{ organization.name }}</a></h2>
+    <ul class="nav nav-tabs horizontal-bar">
+      <li role="presentation"{% if active_tab == 'overview' %} class="active"{% endif %}><a href="{% url 'boh:organization.overview' organization.id %}"><span class="fa fa-home" aria-hidden="true"></span><span class="hidden-xs"> Overview</span></a></li>
+      <li role="presentation"{% if active_tab == 'people' %} class="active"{% endif %}><a href="{% url 'boh:organization.people' organization.id %}"><span class="fa fa-users" aria-hidden="true"></span><span class="hidden-xs"> People</span></a></li>
+      {% if user.is_staff %}
+      <li role="presentation"{% if active_tab == 'settings' %} class="active"{% endif %}><a href="{% url 'boh:organization.settings.general' organization.id %}"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs">  Settings</span></a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+
+{% block organization_content %}
+{% endblock organization_content %}
+{% endblock content %}

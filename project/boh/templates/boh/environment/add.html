@@ -1,0 +1,32 @@
+{% extends "boh/environment/base_environments.html" %}
+
+{% block title %}{{ application.name }} | New Environment{% endblock %}
+
+{% block environment_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:environment.add' application.id %}">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Environment</h3>
+        </div>
+        <div class="panel-body">
+          {% include "boh/snippets/form/_general.html" with control=form.environment_type %}
+          {% include "boh/snippets/form/_general.html" with control=form.description %}
+          {% include "boh/snippets/form/_checkbox.html" with control=form.testing_approved %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Create Environment</button>
+          <a href="{% url 'boh:application.environments' application.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how environment work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock environment_content %}

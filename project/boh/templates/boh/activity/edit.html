@@ -1,0 +1,44 @@
+{% extends "boh/activity/base_activities.html" %}
+
+{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }} | Edit Activity{% endblock %}
+
+{% block engagement_breadcrumb %}
+<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:engagement.detail' activity.engagement.id %}">{{ activity.engagement.start_date }} - {{ activity.engagement.end_date }}</a></li>
+<li><a href="{% url 'boh:activity.detail' activity.id %}">{{ activity.activity_type.name }}</a></li>
+<li class="active">Edit Activity</li>
+{% endblock engagement_breadcrumb %}
+
+{% block activity_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:activity.edit' activity.id %}">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Activity</h3>
+        </div>
+        <div class="panel-body">
+          {% include "boh/snippets/form/_general.html" with control=form.status %}
+          {% include "boh/snippets/form/_general.html" with control=form.activity_type %}
+          {% include "boh/snippets/form/_general.html" with control=form.description %}
+          {% include "boh/snippets/form/_general.html" with control=form.users %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Update Activity</button>
+          <a href="{% url 'boh:activity.detail' activity.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how activity work here.</p>
+    </div>
+    <form method="post" action="{% url 'boh:activity.delete' activity.id %}">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this activity?');">Delete Activity</button>
+    </form>
+  </div>
+</div>
+{% endblock activity_content %}
