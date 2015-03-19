@@ -40,8 +40,14 @@
             {% if user.is_staff %}
             <li><a href="{% url 'boh:management.services' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
             {% endif %}
-            <!--<li><a href=""><span class="fa fa-cog" aria-hidden="true"></span><span class="hidden-sm"> Settings</span></a></li>-->
-            <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span><span class="hidden-sm"> Logout</span></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-user" aria-hidden="true"></span> Account <span class="fa fa-caret-down" aria-hidden="true"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'django.contrib.auth.views.password_change' %}"><span class="fa fa-key" aria-hidden="true"></span> Change Password</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
