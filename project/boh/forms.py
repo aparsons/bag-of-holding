@@ -1,7 +1,16 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.db.models import Q
 
 from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
+
+
+# User
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
 
 
 # Organization

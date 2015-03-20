@@ -14,6 +14,10 @@ urlpatterns = patterns('',
     url(r'^manage/services/$', views.management_services, name='management.services'),
     url(r'^manage/users/$', views.management_users, name='management.users'),
 
+    # User
+    url(r'^accounts/profile/$', views.user_profile, name='user.profile'),
+    url(r'^accounts/password/$', views.user_change_password, name='user.change_password'),
+
     # Organization
     url(r'^organizations/add/$', views.organization_add, name='organization.add'),
     url(r'^organizations/(?P<organization_id>\d+)/$', views.organization_overview, name='organization.overview'),

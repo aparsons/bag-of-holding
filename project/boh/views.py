@@ -2,8 +2,10 @@ import random
 
 from django import forms
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Q
@@ -13,6 +15,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
+from boh.forms import UserProfileForm
 from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from boh.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDCLOverrideForm
@@ -132,6 +135,46 @@ def management_users(request):
 
     return render(request, 'boh/management/users.html', {
         'active': 'users'
+    })
+
+
+# User
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def user_profile(request):
+    profile_form = UserProfileForm(request.POST or None, instance=request.user)
+
+    if request.method == 'POST':
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'You successfully updated your profile.', extra_tags=random.choice(action_messages))
+        else:
+            messages.error(request, 'There was a problem updating your profile.', extra_tags='Uh oh!')
+
+    return render(request, 'boh/user/profile.html', {
+        'profile_form': profile_form,
+        'active_side': 'profile'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def user_change_password(request):
+    password_form = PasswordChangeForm(user=request.user, data=request.POST or None)
+
+    if request.method == 'POST':
+        if password_form.is_valid():
+            password_form.save()
+            update_session_auth_hash(request, password_form.user)
+            messages.success(request, 'You successfully changed your password.', extra_tags=random.choice(action_messages))
+        else:
+            messages.error(request, 'There was a problem changing your password.', extra_tags='Uh oh!')
+
+    return render(request, 'boh/user/change_password.html', {
+        'password_form': password_form,
+        'active_side': 'change_password'
     })
 
 
