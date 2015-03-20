@@ -97,6 +97,7 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = os.path.join('/', URL_PREFIX, 'static/')
+MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'boh/templates'),
@@ -107,4 +108,3 @@ TEMPLATE_DIRS = (
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, os.pardir, 'media')
-    MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
