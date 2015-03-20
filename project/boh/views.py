@@ -26,7 +26,7 @@ from boh.forms import PersonAddForm
 
 
 # Messages shown on successful actions
-action_messages = [
+success_messages = [
     'Excellent!',
     'Well Done!',
     'Yay!',
@@ -47,7 +47,18 @@ action_messages = [
     'Bam!',
     'Behold!',
     'Good Show!',
-    'Boom Chuck!'
+    'Boom Chuck!',
+    'Bingo!'
+]
+
+error_messages = [
+    'Uh Oh!',
+    'Whoops!',
+    'Oopsie!',
+    'Rats!',
+    'Darn!',
+    'Crud!',
+    'Yikes!'
 ]
 
 
@@ -149,9 +160,9 @@ def user_profile(request):
     if request.method == 'POST':
         if profile_form.is_valid():
             profile_form.save()
-            messages.success(request, 'You successfully updated your profile.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully updated your profile.', extra_tags=random.choice(success_messages))
         else:
-            messages.error(request, 'There was a problem updating your profile.', extra_tags='Uh oh!')
+            messages.error(request, 'There was a problem updating your profile.', extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/user/profile.html', {
         'profile_form': profile_form,
@@ -168,9 +179,9 @@ def user_change_password(request):
         if password_form.is_valid():
             password_form.save()
             update_session_auth_hash(request, password_form.user)
-            messages.success(request, 'You successfully changed your password.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully changed your password.', extra_tags=random.choice(success_messages))
         else:
-            messages.error(request, 'There was a problem changing your password.', extra_tags='Uh oh!')
+            messages.error(request, 'There was a problem changing your password.', extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/user/change_password.html', {
         'password_form': password_form,
@@ -216,7 +227,7 @@ def organization_settings_general(request, organization_id):
 
     if request.method == 'POST' and form.is_valid():
         form.save()
-        messages.success(request, 'You successfully update this organization\'s general information.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully update this organization\'s general information.', extra_tags=random.choice(success_messages))
 
     return render(request, 'boh/organization/settings/general.html', {
         'organization': organization,
@@ -236,7 +247,7 @@ def organization_settings_danger(request, organization_id):
 
     if request.method == 'POST' and form.is_valid():
         organization.delete()
-        messages.success(request, 'You successfully deleted the "' + organization.name + '" organization.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully deleted the "' + organization.name + '" organization.', extra_tags=random.choice(success_messages))
         return redirect('boh:dashboard.personal')
 
     return render(request, 'boh/organization/settings/danger.html', {
@@ -254,7 +265,7 @@ def organization_add(request):
 
     if form.is_valid():
         organization = form.save()
-        messages.success(request, 'You successfully created this organization.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully created this organization.', extra_tags=random.choice(success_messages))
         return redirect('boh:organization.overview', organization.id)
 
     return render(request, 'boh/organization/add.html', {
@@ -356,7 +367,7 @@ def application_add(request):
 
     if form.is_valid():
         application = form.save()
-        messages.success(request, 'You successfully created this application.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully created this application.', extra_tags=random.choice(success_messages))
         return redirect('boh:application.overview', application_id=application.id)
 
     return render(request, 'boh/application/add.html', {
@@ -377,12 +388,12 @@ def application_settings_general(request, application_id):
             general_form = ApplicationSettingsGeneralForm(request.POST, instance=application)
             if general_form.is_valid():
                 general_form.save()
-                messages.success(request, 'You successfully updated this application\'s general information.', extra_tags=random.choice(action_messages))
+                messages.success(request, 'You successfully updated this application\'s general information.', extra_tags=random.choice(success_messages))
         elif 'submit-organization' in request.POST:
             organization_form = ApplicationSettingsOrganizationForm(request.POST, instance=application)
             if organization_form.is_valid():
                 organization_form.save()
-                messages.success(request, 'You successfully updated this application\'s organization.', extra_tags=random.choice(action_messages))
+                messages.success(request, 'You successfully updated this application\'s organization.', extra_tags=random.choice(success_messages))
 
     return render(request, 'boh/application/settings/general.html', {
         'application': application,
@@ -405,12 +416,12 @@ def application_settings_metadata(request, application_id):
         metadata_form = ApplicationSettingsMetadataForm(request.POST, instance=application)
         if metadata_form.is_valid():
             metadata_form.save()
-            messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(success_messages))
     elif 'submit-tags' in request.POST:
         tags_form = ApplicationSettingsTagsForm(request.POST, instance=application)
         if tags_form.is_valid():
             tags_form.save()
-            messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(success_messages))
 
     return render(request, 'boh/application/settings/metadata.html', {
         'application': application,
@@ -432,7 +443,7 @@ def application_settings_data_elements(request, application_id):
     if request.method == 'POST':
         if data_elements_form.is_valid():
             data_elements_form.save()
-            messages.success(request, 'You successfully updated this application\'s data elements.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully updated this application\'s data elements.', extra_tags=random.choice(success_messages))
         return redirect('boh:application.settings.data-elements', application.id)
 
     return render(request, 'boh/application/settings/data_elements.html', {
@@ -455,7 +466,7 @@ def application_settings_data_elements_override(request, application_id):
 
     if dcl_override_form.is_valid():
         dcl_override_form.save()
-        messages.success(request, 'This application\'s data classification override has been updated.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'This application\'s data classification override has been updated.', extra_tags=random.choice(success_messages))
 
     return redirect('boh:application.settings.data-elements', application.id)
 
@@ -471,7 +482,7 @@ def application_settings_services(request, application_id):
         threadfix_form = ApplicationSettingsThreadFixForm(request.POST, instance=application)
         if threadfix_form.is_valid():
             threadfix_form.save()
-            messages.success(request, 'You successfully updated this application\'s ThreadFix information.', extra_tags=random.choice(action_messages))
+            messages.success(request, 'You successfully updated this application\'s ThreadFix information.', extra_tags=random.choice(success_messages))
 
     return render(request, 'boh/application/settings/services.html', {
         'application': application,
@@ -490,7 +501,7 @@ def application_settings_danger(request, application_id):
 
     if request.method == 'POST' and form.is_valid():
         application.delete()
-        messages.success(request, 'You successfully deleted the "' + application.name + '" application.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully deleted the "' + application.name + '" application.', extra_tags=random.choice(success_messages))
         return redirect('boh:application.list')
 
     return render(request, 'boh/application/settings/danger.html', {
@@ -514,7 +525,7 @@ def environment_add(request, application_id):
         environment = form.save(commit=False)
         environment.application = application
         environment.save()
-        messages.success(request, 'You successfully created this environment.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully created this environment.', extra_tags=random.choice(success_messages))
         return redirect('boh:application.environments', application_id=application.id)
 
     return render(request, 'boh/environment/add.html', {
@@ -533,7 +544,7 @@ def environment_edit_general(request, environment_id):
 
     if form.is_valid():
         environment = form.save()
-        messages.success(request, 'You successfully updated this environment.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated this environment.', extra_tags=random.choice(success_messages))
         return redirect('boh:environment.edit.general', environment_id=environment.id)
 
     return render(request, 'boh/environment/edit/general.html', {
@@ -560,7 +571,7 @@ def environment_edit_locations(request, environment_id):
 
     if formset.is_valid():
         formset.save()
-        messages.success(request, 'You successfully updated these locations.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated these locations.', extra_tags=random.choice(success_messages))
         return redirect('boh:environment.edit.locations', environment_id=environment.id)
 
     return render(request, 'boh/environment/edit/locations.html', {
@@ -587,7 +598,7 @@ def environment_edit_credentials(request, environment_id):
 
     if formset.is_valid():
         formset.save()
-        messages.success(request, 'You successfully updated these credentials.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated these credentials.', extra_tags=random.choice(success_messages))
         return redirect('boh:environment.edit.credentials', environment_id=environment.id)
 
     return render(request, 'boh/environment/edit/credentials.html', {
@@ -608,7 +619,7 @@ def environment_edit_danger(request, environment_id):
 
     if request.method == 'POST' and form.is_valid():
         environment.delete()
-        messages.success(request, 'You successfully deleted the "' + environment.get_environment_type_display() + '" environment.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully deleted the "' + environment.get_environment_type_display() + '" environment.', extra_tags=random.choice(success_messages))
         return redirect('boh:application.environments', environment.application.id)
 
     return render(request, 'boh/environment/edit/danger.html', {
@@ -658,7 +669,7 @@ def engagement_add(request, application_id):
         engagement = form.save(commit=False)
         engagement.application = application
         engagement.save()
-        messages.success(request, 'You successfully created this engagement.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully created this engagement.', extra_tags=random.choice(success_messages))
         return redirect('boh:engagement.detail', engagement_id=engagement.id)
     else:
         return render(request, 'boh/engagement/add.html', {
@@ -677,7 +688,7 @@ def engagement_edit(request, engagement_id):
 
     if request.method == 'POST' and form.is_valid():
         engagement = form.save()
-        messages.success(request, 'You successfully updated this engagement.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated this engagement.', extra_tags=random.choice(success_messages))
         return redirect('boh:engagement.detail', engagement_id=engagement.id)
 
     return render(request, 'boh/engagement/edit.html', {
@@ -697,7 +708,7 @@ def engagement_status(request, engagement_id):
 
     if status_form.is_valid():
         engagement = status_form.save()
-        messages.success(request, 'You successfully updated this engagement\'s status to ' + engagement.get_status_display().lower() + '.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated this engagement\'s status to ' + engagement.get_status_display().lower() + '.', extra_tags=random.choice(success_messages))
 
     return redirect('boh:engagement.detail', engagement_id=engagement.id)
 
@@ -729,7 +740,7 @@ def engagement_comment_add(request, engagement_id):
         comment.engagement = engagement
         comment.user = request.user
         comment.save()
-        messages.success(request, 'You successfully added a comment to this engagement.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully added a comment to this engagement.', extra_tags=random.choice(success_messages))
 
     return redirect('boh:engagement.detail', engagement_id=engagement.id)
 
@@ -766,7 +777,7 @@ def activity_add(request, engagement_id):
         activity.engagement = engagement
         activity.save()
         form.save_m2m() # https://docs.djangoproject.com/en/1.7/topics/forms/modelforms/#the-save-method
-        messages.success(request, 'You successfully added this activity.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully added this activity.', extra_tags=random.choice(success_messages))
         return redirect('boh:activity.detail', activity_id=activity.id)
     else:
         return render(request, 'boh/activity/add.html', {
@@ -786,7 +797,7 @@ def activity_edit(request, activity_id):
 
     if request.method == 'POST' and form.is_valid():
         activity = form.save()
-        messages.success(request, 'You successfully updated this activity.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated this activity.', extra_tags=random.choice(success_messages))
         return redirect('boh:activity.detail', activity_id=activity.id)
 
     return render(request, 'boh/activity/edit.html', {
@@ -806,7 +817,7 @@ def activity_status(request, activity_id):
 
     if status_form.is_valid():
         activity = status_form.save()
-        messages.success(request, 'You successfully updated this activity\'s status to ' + activity.get_status_display().lower() + '.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully updated this activity\'s status to ' + activity.get_status_display().lower() + '.', extra_tags=random.choice(success_messages))
 
     return redirect('boh:activity.detail', activity_id=activity.id)
 
@@ -820,7 +831,7 @@ def activity_delete(request, activity_id):
 
     if form.is_valid():
         activity.delete()
-        messages.success(request, 'You successfully deleted the activity.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully deleted the activity.', extra_tags=random.choice(success_messages))
         return redirect('boh:engagement.detail', activity.engagement.id)
     else:
         return redirect('boh:activity.detail', activity.id)
@@ -838,7 +849,7 @@ def activity_comment_add(request, activity_id):
         comment.activity = activity
         comment.user = request.user
         comment.save()
-        messages.success(request, 'You successfully added a comment to this activity.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully added a comment to this activity.', extra_tags=random.choice(success_messages))
 
     return redirect('boh:activity.detail', activity_id=activity.id)
 
@@ -873,7 +884,7 @@ def people_add(request):
 
     if form.is_valid():
         person = form.save()
-        messages.success(request, 'You successfully created this person.', extra_tags=random.choice(action_messages))
+        messages.success(request, 'You successfully created this person.', extra_tags=random.choice(success_messages))
         return redirect('boh:people.list')
 
     return render(request, 'boh/person/add.html', {'form': form})
