@@ -63,8 +63,10 @@ urlpatterns = patterns('',
     url(r'^activities/(?P<activity_id>\d+)/comments/add/$', views.activity_comment_add, name='activity.comment.add'),
 
     # People
-    url(r'^people/$', views.people_list, name='people.list'),
-    url(r'^people/add/$', views.people_add, name='people.add'),
-    url(r'^people/(?P<person_id>\d+)/$', views.people_detail, name='people.detail'),
+    url(r'^people/$', views.person_list, name='person.list'),
+    url(r'^people/add/$', views.person_add, name='person.add'),
+    url(r'^people/(?P<person_id>\d+)/$', views.person_detail, name='person.detail'),
+    url(r'^people/(?P<person_id>\d+)/edit/$', views.person_edit, name='person.edit'),
+    url(r'^people/(?P<person_id>\d+)/delete/$', views.person_delete, name='person.delete'),
 
 )

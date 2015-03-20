@@ -32,15 +32,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-tasks" aria-hidden="true"></span> Dashboard</a></li>
-            <li><a href="{% url 'boh:application.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</a></li>
-            <li><a href="{% url 'boh:people.list' %}"><i class="fa fa-users" aria-hidden="true"></i> People</a></li>
+            <li{% if active_top == 'dashboard' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-tasks" aria-hidden="true"></span> Dashboard</a></li>
+            <li{% if active_top == 'applications' %} class="active"{% endif %}><a href="{% url 'boh:application.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</a></li>
+            <li{% if active_top == 'people' %} class="active"{% endif %}><a href="{% url 'boh:person.list' %}"><i class="fa fa-users" aria-hidden="true"></i> People</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_staff %}
-            <li><a href="{% url 'boh:management.services' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
+            <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.services' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
             {% endif %}
-            <li class="dropdown">
+            <li class="dropdown{% if active_top == 'user' %} active{% endif %}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-user" aria-hidden="true"></span> {{ user.first_name }} {{ user.last_name }} <span class="fa fa-caret-down" aria-hidden="true"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{% url 'boh:user.profile' %}"><span class="fa fa-user" aria-hidden="true"></span> My Profile</a></li>
@@ -76,7 +76,7 @@
   <footer class="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 clearfix">
           <p class="text-muted pull-right"><strong>CONFIDENTIAL</strong></p>
           <p class="text-muted"><span class="fa fa-copyright" aria-hidden="true"></span> 2015 Pearson{% if user.is_authenticated %} &raquo; <a href="https://devops-tools.pearson.com/stash/projects/APPSEC/repos/bag-of-holding/" target="_blank">v1.0.1</a>{% endif %}</p>
         </div>

@@ -275,7 +275,13 @@ class ActivityDeleteForm(forms.ModelForm):
 
 # Person
 
-class PersonAddForm(forms.ModelForm):
+class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile', 'job_title', 'role']
+
+
+class PersonDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = []

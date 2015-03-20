@@ -1,8 +1,10 @@
-{% extends "boh/base.html" %}
+{% extends "boh/person/base_person.html" %}
+
+{% load phone_filters %}
 
 {% block title %}{{ person.first_name }} {{ person.last_name }}{% endblock %}
 
-{% block content %}
+{% block person_content %}
 <div class="row">
   <div class="col-md-4 col-md-push-8">
     <table class="table table-striped">
@@ -12,18 +14,59 @@
           <td>{{ person.email }}</td>
         </tr>
         <tr>
-          <td><strong>Phone Work</strong></td>
-          <td>{{ person.phone_work }}</td>
+          <td><strong><span class="hidden-xs">Phone </span>Work</strong></td>
+          <td>{{ person.phone_work|format_phone }}</td>
         </tr>
         <tr>
-          <td><strong>Phone Mobile</strong></td>
-          <td>{{ person.phone_mobile }}</td>
+          <td><strong><span class="hidden-xs">Phone </span>Mobile</strong></td>
+          <td>{{ person.phone_mobile|format_phone }}</td>
+        </tr>
+        <tr>
+          <td><strong><span class="hidden-xs">Job </span>Title</strong></td>
+          <td>{{ person.job_title }}</td>
+        </tr>
+        <tr>
+          <td><strong>Role</strong></td>
+          <td>{{ person.get_role_display }}</td>
         </tr>
       </tbody>
     </table>
+    <p><a href="{% url 'boh:person.edit' person.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Person</a></p>
+
   </div>
   <div class="col-md-8 col-md-pull-4">
-    <h2 class="no-margin-top">{{ person.first_name }} {{ person.last_name }}</h2>
+    <h3 class="no-margin-top"><span class="fa fa-building" aria-hidden="true"></span> Organizations</h3>
+    <div class="list-group">
+      {% for organization in person.organization_set.all %}
+      <a href="{% url 'boh:organization.overview' organization.id %}" class="list-group-item">
+        <h4 class="list-group-item-heading no-margin-bottom">{{ organization.name }}{% if organization.description %}<span class="hidden-xs"> <small>{{ organization.description|truncatechars:70 }}</small></span>{% endif %}</h4>
+      </a>
+      {% empty %}
+      <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} is not associated with any organizations.</em></small></li>
+      {% endfor %}
+    </div>
+
+    <h3><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</h3>
+    <div class="list-group">
+      {% for relation in person.relation_set.all %}
+      <a href="{% url 'boh:application.overview' relation.application.id %}" class="list-group-item">
+        {% if relation.owner %}<span class="badge">Owner</span>{% endif %}
+        <h4 class="list-group-item-heading no-margin-bottom">{{ relation.application.name }}<span class="hidden-xs"> <small>{{ relation.application.organization.name }} - {{ relation.application.get_platform_display }}, {{ relation.application.get_origin_display }}</small></span></h4>
+        {% if relation.notes %}<p class="list-group-item-text">{{ relation.notes }}</p>{% endif %}
+        {% if relation.application.tags.all %}
+        <p class="list-group-item-text hidden-xs">
+          {% for tag in relation.application.tags.all %}
+          <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% empty %}
+      <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} is not associated with any applications.</em></small></li>
+      {% endfor %}
+    </div>
+
+
   </div>
 </div>
-{% endblock %}
+{% endblock person_content %}

@@ -1,0 +1,13 @@
+{% extends "boh/base.html" %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="no-margin-top"><a href="{% url 'boh:person.detail' person.id %}">{{ person.first_name }} {{ person.last_name }}</a>{% if person.job_title %}<span class="hidden-xs"> <small>{{ person.job_title }}</small></span>{% endif %}</h2>
+    <hr>
+  </div>
+</div>
+{% block person_content %}
+{% endblock person_content %}
+{% endblock content %}

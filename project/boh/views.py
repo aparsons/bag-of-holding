@@ -22,7 +22,7 @@ from boh.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDC
 from boh.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
 from boh.forms import EngagementAddForm, EngagementEditForm, EngagementStatusForm, EngagementDeleteForm, EngagementCommentAddForm
 from boh.forms import ActivityAddForm, ActivityEditForm, ActivityStatusForm, ActivityDeleteForm, ActivityCommentAddForm
-from boh.forms import PersonAddForm
+from boh.forms import PersonForm, PersonDeleteForm
 
 
 # Messages shown on successful actions
@@ -76,6 +76,7 @@ def dashboard_personal(request):
     return render(request, 'boh/dashboard/my_dashboard.html', {
         'pending_activities': pending_activities,
         'open_activities': open_activities,
+        'active_top': 'dashboard',
         'active_tab': 'personal'
     })
 
@@ -96,6 +97,7 @@ def dashboard_team(request):
         'pending_engagements': pending_engagements,
         'unassigned_activities': unassigned_activities,
         'empty_engagements': empty_engagements,
+        'active_top': 'dashboard',
         'active_tab': 'team'
     })
 
@@ -110,6 +112,7 @@ def dashboard_metrics(request):
     # Average Activity Lengths By Activity
 
     return render(request, 'boh/dashboard/metrics.html', {
+        'active_top': 'dashboard',
         'active_tab': 'metrics'
     })
 
@@ -122,6 +125,7 @@ def dashboard_reports(request):
     # Top 10 Reports
 
     return render(request, 'boh/dashboard/reports.html', {
+        'active_top': 'dashboard',
         'active_tab': 'reports'
     })
 
@@ -135,6 +139,7 @@ def dashboard_reports(request):
 def management_services(request):
 
     return render(request, 'boh/management/services.html', {
+        'active_top': 'management',
         'active': 'services'
     })
 
@@ -145,6 +150,7 @@ def management_services(request):
 def management_users(request):
 
     return render(request, 'boh/management/users.html', {
+        'active_top': 'management',
         'active': 'users'
     })
 
@@ -166,6 +172,7 @@ def user_profile(request):
 
     return render(request, 'boh/user/profile.html', {
         'profile_form': profile_form,
+        'active_top': 'user',
         'active_side': 'profile'
     })
 
@@ -185,6 +192,7 @@ def user_change_password(request):
 
     return render(request, 'boh/user/change_password.html', {
         'password_form': password_form,
+        'active_top': 'user',
         'active_side': 'change_password'
     })
 
@@ -202,6 +210,7 @@ def organization_overview(request, organization_id):
     return render(request, 'boh/organization/overview.html', {
         'organization': organization,
         'applications': applications,
+        'active_top': 'applications',
         'active_tab': 'overview'
     })
 
@@ -213,6 +222,7 @@ def organization_people(request, organization_id):
 
     return render(request, 'boh/organization/people.html', {
         'organization': organization,
+        'active_top': 'applications',
         'active_tab': 'people'
     })
 
@@ -232,6 +242,7 @@ def organization_settings_general(request, organization_id):
     return render(request, 'boh/organization/settings/general.html', {
         'organization': organization,
         'form': form,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'
     })
@@ -252,6 +263,7 @@ def organization_settings_danger(request, organization_id):
 
     return render(request, 'boh/organization/settings/danger.html', {
         'organization': organization,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'danger'
     })
@@ -269,7 +281,8 @@ def organization_add(request):
         return redirect('boh:organization.overview', organization.id)
 
     return render(request, 'boh/organization/add.html', {
-        'form': form
+        'form': form,
+        'active_top': 'applications'
     })
 
 
@@ -305,7 +318,8 @@ def application_list(request):
         'applications': applications,
         'tags': tags,
         'queries': queries,
-        'active_filter_tag': int(tag_id)
+        'active_filter_tag': int(tag_id),
+        'active_top': 'applications'
     })
 
 
@@ -316,6 +330,7 @@ def application_overview(request, application_id):
 
     return render(request, 'boh/application/overview.html', {
         'application': application,
+        'active_top': 'applications',
         'active_tab': 'overview'
     })
 
@@ -334,6 +349,7 @@ def application_engagements(request, application_id):
         'pending_engagements': pending_engagements,
         'open_engagements': open_engagements,
         'closed_engagements': closed_engagements,
+        'active_top': 'applications',
         'active_tab': 'engagements'
     })
 
@@ -345,6 +361,7 @@ def application_environments(request, application_id):
 
     return render(request, 'boh/application/environments.html', {
         'application': application,
+        'active_top': 'applications',
         'active_tab': 'environments'
     })
 
@@ -356,6 +373,7 @@ def application_people(request, application_id):
 
     return render(request, 'boh/application/people.html', {
         'application': application,
+        'active_top': 'applications',
         'active_tab': 'people'
     })
 
@@ -371,7 +389,8 @@ def application_add(request):
         return redirect('boh:application.overview', application_id=application.id)
 
     return render(request, 'boh/application/add.html', {
-        'form': form
+        'form': form,
+        'active_top': 'applications'
     })
 
 
@@ -399,6 +418,7 @@ def application_settings_general(request, application_id):
         'application': application,
         'general_form': general_form,
         'organization_form': organization_form,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'
     })
@@ -427,6 +447,7 @@ def application_settings_metadata(request, application_id):
         'application': application,
         'metadata_form': metadata_form,
         'tags_form': tags_form,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'metadata'
     })
@@ -452,6 +473,7 @@ def application_settings_data_elements(request, application_id):
         'dcl_override_form': dcl_override_form,
         'dcl': application.data_classification_level,
         'dsv': application.data_sensitivity_value,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'data_elements'
     })
@@ -487,6 +509,7 @@ def application_settings_services(request, application_id):
     return render(request, 'boh/application/settings/services.html', {
         'application': application,
         'threadfix_form': threadfix_form,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'services'
     })
@@ -506,6 +529,7 @@ def application_settings_danger(request, application_id):
 
     return render(request, 'boh/application/settings/danger.html', {
         'application': application,
+        'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'danger'
     })
@@ -531,6 +555,7 @@ def environment_add(request, application_id):
     return render(request, 'boh/environment/add.html', {
         'application': application,
         'form': form,
+        'active_top': 'applications',
         'active_tab': 'environments'
     })
 
@@ -551,6 +576,7 @@ def environment_edit_general(request, environment_id):
         'application': environment.application,
         'environment': environment,
         'form': form,
+        'active_top': 'applications',
         'active_tab': 'environments',
         'active_side': 'general'
     })
@@ -578,6 +604,7 @@ def environment_edit_locations(request, environment_id):
         'application': environment.application,
         'environment': environment,
         'formset': formset,
+        'active_top': 'applications',
         'active_tab': 'environments',
         'active_side': 'locations'
     })
@@ -605,6 +632,7 @@ def environment_edit_credentials(request, environment_id):
         'application': environment.application,
         'environment': environment,
         'formset': formset,
+        'active_top': 'applications',
         'active_tab': 'environments',
         'active_side': 'credentials'
     })
@@ -625,6 +653,7 @@ def environment_edit_danger(request, environment_id):
     return render(request, 'boh/environment/edit/danger.html', {
         'application': environment.application,
         'environment': environment,
+        'active_top': 'applications',
         'active_tab': 'environments',
         'active_side': 'danger'
     })
@@ -654,6 +683,7 @@ def engagement_detail(request, engagement_id):
         'closed_activities': closed_activities,
         'status_form': status_form,
         'form': comment_form,
+        'active_top': 'applications',
         'active_tab': 'engagements'
     })
 
@@ -675,6 +705,7 @@ def engagement_add(request, application_id):
         return render(request, 'boh/engagement/add.html', {
             'application': application,
             'form': form,
+            'active_top': 'applications',
             'active_tab': 'engagements'
         })
 
@@ -695,6 +726,7 @@ def engagement_edit(request, engagement_id):
         'application': engagement.application,
         'engagement': engagement,
         'form': form,
+        'active_top': 'applications',
         'active_tab': 'engagements'
     })
 
@@ -761,6 +793,7 @@ def activity_detail(request, activity_id):
         'activity': activity,
         'status_form': status_form,
         'form': comment_form,
+        'active_top': 'applications',
         'active_tab': 'engagements'
     })
 
@@ -784,6 +817,7 @@ def activity_add(request, engagement_id):
             'application': engagement.application,
             'engagement': engagement,
             'form': form,
+            'active_top': 'applications',
             'active_tab': 'engagements'
         })
 
@@ -804,6 +838,7 @@ def activity_edit(request, activity_id):
         'application': activity.engagement.application,
         'activity': activity,
         'form': form,
+        'active_top': 'applications',
         'active_tab': 'engagements'
     })
 
@@ -859,7 +894,7 @@ def activity_comment_add(request, activity_id):
 
 @login_required
 @require_http_methods(['GET'])
-def people_list(request):
+def person_list(request):
     person_list = Person.objects.all()
 
     paginator = Paginator(person_list, 5)
@@ -873,28 +908,70 @@ def people_list(request):
         people = paginator.page(paginator.num_pages)
 
     return render(request, 'boh/person/list.html', {
-        'people': people
+        'people': people,
+        'active_top': 'people'
     })
 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def people_add(request):
-    form = PersonAddForm(request.POST or None)
+def person_add(request):
+    form = PersonForm(request.POST or None)
 
     if form.is_valid():
         person = form.save()
         messages.success(request, 'You successfully created this person.', extra_tags=random.choice(success_messages))
-        return redirect('boh:people.list')
+        return redirect('boh:person.list')
 
-    return render(request, 'boh/person/add.html', {'form': form})
+    return render(request, 'boh/person/add.html', {
+        'form': form,
+        'active_top': 'people'
+    })
 
 
 @login_required
 @require_http_methods(['GET'])
-def people_detail(request, person_id):
+def person_detail(request, person_id):
+    person = get_object_or_404(Person, pk=person_id)
+    
+    return render(request, 'boh/person/detail.html', {
+        'person': person,
+        'active_top': 'people'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def person_edit(request, person_id):
     person = get_object_or_404(Person, pk=person_id)
 
-    return render(request, 'boh/person/detail.html', {
-        'person': person
+    form = PersonForm(request.POST or None, instance=person)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            person = form.save()
+            messages.success(request, 'You successfully updated ' + person.first_name + ' ' + person.last_name + '.', extra_tags=random.choice(success_messages))
+            return redirect('boh:person.detail', person.id)
+        else:
+            messages.error(request, 'There was a problem updating' + person.first_name + ' ' + person.last_name + '.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/person/edit.html', {
+        'person': person,
+        'form': form,
+        'active_top': 'people'
     })
+
+
+@login_required
+@require_http_methods(['POST'])
+def person_delete(request, person_id):
+    person = get_object_or_404(Person, pk=person_id)
+
+    form = PersonDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        person.delete()
+        messages.success(request, 'You successfully deleted ' + person.first_name + ' ' + person.last_name + '.', extra_tags=random.choice(success_messages))
+        return redirect('boh:person.list')
+    else:
+        return redirect('boh:person.detail', person.id)

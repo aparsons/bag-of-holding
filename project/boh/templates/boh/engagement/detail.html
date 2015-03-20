@@ -14,7 +14,7 @@
   <div class="col-md-8">
     <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }} <small>({% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %})</small></h2>
     <p>{{ engagement.description }}</p>
-    {% if engagement.requestor %}<p>Requested by <strong><a href="{% url 'boh:people.detail' engagement.requestor.id %}">{{ engagement.requestor.first_name }} {{ engagement.requestor.last_name }}</a></strong>.</p>{% endif %}
+    {% if engagement.requestor %}<p>Requested by <strong><a href="{% url 'boh:person.detail' engagement.requestor.id %}">{{ engagement.requestor.first_name }} {{ engagement.requestor.last_name }}</a></strong>.</p>{% endif %}
 
     <hr>
 

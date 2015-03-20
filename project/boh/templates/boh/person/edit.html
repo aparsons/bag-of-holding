@@ -1,15 +1,15 @@
-{% extends "boh/base.html" %}
+{% extends "boh/person/base_person.html" %}
 
-{% block title %}Add Person{% endblock %}
+{% block title %}{{ person.first_name }} {{ person.last_name }} | Edit{% endblock %}
 
-{% block content %}
+{% block person_content %}
 <div class="row">
   <div class="col-md-8">
-    <form method="post" action="{% url 'boh:person.add' %}">
+    <form method="post" action="{% url 'boh:person.edit' person.id %}">
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Add Person</h3>
+          <h3 class="panel-title">Edit {{ person.first_name }} {{ person.last_name }}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=form.first_name %}
@@ -21,11 +21,17 @@
           {% include "boh/snippets/form/_general.html" with control=form.role %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Add Person</button>
-          <a href="{% url 'boh:person.list' %}" class="btn btn-default" role="button">Cancel</a>
+          <button class="btn btn-primary" type="submit">Update Person</button>
+          <a href="{% url 'boh:person.detail' person.id %}" class="btn btn-default" role="button">Cancel</a>
         </div>
       </div>
     </form>
   </div>
+  <div class="col-md-4">
+    <form method="post" action="{% url 'boh:person.delete' person.id %}">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this person?');">Delete Person</button>
+    </form>
+  </div>
 </div>
-{% endblock content %}
+{% endblock person_content %}

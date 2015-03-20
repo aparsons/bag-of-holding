@@ -1,4 +1,5 @@
 import datetime
+import phonenumbers
 
 from django.conf import settings
 from django.db import models
@@ -44,7 +45,7 @@ class Person(models.Model):
 
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     job_title = models.CharField(max_length=128, blank=True)
@@ -57,6 +58,13 @@ class Person(models.Model):
         ordering = ['last_name']
         verbose_name_plural = 'People'
 
+    def save(self, *args, **kwargs):
+        if self.phone_work:
+            self.phone_work = phonenumbers.format_number(phonenumbers.parse(self.phone_work, 'US'), phonenumbers.PhoneNumberFormat.E164)
+        if self.phone_mobile:
+            self.phone_mobile = phonenumbers.format_number(phonenumbers.parse(self.phone_mobile, 'US'), phonenumbers.PhoneNumberFormat.E164)
+        super(Person, self).save(*args, **kwargs)
+
 
 class Organization(models.Model):
     """Entities under which applications belong."""
@@ -68,6 +76,9 @@ class Organization(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class DataElement(models.Model):

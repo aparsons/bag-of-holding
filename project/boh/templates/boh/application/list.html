@@ -48,7 +48,7 @@
       {% for application in applications %}
       <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">
         <span class="badge">{{ application.get_business_criticality_display }}</span>
-        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        <h4 class="list-group-item-heading no-margin-bottom">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
         {% if application.tags.all %}
         <p class="list-group-item-text">
           {% for tag in application.tags.all %}

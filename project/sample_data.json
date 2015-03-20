@@ -187,7 +187,8 @@
       "email": "noreply@pearson.com",
       "phone_work": "3193396400",
       "phone_mobile": "3193396400",
-      "job_title": "Example Person"
+      "job_title": "Example Person",
+      "role": "developer"
     }
   },
   {
