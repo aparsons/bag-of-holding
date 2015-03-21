@@ -14,6 +14,7 @@
     "fontawesome": "~4.3.0",
     "modernizer": "~2.8.2",
     "bootstrap-datepicker": "~1.4.0",
-    "chartist": "~0.7.3"
+    "chartist": "~0.7.3",
+    "animate.css": "~3.2.5"
   }
 }

@@ -92,6 +92,13 @@ gulp.task('vendor', function() {
   .pipe(uglify())
   .pipe(rename('chartist.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
+
+  gulp.src(paths.bower + '/animate.css/animate.css')
+  .pipe(minifyCSS({
+    keepSpecialComments: 0
+  }))
+  .pipe(rename('animate.min.css'))
+  .pipe(gulp.dest(paths.dist + '/css'));
 });
 
 
