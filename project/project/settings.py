@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
+    'debug_toolbar',
     'widget_tweaks',
 
     'boh',
