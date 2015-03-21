@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from django.forms.models import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
@@ -933,7 +933,7 @@ def person_add(request):
 @require_http_methods(['GET'])
 def person_detail(request, person_id):
     person = get_object_or_404(Person, pk=person_id)
-    
+
     return render(request, 'boh/person/detail.html', {
         'person': person,
         'active_top': 'people'

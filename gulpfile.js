@@ -27,6 +27,20 @@ gulp.task('styles', function() {
   }))
   .pipe(concat('application.min.css'))
   .pipe(gulp.dest(paths.dist + '/css'));
+
+  gulp.src([
+    paths.assets + '/styles/chartist.scss'
+  ])
+  .pipe(sass({
+    includePaths: [
+      paths.bower
+    ]
+  }))
+  .pipe(minifyCSS({
+    keepSpecialComments: 0
+  }))
+  .pipe(concat('chartist.min.css'))
+  .pipe(gulp.dest(paths.dist + '/css'));
 });
 
 
@@ -72,6 +86,11 @@ gulp.task('vendor', function() {
   gulp.src(paths.bower + '/bootstrap-datepicker/dist/js/bootstrap-datepicker.js')
   .pipe(uglify())
   .pipe(rename('datepicker.min.js'))
+  .pipe(gulp.dest(paths.dist + '/js'));
+
+  gulp.src(paths.bower + '/chartist/dist/chartist.js')
+  .pipe(uglify())
+  .pipe(rename('chartist.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
 });
 

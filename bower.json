@@ -1,5 +1,5 @@
 {
-  "name": "Bag of Holding",
+  "name": "bag-of-holding",
   "version": "1.0.1",
   "private": true,
   "ignore": [
@@ -13,6 +13,7 @@
     "bootstrap-sass": "~3.3.4",
     "fontawesome": "~4.3.0",
     "modernizer": "~2.8.2",
-    "bootstrap-datepicker": "~1.4.0"
+    "bootstrap-datepicker": "~1.4.0",
+    "chartist": "~0.7.3"
   }
 }
