@@ -23,7 +23,7 @@
         {% endif %}
         {% for location in environment.environmentlocation_set.all %}
         <a href="{{ location.location }}" target="_blank" class="list-group-item">
-          <p class="list-group-item-heading no-margin-bottom"><strong class="text-primary">{{ location.location }}</strong></p>
+          <p class="list-group-item-heading no-margin-bottom"><strong class="text-primary">{{ location.location }} <span class="fa fa-external-link" aria-hidden="true"></span></strong></p>
           {% if location.notes %}
           <p class="list-group-item-text"><small class="text-muted">{{ location.notes }}</small></p>
           {% endif %}

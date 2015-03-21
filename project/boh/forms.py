@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person
+from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person, ThreadFix
 
 
 # User
@@ -36,6 +36,23 @@ class OrganizationSettingsGeneralForm(forms.ModelForm):
 class OrganizationDeleteForm(forms.ModelForm):
     class Meta:
         model = Organization
+        fields = []
+
+
+# ThreadFix
+
+class ThreadFixForm(forms.ModelForm):
+    class Meta:
+        model = ThreadFix
+        fields = ['name', 'host', 'api_key']
+        widgets = {
+            'api_key': forms.PasswordInput(render_value = True)
+        }
+
+
+class ThreadFixDeleteForm(forms.ModelForm):
+    class Meta:
+        model = ThreadFix
         fields = []
 
 

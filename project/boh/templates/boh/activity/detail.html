@@ -68,8 +68,10 @@
       <div class="panel-body">
         <form method="post" action="{% url 'boh:activity.status' activity.id %}" class="form-inline">
           {% csrf_token %}
-          {% include "boh/snippets/form/_general.html" with control=status_form.status required=False %}
-          <button class="btn btn-default pull-right" type="submit">Change Status</button>
+          <div class="clearfix">
+            {% include "boh/snippets/form/_general.html" with control=status_form.status required=False %}
+            <button class="btn btn-default pull-right" type="submit">Change Status</button>
+          </div>
         </form>
       </div>
       {% if activity.open_date or activity.close_date %}

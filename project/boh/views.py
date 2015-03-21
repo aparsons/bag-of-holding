@@ -14,7 +14,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person
+from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, ThreadFix
 from boh.forms import UserProfileForm
 from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
@@ -23,6 +23,7 @@ from boh.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDelete
 from boh.forms import EngagementAddForm, EngagementEditForm, EngagementStatusForm, EngagementDeleteForm, EngagementCommentAddForm
 from boh.forms import ActivityAddForm, ActivityEditForm, ActivityStatusForm, ActivityDeleteForm, ActivityCommentAddForm
 from boh.forms import PersonForm, PersonDeleteForm
+from boh.forms import ThreadFixForm, ThreadFixDeleteForm
 
 
 # Messages shown on successful actions
@@ -138,10 +139,75 @@ def dashboard_reports(request):
 @require_http_methods(['GET'])
 def management_services(request):
 
+    threadfix_services = ThreadFix.objects.all()
+
     return render(request, 'boh/management/services.html', {
+        'threadfix_services': threadfix_services,
         'active_top': 'management',
         'active': 'services'
     })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_services_threadfix_add(request):
+    threadfix_form = ThreadFixForm(request.POST or None)
+
+    if request.method == 'POST':
+        if threadfix_form.is_valid():
+            threadfix = threadfix_form.save()
+            messages.success(request, 'You successfully created the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.services')
+        else:
+            messages.error(request, 'There was a problem creating this ThreadFix service.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/threadfix/add.html', {
+        'threadfix_form': threadfix_form,
+        'active_top': 'management',
+        'active': 'services'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_services_threadfix_edit(request, threadfix_id):
+    threadfix = get_object_or_404(ThreadFix, pk=threadfix_id)
+
+    threadfix_form = ThreadFixForm(request.POST or None, instance=threadfix)
+
+    if request.method == 'POST':
+        if threadfix_form.is_valid():
+            threadfix = threadfix_form.save()
+            messages.success(request, 'You successfully updated the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.services')
+        else:
+            messages.error(request, 'There was a problem updating this ThreadFix service.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/threadfix/edit.html', {
+        'threadfix': threadfix,
+        'threadfix_form': threadfix_form,
+        'active_top': 'management',
+        'active': 'services'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['POST'])
+def management_services_threadfix_delete(request, threadfix_id):
+    threadfix = get_object_or_404(ThreadFix, pk=threadfix_id)
+
+    form = ThreadFixDeleteForm(request.POST, instance=threadfix)
+
+    if form.is_valid():
+        threadfix.delete()
+        messages.success(request, 'You successfully deleted the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
+        return redirect('boh:management.services')
+    else:
+        messages.error(request, 'There was a problem deleting this ThreadFix service.', extra_tags=random.choice(error_messages))
+        return redirect('boh:management.services.threadfix.edit', threadfix.id)
 
 
 @login_required
