@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^manage/services/$', views.management_services, name='management.services'),
     url(r'^manage/services/threadfix/add', views.management_services_threadfix_add, name='management.services.threadfix.add'),
     url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/edit', views.management_services_threadfix_edit, name='management.services.threadfix.edit'),
+    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/test', views.management_services_threadfix_test, name='management.services.threadfix.test'),
     url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/delete', views.management_services_threadfix_delete, name='management.services.threadfix.delete'),
     url(r'^manage/users/$', views.management_users, name='management.users'),
 

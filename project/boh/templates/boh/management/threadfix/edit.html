@@ -13,20 +13,19 @@
       {% include "boh/snippets/form/_general.html" with control=threadfix_form.name %}
       {% include "boh/snippets/form/_general.html" with control=threadfix_form.host %}
       {% include "boh/snippets/form/_general.html" with control=threadfix_form.api_key %}
+      {% include "boh/snippets/form/_checkbox.html" with control=threadfix_form.verify_ssl %}
     </div>
-    <div class="panel-footer clearfix">
-      <div class="pull-right">
-        <form method="post" action="{% url 'boh:management.services.threadfix.delete' threadfix.id %}">
-          {% csrf_token %}
-          <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this ThreadFix service?');">Delete</button>
-        </form>
-      </div>
-
+    <div class="panel-footer">
       <button class="btn btn-primary" type="submit">Update<span class="hidden-xs"> ThreadFix Service</span></button>
       <a href="{% url 'boh:management.services' %}" class="btn btn-default" role="button">Cancel</a>
     </div>
   </div>
 </form>
+<form method="post" action="{% url 'boh:management.services.threadfix.delete' threadfix.id %}">
+  {% csrf_token %}
+  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this ThreadFix service?');">Delete ThreadFix Service</button>
+</form>
+
 
 
 {% endblock manage_content %}

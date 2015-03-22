@@ -116,12 +116,13 @@ class DataElement(models.Model):
 class ThreadFix(models.Model):
     """ThreadFix server connection information."""
 
-    name = models.CharField(max_length=32, unique=True, help_text='A unique name describing the ThreadFix server.')
+    name = models.CharField(max_length=32, unique=True, help_text='A unique name describing the ThreadFix service.')
     host = models.URLField(help_text='The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)')
     api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.') # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
+    verify_ssl = models.BooleanField(default=True, help_text='Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.')
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.host
 
     class Meta:
         verbose_name = "ThreadFix"
@@ -249,6 +250,17 @@ class Application(models.Model):
         get_latest_by = "modified_date"
         ordering = ['name']
 
+    def data_classification_level(self):
+        dsv = self.data_sensitivity_value()
+        if dsv < 15:
+            return Application.DCL_1
+        elif dsv >= 15 and dsv < 100:
+            return Application.DCL_2
+        elif dsv >= 100 and dsv < 150:
+            return Application.DCL_3
+        else:
+            return Application.DCL_4
+
     def data_sensitivity_value(self):
         """
         Calculates the data sensitivity value.
@@ -273,17 +285,6 @@ class Application(models.Model):
         #    dsv = 200
 
         return dsv
-
-    def data_classification_level(self):
-        dsv = self.data_sensitivity_value()
-        if dsv < 15:
-            return Application.DCL_1
-        elif dsv >= 15 and dsv < 100:
-            return Application.DCL_2
-        elif dsv >= 100 and dsv < 150:
-            return Application.DCL_3
-        else:
-            return Application.DCL_4
 
 
 class Relation(models.Model):

@@ -8,16 +8,16 @@
         <h3 class="panel-title"><span class="fa fa-cogs" aria-hidden="true"></span> Application Settings</h3>
       </div>
       <div class="list-group">
-        <a href="{% url 'boh:application.settings.general' application.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book" aria-hidden="true"></span> General</a>
-        <a href="{% url 'boh:application.settings.metadata' application.id %}" class="list-group-item{% if active_side == 'metadata' %} active{% endif %}"><span class="fa fa-info-circle" aria-hidden="true"></span> Metadata</a>
-        <a href="{% url 'boh:application.settings.data-elements' application.id %}" class="list-group-item{% if active_side == 'data_elements' %} active{% endif %}"><span class="fa fa-cubes" aria-hidden="true"></span> Data Elements</a>
-        <a href="" class="list-group-item disabled{% if active_side == 'sla' %} active{% endif %}"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Level Agreements</a>
-        <a href="{% url 'boh:application.settings.services' application.id %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug" aria-hidden="true"></span> Services</a>
+        <a href="{% url 'boh:application.settings.general' application.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book fa-fw" aria-hidden="true"></span> General</a>
+        <a href="{% url 'boh:application.settings.metadata' application.id %}" class="list-group-item{% if active_side == 'metadata' %} active{% endif %}"><span class="fa fa-info-circle fa-fw" aria-hidden="true"></span> Metadata</a>
+        <a href="{% url 'boh:application.settings.data-elements' application.id %}" class="list-group-item{% if active_side == 'data_elements' %} active{% endif %}"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span> Data Elements</a>
+        <a href="" class="list-group-item disabled{% if active_side == 'sla' %} active{% endif %}"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span> Service Level Agreements</a>
+        <a href="{% url 'boh:application.settings.services' application.id %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span> Services</a>
       </div>
     </div>
     <div class="panel panel-default">
       <div class="list-group">
-        <a href="{% url 'boh:application.settings.danger' application.id %}" class="list-group-item{% if active_side == 'danger' %} active{% endif %}"><span class="fa fa-bomb" aria-hidden="true"></span> Danger Zone</a>
+        <a href="{% url 'boh:application.settings.danger' application.id %}" class="list-group-item{% if active_side == 'danger' %} active{% endif %}"><span class="fa fa-bomb fa-fw" aria-hidden="true"></span> Danger Zone</a>
       </div>
     </div>
   </div>

@@ -44,7 +44,11 @@ class OrganizationDeleteForm(forms.ModelForm):
 class ThreadFixForm(forms.ModelForm):
     class Meta:
         model = ThreadFix
-        fields = ['name', 'host', 'api_key']
+        fields = ['name', 'host', 'api_key', 'verify_ssl']
+        labels = {
+            'api_key': 'API key',
+            'verify_ssl': 'Verify SSL certificate'
+        }
         widgets = {
             'api_key': forms.PasswordInput(render_value = True)
         }

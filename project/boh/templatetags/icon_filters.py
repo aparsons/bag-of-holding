@@ -6,7 +6,7 @@ from boh.models import Application
 register = template.Library()
 
 def icon(name, tooltip):
-    return '<span class="fa fa-' + name + '" aria-hidden="true" data-toggle="tooltip" title="' + tooltip + '"></span>'
+    return '<span class="fa fa-' + name + ' fa-fw" aria-hidden="true" data-toggle="tooltip" title="' + tooltip + '"></span>'
 
 @register.filter
 def platform_icon(value):

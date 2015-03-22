@@ -1,4 +1,5 @@
 import random
+import requests
 
 from django import forms
 from django.contrib import messages
@@ -191,6 +192,47 @@ def management_services_threadfix_edit(request, threadfix_id):
         'active_top': 'management',
         'active': 'services'
     })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_services_threadfix_test(request, threadfix_id):
+    threadfix = get_object_or_404(ThreadFix, pk=threadfix_id)
+
+    import json
+
+    from django.http import HttpResponse
+    from django.utils.html import escape
+
+    url = threadfix.host + 'rest/teams'
+    payload = {'apiKey': threadfix.api_key}
+    headers = {'Accept': 'application/json'}
+    timeout = 10 # Seconds
+
+    try:
+        response = requests.get(url, params=payload, headers=headers, timeout=timeout, verify=threadfix.verify_ssl)
+
+        if response.status_code == 200:
+            try:
+                json_data = json.loads(response.text)
+
+                if json_data['success'] == True:
+                    messages.success(request, 'Everything appears to be working correctly for the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
+                else:
+                    messages.error(request, 'An error occured when testing "' + threadfix.name + '". ' + json_data['message'], extra_tags=random.choice(error_messages))
+            except ValueError:
+                messages.error(request, 'An error occured when testing "' + threadfix.name + '". The response was not a valid JSON format.', extra_tags=random.choice(error_messages))
+        else:
+            messages.error(request, 'An error occured when testing "' + threadfix.name + '". We recieved invalid response (' + str(response.status_code) + '). Please check your host settings.', extra_tags=random.choice(error_messages))
+    except requests.exceptions.SSLError:
+        messages.error(request, 'An error occured when testing "' + threadfix.name + '". An SSL error occurred. Check your host and verify SSL settings.', extra_tags=random.choice(error_messages))
+    except requests.exceptions.Timeout:
+        messages.error(request, 'An error occured when testing "' + threadfix.name + '". The request timed out after ' + str(timeout) + ' seconds. Please check your host settings.', extra_tags=random.choice(error_messages))
+    except requests.exceptions.RequestException:
+        messages.error(request, 'An unknown error occured when testing "' + threadfix.name + '".', extra_tags=random.choice(error_messages))
+    finally:
+        return redirect('boh:management.services')
 
 
 @login_required
