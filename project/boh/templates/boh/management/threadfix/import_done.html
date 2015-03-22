@@ -1,0 +1,33 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Services | Import {{ threadfix.name }}{% endblock %}
+
+{% block manage_content %}
+{% if imported_applications %}
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title">Successfully Imported Applications</h3>
+  </div>
+  <ul class="list-group">
+    {% for application in imported_applications %}
+    <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">{{ application.organization.name }} / {{ application.name }}</a>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% if failed_applications %}
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Application Import Failures</h3>
+  </div>
+  <div class="panel-body">
+    The following application imports failed. Check to make sure the names are not already taken.
+  </div>
+  <ul class="list-group">
+    {% for application in failed_applications %}
+    <li class="list-group-item">{{ application.name }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endblock manage_content %}

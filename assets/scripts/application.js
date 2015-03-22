@@ -5,9 +5,15 @@ $(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 
-  $(".threadfix-test").click(function(event) {
+  $(".threadfix-process").click(function(event) {
     var $this = $(this);
     $this.hide()
     $this.parent().append('<span class="fa fa-spinner fa-pulse"></span>');
+  });
+
+  $(window).on('unload', function() {
+    $(".fa-spinner").hide(function() {
+      $(".threadfix-process").show();
+    });
   });
 })

@@ -54,6 +54,13 @@ class ThreadFixForm(forms.ModelForm):
         }
 
 
+class ThreadFixApplicationImportForm(forms.Form):
+    team_name = forms.CharField(max_length=128, widget=forms.HiddenInput())
+    application_id = forms.IntegerField(min_value=0, max_value=2147483647, widget=forms.HiddenInput())
+    application_name = forms.CharField(max_length=128)
+    organization = forms.ModelChoiceField(queryset=Organization.objects.all(), required=False)
+
+
 class ThreadFixDeleteForm(forms.ModelForm):
     class Meta:
         model = ThreadFix
@@ -122,11 +129,10 @@ class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['threadfix', 'threadfix_organization_id', 'threadfix_application_id']
+        fields = ['threadfix', 'threadfix_application_id']
         labels = {
-            'threadfix': 'Server',
-            'threadfix_organization_id': 'Organization identifier',
-            'threadfix_application_id': 'Application identifier'
+            'threadfix': 'ThreadFix Service',
+            'threadfix_application_id': 'Application ID'
         }
 
 

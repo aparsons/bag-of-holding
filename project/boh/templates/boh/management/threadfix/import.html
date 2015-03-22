@@ -1,0 +1,41 @@
+{% extends "boh/management/base_management.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Manage Settings | Services | Import {{ threadfix.name }}{% endblock %}
+
+{% block manage_content %}
+<form method="post" action="{% url 'boh:management.services.threadfix.import' threadfix.id %}">
+  {% csrf_token %}
+  {{ import_formset.management_form }}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Panel title</h3>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Application Name</th>
+            <th>Target Organization</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for form in import_formset.forms %}
+          {{ form.id }}
+          {{ form.application_id }}
+          {{ form.team_name }}
+          <tr>
+            <td><p class="form-control-static">{{ form.team_name.value }}</p></td>
+            <td>{{ form.application_name | add_class:"form-control" }}</td>
+            <td>{{ form.organization | add_class:"form-control" }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer"><button class="btn btn-primary" type="submit">Import Applications</button></div>
+  </div>
+</form>
+{% endblock manage_content %}

@@ -225,7 +225,6 @@ class Application(models.Model):
 
     # ThreadFix
     threadfix = models.ForeignKey(ThreadFix, blank=True, null=True)
-    threadfix_organization_id = models.PositiveIntegerField(blank=True, null=True)
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True)
 
     # Misc

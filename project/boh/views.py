@@ -1,3 +1,4 @@
+import json
 import random
 import requests
 
@@ -9,7 +10,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import IntegrityError
 from django.db.models import Count, Q, Sum
+from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
@@ -24,42 +27,45 @@ from boh.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDelete
 from boh.forms import EngagementAddForm, EngagementEditForm, EngagementStatusForm, EngagementDeleteForm, EngagementCommentAddForm
 from boh.forms import ActivityAddForm, ActivityEditForm, ActivityStatusForm, ActivityDeleteForm, ActivityCommentAddForm
 from boh.forms import PersonForm, PersonDeleteForm
-from boh.forms import ThreadFixForm, ThreadFixDeleteForm
+from boh.forms import ThreadFixForm, ThreadFixApplicationImportForm, ThreadFixDeleteForm
 
 
 # Messages shown on successful actions
 success_messages = [
-    'Excellent!',
-    'Well Done!',
-    'Yay!',
-    'Choo Choo!',
-    'Kudos!',
-    'Hey!',
-    'Whoa!',
-    'Awesome!',
-    'Huzzah!',
     ':D',
-    'Whack!',
-    'Shazzam!',
-    'Success!',
     'Alrighty Then!',
-    'Thank You!',
-    'Nice!',
-    'Cheers!',
+    'Awesome!',
     'Bam!',
     'Behold!',
-    'Good Show!',
+    'Bingo!',
     'Boom Chuck!',
-    'Bingo!'
+    'Cheers!',
+    'Choo Choo!',
+    'Excellent!',
+    'Good Show!',
+    'Great!',
+    'Hey!',
+    'Huzzah!',
+    'Kudos!',
+    'Nice!',
+    'Presto!',
+    'Shazzam!',
+    'Success!',
+    'Well Done!',
+    'Whack!',
+    'Whoa!',
+    'Yay!',
+    'Zowie!',
 ]
 
 error_messages = [
-    'Uh Oh!',
-    'Whoops!',
-    'Oopsie!',
-    'Rats!',
-    'Darn!',
     'Crud!',
+    'Darn!',
+    'Oopsey!',
+    'Pshaw!',
+    'Rats!',
+    'Uh-oh!',
+    'Whoops!',
     'Yikes!'
 ]
 
@@ -196,19 +202,17 @@ def management_services_threadfix_edit(request, threadfix_id):
 
 @login_required
 @staff_member_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET'])
 def management_services_threadfix_test(request, threadfix_id):
     threadfix = get_object_or_404(ThreadFix, pk=threadfix_id)
-
-    import json
-
-    from django.http import HttpResponse
-    from django.utils.html import escape
 
     url = threadfix.host + 'rest/teams'
     payload = {'apiKey': threadfix.api_key}
     headers = {'Accept': 'application/json'}
-    timeout = 10 # Seconds
+    timeout = 25 # Seconds
+
+    if not threadfix.verify_ssl:
+        requests.packages.urllib3.disable_warnings()
 
     try:
         response = requests.get(url, params=payload, headers=headers, timeout=timeout, verify=threadfix.verify_ssl)
@@ -232,6 +236,83 @@ def management_services_threadfix_test(request, threadfix_id):
     except requests.exceptions.RequestException:
         messages.error(request, 'An unknown error occured when testing "' + threadfix.name + '".', extra_tags=random.choice(error_messages))
     finally:
+        return redirect('boh:management.services')
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_services_threadfix_import(request, threadfix_id):
+    threadfix = get_object_or_404(ThreadFix, pk=threadfix_id)
+
+    ImportFormSet = formset_factory(ThreadFixApplicationImportForm, extra=0)
+
+    if request.method == 'GET':
+        url = threadfix.host + 'rest/teams'
+        payload = {'apiKey': threadfix.api_key}
+        headers = {'Accept': 'application/json'}
+        timeout = 25 # Seconds
+
+        if not threadfix.verify_ssl:
+            requests.packages.urllib3.disable_warnings()
+
+        try:
+            response = requests.get(url, params=payload, headers=headers, timeout=timeout, verify=threadfix.verify_ssl)
+            json_data = json.loads(response.text)
+
+            if json_data['success'] == True:
+                import_applications = []
+                application_count = 0
+
+                for json_team in json_data['object']:
+                    for json_application in json_team['applications']:
+                        application = {'team_name': json_team['name'][:128], 'application_name': json_application['name'][:128], 'application_id': json_application['id']}
+                        import_applications.append(application)
+                        application_count = application_count + 1
+
+                import_formset = ImportFormSet(initial=import_applications)
+
+                return render(request, 'boh/management/threadfix/import.html', {
+                    'threadfix': threadfix,
+                    'import_formset': import_formset,
+                    'active_top': 'management',
+                    'active': 'services'
+                })
+            else:
+                messages.error(request, 'An error occured when importing from "' + threadfix.name + '". ' + json_data['message'], extra_tags=random.choice(error_messages))
+                return redirect('boh:management.services')
+        except (requests.exceptions.RequestException, ValueError):
+            messages.error(request, 'An error occured when importing from "' + threadfix.name + '". Try testing it for more information.', extra_tags=random.choice(error_messages))
+            return redirect('boh:management.services')
+
+    elif request.method == 'POST':
+        import_formset = ImportFormSet(request.POST)
+
+        imported_applications = []
+        failed_applications = []
+        if import_formset.is_valid():
+            for form in import_formset.cleaned_data:
+                if form['organization']:
+                    application = Application(name=form['application_name'], organization=form['organization'], threadfix=threadfix, threadfix_application_id=form['application_id'])
+                    try:
+                        application.save()
+                        imported_applications.append(application)
+                    except IntegrityError:
+                        failed_applications.append(application)
+
+            if len(imported_applications) > 0 or len(failed_applications) > 0:
+                return render(request, 'boh/management/threadfix/import_done.html', {
+                    'threadfix': threadfix,
+                    'imported_applications': imported_applications,
+                    'failed_applications': failed_applications,
+                    'active_top': 'management',
+                    'active': 'services'
+                })
+            else:
+                messages.warning(request, 'No applications were imported from "' + threadfix.name + '".', extra_tags=random.choice(error_messages))
+        else:
+            messages.error(request, 'An error occured when saving the import from "' + threadfix.name + '".', extra_tags=random.choice(error_messages))
+
         return redirect('boh:management.services')
 
 
