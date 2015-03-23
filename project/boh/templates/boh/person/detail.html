@@ -51,6 +51,7 @@
       {% for relation in person.relation_set.all %}
       <a href="{% url 'boh:application.overview' relation.application.id %}" class="list-group-item">
         {% if relation.owner %}<span class="badge">Owner</span>{% endif %}
+        {% if relation.emergency %}<span class="badge badge-danger">Emergency</span>{% endif %}
         <h4 class="list-group-item-heading no-margin-bottom">{{ relation.application.name }}<span class="hidden-xs"> <small>{{ relation.application.organization.name }} - {{ relation.application.get_platform_display }}, {{ relation.application.get_origin_display }}</small></span></h4>
         {% if relation.notes %}<p class="list-group-item-text">{{ relation.notes }}</p>{% endif %}
         {% if relation.application.tags.all %}
@@ -63,6 +64,15 @@
       </a>
       {% empty %}
       <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} is not associated with any applications.</em></small></li>
+      {% endfor %}
+    </div>
+
+    <h3><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
+    <div class="list-group">
+      {% for engagement in person.engagement_set.all %}
+      {% include "boh/snippets/application/_engagement.html" with engagement=engagement %}
+      {% empty %}
+      <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} has not requested any engagements.</em></small></li>
       {% endfor %}
     </div>
 

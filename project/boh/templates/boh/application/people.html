@@ -5,7 +5,24 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    <p class="text-muted">Nothing here yet.</p>
+    {% regroup application.relation_set.all|dictsort:"person.get_role_display" by person.get_role_display as relation_list_by_role %}
+    {% for relations in relation_list_by_role %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ relations.grouper }}</h3>
+      </div>
+      <div class="list-group">
+        {% for relation in relations.list %}
+        <a href="{% url 'boh:person.detail' relation.person.id %}" class="list-group-item">
+          {% if relation.owner %}<span class="badge">Owner</span>{% endif %}
+          {% if relation.emergency %}<span class="badge badge-danger">Emergency</span>{% endif %}
+          <h4 class="list-group-item-heading no-margin-bottom">{{ relation.person.first_name }} {{ relation.person.last_name }} <small>{{ relation.person.job_title }}</small></h4>
+          <p class="list-group-item-text">{{ relation.notes }}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">

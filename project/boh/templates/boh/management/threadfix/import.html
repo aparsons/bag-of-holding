@@ -10,7 +10,7 @@
   {{ import_formset.management_form }}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Panel title</h3>
+      <h3 class="panel-title">Import from {{ threadfix.name }}</h3>
     </div>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -24,6 +24,7 @@
         <tbody>
         {% for form in import_formset.forms %}
           {{ form.id }}
+          {{ form.team_id }}
           {{ form.application_id }}
           {{ form.team_name }}
           <tr>

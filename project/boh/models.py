@@ -225,6 +225,7 @@ class Application(models.Model):
 
     # ThreadFix
     threadfix = models.ForeignKey(ThreadFix, blank=True, null=True)
+    threadfix_team_id = models.PositiveIntegerField(blank=True, null=True)
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True)
 
     # Misc
@@ -290,6 +291,7 @@ class Relation(models.Model):
     """Associates a person with an application with a role."""
 
     owner = models.BooleanField(default=False)
+    emergency = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 
     person = models.ForeignKey(Person)

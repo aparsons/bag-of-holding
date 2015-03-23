@@ -23,7 +23,7 @@ class EnvironmentLocationInline(admin.StackedInline):
 
 class RelationInline(admin.StackedInline):
     model = Relation
-    fields = ['application', 'person', 'owner', 'notes']
+    fields = ['application', 'person', 'owner', 'emergency', 'notes']
     extra = 0
 
 
@@ -100,7 +100,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         }),
         ('ThreadFix', {
             'classes': ['collapse'],
-            'fields': ['threadfix', 'threadfix_organization_id', 'threadfix_application_id']
+            'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         }),
     ]
     list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']

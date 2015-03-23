@@ -266,7 +266,7 @@ def management_services_threadfix_import(request, threadfix_id):
 
                 for json_team in json_data['object']:
                     for json_application in json_team['applications']:
-                        application = {'team_name': json_team['name'][:128], 'application_name': json_application['name'][:128], 'application_id': json_application['id']}
+                        application = {'team_id': json_team['id'], 'team_name': json_team['name'][:128], 'application_name': json_application['name'][:128], 'application_id': json_application['id']}
                         import_applications.append(application)
                         application_count = application_count + 1
 
@@ -293,7 +293,7 @@ def management_services_threadfix_import(request, threadfix_id):
         if import_formset.is_valid():
             for form in import_formset.cleaned_data:
                 if form['organization']:
-                    application = Application(name=form['application_name'], organization=form['organization'], threadfix=threadfix, threadfix_application_id=form['application_id'])
+                    application = Application(name=form['application_name'], organization=form['organization'], threadfix=threadfix, threadfix_team_id=form['team_id'], threadfix_application_id=form['application_id'])
                     try:
                         application.save()
                         imported_applications.append(application)
@@ -560,8 +560,18 @@ def application_environments(request, application_id):
 def application_people(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
+    #relations = Application.objects.filter(pk=application_id).values('relation__person__role').order_by('relation__person__role')
+
+    # FIX ME!!!
+    # relation_groups = []
+    # for relation in application.relation_set.all():
+    #     if relation.person.get_role_display() not in relation_groups:
+    #         relation_groups[relation.person.get_role_display()] = []
+    #     relation_groups[relation.person.get_role_display()].append(relation)
+
     return render(request, 'boh/application/people.html', {
         'application': application,
+        #'relation_groups': relations,
         'active_top': 'applications',
         'active_tab': 'people'
     })

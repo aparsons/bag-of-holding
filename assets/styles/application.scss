@@ -18,6 +18,12 @@
   margin-bottom: $line-height-computed;
 }
 
+
+.badge-danger {
+  background-color: $brand-danger;
+}
+
+
 /* Sticky footer */
 $footer-height: $navbar-height;
 $footer-color: $gray-lighter;
