@@ -1,5 +1,6 @@
 var gulp        = require('gulp');
 
+var addsrc      = require('gulp-add-src');
 var concat      = require('gulp-concat');
 var minifyCSS   = require('gulp-minify-css');
 var rename      = require('gulp-rename');
@@ -22,6 +23,7 @@ gulp.task('styles', function() {
       paths.bower + '/fontawesome/scss'
     ]
   }))
+  .pipe(addsrc(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css'))
   .pipe(minifyCSS({
     keepSpecialComments: 0
   }))
@@ -49,7 +51,9 @@ gulp.task('scripts', function() {
   gulp.src([
     paths.bower + '/jquery/dist/jquery.js',
     paths.bower + '/bootstrap-sass/assets/javascripts/bootstrap.js',
-    paths.assets + '/scripts/application.js'
+    paths.bower + '/markdown/lib/markdown.js',
+    paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js',
+    paths.assets + '/scripts/application.js',
   ])
   .pipe(concat('application.min.js'))
   .pipe(uglify())
@@ -76,6 +80,7 @@ gulp.task('fonts', function() {
 
 
 gulp.task('vendor', function() {
+  // Bootstrap Datepicker
   gulp.src(paths.bower + '/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')
   .pipe(minifyCSS({
     keepSpecialComments: 0
@@ -88,10 +93,27 @@ gulp.task('vendor', function() {
   .pipe(rename('datepicker.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
 
+  // Chartist
   gulp.src(paths.bower + '/chartist/dist/chartist.js')
   .pipe(uglify())
   .pipe(rename('chartist.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
+
+  // Bootstrap Markdown
+  // gulp.src(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css')
+  // .pipe(minifyCSS({
+  //   keepSpecialComments: 0
+  // }))
+  // .pipe(rename('markdown.min.css'))
+  // .pipe(gulp.dest(paths.dist + '/css'));
+
+  // gulp.src([
+  //   paths.bower + '/markdown/lib/markdown.js',
+  //   paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js'
+  // ])
+  // .pipe(concat('markdown.min.js'))
+  // .pipe(uglify())
+  // .pipe(gulp.dest(paths.dist + '/js'));
 });
 
 

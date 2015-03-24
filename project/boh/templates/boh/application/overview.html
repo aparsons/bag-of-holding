@@ -1,13 +1,14 @@
 {% extends "boh/application/base_applications.html" %}
 
 {% load humanize %}
+{% load markdown_render %}
 
 {% block title %}{{ application.name }} | Environments{% endblock %}
 
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    {% if application.description %}<p>{{ application.description }}</p>{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
+    {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">

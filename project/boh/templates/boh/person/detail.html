@@ -39,7 +39,7 @@
     <div class="list-group">
       {% for organization in person.organization_set.all %}
       <a href="{% url 'boh:organization.overview' organization.id %}" class="list-group-item">
-        <h4 class="list-group-item-heading no-margin-bottom">{{ organization.name }}{% if organization.description %}<span class="hidden-xs"> <small>{{ organization.description|truncatechars:70 }}</small></span>{% endif %}</h4>
+        <h4 class="list-group-item-heading no-margin-bottom">{{ organization.name }}</h4>
       </a>
       {% empty %}
       <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} is not associated with any organizations.</em></small></li>

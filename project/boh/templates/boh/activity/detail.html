@@ -1,6 +1,7 @@
 {% extends "boh/activity/base_activities.html" %}
 
 {% load humanize %}
+{% load markdown_render %}
 
 {% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }}{% endblock %}
 
@@ -31,7 +32,7 @@
     {% if activity.activity_type.documentation %}
     <hr>
     <h3><span class="fa fa-file-text-o" aria-hidden="true"></span> {{ activity.activity_type.name }} Documentation</h3>
-    <p>{{ activity.activity_type.documentation }}</p>
+    <p>{{ activity.activity_type.documentation|markdown_render }}</p>
     {% endif %}
 
     <hr>
@@ -41,7 +42,7 @@
     {% for comment in activity.activitycomment_set.all %}
     <div class="panel panel-default">
       <div class="panel-body">
-        {{ comment.message }}
+        {{ comment.message|markdown_render }}
       </div>
       <div class="panel-footer"><span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.first_name }} {{ comment.user.last_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> commented {{ comment.modified_date|naturaltime }}</span></span></div>
     </div>
@@ -54,7 +55,7 @@
       <div class="panel-body">
         <form method="post" action="{% url 'boh:activity.comment.add' activity.id %}">
           {% csrf_token %}
-          {% include "boh/snippets/form/_general.html" with control=form.message %}
+          {% include "boh/snippets/form/_markdown.html" with control=form.message %}
           <button class="btn btn-success" type="submit">Comment</button>
         </form>
       </div>

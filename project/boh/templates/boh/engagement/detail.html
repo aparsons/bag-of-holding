@@ -1,6 +1,7 @@
 {% extends "boh/engagement/base_engagements.html" %}
 
 {% load humanize %}
+{% load markdown_render %}
 
 {% block title %}{{ application.name }} | {{ engagement.start_date }} - {{ engagement.end_date }}{% endblock %}
 
@@ -69,7 +70,7 @@
     {% for comment in engagement.engagementcomment_set.all %}
     <div class="panel panel-default">
       <div class="panel-body">
-        {{ comment.message }}
+        {{ comment.message|markdown_render }}
       </div>
       <div class="panel-footer"><span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.first_name }} {{ comment.user.last_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> commented {{ comment.modified_date|naturaltime }}</span></span></div>
     </div>
@@ -82,7 +83,7 @@
       <div class="panel-body">
         <form method="post" action="{% url 'boh:engagement.comment.add' engagement.id %}">
           {% csrf_token %}
-          {% include "boh/snippets/form/_general.html" with control=form.message %}
+          {% include "boh/snippets/form/_markdown.html" with control=form.message %}
           <button class="btn btn-success" type="submit">Comment</button>
         </form>
       </div>

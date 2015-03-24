@@ -5,6 +5,8 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
+    <a href="" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> Add Person</span></a>
+    <hr>
     {% regroup application.relation_set.all|dictsort:"person.get_role_display" by person.get_role_display as relation_list_by_role %}
     {% for relations in relation_list_by_role %}
     <div class="panel panel-default">

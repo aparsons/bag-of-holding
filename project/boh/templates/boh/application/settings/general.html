@@ -11,7 +11,7 @@
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=general_form.name %}
-      {% include "boh/snippets/form/_general.html" with control=general_form.description %}
+      {% include "boh/snippets/form/_markdown.html" with control=general_form.description %}
     </div>
     <div class="panel-footer">
       <button class="btn btn-primary" name="submit-general" type="submit">Update General Information</button>

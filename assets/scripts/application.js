@@ -5,6 +5,63 @@ $(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 
+  $(".markdown").markdown({
+    iconlibrary: "fa",
+    resize: "vertical",
+    hiddenButtons: ["cmdCode"],
+    reorderButtonGroups: ["groupFont", "groupLink", "groupMisc", "groupCustom", "groupUtil"],
+    additionalButtons: [
+      [{
+        name: "groupCustom",
+        data: [{
+          name: "codeHighlight",
+          title: "Highlight Code",
+          icon: { glyph: 'glyphicon glyphicon-asterisk', fa: 'fa fa-code' },
+          callback: function(e) {
+            // Prepend/Give - surround the selection
+            var chunk, cursor, selected = e.getSelection(),content = e.getContent();
+            // transform selection and set the cursor into chunked text
+            if (selected.length === 0) {
+              // Give extra word
+              chunk = e.__localize('code here');
+              e.replaceSelection('    ' + chunk);
+              // Set the cursor
+              cursor = selected.start + 4;
+            } else {
+              if (selected.text.indexOf('\n') < 0) {
+                chunk = selected.text;
+                e.replaceSelection('    ' + chunk);
+                // Set the cursor
+                cursor = selected.start + 6;
+              } else {
+                var list = [];
+                list = selected.text.split('\n');
+                chunk = list[0];
+                $.each(list, function(k, v) {
+                  list[k] = '    ' + v;
+                });
+                e.replaceSelection('' + list.join('\n'));
+                // Set the cursor
+                cursor = selected.start + 4;
+              }
+            }
+            // Set the cursor
+            e.setSelection(cursor, cursor + chunk.length);
+          }
+        }, {
+          name: "toc",
+          title: "Table of Contents",
+          icon: { glyph: 'glyphicon glyphicon-book', fa: 'fa fa-book' },
+          callback: function(e) {
+            var selected = e.getSelection();
+            e.replaceSelection('\n[TOC]\n');
+            e.setSelection(selected.start,selected.start+8);
+          }
+        }]
+      }]
+    ]
+  });
+
   $(".threadfix-process").click(function(event) {
     var $this = $(this);
     $this.hide()
@@ -16,4 +73,5 @@ $(function () {
       $(".threadfix-process").show();
     });
   });
-})
+
+});
