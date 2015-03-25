@@ -37,7 +37,7 @@
     </div>
     <form method="post" action="{% url 'boh:activity.delete' activity.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this activity?');">Delete Activity</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this activity?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Activity</button>
     </form>
   </div>
 </div>

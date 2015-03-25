@@ -73,7 +73,6 @@ error_messages = [
 
 # Dashboard
 
-
 @login_required
 @require_http_methods(['GET'])
 def dashboard_personal(request):
@@ -141,12 +140,23 @@ def dashboard_reports(request):
 
 # Management
 
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_overview(request):
+    threadfix_services = ThreadFix.objects.all()
+
+    return render(request, 'boh/management/overview.html', {
+        'threadfix_services': threadfix_services,
+        'active_top': 'management',
+        'active': 'overview'
+    })
+
 
 @login_required
 @staff_member_required
 @require_http_methods(['GET'])
 def management_services(request):
-
     threadfix_services = ThreadFix.objects.all()
 
     return render(request, 'boh/management/services.html', {

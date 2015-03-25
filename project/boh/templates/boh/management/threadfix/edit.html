@@ -23,6 +23,6 @@
 </form>
 <form method="post" action="{% url 'boh:management.services.threadfix.delete' threadfix.id %}">
   {% csrf_token %}
-  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this ThreadFix service?');">Delete ThreadFix Service</button>
+  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this ThreadFix service?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete ThreadFix Service</button>
 </form>
 {% endblock manage_content %}

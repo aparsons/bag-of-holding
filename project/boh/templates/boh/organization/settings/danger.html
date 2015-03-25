@@ -11,7 +11,7 @@
     <form method="post" action="{% url 'boh:organization.settings.danger' organization.id %}">
       {% csrf_token %}
       <p class="text-muted">Once you delete an organization, there is no going back. Please be certain.</p>
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this organization?');">Delete Organization</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this organization?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Organization</button>
     </form>
   </div>
 </div>

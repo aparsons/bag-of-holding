@@ -9,7 +9,7 @@
     <form method="post" action="{% url 'boh:environment.edit.danger' environment.id %}">
       {% csrf_token %}
       <p class="text-muted">Once you delete this environment, there is no going back. Please be certain.</p>
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this environment?');">Delete Environment</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this environment?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Environment</button>
     </form>
   </div>
 </div>

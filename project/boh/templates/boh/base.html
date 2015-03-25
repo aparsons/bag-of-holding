@@ -36,7 +36,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_staff %}
-            <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.services' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
+            <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.overview' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
             {% endif %}
             <li class="dropdown{% if active_top == 'user' %} active{% endif %}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-user" aria-hidden="true"></span> {{ user.first_name }} {{ user.last_name }} <span class="fa fa-caret-down" aria-hidden="true"></span></a>

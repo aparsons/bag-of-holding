@@ -51,7 +51,7 @@
     </div>
     <form method="post" action="{% url 'boh:engagement.delete' engagement.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this engagement?');">Delete Engagement</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this engagement?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Engagement</button>
     </form>
   </div>
 </div>

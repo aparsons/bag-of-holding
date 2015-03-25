@@ -59,7 +59,8 @@ $(function () {
           }
         }]
       }]
-    ]
+    ],
+    footer: '<div class="btn-group" role="group"><a class="btn btn-default btn-xs" href="http://daringfireball.net/projects/markdown/basics" role="button" target="_blank">Markdown Help</a><a class="btn btn-default btn-xs" href="http://pythonhosted.org//Markdown/extensions/code_hilite.html#syntax" role="button" target="_blank">Code Highlighting Help</a></div>'
   });
 
   $(".threadfix-process").click(function(event) {

@@ -11,7 +11,7 @@
     <form method="post" action="{% url 'boh:application.settings.danger' application.id %}">
       {% csrf_token %}
       <p class="text-muted">Once you delete an application, there is no going back. Please be certain.</p>
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this application?');">Delete Application</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this application?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Application</button>
     </form>
   </div>
 </div>

@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
 
     # Management
+    url(r'^manage/$', views.management_overview, name='management.overview'),
     url(r'^manage/services/$', views.management_services, name='management.services'),
     url(r'^manage/services/threadfix/add', views.management_services_threadfix_add, name='management.services.threadfix.add'),
     url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/edit', views.management_services_threadfix_edit, name='management.services.threadfix.edit'),

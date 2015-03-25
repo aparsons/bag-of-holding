@@ -30,7 +30,7 @@
   <div class="col-md-4">
     <form method="post" action="{% url 'boh:person.delete' person.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this person?');">Delete Person</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this person?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Person</button>
     </form>
   </div>
 </div>

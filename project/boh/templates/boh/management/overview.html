@@ -1,0 +1,48 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Overview{% endblock %}
+
+{% block manage_content %}
+<h2 class="no-margin-top">Manage Settings Overview</h2>
+<p>Here you will find all the options for configuring and customizing Bag of Holding.</p>
+
+<div class="row">
+  <!--
+  <div class="col-sm-6">
+    <h3><span class="fa fa-building fa-fw" aria-hidden="true"></span> Organizations</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Organizations</a>
+  </div>
+  <div class="col-sm-6">
+    <h3><span class="fa fa-tags fa-fw" aria-hidden="true"></span> Application Tags</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Application Tags</a>
+  </div>
+  <div class="col-sm-6">
+    <h3><span class="fa fa-clock-o fa-fw" aria-hidden="true"></span> Activity Types</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Activity Types</a>
+  </div>
+  <div class="col-sm-6">
+    <h3><span class="fa fa-cubes fa-fw" aria-hidden="true"></span> Data Elements</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Data Elements</a>
+  </div>
+  <div class="col-sm-6">
+    <h3><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span> Service Levels</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Service Levels</a>
+  </div>
+  -->
+  <div class="col-sm-6">
+    <h3><span class="fa fa-plug fa-fw" aria-hidden="true"></span> Third Party Services</h3>
+    <a class="btn btn-primary" href="{% url 'boh:management.services' %}" role="button">Manage Third Party Services</a>
+  </div>
+  <!--
+  <div class="col-sm-6">
+    <h3><span class="fa fa-users fa-fw" aria-hidden="true"></span> Users</h3>
+    <a class="btn btn-primary" href="#" role="button">Manage Users</a>
+  </div>
+  -->
+  <div class="col-sm-6">
+    <h3><span class="fa fa-user-secret fa-fw" aria-hidden="true"></span> Django Admin</h3>
+    <a class="btn btn-primary" href="{% url 'admin:index' %}" target="_blank" role="button">View Django Admin</a>
+  </div>
+</div>
+
+{% endblock manage_content %}
