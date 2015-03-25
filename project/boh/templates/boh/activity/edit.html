@@ -21,7 +21,7 @@
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=form.status %}
           {% include "boh/snippets/form/_general.html" with control=form.activity_type %}
-          {% include "boh/snippets/form/_general.html" with control=form.description %}
+          {% include "boh/snippets/form/_markdown.html" with control=form.description %}
           {% include "boh/snippets/form/_general.html" with control=form.users %}
         </div>
         <div class="panel-footer">

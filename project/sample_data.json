@@ -46,6 +46,7 @@
     "pk": 1,
     "fields": {
       "name": "Important",
+      "description": "Very important",
       "color": "FF0066"
     }
   },
@@ -54,6 +55,7 @@
     "pk": 2,
     "fields": {
       "name": "Demonstration",
+      "description": "For demo purposes",
       "color": "556270"
     }
   },
@@ -62,6 +64,7 @@
     "pk": 3,
     "fields": {
       "name": "New",
+      "description": "Newly added",
       "color": "77CCA4"
     }
   },

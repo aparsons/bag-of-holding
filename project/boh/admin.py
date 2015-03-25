@@ -84,6 +84,7 @@ class DataElementAdmin(admin.ModelAdmin):
 admin.site.register(DataElement, DataElementAdmin)
 
 class ApplicationAdmin(admin.ModelAdmin):
+    readonly_fields = ['created_date','modified_date']
     fieldsets = [
         (None, {'fields': ['organization', 'name', 'description']}),
         ('Metadata', {
@@ -101,6 +102,10 @@ class ApplicationAdmin(admin.ModelAdmin):
         ('ThreadFix', {
             'classes': ['collapse'],
             'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
+        }),
+        ('Advanced options', {
+            'classes': ['collapse'],
+            'fields': ['created_date', 'modified_date']
         }),
     ]
     list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']

@@ -5,9 +5,7 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    <div class="btn-toolbar" role="toolbar" aria-label="...">
-      <a href="{% url 'boh:environment.add' application.id %}" class="btn btn-success pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Environment</span></a>
-    </div>
+    <a href="{% url 'boh:environment.add' application.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Environment</span></a>
 
     <hr>
 

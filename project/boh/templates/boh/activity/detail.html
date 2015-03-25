@@ -15,7 +15,7 @@
 <div class="row">
   <div class="col-md-8">
     <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> {{ activity.activity_type.name }}</h3>
-    {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
+    {% if activity.description %}{{ activity.description|markdown_render }}{% endif %}
 
     <hr>
 
@@ -56,7 +56,7 @@
         <form method="post" action="{% url 'boh:activity.comment.add' activity.id %}">
           {% csrf_token %}
           {% include "boh/snippets/form/_markdown.html" with control=form.message %}
-          <button class="btn btn-success" type="submit">Comment</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> Comment</button>
         </form>
       </div>
     </div>

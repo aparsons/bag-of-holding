@@ -1,4 +1,5 @@
-import datetime
+from datetime import date, timedelta
+
 import phonenumbers
 
 from django.conf import settings
@@ -13,7 +14,11 @@ class Tag(models.Model):
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 character hex format.")
 
     name = models.CharField(max_length=64, unique=True, help_text='A unique name for this tag.')
+    description = models.CharField(max_length=64, blank=True, help_text='A short description of this tag\'s purpose to be shown in tooltips.')
     color = models.CharField(max_length=6, validators=[color_regex], help_text='Specify a 6 character hex color value. (e.g., \'d94d59\')')
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -51,12 +56,12 @@ class Person(models.Model):
     job_title = models.CharField(max_length=128, blank=True)
     role = models.CharField(max_length=17, choices=ROLE_CHOICES)
 
-    def __str__(self):
-        return self.last_name + ', ' + self.first_name
-
     class Meta:
         ordering = ['last_name']
         verbose_name_plural = 'People'
+
+    def __str__(self):
+        return self.last_name + ', ' + self.first_name
 
     def save(self, *args, **kwargs):
         if self.phone_work:
@@ -74,11 +79,11 @@ class Organization(models.Model):
 
     people = models.ManyToManyField(Person, blank=True)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 class DataElement(models.Model):
@@ -106,11 +111,11 @@ class DataElement(models.Model):
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     weight = models.PositiveIntegerField()
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['id']
+
+    def __str__(self):
+        return self.name
 
 
 class ThreadFix(models.Model):
@@ -121,12 +126,12 @@ class ThreadFix(models.Model):
     api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.') # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
     verify_ssl = models.BooleanField(default=True, help_text='Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.')
 
-    def __str__(self):
-        return self.name + ' - ' + self.host
-
     class Meta:
         verbose_name = "ThreadFix"
         verbose_name_plural = 'ThreadFix'
+
+    def __str__(self):
+        return self.name + ' - ' + self.host
 
 
 class Application(models.Model):
@@ -239,7 +244,7 @@ class Application(models.Model):
     #id for whitehat + checkmarx (third-party ids)
     #password policy
 
-    organization = models.ForeignKey(Organization)
+    organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
@@ -286,22 +291,27 @@ class Application(models.Model):
 
         return dsv
 
+    def is_new(self):
+        """Returns true if the application was created in the last 7 days"""
+        delta = self.created_date - timezone.now()
+        return delta >= timedelta(days=-7)
+
 
 class Relation(models.Model):
     """Associates a person with an application with a role."""
 
-    owner = models.BooleanField(default=False)
-    emergency = models.BooleanField(default=False)
-    notes = models.TextField(blank=True)
+    owner = models.BooleanField(default=False, help_text='Specify if this person is an application owner.')
+    emergency = models.BooleanField(default=False, help_text='Specify if this person is an emergency contact.')
+    notes = models.TextField(blank=True, help_text='Any notes about this person\'s connection to the application.')
 
-    person = models.ForeignKey(Person)
+    person = models.ForeignKey(Person, help_text='The person associated with the application.')
     application = models.ForeignKey(Application)
-
-    def __str__(self):
-        return self.person.first_name + ' ' + self.person.last_name + ' - ' + self.application.name
 
     class Meta:
         unique_together = ('person', 'application')
+
+    def __str__(self):
+        return self.person.first_name + ' ' + self.person.last_name + ' - ' + self.application.name
 
 
 class Environment(models.Model):
@@ -328,11 +338,11 @@ class Environment(models.Model):
 
     application = models.ForeignKey(Application)
 
-    def __str__(self):
-        return self.application.name + ' ' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type]
-
     class Meta:
         ordering = ['-testing_approved', 'environment_type']
+
+    def __str__(self):
+        return self.application.name + ' ' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type]
 
 
 class EnvironmentLocation(models.Model):
@@ -384,7 +394,7 @@ class Engagement(models.Model):
     open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
 
-    requestor = models.ForeignKey(Person, blank=True, null=True)
+    requestor = models.ForeignKey(Person, blank=True, null=True, help_text='Specify who requested this engagement.')
     application = models.ForeignKey(Application)
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -423,14 +433,14 @@ class Engagement(models.Model):
     def is_ready_for_work(self):
         """If the engagement is pending on or after the start date."""
         if self.status == Engagement.PENDING_STATUS:
-            if datetime.date.today() >= self.start_date:
+            if date.today() >= self.start_date:
                 return True
         return False
 
     def is_past_due(self):
         """If the engagement is not closed by the end date."""
         if self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS:
-            if datetime.date.today() > self.end_date:
+            if date.today() > self.end_date:
                 return True
         return False
 
@@ -503,14 +513,14 @@ class Activity(models.Model):
     def is_ready_for_work(self):
         """If the activity is pending on or after the engagement's start date."""
         if self.status == Activity.PENDING_STATUS:
-            if datetime.date.today() >= self.engagement.start_date:
+            if date.today() >= self.engagement.start_date:
                 return True
         return False
 
     def is_past_due(self):
         """If the activity is not closed by the engagement's end date."""
         if self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS:
-            if datetime.date.today() > self.engagement.end_date:
+            if date.today() > self.engagement.end_date:
                 return True
         return False
 

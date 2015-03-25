@@ -5,14 +5,7 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    <div class="btn-toolbar clearfix" role="toolbar" aria-label="...">
-      <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default disabled"><span class="fa fa-info-circle" aria-hidden="true"></span> {{ pending_engagements.count }}<span class="hidden-xs"> Pending</span></button>
-        <button type="button" class="btn btn-default disabled"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ open_engagements.count }}<span class="hidden-xs"> Open</span></button>
-        <button type="button" class="btn btn-default disabled"><span class="fa fa-check-circle" aria-hidden="true"></span> {{ closed_engagements.count }}<span class="hidden-xs"> Closed</span></button>
-      </div>
-      <a href="{% url 'boh:engagement.add' application.id %}" class="btn btn-success pull-right" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Engagement</span></a>
-    </div>
+    <a href="{% url 'boh:engagement.add' application.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Engagement</span></a>
 
     <hr>
 

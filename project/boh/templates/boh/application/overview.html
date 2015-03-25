@@ -64,7 +64,7 @@
       </div>
       <div class="panel-body">
         {% for tag in application.tags.all %}
-        <a href="{% url 'boh:application.list' %}?tag={{ tag.id }}" class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</a>
+        {% include "boh/snippets/common/tag_label.html" with tag=tag %}
         {% empty %}
         <small class="text-muted"><em>There are no tags.</em></small>
         {% endfor %}

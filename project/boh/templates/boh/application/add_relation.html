@@ -1,0 +1,33 @@
+{% extends "boh/application/base_applications.html" %}
+
+{% block title %}{{ application.name }} | People | Add Person{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:application.people.add' application.id %}">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Related Person</h3>
+        </div>
+        <div class="panel-body">
+          {% include "boh/snippets/form/_general.html" with control=relation_form.person %}
+          {% include "boh/snippets/form/_checkbox.html" with control=relation_form.owner %}
+          {% include "boh/snippets/form/_checkbox.html" with control=relation_form.emergency %}
+          {% include "boh/snippets/form/_general.html" with control=relation_form.notes %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Create Related Person</button>
+          <a href="{% url 'boh:application.people' application.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how relations work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock application_content %}

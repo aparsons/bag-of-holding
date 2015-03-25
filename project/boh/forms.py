@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person, ThreadFix
+from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person, Relation, ThreadFix
 
 
 # User
@@ -20,7 +20,7 @@ class OrganizationAddForm(forms.ModelForm):
         model = Organization
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 8})
         }
 
 
@@ -29,7 +29,7 @@ class OrganizationSettingsGeneralForm(forms.ModelForm):
         model = Organization
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 8})
         }
 
 
@@ -75,7 +75,7 @@ class ApplicationAddForm(forms.ModelForm):
         model = Application
         fields = ['organization', 'name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 8})
         }
 
 
@@ -84,7 +84,7 @@ class ApplicationSettingsGeneralForm(forms.ModelForm):
         model = Application
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 8})
         }
 
 
@@ -199,7 +199,7 @@ class EngagementAddForm(forms.ModelForm):
             'end_date': 'Scheduled end date'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 5})
         }
 
     def clean(self):
@@ -221,7 +221,7 @@ class EngagementEditForm(forms.ModelForm):
             'end_date': 'Scheduled end date'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs = {'rows': 5})
         }
 
     def clean(self):
@@ -313,4 +313,26 @@ class PersonForm(forms.ModelForm):
 class PersonDeleteForm(forms.ModelForm):
     class Meta:
         model = Person
+        fields = []
+
+
+# Relation
+
+class PersonRelationForm(forms.ModelForm):
+    """For relating a person to an application."""
+    class Meta:
+        model = Relation
+        fields = ['person', 'owner', 'emergency', 'notes']
+        labels = {
+            'owner': 'Application Owner',
+            'emergency': 'Emergency Contact'
+        }
+        widgets = {
+            'notes': forms.Textarea(attrs = {'rows': 3})
+        }
+
+
+class RelationDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Relation
         fields = []

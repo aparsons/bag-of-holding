@@ -6,7 +6,4 @@
   <p class="list-group-item-text">
     {{ activity.engagement.start_date|date:"M. j, Y" }} - {{ activity.engagement.end_date|date:"M. j, Y" }} <span class="hidden-xs">({% if activity.engagement.start_date == activity.engagement.end_date %}1 day{% else %}{{ activity.engagement.start_date|timesince:activity.engagement.end_date }}{% endif %})</span>
   </p>
-  {% if activity.description %}
-  <p class="list-group-item-text hidden-xs"><small>{{ activity.description|truncatechars:70 }}</small></p>
-  {% endif %}
 </a>

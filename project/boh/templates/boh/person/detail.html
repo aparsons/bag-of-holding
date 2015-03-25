@@ -49,19 +49,19 @@
     <h3><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</h3>
     <div class="list-group">
       {% for relation in person.relation_set.all %}
-      <a href="{% url 'boh:application.overview' relation.application.id %}" class="list-group-item">
-        {% if relation.owner %}<span class="badge">Owner</span>{% endif %}
-        {% if relation.emergency %}<span class="badge badge-danger">Emergency</span>{% endif %}
-        <h4 class="list-group-item-heading no-margin-bottom">{{ relation.application.name }}<span class="hidden-xs"> <small>{{ relation.application.organization.name }} - {{ relation.application.get_platform_display }}, {{ relation.application.get_origin_display }}</small></span></h4>
-        {% if relation.notes %}<p class="list-group-item-text">{{ relation.notes }}</p>{% endif %}
-        {% if relation.application.tags.all %}
-        <p class="list-group-item-text hidden-xs">
-          {% for tag in relation.application.tags.all %}
-          <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
-          {% endfor %}
-        </p>
-        {% endif %}
-      </a>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-10 col-md-6">
+            <h4 class="list-group-item-heading no-margin-bottom"><a href="{% url 'boh:application.overview' relation.application.id %}">{{ relation.application.name }}</a><span class="hidden-xs"> <small class="text-muted">{{ relation.application.organization.name }}</small></span></h4>
+          </div>
+          <div class="col-xs-2 col-md-6">
+            <a href="{% url 'boh:application.people.edit' relation.application.id relation.id %}" class="btn btn-default btn-xs pull-right" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit"><span class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Edit</span></a>
+          </div>
+        </div>
+        {% if relation.owner %}<span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Application Owner"><span class="fa fa-gavel fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Owner</span></span>{% endif %}
+        {% if relation.emergency %}<span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="Emergency Contact"><span class="fa fa-life-ring fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Emergency</span></span>{% endif %}
+        {% if relation.notes %}{% if relation.owner or relation.emergency %}<br>{% endif %}<small class="text-muted">{{ relation.notes }}</small>{% endif %}
+      </li>
       {% empty %}
       <li class="list-group-item"><small class="text-muted"><em>{{ person.first_name }} is not associated with any applications.</em></small></li>
       {% endfor %}

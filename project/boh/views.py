@@ -18,10 +18,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, ThreadFix
+from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, Relation, ThreadFix
 from boh.forms import UserProfileForm
 from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
+from boh.forms import PersonRelationForm, RelationDeleteForm
 from boh.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDCLOverrideForm
 from boh.forms import EnvironmentAddForm, EnvironmentEditForm, EnvironmentDeleteForm, EnvironmentLocationAddForm
 from boh.forms import EngagementAddForm, EngagementEditForm, EngagementStatusForm, EngagementDeleteForm, EngagementCommentAddForm
@@ -560,21 +561,93 @@ def application_environments(request, application_id):
 def application_people(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
-    #relations = Application.objects.filter(pk=application_id).values('relation__person__role').order_by('relation__person__role')
-
-    # FIX ME!!!
-    # relation_groups = []
-    # for relation in application.relation_set.all():
-    #     if relation.person.get_role_display() not in relation_groups:
-    #         relation_groups[relation.person.get_role_display()] = []
-    #     relation_groups[relation.person.get_role_display()].append(relation)
-
     return render(request, 'boh/application/people.html', {
         'application': application,
-        #'relation_groups': relations,
         'active_top': 'applications',
         'active_tab': 'people'
     })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_people_add(request, application_id):
+    application = get_object_or_404(Application, pk=application_id)
+
+    relation_form = PersonRelationForm(request.POST or None)
+    relation_form.fields['person'].queryset = Person.objects.exclude(application__id=application.id)
+
+    if request.method == 'POST':
+        if relation_form.is_valid():
+            relation = relation_form.save(commit=False)
+            relation.application = application
+            try:
+                relation.save()
+            except IntegrityError:
+                messages.error(request, relation.person.first_name + ' ' + relation.person.last_name + ' is already related to this application.', extra_tags=random.choice(error_messages))
+            else:
+                messages.success(request, 'You successfully added ' + relation.person.first_name + ' ' + relation.person.last_name + ' to this application.', extra_tags=random.choice(success_messages))
+            finally:
+                return redirect('boh:application.people', application.id)
+        else:
+            messages.error(request, 'There was a problem saving the relation to this application.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/application/add_relation.html', {
+        'application': application,
+        'relation_form': relation_form,
+        'active_top': 'applications',
+        'active_tab': 'people'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_people_edit(request, application_id, relation_id):
+    application = get_object_or_404(Application, pk=application_id)
+    relation = get_object_or_404(Relation, pk=relation_id)
+
+    relation_form = PersonRelationForm(request.POST or None, instance=relation)
+    relation_form.fields['person'].queryset = Person.objects.exclude(Q(application__id=application.id) & ~Q(id=relation.person.id))
+    relation_form.fields['person'].value = relation.person
+
+    if request.method == 'POST':
+        if relation_form.is_valid():
+            relation = relation_form.save(commit=False)
+            relation.application = application
+            try:
+                relation.save()
+            except IntegrityError:
+                messages.error(request, relation.person.first_name + ' ' + relation.person.last_name + ' is already related to this application.', extra_tags=random.choice(error_messages))
+            else:
+                messages.success(request, 'You successfully added ' + relation.person.first_name + ' ' + relation.person.last_name + ' to this application.', extra_tags=random.choice(success_messages))
+            finally:
+                return redirect('boh:application.people', application.id)
+        else:
+            messages.error(request, 'There was a problem saving the relation to this application.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/application/edit_relation.html', {
+        'application': application,
+        'relation': relation,
+        'relation_form': relation_form,
+        'active_top': 'applications',
+        'active_tab': 'people'
+    })
+
+
+@login_required
+@require_http_methods(['POST'])
+def application_people_delete(request, application_id, relation_id):
+    application = get_object_or_404(Application, pk=application_id)
+    relation = get_object_or_404(Relation, pk=relation_id)
+
+    delete_form = RelationDeleteForm(request.POST, instance=relation)
+
+    if delete_form.is_valid():
+        relation.delete()
+        messages.success(request, 'You successfully disassociated ' + relation.person.first_name + ' ' + relation.person.last_name + ' with this application.', extra_tags=random.choice(success_messages))
+    else:
+        messages.error(request, 'There was a problem disassociating ' + relation.person.first_name + ' ' + relation.person.last_name + ' with this application.', extra_tags=random.choice(error_messages))
+
+    return redirect('boh:application.people', application.id)
 
 
 @login_required
