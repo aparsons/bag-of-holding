@@ -229,9 +229,9 @@ class Application(models.Model):
     override_reason = models.TextField(blank=True, help_text='Specify why the calculated data classification level is being overridden.')
 
     # ThreadFix
-    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True)
-    threadfix_team_id = models.PositiveIntegerField(blank=True, null=True)
-    threadfix_application_id = models.PositiveIntegerField(blank=True, null=True)
+    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text='The ThreadFix service to connect to this application.')
+    threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique team identifier used within ThreadFix.')
+    threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique application identifier used within ThreadFix.')
 
     # Misc
     created_date = models.DateTimeField(auto_now_add=True)

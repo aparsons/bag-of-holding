@@ -9,7 +9,7 @@
     {% include "boh/snippets/common/_activity_label.html" with activity=activity %}
     {% endfor %}
     {% else %}
-    <span class="label label-danger">No activities for this engagement</span>
+    <span class="label label-danger"><span class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></span> No activities for this engagement</span>
     {% endif %}
   </p>
 </a>

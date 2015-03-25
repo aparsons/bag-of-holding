@@ -70,6 +70,11 @@
         {% endfor %}
       </div>
     </div>
+
+    <small class="text-muted">
+      Created: <em>{{ application.created_date }}</em><br>
+      Modified: <em>{{ application.modified_date }}</em>
+    </small>
   </div>
 </div>
 {% endblock application_content %}

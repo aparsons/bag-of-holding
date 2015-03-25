@@ -7,6 +7,12 @@
   <div class="panel-heading">
     <h3 class="panel-title">ThreadFix Services</h3>
   </div>
+  <ul class="list-group">
+    <li class="list-group-item"><a href="http://www.threadfix.org/download/" target="_blank">ThreadFix</a> is a software vulnerability aggregation and management system that helps organizations aggregate vulnerability data, generate virtual patches, and interact with software defect tracking systems.</li>
+    {% if not threadfix_services %}
+    <li class="list-group-item"><small class="text-muted"><em>There are no ThreadFix services.</em></small></li>
+    {% endif %}
+  </ul>
   {% if threadfix_services %}
   <div class="table-responsive">
     <table class="table table-striped">
@@ -31,10 +37,6 @@
         {% endfor %}
       </tbody>
     </table>
-  </div>
-  {% else %}
-  <div class="panel-body">
-    <small class="text-muted"><em>There are no ThreadFix services.</em></small>
   </div>
   {% endif %}
   <div class="panel-footer"><a class="btn btn-success btn-sm" href="{% url 'boh:management.services.threadfix.add' %}" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add ThreadFix Service</a></div>
