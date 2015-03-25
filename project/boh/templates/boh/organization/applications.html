@@ -1,0 +1,32 @@
+{% extends "boh/organization/base_organizations.html" %}
+
+{% block title %}{{ organization.name }} | Applications{% endblock %}
+
+{% block organization_content %}
+<div class="row">
+  <div class="col-md-8">
+    <ul class="list-group">
+      {% for application in organization.application_set.all %}
+      <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">
+        <span class="badge">{{ application.get_business_criticality_display }}</span>
+        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        {% if application.tags.all %}
+        <p class="list-group-item-text">
+          {% for tag in application.tags.all %}
+          {% include "boh/snippets/common/tag_label.html" with tag=tag %}
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% empty %}
+      <li class="list-group-item"><small><em class="text-muted">There are no applications.</em></small></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how applications work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock organization_content %}

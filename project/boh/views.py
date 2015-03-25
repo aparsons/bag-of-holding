@@ -20,7 +20,7 @@ from django.views.decorators.http import require_http_methods
 
 from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, Relation, ThreadFix
 from boh.forms import UserProfileForm
-from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationDeleteForm
+from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationSettingsPeopleForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from boh.forms import PersonRelationForm, RelationDeleteForm
 from boh.forms import ApplicationSettingsDataElementsForm, ApplicationSettingsDCLOverrideForm
@@ -395,13 +395,22 @@ def user_change_password(request):
 def organization_overview(request, organization_id):
     organization = get_object_or_404(Organization, pk=organization_id)
 
-    applications = organization.application_set.all()
-
     return render(request, 'boh/organization/overview.html', {
         'organization': organization,
-        'applications': applications,
         'active_top': 'applications',
         'active_tab': 'overview'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def organization_applications(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    return render(request, 'boh/organization/applications.html', {
+        'organization': organization,
+        'active_top': 'applications',
+        'active_tab': 'applications'
     })
 
 
@@ -418,16 +427,18 @@ def organization_people(request, organization_id):
 
 
 @login_required
-@staff_member_required
 @require_http_methods(['GET', 'POST'])
 def organization_settings_general(request, organization_id):
     organization = get_object_or_404(Organization, pk=organization_id)
 
     form = OrganizationSettingsGeneralForm(request.POST or None, instance=organization)
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, 'You successfully update this organization\'s general information.', extra_tags=random.choice(success_messages))
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You successfully updated this organization\'s general information.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this organization\'s general information.', extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/organization/settings/general.html', {
         'organization': organization,
@@ -439,7 +450,29 @@ def organization_settings_general(request, organization_id):
 
 
 @login_required
-@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def organization_settings_people(request, organization_id):
+    organization = get_object_or_404(Organization, pk=organization_id)
+
+    people_form = OrganizationSettingsPeopleForm(request.POST or None, instance=organization)
+
+    if request.method == 'POST':
+        if people_form.is_valid():
+            people_form.save()
+            messages.success(request, 'You successfully updated this organization\'s associated people.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this organization\'s associated people.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/organization/settings/people.html', {
+        'organization': organization,
+        'people_form': people_form,
+        'active_top': 'applications',
+        'active_tab': 'settings',
+        'active_side': 'people'
+    })
+
+
+@login_required
 @require_http_methods(['GET', 'POST'])
 def organization_settings_danger(request, organization_id):
     organization = get_object_or_404(Organization, pk=organization_id)
@@ -1169,7 +1202,7 @@ def activity_comment_add(request, activity_id):
 def person_list(request):
     person_list = Person.objects.all()
 
-    paginator = Paginator(person_list, 5)
+    paginator = Paginator(person_list, 50)
 
     page = request.GET.get('page')
     try:

@@ -1,0 +1,20 @@
+{% extends "boh/organization/settings/base_settings.html" %}
+
+{% block title %}{{ organization.name }} | Settings | People{% endblock %}
+
+{% block settings_content %}
+<form method="post" action="{% url 'boh:organization.settings.people' organization.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Related People</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=people_form.people %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Update Related People</button>
+    </div>
+  </div>
+</form>
+{% endblock settings_content %}

@@ -26,8 +26,10 @@ urlpatterns = patterns('',
     # Organization
     url(r'^organizations/add/$', views.organization_add, name='organization.add'),
     url(r'^organizations/(?P<organization_id>\d+)/$', views.organization_overview, name='organization.overview'),
+    url(r'^organizations/(?P<organization_id>\d+)/applications/$', views.organization_applications, name='organization.applications'),
     url(r'^organizations/(?P<organization_id>\d+)/people/$', views.organization_people, name='organization.people'),
     url(r'^organizations/(?P<organization_id>\d+)/settings/$', views.organization_settings_general, name='organization.settings.general'),
+    url(r'^organizations/(?P<organization_id>\d+)/settings/people/$', views.organization_settings_people, name='organization.settings.people'),
     url(r'^organizations/(?P<organization_id>\d+)/settings/danger/$', views.organization_settings_danger, name='organization.settings.danger'),
 
 	# Application

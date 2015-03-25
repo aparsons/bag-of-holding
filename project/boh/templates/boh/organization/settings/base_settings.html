@@ -9,6 +9,7 @@
       </div>
       <div class="list-group">
         <a href="{% url 'boh:organization.settings.general' organization.id %}" class="list-group-item{% if active_side == 'general' %} active{% endif %}"><span class="fa fa-book fa-fw" aria-hidden="true"></span> General</a>
+        <a href="{% url 'boh:organization.settings.people' organization.id %}" class="list-group-item{% if active_side == 'people' %} active{% endif %}"><span class="fa fa-users fa-fw" aria-hidden="true"></span> People</a>
       </div>
     </div>
     <div class="panel panel-default">

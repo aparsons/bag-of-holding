@@ -61,7 +61,7 @@ class Person(models.Model):
         verbose_name_plural = 'People'
 
     def __str__(self):
-        return self.last_name + ', ' + self.first_name
+        return self.first_name + ' ' + self.last_name
 
     def save(self, *args, **kwargs):
         if self.phone_work:

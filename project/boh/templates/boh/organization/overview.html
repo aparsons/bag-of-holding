@@ -7,28 +7,7 @@
 {% block organization_content %}
 <div class="row">
   <div class="col-md-12">
-    {% if organization.description %}{{ organization.description|markdown_render }}{% else %}<p class="text-muted">No description</p>{% endif %}
-
-    <hr>
-
-    <h3>Applications</h3>
-    <ul class="list-group">
-      {% for application in applications %}
-      <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">
-        <span class="badge">{{ application.get_business_criticality_display }}</span>
-        <h4 class="list-group-item-heading">{{ application.name }} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
-        {% if application.tags.all %}
-        <p class="list-group-item-text">
-          {% for tag in application.tags.all %}
-          {% include "boh/snippets/common/tag_label.html" with tag=tag %}
-          {% endfor %}
-        </p>
-        {% endif %}
-      </a>
-      {% empty %}
-      <li class="list-group-item"><small><em class="text-muted">There are no applications.</em></small></li>
-      {% endfor %}
-    </ul>
+    {% if organization.description %}{{ organization.description|markdown_render }}{% else %}<small><em class="text-muted">There is no description for this organization.</em></small>{% endif %}
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 {% extends "boh/organization/settings/base_settings.html" %}
 
-{% block title %}Organization Settings | General{% endblock %}
+{% block title %}{{ organization.name }} | Settings | General{% endblock %}
 
 {% block settings_content %}
 <form method="post" action="{% url 'boh:organization.settings.general' organization.id %}">

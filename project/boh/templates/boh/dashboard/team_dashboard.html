@@ -27,7 +27,7 @@
     <p class="text-muted">A list of open and pending engagements.</p>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ open_engagements.count }} Open <small class="hidden-xs">Engagements that are in progress</small></h3>
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open ({{ open_engagements.count }}) <small class="hidden-xs">Engagements that are in progress</small></h3>
       </div>
       <div class="list-group">
         {% for engagement in open_engagements %}
@@ -40,7 +40,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> {{ pending_engagements.count }} Pending <small class="hidden-xs">Engagements that have not yet started</small></h3>
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending ({{ pending_engagements.count }}) <small class="hidden-xs">Engagements that have not yet started</small></h3>
       </div>
       <div class="list-group">
         {% for engagement in pending_engagements %}
@@ -57,7 +57,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h3>Unassigned Activities</h3>
+    <h3>Unassigned Activities ({{ unassigned_activities.count }})</h3>
     <p class="text-muted">These activities need to have users assigned to them.</p>
     <div class="list-group">
       {% for activity in unassigned_activities %}
@@ -68,7 +68,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <h3>Empty Engagements</h3>
+    <h3>Empty Engagements ({{ empty_engagements.count }})</h3>
     <p class="text-muted">These engagements have no activities within them.</p>
     <div class="list-group">
       {% for engagement in empty_engagements %}

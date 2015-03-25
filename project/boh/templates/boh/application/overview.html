@@ -72,8 +72,8 @@
     </div>
 
     <small class="text-muted">
-      Created: <em>{{ application.created_date }}</em><br>
-      Modified: <em>{{ application.modified_date }}</em>
+      <em>Created {{ application.created_date|naturaltime }}<br>
+      Last modified {{ application.modified_date|naturaltime }}</em>
     </small>
   </div>
 </div>

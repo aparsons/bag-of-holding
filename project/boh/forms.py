@@ -33,6 +33,14 @@ class OrganizationSettingsGeneralForm(forms.ModelForm):
         }
 
 
+class OrganizationSettingsPeopleForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ['people']
+        widgets = {
+            'people': forms.SelectMultiple(attrs = {'size': 15})
+        }
+
 class OrganizationDeleteForm(forms.ModelForm):
     class Meta:
         model = Organization

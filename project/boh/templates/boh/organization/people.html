@@ -5,7 +5,41 @@
 {% block organization_content %}
 <div class="row">
   <div class="col-md-8">
-    <p class="text-muted">Nothing here yet.</p>
+    <p class="text-muted">Select a role to view associated people:</p>
+    {% regroup organization.people.all|dictsort:"get_role_display" by get_role_display as person_list_by_role %}
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      {% for person_list in person_list_by_role %}
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="{{ person_list.grouper|slugify }}-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#role-{{ person_list.grouper|slugify }}" aria-expanded="false" aria-controls="role-{{ person_list.grouper|slugify }}">{{ person_list.grouper }} ({{ person_list.list|length }})</a>
+          </h4>
+        </div>
+        <div id="role-{{ person_list.grouper|slugify }}" class="panel-collapse collapse table-responsive" role="tabpanel" aria-labelledby="{{ person_list.grouper|slugify }}-heading">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="col-md-4">Name</th>
+                <th class="col-md-4">Title</th>
+                <th class="col-md-4">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for person in person_list.list %}
+              <tr>
+                <td><a href="{% url 'boh:person.detail' person.id %}">{{ person.first_name }} {{ person.last_name }}</a></td>
+                <td>{{ person.job_title }}</td>
+                <td><a href="mailto://{{ person.email }}">{{ person.email }}</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
