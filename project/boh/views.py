@@ -19,7 +19,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, Relation, ThreadFix
+
 from boh.forms import UserProfileForm
+from boh.forms import ApplicationTagForm, ApplicationTagDeleteForm
 from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationSettingsPeopleForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from boh.forms import PersonRelationForm, RelationDeleteForm
@@ -149,8 +151,83 @@ def management_overview(request):
     return render(request, 'boh/management/overview.html', {
         'threadfix_services': threadfix_services,
         'active_top': 'management',
-        'active': 'overview'
+        'active_side': 'overview'
     })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_application_tags(request):
+    tags = Tag.objects.all()
+
+    return render(request, 'boh/management/application_tags/application_tags.html', {
+        'tags': tags,
+        'active_top': 'management',
+        'active_side': 'tags'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_application_tags_add(request):
+    add_form = ApplicationTagForm(request.POST or None)
+
+    if request.method == 'POST':
+        if add_form.is_valid():
+            tag = add_form.save()
+            messages.success(request, 'You successfully added the "' + tag.name + '" application tag.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.tags')
+        else:
+            messages.error(request, 'There was a problem creating this application tag.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/application_tags/add.html', {
+        'add_form': add_form,
+        'active_top': 'management',
+        'active_side': 'tags'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_application_tags_edit(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
+
+    edit_form = ApplicationTagForm(request.POST or None, instance=tag)
+
+    if request.method == 'POST':
+        if edit_form.is_valid():
+            tag = edit_form.save()
+            messages.success(request, 'You successfully updated the "' + tag.name + '" application tag.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.tags')
+        else:
+            messages.error(request, 'There was a problem updating this application tag.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/application_tags/edit.html', {
+        'tag': tag,
+        'edit_form': edit_form,
+        'active_top': 'management',
+        'active_side': 'tags'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['POST'])
+def management_application_tags_delete(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
+
+    form = ApplicationTagDeleteForm(request.POST, instance=tag)
+
+    if form.is_valid():
+        tag.delete()
+        messages.success(request, 'You successfully deleted the "' + tag.name + '" application tag.', extra_tags=random.choice(success_messages))
+        return redirect('boh:management.tags')
+    else:
+        messages.error(request, 'There was a problem deleting this application tag.', extra_tags=random.choice(error_messages))
+        return redirect('boh:management.tags.edit', tag.id)
 
 
 @login_required
@@ -162,7 +239,7 @@ def management_services(request):
     return render(request, 'boh/management/services.html', {
         'threadfix_services': threadfix_services,
         'active_top': 'management',
-        'active': 'services'
+        'active_side': 'services'
     })
 
 
@@ -183,7 +260,7 @@ def management_services_threadfix_add(request):
     return render(request, 'boh/management/threadfix/add.html', {
         'threadfix_form': threadfix_form,
         'active_top': 'management',
-        'active': 'services'
+        'active_side': 'services'
     })
 
 
@@ -207,7 +284,7 @@ def management_services_threadfix_edit(request, threadfix_id):
         'threadfix': threadfix,
         'threadfix_form': threadfix_form,
         'active_top': 'management',
-        'active': 'services'
+        'active_side': 'services'
     })
 
 
@@ -287,7 +364,7 @@ def management_services_threadfix_import(request, threadfix_id):
                     'threadfix': threadfix,
                     'import_formset': import_formset,
                     'active_top': 'management',
-                    'active': 'services'
+                    'active_side': 'services'
                 })
             else:
                 messages.error(request, 'An error occured when importing from "' + threadfix.name + '". ' + json_data['message'], extra_tags=random.choice(error_messages))
@@ -351,7 +428,7 @@ def management_users(request):
 
     return render(request, 'boh/management/users.html', {
         'active_top': 'management',
-        'active': 'users'
+        'active_side': 'users'
     })
 
 

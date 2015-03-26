@@ -1,7 +1,9 @@
 <a href="{% url 'boh:activity.detail' activity.id %}" class="list-group-item{% if activity.is_past_due %} list-group-item-danger{% elif activity.is_ready_for_work %} list-group-item-warning{% endif %}">
-  {% if activity.activitycomment_set.all %}
-  <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ activity.activitycomment_set.count }}</span>
+  {% with comment_count=activity.activitycomment_set.count %}
+  {% if comment_count %}
+  <span class="badge"><span class="fa fa-comments" aria-hidden="true"></span> {{ comment_count }}</span>
   {% endif %}
+  {% endwith %}
   <h4 class="list-group-item-heading">{{ activity.activity_type.name }}</h4>
   <p class="list-group-item-text">
     {% for user in activity.users.all %}

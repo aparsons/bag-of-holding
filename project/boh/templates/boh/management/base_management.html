@@ -10,19 +10,19 @@
         <h3 class="panel-title">Manage Settings</h3>
       </div>
       <div class="list-group">
-        <a href="{% url 'boh:management.overview' %}" class="list-group-item{% if active == 'overview' %} active{% endif %}"><span class="fa fa-home fa-fw" aria-hidden="true"></span> Overview</a>
-        <a href="#" class="list-group-item{% if active == 'organizations' %} active{% endif %} disabled"><span class="fa fa-building fa-fw" aria-hidden="true"></span> Organizations</a>
-        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-tags fa-fw" aria-hidden="true"></span> Application Tags</a>
-        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-clock-o fa-fw" aria-hidden="true"></span> Activity Types</a>
-        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span> Data Elements</a>
-        <a href="#" class="list-group-item{% if active == 'tags' %} active{% endif %} disabled"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span> Service Levels</a>
-        <a href="{% url 'boh:management.services' %}" class="list-group-item{% if active == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span> Third Party Services</a>
-        <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active == 'users' %} active{% endif %} disabled"><span class="fa fa-users fa-fw" aria-hidden="true"></span> Users</a>
+        <a href="{% url 'boh:management.overview' %}" class="list-group-item{% if active_side == 'overview' %} active{% endif %}"><span class="fa fa-home fa-fw" aria-hidden="true"></span>&nbsp; Overview</a>
+        <a href="#" class="list-group-item{% if active_side == 'organizations' %} active{% endif %} disabled"><span class="fa fa-building fa-fw" aria-hidden="true"></span>&nbsp; Organizations</a>
+        <a href="{% url 'boh:management.tags' %}" class="list-group-item{% if active_side == 'tags' %} active{% endif %}"><span class="fa fa-tags fa-fw" aria-hidden="true"></span>&nbsp; Application Tags</a>
+        <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-clock-o fa-fw" aria-hidden="true"></span>&nbsp; Activity Types</a>
+        <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span>&nbsp; Data Elements</a>
+        <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span>&nbsp; Service Levels</a>
+        <a href="{% url 'boh:management.services' %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span>&nbsp; Third Party Services</a>
+        <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active_side == 'users' %} active{% endif %} disabled"><span class="fa fa-users fa-fw" aria-hidden="true"></span>&nbsp; Users</a>
       </div>
     </div>
     <div class="panel panel-default">
       <div class="list-group">
-        <a href="{% url 'admin:index' %}" target="_blank" class="list-group-item"><span class="fa fa-user-secret fa-fw" aria-hidden="true"></span> Django Site Admin</a>
+        <a href="{% url 'admin:index' %}" target="_blank" class="list-group-item"><span class="fa fa-user-secret fa-fw" aria-hidden="true"></span>&nbsp; Django Site Admin</a>
       </div>
     </div>
   </div>

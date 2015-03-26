@@ -1,0 +1,46 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Application Tags{% endblock %}
+
+{% block manage_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Application Tags</h3>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">Application tags allow for the abstract categorization and grouping of applications. Create tags to fit your goals, priorities, or anything else.</li>
+    {% if not tags %}
+    <li class="list-group-item"><small class="text-muted"><em>There are no application tags.</em></small></li>
+    {% endif %}
+  </ul>
+  {% if tags %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Color</th>
+          <th>Tagged</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tag in tags %}
+        <tr>
+          <td>{{ tag.name }}</td>
+          <td>{{ tag.description }}</td>
+          <td><span class="label" style="background-color: #{{ tag.color }};"{% if tag.description %} data-toggle="tooltip" data-placement="bottom" title="{{ tag.description }}"{% endif %}>#{{ tag.color }}</span></td>
+          <td>{{ tag.application_set.count }}</td>
+          <td><a href="{% url 'boh:management.tags.edit' tag.id %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  <div class="panel-footer">
+    <a href="{% url 'boh:management.tags.add' %}" class="btn btn-success btn-sm" role="button"><span class="fa fa-plus" aria-hidden="true"></span> New Application Tag</a>
+  </div>
+</div>
+{% endblock manage_content %}

@@ -1,7 +1,9 @@
 <a href="{% url 'boh:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% elif engagement.is_ready_for_work %} list-group-item-warning{% endif %}">
-  {% if engagement.engagementcomment_set.all %}
-  <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.engagementcomment_set.count }}</span>
+  {% with comment_count=engagement.engagementcomment_set.count %}
+  {% if comment_count %}
+  <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ comment_count }}</span>
   {% endif %}
+  {% endwith %}
   <h4 class="list-group-item-heading">{{ engagement.start_date|date:"M. j, Y" }} - {{ engagement.end_date|date:"M. j, Y" }} <small class="hidden-xs">{{ engagement.application.name }}</small></h4>
   <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
     {% for activity in engagement.activity_set.all %}

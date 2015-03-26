@@ -12,12 +12,16 @@ urlpatterns = patterns('',
 
     # Management
     url(r'^manage/$', views.management_overview, name='management.overview'),
+    url(r'^manage/tags/$', views.management_application_tags, name='management.tags'),
+    url(r'^manage/tags/add/$', views.management_application_tags_add, name='management.tags.add'),
+    url(r'^manage/tags/(?P<tag_id>\d+)/edit/$', views.management_application_tags_edit, name='management.tags.edit'),
+    url(r'^manage/tags/(?P<tag_id>\d+)/delete/$', views.management_application_tags_delete, name='management.tags.delete'),
     url(r'^manage/services/$', views.management_services, name='management.services'),
-    url(r'^manage/services/threadfix/add', views.management_services_threadfix_add, name='management.services.threadfix.add'),
-    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/edit', views.management_services_threadfix_edit, name='management.services.threadfix.edit'),
-    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/test', views.management_services_threadfix_test, name='management.services.threadfix.test'),
-    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/import', views.management_services_threadfix_import, name='management.services.threadfix.import'),
-    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/delete', views.management_services_threadfix_delete, name='management.services.threadfix.delete'),
+    url(r'^manage/services/threadfix/add/', views.management_services_threadfix_add, name='management.services.threadfix.add'),
+    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/edit/', views.management_services_threadfix_edit, name='management.services.threadfix.edit'),
+    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/test/', views.management_services_threadfix_test, name='management.services.threadfix.test'),
+    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/import/', views.management_services_threadfix_import, name='management.services.threadfix.import'),
+    url(r'^manage/services/threadfix/(?P<threadfix_id>\d+)/delete/', views.management_services_threadfix_delete, name='management.services.threadfix.delete'),
     url(r'^manage/users/$', views.management_users, name='management.users'),
 
     # User

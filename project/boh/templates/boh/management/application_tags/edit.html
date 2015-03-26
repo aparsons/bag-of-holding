@@ -1,0 +1,42 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Application Tags | {{ tag.name }} | Edit{% endblock %}
+
+{% block manage_content %}
+<form method="post" action="{% url 'boh:management.tags.edit' tag.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Edit Application Tag</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=edit_form.name %}
+      {% include "boh/snippets/form/_general.html" with control=edit_form.description %}
+      <div class="row">
+        <div class="col-sm-7">
+          {% include "boh/snippets/form/_general.html" with control=edit_form.color %}
+        </div>
+        <div class="col-sm-5">
+          {% include "boh/snippets/management/tags/selectable_colors.html" %}
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Update Application Tag</button>
+      <a href="{% url 'boh:management.tags' %}" class="btn btn-default" role="button">Cancel</a>
+    </div>
+  </div>
+</form>
+
+<form method="post" action="{% url 'boh:management.tags.delete' tag.id %}">
+  {% csrf_token %}
+  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this application tag?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Application Tag</button>
+</form>
+
+{% endblock manage_content %}
+
+{% block js %}
+<script>
+{% include "boh/snippets/management/tags/selectable_colors.js" %}
+</script>
+{% endblock js %}

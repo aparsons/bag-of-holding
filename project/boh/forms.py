@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person, Relation, ThreadFix
+from boh.models import Tag, Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, Activity, ActivityComment, Person, Relation, ThreadFix
 
 
 # User
@@ -343,4 +343,18 @@ class PersonRelationForm(forms.ModelForm):
 class RelationDeleteForm(forms.ModelForm):
     class Meta:
         model = Relation
+        fields = []
+
+
+# Application Tag
+
+class ApplicationTagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name', 'description', 'color']
+
+
+class ApplicationTagDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Tag
         fields = []

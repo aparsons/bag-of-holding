@@ -50,20 +50,20 @@
 
 {% block js %}
 <script>
-$(function () {
-  if (!$(".alert").length) {
-    $("#title").hide();
-    $("#about").hide();
-    $("#login").hide();
-    $("#footer").hide();
-
-    $("#title").delay(500).fadeIn(1000, function() {
-      $("#about").fadeIn(function() {
-        $("#login").fadeIn();
-      });
-      $("#footer").delay(2000).fadeIn(2000);
-    });
-  }
-});
+// $(function () {
+//   if (!$(".alert").length) {
+//     $("#title").hide();
+//     $("#about").hide();
+//     $("#login").hide();
+//     $("#footer").hide();
+//
+//     $("#title").delay(500).fadeIn(1000, function() {
+//       $("#about").fadeIn(function() {
+//         $("#login").fadeIn();
+//       });
+//       $("#footer").delay(2000).fadeIn(2000);
+//     });
+//   }
+// });
 </script>
 {% endblock js %}
