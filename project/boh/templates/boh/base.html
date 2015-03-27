@@ -8,6 +8,25 @@
 
   <title>Bag of Holding | {% block title %}{% endblock %}</title>
 
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'boh/favicons/apple-touch-icon-57x57.png' %}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'boh/favicons/apple-touch-icon-60x60.png' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'boh/favicons/apple-touch-icon-72x72.png' %}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'boh/favicons/apple-touch-icon-76x76.png' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'boh/favicons/apple-touch-icon-114x114.png' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'boh/favicons/apple-touch-icon-120x120.png' %}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'boh/favicons/apple-touch-icon-144x144.png' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'boh/favicons/apple-touch-icon-152x152.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'boh/favicons/apple-touch-icon-180x180.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-32x32.png' %}" sizes="32x32">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/android-chrome-192x192.png' %}" sizes="192x192">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-96x96.png' %}" sizes="96x96">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-16x16.png' %}" sizes="16x16">
+  <link rel="shortcut icon" href="{% static 'boh/favicons/favicon.ico' %}" />
+  <link rel="manifest" href="{% static 'boh/favicons/manifest.json' %}">
+  <meta name="msapplication-TileColor" content="#2b5797">
+  <meta name="msapplication-TileImage" content="{% static 'boh/favicons/mstile-144x144.png' %}">
+  <meta name="theme-color" content="#ffffff">
+
   <link href="{% static 'boh/css/application.min.css' %}" rel="stylesheet">
   {% block css %}
   {% endblock css %}
@@ -26,7 +45,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'boh:dashboard.personal' %}">Bag of Holding</a>
+          <a class="navbar-brand" href="{% url 'boh:dashboard.personal' %}" style="padding-top: 5px;">
+            <img alt="Bag of Holding" width="40" height="40" src="{% static 'boh/img/brand.png' %}">
+          </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -39,7 +60,7 @@
             <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.overview' %}"><span class="fa fa-cogs" aria-hidden="true"></span></span><span class="hidden-sm"> Manage</span></a></li>
             {% endif %}
             <li class="dropdown{% if active_top == 'user' %} active{% endif %}">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-user" aria-hidden="true"></span> {{ user.first_name }} {{ user.last_name }} <span class="fa fa-caret-down" aria-hidden="true"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.first_name }} {{ user.last_name }} <span class="fa fa-caret-down" aria-hidden="true"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{% url 'boh:user.profile' %}"><span class="fa fa-user" aria-hidden="true"></span> My Profile</a></li>
                 <li><a href="{% url 'boh:user.change_password' %}"><span class="fa fa-key" aria-hidden="true"></span> Change Password</a></li>

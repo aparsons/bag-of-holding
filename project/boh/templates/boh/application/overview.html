@@ -39,7 +39,7 @@
               <td>{{ application.user_records|intcomma }}</td>
             </tr>
             <tr>
-              <td><strong>Revenue</strong></td>
+              <td><strong>Revenue (USD)</strong></td>
               <td>{% if application.revenue < 1000000 %}{{ application.revenue|intcomma }}{% else %}{{ application.revenue|intword }}{% endif %}</td>
             </tr>
           </tbody>

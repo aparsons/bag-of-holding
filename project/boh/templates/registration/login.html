@@ -1,5 +1,6 @@
 {% extends "boh/base.html" %}
 
+{% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block title %}Login{% endblock %}
@@ -15,7 +16,7 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div id="about" class="jumbotron hidden-xs">
+    <div id="about" class="jumbotron hidden-xs" style="background-image:url({% static 'boh/img/bag_white.png' %}); background-position: left center; background-repeat: no-repeat; background-size: 180px 180px;}">
       <p class="lead text-muted">The <strong>Bag of Holding</strong> is an application security utility to assist in the organization and prioritization of software security activities.</p>
     </div>
   </div>
