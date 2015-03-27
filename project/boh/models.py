@@ -448,8 +448,11 @@ class Engagement(models.Model):
 class ActivityType(models.Model):
     """Types of work."""
 
-    name = models.CharField(max_length=128, unique=True, help_text='A unique name for this activity.')
+    name = models.CharField(max_length=128, unique=True, help_text='A unique name for this activity type.')
     documentation = models.TextField(blank=True, help_text='Guidelines, procedures, and techniques for this activity type.')
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name

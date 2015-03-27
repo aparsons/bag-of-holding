@@ -18,10 +18,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, Activity, Tag, Person, Relation, ThreadFix
+from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, ActivityType, Activity, Tag, Person, Relation, ThreadFix
 
 from boh.forms import UserProfileForm
 from boh.forms import ApplicationTagForm, ApplicationTagDeleteForm
+from boh.forms import ActivityTypeForm, ActivityTypeDeleteForm
 from boh.forms import OrganizationAddForm, OrganizationSettingsGeneralForm, OrganizationSettingsPeopleForm, OrganizationDeleteForm
 from boh.forms import ApplicationAddForm, ApplicationDeleteForm, ApplicationSettingsGeneralForm, ApplicationSettingsOrganizationForm, ApplicationSettingsMetadataForm, ApplicationSettingsTagsForm, ApplicationSettingsThreadFixForm
 from boh.forms import PersonRelationForm, RelationDeleteForm
@@ -228,6 +229,94 @@ def management_application_tags_delete(request, tag_id):
     else:
         messages.error(request, 'There was a problem deleting this application tag.', extra_tags=random.choice(error_messages))
         return redirect('boh:management.tags.edit', tag.id)
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_activity_types(request):
+    activity_types = ActivityType.objects.all()
+
+    return render(request, 'boh/management/activity_types/activity_types.html', {
+        'activity_types': activity_types,
+        'active_top': 'management',
+        'active_side': 'activity_types'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_activity_types_add(request):
+    activity_type_form = ActivityTypeForm(request.POST or None)
+
+    if request.method == 'POST':
+        if activity_type_form.is_valid():
+            activity_type = activity_type_form.save()
+            messages.success(request, 'You successfully created the "' + activity_type.name + '" activity type.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.activity_types')
+        else:
+            messages.error(request, 'There was a problem creating this activity type.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/activity_types/add.html', {
+        'activity_type_form': activity_type_form,
+        'active_top': 'management',
+        'active_side': 'activity_types'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_activity_types_documentation(request, activity_type_id):
+    activity_type = get_object_or_404(ActivityType, pk=activity_type_id)
+
+    return render(request, 'boh/management/activity_types/documentation.html', {
+        'activity_type': activity_type,
+        'active_top': 'management',
+        'active_side': 'activity_types'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_activity_types_edit(request, activity_type_id):
+    activity_type = get_object_or_404(ActivityType, pk=activity_type_id)
+
+    activity_type_form = ActivityTypeForm(request.POST or None, instance=activity_type)
+
+    if request.method == 'POST':
+        if activity_type_form.is_valid():
+            activity_type = activity_type_form.save()
+            messages.success(request, 'You successfully updated the "' + activity_type.name + '" activity type.', extra_tags=random.choice(success_messages))
+            return redirect('boh:management.activity_types')
+        else:
+            messages.error(request, 'There was a problem updating this activity type.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/activity_types/edit.html', {
+        'activity_type': activity_type,
+        'activity_type_form': activity_type_form,
+        'active_top': 'management',
+        'active_side': 'activity_types'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['POST'])
+def management_activity_types_delete(request, activity_type_id):
+    activity_type = get_object_or_404(ActivityType, pk=activity_type_id)
+
+    form = ActivityTypeDeleteForm(request.POST, instance=activity_type)
+
+    if form.is_valid():
+        activity_type.delete()
+        messages.success(request, 'You successfully deleted the "' + activity_type.name + '" activity type.', extra_tags=random.choice(success_messages))
+        return redirect('boh:management.activity_types')
+    else:
+        messages.error(request, 'There was a problem deleting this activity type.', extra_tags=random.choice(error_messages))
+        return redirect('boh:management.activity_types.edit', tag.id)
 
 
 @login_required
@@ -614,7 +703,7 @@ def application_list(request):
 
     tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
 
-    paginator = Paginator(application_list, 20)
+    paginator = Paginator(application_list, 30)
 
     page = request.GET.get('page')
     try:

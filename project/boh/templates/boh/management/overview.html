@@ -6,47 +6,68 @@
 <h2 class="no-margin-top">Manage Settings Overview</h2>
 <p>Here you will find all the options for configuring and customizing Bag of Holding.</p>
 
+<hr>
+
 <div class="media">
   <div class="media-left">
-    <span class="fa-stack fa-3x media-object">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-tags fa-stack-1x fa-inverse"></i>
-    </span>
+    <a href="{% url 'boh:management.tags' %}">
+      <span class="fa-stack fa-3x media-object">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-tags fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
   </div>
   <div class="media-body">
     <h3 class="media-heading">Application Tags</h3>
-    Application tags allow for the abstract categorization and grouping of applications. Create tags to fit your goals, priorities, or anything else.<br>
-    <a class="btn btn-primary" href="{% url 'boh:management.tags' %}" role="button">Manage Application Tags</a>
+    Application tags allow for the abstract categorization and grouping of applications. Create tags to fit your goals, priorities, or anything else.
   </div>
 </div>
 
 
 <div class="media">
   <div class="media-left">
-    <span class="fa-stack fa-3x media-object">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-plug fa-stack-1x fa-inverse"></i>
-    </span>
+    <a href="{% url 'boh:management.activity_types' %}">
+      <span class="fa-stack fa-3x media-object">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-clock-o fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </div>
+  <div class="media-body">
+    <h3 class="media-heading">Activity Types</h3>
+    Activity types define what activities are and can contain documention for how that activity should be performed. The documentation will be visible on each activity of that type, making it a great place to include standard operating procedures, links, or anything else common amongst activities.
+  </div>
+</div>
+
+
+<div class="media">
+  <div class="media-left">
+    <a href="{% url 'boh:management.services' %}">
+      <span class="fa-stack fa-3x media-object">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-plug fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
   </div>
   <div class="media-body">
     <h3 class="media-heading">Third Party Services</h3>
     Bag of Holding is able to connect to outside services to push or pull information. You can configure these services here.<br>
-    <a class="btn btn-primary" href="{% url 'boh:management.services' %}" role="button">Manage Third Party Services</a>
   </div>
 </div>
 
 
 <div class="media">
   <div class="media-left">
-    <span class="fa-stack fa-3x media-object">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-user-secret fa-stack-1x fa-inverse"></i>
-    </span>
+    <a href="{% url 'admin:index' %}" target="_blank">
+      <span class="fa-stack fa-3x media-object">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-user-secret fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
   </div>
   <div class="media-body">
     <h3 class="media-heading">Django Admin</h3>
-
-    <a class="btn btn-primary" href="{% url 'admin:index' %}" target="_blank" role="button">Open Django Admin</a>
+    This is a web-based interface, limited to trusted site administrators, that enables the adding, editing and deletion of site content.
   </div>
 </div>
 {% endblock manage_content %}

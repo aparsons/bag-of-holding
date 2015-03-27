@@ -1,0 +1,11 @@
+{% extends "boh/management/base_management.html" %}
+
+{% load markdown_render %}
+
+{% block title %}Manage Settings | Activity Types | {{ activity_type.name }} | Documentation{% endblock %}
+
+{% block manage_content %}
+<h3 class="no-margin-top"><span class="fa fa-file-text-o" aria-hidden="true"></span> {{ activity_type.name }} Documentation</h3>
+<hr>
+{{ activity_type.documentation|markdown_render }}
+{% endblock manage_content %}

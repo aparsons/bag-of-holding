@@ -1,0 +1,22 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Activity Types | Add {% endblock %}
+
+{% block manage_content %}
+<form method="post" action="{% url 'boh:management.activity_types.add' %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Add Application Tag</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=activity_type_form.name %}
+      {% include "boh/snippets/form/_markdown.html" with control=activity_type_form.documentation %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Add Activity Type</button>
+      <a href="{% url 'boh:management.activity_types' %}" class="btn btn-default" role="button">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock manage_content %}

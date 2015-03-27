@@ -1,0 +1,27 @@
+{% extends "boh/management/base_management.html" %}
+
+{% block title %}Manage Settings | Activity Types | {{ activity_type.name }} | Edit {% endblock %}
+
+{% block manage_content %}
+<form method="post" action="{% url 'boh:management.activity_types.edit' activity_type.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Edit Activity Type</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=activity_type_form.name %}
+      {% include "boh/snippets/form/_markdown.html" with control=activity_type_form.documentation %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Update Activity Type</button>
+      <a href="{% url 'boh:management.activity_types' %}" class="btn btn-default" role="button">Cancel</a>
+    </div>
+  </div>
+</form>
+
+<form method="post" action="{% url 'boh:management.activity_types.delete' activity_type.id %}">
+  {% csrf_token %}
+  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('Are you sure want to delete this activity type?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Activity Type</button>
+</form>
+{% endblock manage_content %}
