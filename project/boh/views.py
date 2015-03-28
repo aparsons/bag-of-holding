@@ -11,7 +11,7 @@ from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, Prefetch, Q, Sum
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.http import Http404
@@ -81,8 +81,14 @@ error_messages = [
 def dashboard_personal(request):
     """The personal dashboard with information relevant to the current user."""
 
-    pending_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.PENDING_STATUS)
-    open_activities = Activity.objects.filter(users__id=request.user.id).filter(status=Engagement.OPEN_STATUS)
+    activities = Activity.objects.filter(users__id=request.user.id) \
+        .select_related('activity_type__name') \
+        .select_related('engagement') \
+        .select_related('engagement__application__name') \
+        .annotate(comment_count=Count('activitycomment'))
+
+    pending_activities = activities.filter(status=Engagement.PENDING_STATUS)
+    open_activities = activities.filter(status=Engagement.OPEN_STATUS)
 
     return render(request, 'boh/dashboard/my_dashboard.html', {
         'pending_activities': pending_activities,
@@ -95,15 +101,43 @@ def dashboard_personal(request):
 @login_required
 @require_http_methods(['GET'])
 def dashboard_team(request):
-    users = User.objects.all()
+    # Find open and pending activities by user
+    activities_by_user = User.objects.all().prefetch_related(
+        Prefetch('activity_set', queryset=Activity.objects
+            .filter(~Q(status=Activity.CLOSED_STATUS))
+            .select_related('activity_type__name')
+            .select_related('engagement')
+            .annotate(comment_count=Count('activitycomment'))
+            .select_related('engagement__application__name')
+        )
+    )
 
-    open_engagements = Engagement.objects.filter(status=Engagement.OPEN_STATUS)
-    pending_engagements = Engagement.objects.filter(status=Engagement.PENDING_STATUS)
-    unassigned_activities = Activity.objects.filter(users=None)
-    empty_engagements = Engagement.objects.filter(activity__isnull=True)
+    # Find open and pending engagaments
+    engagements = Engagement.objects.all().prefetch_related(
+        Prefetch('activity_set', queryset=Activity.objects.all()
+            .select_related('activity_type__name')
+            .annotate(user_count=Count('users'))
+        )
+    ).select_related('application__name').annotate(comment_count=Count('engagementcomment'))
+
+    open_engagements = engagements.filter(status=Engagement.OPEN_STATUS)
+    pending_engagements = engagements.filter(status=Engagement.PENDING_STATUS)
+
+    # Find activities where no user is assigned
+    unassigned_activities = Activity.objects.filter(users=None) \
+        .select_related('activity_type__name') \
+        .select_related('engagement') \
+        .select_related('engagement__application__name') \
+        .annotate(comment_count=Count('activitycomment'))
+
+    # Find engagements where no activities have been created
+    empty_engagements = Engagement.objects.filter(activity__isnull=True) \
+        .select_related('application__name') \
+        .prefetch_related('activity_set') \
+        .annotate(comment_count=Count('engagementcomment'))
 
     return render(request, 'boh/dashboard/team_dashboard.html', {
-        'users': users,
+        'activities_by_user': activities_by_user,
         'open_engagements': open_engagements,
         'pending_engagements': pending_engagements,
         'unassigned_activities': unassigned_activities,

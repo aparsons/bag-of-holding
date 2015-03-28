@@ -1,10 +1,10 @@
 {% load boh_humanize %}
 <a href="{% url 'boh:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% elif engagement.is_ready_for_work %} list-group-item-warning{% endif %}">
-  {% with comment_count=engagement.engagementcomment_set.count %}
-  {% if comment_count %}
-  <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ comment_count }}</span>
+
+  {% if engagement.comment_count %}
+  <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.comment_count }}</span>
   {% endif %}
-  {% endwith %}
+
   <h4 class="list-group-item-heading"><span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.start_date|humanize_date }}">{{ engagement.start_date|date:"M. j, Y" }}</span> - <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.end_date|humanize_date }}">{{ engagement.end_date|date:"M. j, Y" }}</span> <small class="hidden-xs">{{ engagement.application.name }}</small></h4>
   <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
     {% for activity in engagement.activity_set.all %}
