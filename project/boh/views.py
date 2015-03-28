@@ -729,13 +729,17 @@ def application_list(request):
     if queries.__contains__('page'):
         del queries['page']
 
-    application_list = Application.objects.all()
-
     tag_id = request.GET.get('tag', 0)
     if tag_id:
         application_list = application_list.filter(tags__id=tag_id)
 
     tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
+
+    application_list = Application.objects.all() \
+        .select_related('organization__name') \
+        .prefetch_related(
+            Prefetch('tags', queryset=tags)
+        )
 
     paginator = Paginator(application_list, 30)
 
