@@ -29,20 +29,6 @@ gulp.task('styles', function() {
   }))
   .pipe(concat('application.min.css'))
   .pipe(gulp.dest(paths.dist + '/css'));
-
-  gulp.src([
-    paths.assets + '/styles/chartist.scss'
-  ])
-  .pipe(sass({
-    includePaths: [
-      paths.bower
-    ]
-  }))
-  .pipe(minifyCSS({
-    keepSpecialComments: 0
-  }))
-  .pipe(concat('chartist.min.css'))
-  .pipe(gulp.dest(paths.dist + '/css'));
 });
 
 
@@ -93,27 +79,11 @@ gulp.task('vendor', function() {
   .pipe(rename('datepicker.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
 
-  // Chartist
-  gulp.src(paths.bower + '/chartist/dist/chartist.js')
+  // Chart.js
+  gulp.src(paths.bower + '/Chart.js/Chart.js')
   .pipe(uglify())
-  .pipe(rename('chartist.min.js'))
+  .pipe(rename('chart.min.js'))
   .pipe(gulp.dest(paths.dist + '/js'));
-
-  // Bootstrap Markdown
-  // gulp.src(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css')
-  // .pipe(minifyCSS({
-  //   keepSpecialComments: 0
-  // }))
-  // .pipe(rename('markdown.min.css'))
-  // .pipe(gulp.dest(paths.dist + '/css'));
-
-  // gulp.src([
-  //   paths.bower + '/markdown/lib/markdown.js',
-  //   paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js'
-  // ])
-  // .pipe(concat('markdown.min.js'))
-  // .pipe(uglify())
-  // .pipe(gulp.dest(paths.dist + '/js'));
 });
 
 

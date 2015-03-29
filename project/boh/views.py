@@ -156,7 +156,13 @@ def dashboard_metrics(request):
     # Average Engagement Lengths
     # Average Activity Lengths By Activity
 
+    # Activity Type Count
+    activity_types = ActivityType.objects.values('name') \
+        .filter(~Q(activity=None)) \
+        .annotate(activity_count=Count('activity'))
+
     return render(request, 'boh/dashboard/metrics.html', {
+        'activity_types': activity_types,
         'active_top': 'dashboard',
         'active_tab': 'metrics'
     })

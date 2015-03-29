@@ -4,39 +4,109 @@
 
 {% block title %}Metrics{% endblock %}
 
-{% block css %}
-<link href="{% static 'boh/css/chartist.min.css' %}" rel="stylesheet">
-{% endblock css %}
-
 {% block dashboard_content %}
 <div class="row">
-  <div class="col-md-8">
-    <div class="ct-chart ct-minor-seventh"></div>
-
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Activities by type (all time)</div>
+      <div class="panel-body">
+        <div class="row">
+          <canvas id="activityTypeChart" class="col-md-12"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="col-md-4">
-    123
   </div>
 </div>
 {% endblock dashboard_content %}
 
 {% block js %}
-<script src="{% static 'boh/js/chartist.min.js' %}"></script>
+<script src="{% static 'boh/js/chart.min.js' %}"></script>
 <script>
 $(function () {
-  new Chartist.Line('.ct-chart', {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    series: [
-    [12, 9, 7, 8, 5],
-    [2, 1, 3.5, 7, 3],
-    [1, 3, 4, 5, 6]
-    ]
-  }, {
-    fullWidth: true,
-    chartPadding: {
-      right: 40
-    }
-  });
+  var colors = [
+    {
+      'color': '#9C4444',
+      'highlight': '#BF6E6E',
+    },
+    {
+      'color': '#9C7044',
+      'highlight': '#BF966E',
+    },
+    {
+      'color': '#9C9C44',
+      'highlight': '#BFBF6E',
+    },
+    {
+      'color': '#709C44',
+      'highlight': '#96BF6E',
+    },
+    {
+      'color': '#449C44',
+      'highlight': '#6EBF6E',
+    },
+    {
+      'color': '#449C70',
+      'highlight': '#6EBF96',
+    },
+    {
+      'color': '#449C9C',
+      'highlight': '#6EBFBF',
+    },
+    {
+      'color': '#44709C',
+      'highlight': '#6E96BF',
+    },
+    {
+      'color': '#44449C',
+      'highlight': '#6E6EBF',
+    },
+    {
+      'color': '#70449C',
+      'highlight': '#966EBF',
+    },
+    {
+      'color': '#9C449C',
+      'highlight': '#BF6E96',
+    },
+    {
+      'color': '#9C4470',
+      'highlight': '#BF6EBF',
+    },
+  ];
+
+  // Cycles through the available color palette
+  function getColor(position) {
+    return colors[position % colors.length]
+  }
+
+
+  Chart.defaults.global.responsive = true;
+  Chart.defaults.global.maintainAspectRatio = false;
+
+  var ctx = $("#activityTypeChart").get(0).getContext("2d");
+
+  var data = [
+    {% for activity_type in activity_types %}
+    {% if activity_type.activity_count > 0 %}
+    {
+      label: '{{ activity_type.name }}',
+      value: {{ activity_type.activity_count }},
+      color: getColor({{ forloop.counter0 }}).color,
+      highlight: getColor({{ forloop.counter0 }}).highlight,
+    },
+    {% endif %}
+    {% endfor %}
+  ]
+
+  var options = {
+  }
+
+  var activityTypeDoughnutChart = new Chart(ctx).Doughnut(data, options);
+
+
 });
 </script>
 {% endblock js %}
