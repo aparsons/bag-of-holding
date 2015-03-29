@@ -5,8 +5,15 @@
   <span class="badge hidden-xs"><span class="fa fa-comments" aria-hidden="true"></span> {{ engagement.comment_count }}</span>
   {% endif %}
 
-  <h4 class="list-group-item-heading"><span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.start_date|humanize_date }}">{{ engagement.start_date|date:"M. j, Y" }}</span> - <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.end_date|humanize_date }}">{{ engagement.end_date|date:"M. j, Y" }}</span> <small class="hidden-xs">{{ engagement.application.name }}</small></h4>
-  <p class="list-group-item-text">{% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %}
+  <h4 class="list-group-item-heading">
+    {% if engagement.start_date == engagement.end_date %}
+    <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.start_date|humanize_date }}">{{ engagement.start_date|date:"M. j" }}</span>
+    {% else %}
+    <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.start_date|humanize_date }}">{{ engagement.start_date|date:"M. j" }}</span> - <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.end_date|humanize_date }}">{{ engagement.end_date|date:"M. j" }}</span> ({{ engagement.start_date|timesince:engagement.end_date }})
+    {% endif %}
+    <small class="hidden-xs">{{ engagement.application.name }}</small>
+  </h4>
+  <p class="list-group-item-text">
     {% for activity in engagement.activity_set.all %}
     {% include "boh/snippets/common/_activity_label.html" with activity=activity %}
     {% empty %}

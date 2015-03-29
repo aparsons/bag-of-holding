@@ -781,11 +781,18 @@ def application_overview(request, application_id):
 @login_required
 @require_http_methods(['GET'])
 def application_engagements(request, application_id):
-    application = get_object_or_404(Application, pk=application_id)
+    application = get_object_or_404(Application.objects.select_related('organization'), pk=application_id)
 
-    pending_engagements = application.engagement_set.filter(status=Engagement.PENDING_STATUS)
-    open_engagements = application.engagement_set.filter(status=Engagement.OPEN_STATUS)
-    closed_engagements = application.engagement_set.filter(status=Engagement.CLOSED_STATUS)
+    engagements = application.engagement_set.prefetch_related(
+        Prefetch('activity_set', queryset=Activity.objects
+            .all()
+            .select_related('activity_type__name')
+        )
+    ).annotate(comment_count=Count('engagementcomment'))
+
+    pending_engagements = engagements.filter(status=Engagement.PENDING_STATUS)
+    open_engagements = engagements.filter(status=Engagement.OPEN_STATUS)
+    closed_engagements = engagements.filter(status=Engagement.CLOSED_STATUS)
 
     return render(request, 'boh/application/engagements.html', {
         'application': application,

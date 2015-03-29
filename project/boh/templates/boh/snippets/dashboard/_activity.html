@@ -7,6 +7,10 @@
 
   <h4 class="list-group-item-heading">{{ activity.activity_type.name }} <small class="hidden-xs">{{ activity.engagement.application.name }}</small></h4>
   <p class="list-group-item-text">
-    <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.engagement.start_date|humanize_date }}">{{ activity.engagement.start_date|date:"M. j, Y" }}</span> - <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.engagement.end_date|humanize_date }}">{{ activity.engagement.end_date|date:"M. j, Y" }}</span> <span class="hidden-xs">({% if activity.engagement.start_date == activity.engagement.end_date %}1 day{% else %}{{ activity.engagement.start_date|timesince:activity.engagement.end_date }}{% endif %})</span>
+  {% if activity.engagement.start_date == activity.engagement.end_date %}
+    <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.engagement.start_date|humanize_date }}">{{ activity.engagement.start_date|date:"M. j" }}</span>
+  {% else %}
+    <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.engagement.start_date|humanize_date }}">{{ activity.engagement.start_date|date:"M. j" }}</span> - <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.engagement.end_date|humanize_date }}">{{ activity.engagement.end_date|date:"M. j" }}</span> <span class="hidden-xs">({{ activity.engagement.start_date|timesince:activity.engagement.end_date }})</span>
+  {% endif %}
   </p>
 </a>
