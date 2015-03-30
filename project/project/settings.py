@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'debug_toolbar',
     'widget_tweaks',
 
     'boh',
@@ -109,3 +108,6 @@ TEMPLATE_DIRS = (
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, os.pardir, 'media')
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
