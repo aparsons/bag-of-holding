@@ -735,10 +735,6 @@ def application_list(request):
     if queries.__contains__('page'):
         del queries['page']
 
-    tag_id = request.GET.get('tag', 0)
-    if tag_id:
-        application_list = application_list.filter(tags__id=tag_id)
-
     tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
 
     application_list = Application.objects.all() \
@@ -746,6 +742,10 @@ def application_list(request):
         .prefetch_related(
             Prefetch('tags', queryset=tags)
         )
+
+    tag_id = request.GET.get('tag', 0)
+    if tag_id:
+        application_list = application_list.filter(tags__id=tag_id)
 
     paginator = Paginator(application_list, 30)
 

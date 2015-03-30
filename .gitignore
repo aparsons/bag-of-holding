@@ -3,6 +3,7 @@ project/*/migrations/*
 !project/*/migrations/__init__.py
 !project/boh/migrations/0001_initial.py
 !project/boh/migrations/0002_load_data.py
+!project/boh/migrations/0003_v1_0_1.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

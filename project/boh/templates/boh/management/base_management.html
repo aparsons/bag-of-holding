@@ -17,7 +17,7 @@
         <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span>&nbsp; Data Elements</a>
         <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span>&nbsp; Service Levels</a>
         <a href="{% url 'boh:management.services' %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span>&nbsp; Third Party Services</a>
-        <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active_side == 'users' %} active{% endif %}"><span class="fa fa-users fa-fw" aria-hidden="true"></span>&nbsp; Users</a>
+        <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active_side == 'users' %} active{% endif %} disabled"><span class="fa fa-users fa-fw" aria-hidden="true"></span>&nbsp; Users</a>
       </div>
     </div>
     <div class="panel panel-default">

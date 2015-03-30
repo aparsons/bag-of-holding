@@ -1,5 +1,53 @@
 # Bag of Holding Releases
 
+## 1.0.1 - 03/30/2015
+
+Our goals for the 1.0.1 release was to finish views for the existing data model. However, we did get in some usability and editing changes. We have gotten some very useful feedback and will be incorporating the suggestions into future releases. Keep the feedback coming and I hope you like version 1.0.1.
+
+*Adam Parsons*
+
+### What's New
+
+* Dependencies. The project **requirements.txt** has been updated to require the following additional dependencies:
+  * Django 1.7.7 - Updated due to [security issues](https://www.djangoproject.com/weblog/2015/mar/18/security-releases/)
+  * django-debug-toolbar - Adds a toolbar used to debug during development
+  * html5lib - django-debug-toolbar dependancy
+  * six - django-debug-toolbar dependancy
+  * sqlparse - django-debug-toolbar dependancy
+  * Markdown - Markdown rendering
+  * Pygments - Code highlighting
+  * phonenumbers - Phone number formatting
+* Team Dashboard optimizations
+  * Collapsing users, engagement lists
+  * Activities colored by status
+  * SQL query optimizations
+* An example chart was added to metrics
+* People can now be added to applications and organizations
+  * People can now be marked as application owners and/or emergency contacts.
+* Users can now edit their profile and change their own passwords.
+* Staff users can now manage application tags, activity types, and services.
+  * Staff can now import applications from ThreadFix
+* Applications created within the last seven days will be marked as new
+* Tags now have descriptions that will show up in tooltips
+* Some text fields now accept markdown. These fields will use a special editor to help simplify the syntax.
+* Frontend dependencies are now being managed by Bower and compiled using Gulp.
+* Version information will show up in the footer after login.
+
+### Known Issues
+
+* Users cannot edit or delete their own comments without using the django admin
+* Users have no way to reset their own passwords
+
+Full functionality for some features are not available through the web interface. Until this is fixed you can edit the data using the **Django Site Admin** found on the **Manage** page. The features missing are listed below:
+
+* User management
+* Data element management
+
+Not all form fields have a description describing their purpose. These will be improved over time but if you find a particular field menacing please let us know so we can prioritize clarifying its purpose.
+
+*If you run into any issues please report it so we can fix it!*
+
+
 ## 1.0.0 - 03/18/2015
 
 Getting this first release out the door has been a journey. Three months ago this application was just an idea and now... here it is. This project means a lot to me personally. For one to two years before writing this software, I had prototyped numerous similar softwares -- Matt Brown can attest to this. I feel this application takes the best of what I attempted to accomplish and puts it all into one *bag*.
