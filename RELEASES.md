@@ -9,24 +9,24 @@ Our goals for the 1.0.1 release was to finish views for the existing data model.
 ### What's New
 
 * Dependencies. The project **requirements.txt** has been updated to require the following additional dependencies:
-  * Django 1.7.7 - Updated due to [security issues](https://www.djangoproject.com/weblog/2015/mar/18/security-releases/)
-  * django-debug-toolbar - Adds a toolbar used to debug during development
-  * html5lib - django-debug-toolbar dependancy
-  * six - django-debug-toolbar dependancy
-  * sqlparse - django-debug-toolbar dependancy
-  * Markdown - Markdown rendering
-  * Pygments - Code highlighting
-  * phonenumbers - Phone number formatting
+    * Django 1.7.7 - Updated due to [security issues](https://www.djangoproject.com/weblog/2015/mar/18/security-releases/)
+    * django-debug-toolbar - Adds a toolbar used to debug during development
+    * html5lib - django-debug-toolbar dependancy
+    * six - django-debug-toolbar dependancy
+    * sqlparse - django-debug-toolbar dependancy
+    * Markdown - Markdown rendering
+    * Pygments - Code highlighting
+    * phonenumbers - Phone number formatting
 * Team Dashboard optimizations
-  * Collapsing users, engagement lists
-  * Activities colored by status
-  * SQL query optimizations
+    * Collapsing users, engagement lists
+    * Activities colored by status
+    * SQL query optimizations
 * An example chart was added to metrics
 * People can now be added to applications and organizations
-  * People can now be marked as application owners and/or emergency contacts.
+    * People can now be marked as application owners and/or emergency contacts.
 * Users can now edit their profile and change their own passwords.
 * Staff users can now manage application tags, activity types, and services.
-  * Staff can now import applications from ThreadFix
+    * Staff can now import applications from ThreadFix
 * Applications created within the last seven days will be marked as new
 * Tags now have descriptions that will show up in tooltips
 * Some text fields now accept markdown. These fields will use a special editor to help simplify the syntax.
