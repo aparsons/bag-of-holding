@@ -68,7 +68,7 @@
     <p class="text-muted">Leave comments about this engagement.</p>
 
     {% for comment in engagement.engagementcomment_set.all %}
-    <div class="panel panel-default">
+    <div id="comment-{{ comment.id }}" class="panel panel-default">
       <div class="panel-heading">
         <span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.get_full_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> commented {{ comment.modified_date|naturaltime }}</span></span>
       </div>

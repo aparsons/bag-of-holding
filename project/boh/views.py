@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.db.models import Count, Prefetch, Q, Sum
 from django.forms.formsets import formset_factory
@@ -1305,6 +1306,7 @@ def engagement_comment_add(request, engagement_id):
         comment.user = request.user
         comment.save()
         messages.success(request, 'You successfully added a comment to this engagement.', extra_tags=random.choice(success_messages))
+        return redirect(reverse('boh:engagement.detail', kwargs={'engagement_id':engagement.id}) + '#comment-' + str(comment.id))
 
     return redirect('boh:engagement.detail', engagement_id=engagement.id)
 
@@ -1417,6 +1419,7 @@ def activity_comment_add(request, activity_id):
         comment.user = request.user
         comment.save()
         messages.success(request, 'You successfully added a comment to this activity.', extra_tags=random.choice(success_messages))
+        return redirect(reverse('boh:activity.detail', kwargs={'activity_id':activity.id}) + '#comment-' + str(comment.id))
 
     return redirect('boh:activity.detail', activity_id=activity.id)
 
