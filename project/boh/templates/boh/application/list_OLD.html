@@ -1,0 +1,69 @@
+{% extends "boh/base.html" %}
+
+{% load humanize %}
+
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-8 col-md-8">
+    {% if user.is_staff %}
+    <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Organization</a>
+    {% endif %}
+    <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Application</a>
+  </div>
+  <div class="col-sm-4 col-md-4">
+    <div class="pull-right">
+      <nav>
+        <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
+        <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-md-3">
+    <a href="{% url 'boh:application.list' %}" class="btn btn-default btn-block" role="button">Show all applications</a>
+    <hr>
+    {% if tags %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Filter by tag</h3>
+      </div>
+      <div class="list-group">
+        {% for tag in tags %}
+        <a href="?tag={{ tag.id }}" class="list-group-item{% if active_filter_tag == tag.id %} active{% endif %}{% if tag.description %} data-toggle="tooltip" title="{{ tag.description }}"{% endif %}"><span class="badge pull-right"{% if active_filter_tag != tag.id %}style="background-color: #{{ tag.color }};"{% endif %}>{{ tag.total_applications }}</span> {{ tag.name }} </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-9">
+    {% if applications %}
+    <ul class="list-group">
+      {% for application in applications %}
+      <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">
+        <span class="badge">{{ application.get_business_criticality_display }}</span>
+        <h4 class="list-group-item-heading no-margin-bottom">{{ application.name }}{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="Created {{ application.created_date|naturaltime }}">New!</sup>{% endif %} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
+        {% if application.tags.all %}
+        <p class="list-group-item-text">
+          {% for tag in application.tags.all %}
+          {% include "boh/snippets/common/tag_label.html" with tag=tag %}
+          {% endfor %}
+        </p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <small class="text-muted"><em>There are no applications.</em></small>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

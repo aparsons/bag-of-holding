@@ -25,8 +25,12 @@ gulp.task('styles', function() {
   }))
   .pipe(addsrc(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css'))
   .pipe(minifyCSS({
-    keepSpecialComments: 0
+  keepSpecialComments: 0
   }))
+  .pipe(addsrc(paths.bower + '/bootstrap-select/dist/css/bootstrap-select.css'))
+  // .pipe(minifyCSS({
+  //   keepSpecialComments: 0
+  // }))
   .pipe(concat('application.min.css'))
   .pipe(gulp.dest(paths.dist + '/css'));
 });
@@ -39,10 +43,11 @@ gulp.task('scripts', function() {
     paths.bower + '/bootstrap-sass/assets/javascripts/bootstrap.js',
     paths.bower + '/markdown/lib/markdown.js',
     paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js',
+    paths.bower + '/bootstrap-select/dist/js/bootstrap-select.js',
     paths.assets + '/scripts/application.js',
   ])
   .pipe(concat('application.min.js'))
-  .pipe(uglify())
+  //.pipe(uglify())
   .pipe(gulp.dest(paths.dist + '/js'));
 
   // Modernizr

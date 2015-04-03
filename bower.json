@@ -16,6 +16,7 @@
     "bootstrap-datepicker": "~1.4.0",
     "bootstrap-markdown": "~2.8.0",
     "markdown": "~0.5.0",
-    "Chart.js": "~1.0.2"
+    "Chart.js": "~1.0.2",
+    "bootstrap-select": "~1.6.4"
   }
 }

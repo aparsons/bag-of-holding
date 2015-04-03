@@ -142,7 +142,7 @@ class Application(models.Model):
     MOBILE_PLATFORM = 'mobile'
     WEB_SERVICE_PLATFORM = 'web service'
     PLATFORM_CHOICES = (
-        (None, 'Not Specified'),
+        #(None, 'Not Specified'),
         (WEB_PLATFORM, 'Web'),
         (DESKTOP_PLATFORM, 'Desktop'),
         (MOBILE_PLATFORM, 'Mobile'),
@@ -156,7 +156,7 @@ class Application(models.Model):
     SUSTAIN_LIFECYCLE = 'sustain'
     RETIRE_LIFECYCLE = 'retire'
     LIFECYCLE_CHOICES = (
-        (None, 'Not Specified'),
+        #(None, 'Not Specified'),
         (IDEA_LIFECYCLE, 'Idea'),
         (EXPLORE_LIFECYCLE, 'Explore'),
         (VALIDATE_LIFECYCLE, 'Validate'),
@@ -172,7 +172,7 @@ class Application(models.Model):
     OPEN_SOURCE_ORIGIN = 'open source'
     OUTSOURCED_ORIGIN = 'outsourced'
     ORIGIN_CHOICES = (
-        (None, 'Not Specified'),
+        #(None, 'Not Specified'),
         (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
         (PURCHASED_ORIGIN, 'Purchased'),
         (CONTRACTOR_ORIGIN, 'Contractor'),
@@ -188,7 +188,7 @@ class Application(models.Model):
     VERY_LOW_CRITICALITY = 'very low'
     NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
-        (None, 'Not Specified'),
+        #(None, 'Not Specified'),
         (VERY_HIGH_CRITICALITY, 'Very High'),
         (HIGH_CRITICALITY, 'High'),
         (MEDIUM_CRITICALITY, 'Medium'),

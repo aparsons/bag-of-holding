@@ -1,69 +1,122 @@
 {% extends "boh/base.html" %}
 
 {% load humanize %}
+{% load icon_filters %}
+{% load widget_tweaks %}
 
 {% block title %}Applications{% endblock %}
 
 {% block content %}
 <div class="row">
-  <div class="col-sm-8 col-md-8">
+
+  <div class="col-md-12">
+    <form action="{% url 'boh:application.list' %}" method="get">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-3">
+              {{ applications.form.name|add_class:"form-control"|attr:"placeholder:Name" }}
+            </div>
+            <div class="col-xs-3">
+              {{ applications.form.organization|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
+            </div>
+            <div class="col-xs-2">
+              {{ applications.form.business_criticality|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
+            </div>
+            <div class="col-xs-4">
+              <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                  <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span> Filter</button>
+                </div>
+                <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span> Clear</a>
+                <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span> Advanced</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collapse{% if show_advanced %}.in{% endif %} well" id="advanced">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group">
+                  <label class="control-label" for="{{ applications.form.platform.id_for_label }}">{{ applications.form.platform.label }}:</label>
+                  {{ applications.form.platform|add_class:"selectpicker"|attr:"data-width:100%" }}
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="{{ applications.form.lifecycle.id_for_label }}">{{ applications.form.lifecycle.label }}:</label>
+                  {{ applications.form.lifecycle|add_class:"selectpicker"|attr:"data-width:100%" }}
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="{{ applications.form.origin.id_for_label }}">{{ applications.form.origin.label }}:</label>
+                  {{ applications.form.origin|add_class:"selectpicker"|attr:"data-width:100%" }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+          </div>
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <label class="control-label" for="{{ applications.form.tags.id_for_label }}">{{ applications.form.tags.label }}:</label>
+                {{ applications.form.tags|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="col-xs-3">Name</th>
+              <th class="col-xs-2">Organization</th>
+              <th class="col-xs-2">Criticality</th>
+              <th class="col-xs-2">Metadata</th>
+              <th class="col-xs-3">Tags</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for application in applications %}
+            <tr>
+              <td><strong><a href="{% url 'boh:application.overview' application.id %}">{{ application.name }}</a></strong>{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="Created {{ application.created_date|naturaltime }}">New!</sup>{% endif %}</td>
+              <td><a href="{% url 'boh:organization.overview' application.organization.id %}">{{ application.organization.name }}</a></td>
+              <td>{% if application.business_criticality %}{{ application.get_business_criticality_display }}{% endif %}</td>
+              <td>{{ application.platform|platform_icon }}</td>
+              <td>
+                {% for tag in application.tags.all %}
+                {% include "boh/snippets/common/tag_label.html" with tag=tag %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
     {% if user.is_staff %}
     <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Organization</a>
     {% endif %}
     <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Application</a>
-  </div>
-  <div class="col-sm-4 col-md-4">
-    <div class="pull-right">
-      <nav>
-        <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
-        <div class="btn-group" role="group" aria-label="...">
-          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
-          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
-        </div>
-      </nav>
-    </div>
-  </div>
-</div>
 
-<hr />
-
-<div class="row">
-  <div class="col-md-3">
-    <a href="{% url 'boh:application.list' %}" class="btn btn-default btn-block" role="button">Show all applications</a>
+    <!--
     <hr>
-    {% if tags %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Filter by tag</h3>
-      </div>
-      <div class="list-group">
-        {% for tag in tags %}
-        <a href="?tag={{ tag.id }}" class="list-group-item{% if active_filter_tag == tag.id %} active{% endif %}{% if tag.description %} data-toggle="tooltip" title="{{ tag.description }}"{% endif %}"><span class="badge pull-right"{% if active_filter_tag != tag.id %}style="background-color: #{{ tag.color }};"{% endif %}>{{ tag.total_applications }}</span> {{ tag.name }} </a>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-  </div>
-  <div class="col-md-9">
-    {% if applications %}
-    <ul class="list-group">
-      {% for application in applications %}
-      <a href="{% url 'boh:application.overview' application.id %}" class="list-group-item">
-        <span class="badge">{{ application.get_business_criticality_display }}</span>
-        <h4 class="list-group-item-heading no-margin-bottom">{{ application.name }}{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="Created {{ application.created_date|naturaltime }}">New!</sup>{% endif %} <small>{{ application.organization.name }} - {{ application.get_platform_display }}, {{ application.get_origin_display }}</small></h4>
-        {% if application.tags.all %}
-        <p class="list-group-item-text">
-          {% for tag in application.tags.all %}
-          {% include "boh/snippets/common/tag_label.html" with tag=tag %}
-          {% endfor %}
-        </p>
-        {% endif %}
-      </a>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <small class="text-muted"><em>There are no applications.</em></small>
-    {% endif %}
+    <form action="{% url 'boh:application.list' %}" method="get">
+      {{ applications.form.as_p }}
+      <input type="submit" />
+    </form>
+    -->
   </div>
 </div>
 {% endblock %}

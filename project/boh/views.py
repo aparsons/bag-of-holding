@@ -730,39 +730,19 @@ def organization_add(request):
 
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(['GET', 'POST'])
 def application_list(request):
-    queries = request.GET.copy()
-    if queries.__contains__('page'):
-        del queries['page']
+    from .filters import ApplicationFilter
 
-    tags = Tag.objects.all().annotate(total_applications=Count('application')).order_by('-total_applications', 'name')
+    application_filter = ApplicationFilter(request.GET, queryset=Application.objects.all().select_related('organization__name').prefetch_related('tags'))
 
-    application_list = Application.objects.all() \
-        .select_related('organization__name') \
-        .prefetch_related(
-            Prefetch('tags', queryset=tags)
-        )
-
-    tag_id = request.GET.get('tag', 0)
-    if tag_id:
-        application_list = application_list.filter(tags__id=tag_id)
-
-    paginator = Paginator(application_list, 30)
-
-    page = request.GET.get('page')
-    try:
-        applications = paginator.page(page)
-    except PageNotAnInteger:
-        applications = paginator.page(1)
-    except EmptyPage:
-        applications = paginator.page(paginator.num_pages)
+    show_advanced = False
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('tags'):
+        show_advanced = True
 
     return render(request, 'boh/application/list.html', {
-        'applications': applications,
-        'tags': tags,
-        'queries': queries,
-        'active_filter_tag': int(tag_id),
+        'applications': application_filter,
+        'show_advanced': show_advanced,
         'active_top': 'applications'
     })
 
