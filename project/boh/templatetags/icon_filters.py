@@ -19,4 +19,4 @@ def platform_icon(value):
     elif value == Application.WEB_SERVICE_PLATFORM:
         return mark_safe(icon('plug','Web Service'))
     else:
-        return mark_safe(icon('question','Not Specified'))
+        return ''

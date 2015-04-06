@@ -8,28 +8,52 @@
 
 {% block content %}
 <div class="row">
+  <div class="col-md-12">
+    <div class="margin-bottom clearfix">
+      {% if user.is_staff %}
+      <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="Add Organization"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> Add Organization</span></a>
+      {% endif %}
+      <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="Add Application"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> Add Application</span></a>
 
+      <div class="pull-right">
+        <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
+        <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-md-12">
     <form action="{% url 'boh:application.list' %}" method="get">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="row">
-            <div class="col-xs-3">
-              {{ applications.form.name|add_class:"form-control"|attr:"placeholder:Name" }}
+            <div class="col-md-2 col-lg-3">
+              <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
+                {{ form.name|add_class:"form-control"|attr:"placeholder:Name" }}
+              </div>
             </div>
-            <div class="col-xs-3">
-              {{ applications.form.organization|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
+                {{ form.organization|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
+              </div>
             </div>
-            <div class="col-xs-2">
-              {{ applications.form.business_criticality|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
+            <div class="col-sm-6 col-md-2">
+              <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
+                {{ form.business_criticality|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
+              </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-12 col-md-5 col-lg-4">
               <div class="btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">
-                  <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span> Filter</button>
+                  <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> Filter</span></button>
                 </div>
-                <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span> Clear</a>
-                <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span> Advanced</a>
+                <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span><span class="hidden-xs"> Clear</span></a>
+                <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs"> Advanced</span></a>
               </div>
             </div>
           </div>
@@ -38,30 +62,42 @@
       <div class="collapse{% if show_advanced %}.in{% endif %} well" id="advanced">
         <div class="row">
           <div class="col-md-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <div class="form-group">
-                  <label class="control-label" for="{{ applications.form.platform.id_for_label }}">{{ applications.form.platform.label }}:</label>
-                  {{ applications.form.platform|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  <label class="control-label" for="{{ form.platform.id_for_label }}">{{ form.platform.label }}:</label>
+                  {{ form.platform|add_class:"selectpicker"|attr:"data-width:100%" }}
                 </div>
                 <div class="form-group">
-                  <label class="control-label" for="{{ applications.form.lifecycle.id_for_label }}">{{ applications.form.lifecycle.label }}:</label>
-                  {{ applications.form.lifecycle|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  <label class="control-label" for="{{ form.lifecycle.id_for_label }}">{{ form.lifecycle.label }}:</label>
+                  {{ form.lifecycle|add_class:"selectpicker"|attr:"data-width:100%" }}
                 </div>
                 <div class="form-group">
-                  <label class="control-label" for="{{ applications.form.origin.id_for_label }}">{{ applications.form.origin.label }}:</label>
-                  {{ applications.form.origin|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  <label class="control-label" for="{{ form.origin.id_for_label }}">{{ form.origin.label }}:</label>
+                  {{ form.origin|add_class:"selectpicker"|attr:"data-width:100%" }}
                 </div>
               </div>
             </div>
           </div>
           <div class="col-md-4">
+            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
+              <div class="panel-body">
+                <div class="form-group">
+                  <label class="control-label" for="{{ form.external_audience.id_for_label }}">{{ form.external_audience.label }}:</label>
+                  {{ form.external_audience|add_class:"selectpicker"|attr:"data-width:100%" }}
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="{{ form.internet_accessible.id_for_label }}">{{ form.internet_accessible.label }}:</label>
+                  {{ form.internet_accessible|add_class:"selectpicker"|attr:"data-width:100%" }}
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-md-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
-                <label class="control-label" for="{{ applications.form.tags.id_for_label }}">{{ applications.form.tags.label }}:</label>
-                {{ applications.form.tags|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
+                <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>
+                {{ form.tags|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
               </div>
             </div>
           </div>
@@ -69,8 +105,9 @@
       </div>
     </form>
   </div>
+</div>
 
-
+<div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="table-responsive">
@@ -103,20 +140,52 @@
       </div>
     </div>
   </div>
+</div>
 
-  <div class="col-md-12">
-    {% if user.is_staff %}
-    <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Organization</a>
+<div class="row">
+  <div class="col-sm-9 col-md-10">
+    {% if applications.paginator.num_pages > 1 %}
+    <nav>
+      <ul class="pagination no-margin-top">
+        {% if applications.has_previous %}
+        <li>
+          <a href="?{{ queries.urlencode }}&page={{ applications.previous_page_number }}" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+        </li>
+        {% else %}
+        <li class="disabled">
+          <a href="#" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+        </li>
+        {% endif %}
+
+        {% for num in applications.paginator.page_range %}
+        {% ifequal num applications.number %}
+        <li class="active hidden-xs"><a href="?{{ queries.urlencode }}&page={{ num }}">{{ num }}<span class="sr-only">(current)</span></a></li>
+        {% else %}
+        <li class="hidden-xs"><a href="?{{ queries.urlencode }}&page={{ num }}">{{ num }}</a></li>
+        {% endifequal %}
+        {% endfor %}
+
+        {% if applications.has_next %}
+        <li><a href="?{{ queries.urlencode }}&page={{ applications.next_page_number }}" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
+        {% else %}
+        <li class="disabled">
+          <a href="#" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
     {% endif %}
-    <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Application</a>
-
-    <!--
-    <hr>
-    <form action="{% url 'boh:application.list' %}" method="get">
-      {{ applications.form.as_p }}
-      <input type="submit" />
-    </form>
-    -->
+  </div>
+  <div class="col-sm-3 col-md-2">
+    {{ page_size_form.page_size|add_class:"selectpicker"|add_class:"pagesize"|attr:"data-width:100%" }}
   </div>
 </div>
-{% endblock %}
+{% endblock content %}
+
+{% block js %}
+<script>
+$('.pagesize').on('change', function() {
+  window.location.href = '?{% if queries %}{{ queries.urlencode|escapejs }}' + '&{% endif %}page_size=' + $(this).val();
+});
+</script>
+{% endblock js %}

@@ -19,8 +19,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from boh.models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, ActivityType, Activity, Tag, Person, Relation, ThreadFix
+from .filters import ApplicationFilter
 
+from .models import Organization, DataElement, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Engagement, ActivityType, Activity, Tag, Person, Relation, ThreadFix
+
+from .forms import PageSizeForm
 from boh.forms import UserProfileForm
 from boh.forms import ApplicationTagForm, ApplicationTagDeleteForm
 from boh.forms import ActivityTypeForm, ActivityTypeDeleteForm
@@ -730,18 +733,49 @@ def organization_add(request):
 
 
 @login_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET'])
 def application_list(request):
-    from .filters import ApplicationFilter
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+    if queries.__contains__('page_size'):
+        del queries['page_size']
 
     application_filter = ApplicationFilter(request.GET, queryset=Application.objects.all().select_related('organization__name').prefetch_related('tags'))
 
+    page_size = 25
+
+    page_size_form = PageSizeForm()
+    if request.GET.get('page_size'):
+        page_size_form = PageSizeForm(request.GET)
+        if page_size_form.is_valid():
+             page_size = page_size_form.cleaned_data['page_size']
+             if page_size == 'all':
+                 page_size = 10000000
+             else:
+                 page_size = int(page_size)
+
+    paginator = Paginator(application_filter, page_size)
+
+    page = request.GET.get('page')
+
+    try:
+        applications = paginator.page(page)
+    except PageNotAnInteger:
+        applications = paginator.page(1)
+    except EmptyPage:
+        applications = paginator.page(paginator.num_pages)
+
+    #
     show_advanced = False
-    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('tags'):
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('tags') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
         show_advanced = True
 
     return render(request, 'boh/application/list.html', {
-        'applications': application_filter,
+        'form': application_filter.form,
+        'applications': applications,
+        'queries': queries,
+        'page_size_form': page_size_form,
         'show_advanced': show_advanced,
         'active_top': 'applications'
     })

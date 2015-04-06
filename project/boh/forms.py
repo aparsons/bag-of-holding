@@ -5,6 +5,19 @@ from django.db.models import Q
 from boh.models import Tag, Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, ActivityType, Activity, ActivityComment, Person, Relation, ThreadFix
 
 
+# Common
+
+class PageSizeForm(forms.Form):
+    PAGE_SIZE_CHOICES = (
+        ('25', '25 per page'),
+        ('50', '50 per page'),
+        ('100', '100 per page'),
+        ('all', 'Everything')
+    )
+
+    page_size = forms.ChoiceField(choices=PAGE_SIZE_CHOICES)
+
+
 # User
 
 class UserProfileForm(forms.ModelForm):

@@ -5,6 +5,10 @@ $(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 
+  $(".selectpicker").selectpicker();
+  $("button.selectpicker").hide();
+  $("button.selectpicker").fadeIn(250);
+
   $(".markdown").markdown({
     iconlibrary: "fa",
     resize: "vertical",
