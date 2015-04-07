@@ -776,6 +776,7 @@ def application_list(request):
         'applications': applications,
         'queries': queries,
         'page_size_form': page_size_form,
+        'page_size': str(page_size),
         'show_advanced': show_advanced,
         'active_top': 'applications'
     })

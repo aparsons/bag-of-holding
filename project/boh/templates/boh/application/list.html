@@ -18,8 +18,8 @@
       <div class="pull-right">
         <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
         <div class="btn-group" role="group" aria-label="...">
-          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{{ queries.urlencode }}&page={{ applications.previous_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
-          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{{ queries.urlencode }}&page={{ applications.next_page_number }}{% endif %}" role="button"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+          <a class="btn btn-default{% if not applications.has_previous %} disabled{% endif %}" href="{% if applications.has_previous %}?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.previous_page_number }}&page_size={{ page_size }}{% endif %}" role="button"><span class="fa fa-chevron-left" aria-hidden="true"></span></a>
+          <a class="btn btn-default{% if not applications.has_next %} disabled{% endif %}" href="{% if applications.has_next %}?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.next_page_number }}&page_size={{ page_size }}{% endif %}" role="button"><span class="fa fa-chevron-right" aria-hidden="true"></span></a>
         </div>
       </div>
     </div>
@@ -39,12 +39,12 @@
             </div>
             <div class="col-sm-6 col-md-3">
               <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
-                {{ form.organization|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
+                {{ form.organization|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
               </div>
             </div>
             <div class="col-sm-6 col-md-2">
               <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
-                {{ form.business_criticality|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
+                {{ form.business_criticality|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
               </div>
             </div>
             <div class="col-sm-12 col-md-5 col-lg-4">
@@ -66,15 +66,15 @@
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label" for="{{ form.platform.id_for_label }}">{{ form.platform.label }}:</label>
-                  {{ form.platform|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  {{ form.platform|add_class:"selectpicker" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.lifecycle.id_for_label }}">{{ form.lifecycle.label }}:</label>
-                  {{ form.lifecycle|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  {{ form.lifecycle|add_class:"selectpicker" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.origin.id_for_label }}">{{ form.origin.label }}:</label>
-                  {{ form.origin|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  {{ form.origin|add_class:"selectpicker" }}
                 </div>
               </div>
             </div>
@@ -84,11 +84,11 @@
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label" for="{{ form.external_audience.id_for_label }}">{{ form.external_audience.label }}:</label>
-                  {{ form.external_audience|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  {{ form.external_audience|add_class:"selectpicker" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.internet_accessible.id_for_label }}">{{ form.internet_accessible.label }}:</label>
-                  {{ form.internet_accessible|add_class:"selectpicker"|attr:"data-width:100%" }}
+                  {{ form.internet_accessible|add_class:"selectpicker" }}
                 </div>
               </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>
-                {{ form.tags|add_class:"selectpicker"|attr:"data-width:100%"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
+                {{ form.tags|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
       <ul class="pagination no-margin-top">
         {% if applications.has_previous %}
         <li>
-          <a href="?{{ queries.urlencode }}&page={{ applications.previous_page_number }}" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+          <a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.previous_page_number }}&page_size={{ page_size }}" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
         </li>
         {% else %}
         <li class="disabled">
@@ -159,14 +159,14 @@
 
         {% for num in applications.paginator.page_range %}
         {% ifequal num applications.number %}
-        <li class="active hidden-xs"><a href="?{{ queries.urlencode }}&page={{ num }}">{{ num }}<span class="sr-only">(current)</span></a></li>
+        <li class="active hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}<span class="sr-only">(current)</span></a></li>
         {% else %}
-        <li class="hidden-xs"><a href="?{{ queries.urlencode }}&page={{ num }}">{{ num }}</a></li>
+        <li class="hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}</a></li>
         {% endifequal %}
         {% endfor %}
 
         {% if applications.has_next %}
-        <li><a href="?{{ queries.urlencode }}&page={{ applications.next_page_number }}" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
+        <li><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.next_page_number }}&page_size={{ page_size }}" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
         {% else %}
         <li class="disabled">
           <a href="#" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
@@ -177,7 +177,7 @@
     {% endif %}
   </div>
   <div class="col-sm-3 col-md-2">
-    {{ page_size_form.page_size|add_class:"selectpicker"|add_class:"pagesize"|attr:"data-width:100%" }}
+    {{ page_size_form.page_size|add_class:"selectpicker"|add_class:"pagesize" }}
   </div>
 </div>
 {% endblock content %}

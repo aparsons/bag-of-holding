@@ -7,10 +7,6 @@
 
 @import "codehilite/monokai";
 
-/* Hides select when selectpicker is loading. Less flickering */
-select.selectpicker {
-  display: none;
-}
 
 .margin-bottom {
   margin-bottom: $line-height-computed;
