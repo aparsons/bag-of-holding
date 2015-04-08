@@ -1,9 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.db.models import Q
 
-from boh.models import Tag, Organization, DataElement, Application, Environment, EnvironmentLocation, Engagement, EngagementComment, ActivityType, Activity, ActivityComment, Person, Relation, ThreadFix
-
+from . import models
 
 # Common
 
@@ -30,7 +28,7 @@ class UserProfileForm(forms.ModelForm):
 
 class OrganizationAddForm(forms.ModelForm):
     class Meta:
-        model = Organization
+        model = models.Organization
         fields = ['name', 'description']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 8})
@@ -39,7 +37,7 @@ class OrganizationAddForm(forms.ModelForm):
 
 class OrganizationSettingsGeneralForm(forms.ModelForm):
     class Meta:
-        model = Organization
+        model = models.Organization
         fields = ['name', 'description']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 8})
@@ -48,7 +46,7 @@ class OrganizationSettingsGeneralForm(forms.ModelForm):
 
 class OrganizationSettingsPeopleForm(forms.ModelForm):
     class Meta:
-        model = Organization
+        model = models.Organization
         fields = ['people']
         widgets = {
             'people': forms.SelectMultiple(attrs = {'size': 15})
@@ -56,7 +54,7 @@ class OrganizationSettingsPeopleForm(forms.ModelForm):
 
 class OrganizationDeleteForm(forms.ModelForm):
     class Meta:
-        model = Organization
+        model = models.Organization
         fields = []
 
 
@@ -64,7 +62,7 @@ class OrganizationDeleteForm(forms.ModelForm):
 
 class ThreadFixForm(forms.ModelForm):
     class Meta:
-        model = ThreadFix
+        model = models.ThreadFix
         fields = ['name', 'host', 'api_key', 'verify_ssl']
         labels = {
             'api_key': 'API key',
@@ -80,12 +78,12 @@ class ThreadFixApplicationImportForm(forms.Form):
     team_id = forms.IntegerField(min_value=0, max_value=2147483647, widget=forms.HiddenInput())
     application_id = forms.IntegerField(min_value=0, max_value=2147483647, widget=forms.HiddenInput())
     application_name = forms.CharField(max_length=128)
-    organization = forms.ModelChoiceField(queryset=Organization.objects.all(), required=False)
+    organization = forms.ModelChoiceField(queryset=models.Organization.objects.all(), required=False)
 
 
 class ThreadFixDeleteForm(forms.ModelForm):
     class Meta:
-        model = ThreadFix
+        model = models.ThreadFix
         fields = []
 
 
@@ -93,7 +91,7 @@ class ThreadFixDeleteForm(forms.ModelForm):
 
 class ApplicationAddForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['organization', 'name', 'description']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 8})
@@ -102,7 +100,7 @@ class ApplicationAddForm(forms.ModelForm):
 
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['name', 'description']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 8})
@@ -111,25 +109,25 @@ class ApplicationSettingsGeneralForm(forms.ModelForm):
 
 class ApplicationSettingsOrganizationForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['organization']
 
 
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
 
 
 class ApplicationSettingsTagsForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['tags']
 
 
 class ApplicationSettingsDataElementsForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['data_elements']
         widgets = {
             'data_elements': forms.SelectMultiple(attrs = {'size': 15})
@@ -138,7 +136,7 @@ class ApplicationSettingsDataElementsForm(forms.ModelForm):
 
 class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['override_dcl', 'override_reason']
         labels = {
             'override_dcl': 'Override data classification level'
@@ -150,7 +148,7 @@ class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
 
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         labels = {
             'threadfix': 'ThreadFix Service',
@@ -161,7 +159,7 @@ class ApplicationSettingsThreadFixForm(forms.ModelForm):
 
 class ApplicationDeleteForm(forms.ModelForm):
     class Meta:
-        model = Application
+        model = models.Application
         fields = []
 
 
@@ -169,7 +167,7 @@ class ApplicationDeleteForm(forms.ModelForm):
 
 class EnvironmentAddForm(forms.ModelForm):
     class Meta:
-        model = Environment
+        model = models.Environment
         fields = ['environment_type', 'description', 'testing_approved']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 3})
@@ -178,7 +176,7 @@ class EnvironmentAddForm(forms.ModelForm):
 
 class EnvironmentEditForm(forms.ModelForm):
     class Meta:
-        model = Environment
+        model = models.Environment
         fields = ['environment_type', 'description', 'testing_approved']
         widgets = {
             'description': forms.Textarea(attrs = {'rows': 3})
@@ -187,13 +185,13 @@ class EnvironmentEditForm(forms.ModelForm):
 
 class EnvironmentDeleteForm(forms.ModelForm):
     class Meta:
-        model = Environment
+        model = models.Environment
         fields = []
 
 
 class EnvironmentLocationAddForm(forms.ModelForm):
     class Meta:
-        model = EnvironmentLocation
+        model = models.EnvironmentLocation
         fields = ['location', 'notes']
         widgets = {
             'notes': forms.Textarea(attrs = {'rows': 3})
@@ -202,7 +200,7 @@ class EnvironmentLocationAddForm(forms.ModelForm):
 
 class EnvironmentLocationEditForm(forms.ModelForm):
     class Meta:
-        model = EnvironmentLocation
+        model = models.EnvironmentLocation
         fields = ['location', 'notes']
         widgets = {
             'notes': forms.Textarea(attrs = {'rows': 3})
@@ -213,7 +211,7 @@ class EnvironmentLocationEditForm(forms.ModelForm):
 
 class EngagementAddForm(forms.ModelForm):
     class Meta:
-        model = Engagement
+        model = models.Engagement
         fields = ['start_date', 'end_date', 'description', 'requestor']
         labels = {
             'start_date': 'Scheduled start date',
@@ -235,7 +233,7 @@ class EngagementAddForm(forms.ModelForm):
 
 class EngagementEditForm(forms.ModelForm):
     class Meta:
-        model = Engagement
+        model = models.Engagement
         fields = ['status', 'start_date', 'end_date', 'description', 'requestor']
         labels = {
             'start_date': 'Scheduled start date',
@@ -257,19 +255,19 @@ class EngagementEditForm(forms.ModelForm):
 
 class EngagementStatusForm(forms.ModelForm):
     class Meta:
-        model = Engagement
+        model = models.Engagement
         fields = ['status']
 
 
 class EngagementDeleteForm(forms.ModelForm):
     class Meta:
-        model = Engagement
+        model = models.Engagement
         fields = []
 
 
 class EngagementCommentAddForm(forms.ModelForm):
     class Meta:
-        model = EngagementComment
+        model = models.EngagementComment
         fields = ['message']
         widgets = {
             'message': forms.Textarea(attrs = {'rows': 3})
@@ -280,7 +278,7 @@ class EngagementCommentAddForm(forms.ModelForm):
 
 class ActivityAddForm(forms.ModelForm):
     class Meta:
-        model = Activity
+        model = models.Activity
         fields = ['activity_type', 'description', 'users']
         labels = {
             'users': 'Assigned users'
@@ -292,7 +290,7 @@ class ActivityAddForm(forms.ModelForm):
 
 class ActivityEditForm(forms.ModelForm):
     class Meta:
-        model = Activity
+        model = models.Activity
         fields = ['status', 'activity_type', 'description', 'users']
         labels = {
             'users': 'Assigned users'
@@ -304,13 +302,13 @@ class ActivityEditForm(forms.ModelForm):
 
 class ActivityStatusForm(forms.ModelForm):
     class Meta:
-        model = Activity
+        model = models.Activity
         fields = ['status']
 
 
 class ActivityCommentAddForm(forms.ModelForm):
     class Meta:
-        model = ActivityComment
+        model = models.ActivityComment
         fields = ['message']
         widgets = {
             'message': forms.Textarea(attrs = {'rows': 3})
@@ -319,7 +317,7 @@ class ActivityCommentAddForm(forms.ModelForm):
 
 class ActivityDeleteForm(forms.ModelForm):
     class Meta:
-        model = Activity
+        model = models.Activity
         fields = []
 
 
@@ -327,13 +325,13 @@ class ActivityDeleteForm(forms.ModelForm):
 
 class PersonForm(forms.ModelForm):
     class Meta:
-        model = Person
+        model = models.Person
         fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile', 'job_title', 'role']
 
 
 class PersonDeleteForm(forms.ModelForm):
     class Meta:
-        model = Person
+        model = models.Person
         fields = []
 
 
@@ -342,7 +340,7 @@ class PersonDeleteForm(forms.ModelForm):
 class PersonRelationForm(forms.ModelForm):
     """For relating a person to an application."""
     class Meta:
-        model = Relation
+        model = models.Relation
         fields = ['person', 'owner', 'emergency', 'notes']
         labels = {
             'owner': 'Application Owner',
@@ -355,7 +353,7 @@ class PersonRelationForm(forms.ModelForm):
 
 class RelationDeleteForm(forms.ModelForm):
     class Meta:
-        model = Relation
+        model = models.Relation
         fields = []
 
 
@@ -363,13 +361,13 @@ class RelationDeleteForm(forms.ModelForm):
 
 class ApplicationTagForm(forms.ModelForm):
     class Meta:
-        model = Tag
+        model = models.Tag
         fields = ['name', 'description', 'color']
 
 
 class ApplicationTagDeleteForm(forms.ModelForm):
     class Meta:
-        model = Tag
+        model = models.Tag
         fields = []
 
 
@@ -377,11 +375,11 @@ class ApplicationTagDeleteForm(forms.ModelForm):
 
 class ActivityTypeForm(forms.ModelForm):
     class Meta:
-        model = ActivityType
+        model = models.ActivityType
         fields = ['name', 'documentation']
 
 
 class ActivityTypeDeleteForm(forms.ModelForm):
     class Meta:
-        model = ActivityType
+        model = models.ActivityType
         fields = []
