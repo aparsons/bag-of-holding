@@ -24,7 +24,7 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.color = self.color.lower() # Convert color to lowercase
+        self.color = self.color.lower()  # Convert color to lowercase
         super(Tag, self).save(*args, **kwargs)
 
 
@@ -487,21 +487,39 @@ class Activity(models.Model):
         verbose_name_plural = 'Activities'
 
     def save(self, *args, **kwargs):
-        """Automatically sets the open and closed dates when the status changes."""
+        """
+        Automatically sets the open and closed dates when the status changes.
+        Opens parent engagement if child activity is opened.
+        Closes parent engagement if all child activities are closed.
+        """
         if self.pk is not None:
             activity = Activity.objects.get(pk=self.pk)
-            if activity.status != self.status:
+            if activity.status != self.status:  # When status changed
                 if self.status == Activity.PENDING_STATUS:
                     self.open_date = None
                     self.close_date = None
                 elif self.status == Activity.OPEN_STATUS:
                     self.open_date = timezone.now()
                     self.close_date = None
+
+                    # Open the parent engagement if the activity is opened
+                    if self.engagement.status is not Engagement.OPEN_STATUS:
+                        self.engagement.status = Engagement.OPEN_STATUS
+                        self.engagement.save()
                 elif self.status == Activity.CLOSED_STATUS:
                     if self.open_date is None:
                         self.open_date = timezone.now()
                     self.close_date = timezone.now()
 
+                    # If all of the parent engagement activities are closed, close the parent engagement
+                    close = True
+                    for current_activity in self.engagement.activity_set.all():
+                        if self.id is not current_activity.id and current_activity.status != Activity.CLOSED_STATUS:
+                            close = False
+                            break
+                    if close:
+                        self.engagement.status = Engagement.CLOSED_STATUS
+                        self.engagement.save()
         super(Activity, self).save(*args, **kwargs)
 
     def is_pending(self):

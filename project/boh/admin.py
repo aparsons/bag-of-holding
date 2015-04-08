@@ -80,6 +80,7 @@ class DataElementAdmin(admin.ModelAdmin):
 
 admin.site.register(models.DataElement, DataElementAdmin)
 
+
 class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ['created_date','modified_date']
     fieldsets = [
@@ -110,7 +111,8 @@ class ApplicationAdmin(admin.ModelAdmin):
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
 
-    def data_elements_list(self, obj):
+    @staticmethod
+    def data_elements_list(obj):
         return ", ".join([data_element.name for data_element in obj.data_elements.all()])
 
 admin.site.register(models.Application, ApplicationAdmin)

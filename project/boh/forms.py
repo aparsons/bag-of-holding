@@ -32,7 +32,7 @@ class OrganizationAddForm(forms.ModelForm):
         model = models.Organization
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 8})
+            'description': forms.Textarea(attrs={'rows': 8})
         }
 
 
@@ -41,7 +41,7 @@ class OrganizationSettingsGeneralForm(forms.ModelForm):
         model = models.Organization
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 8})
+            'description': forms.Textarea(attrs={'rows': 8})
         }
 
 
@@ -50,8 +50,9 @@ class OrganizationSettingsPeopleForm(forms.ModelForm):
         model = models.Organization
         fields = ['people']
         widgets = {
-            'people': forms.SelectMultiple(attrs = {'size': 15})
+            'people': forms.SelectMultiple(attrs={'size': 15})
         }
+
 
 class OrganizationDeleteForm(forms.ModelForm):
     class Meta:
@@ -70,7 +71,7 @@ class ThreadFixForm(forms.ModelForm):
             'verify_ssl': 'Verify SSL certificate'
         }
         widgets = {
-            'api_key': forms.PasswordInput(render_value = True)
+            'api_key': forms.PasswordInput(render_value=True)
         }
 
 
@@ -95,7 +96,7 @@ class ApplicationAddForm(forms.ModelForm):
         model = models.Application
         fields = ['organization', 'name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 8})
+            'description': forms.Textarea(attrs={'rows': 8})
         }
 
 
@@ -104,7 +105,7 @@ class ApplicationSettingsGeneralForm(forms.ModelForm):
         model = models.Application
         fields = ['name', 'description']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 8})
+            'description': forms.Textarea(attrs={'rows': 8})
         }
 
 
@@ -131,7 +132,7 @@ class ApplicationSettingsDataElementsForm(forms.ModelForm):
         model = models.Application
         fields = ['data_elements']
         widgets = {
-            'data_elements': forms.SelectMultiple(attrs = {'size': 15})
+            'data_elements': forms.SelectMultiple(attrs={'size': 15})
         }
 
 
@@ -143,7 +144,7 @@ class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
             'override_dcl': 'Override data classification level'
         }
         widgets = {
-            'override_reason': forms.Textarea(attrs = {'rows': 3})
+            'override_reason': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -171,7 +172,7 @@ class EnvironmentAddForm(forms.ModelForm):
         model = models.Environment
         fields = ['environment_type', 'description', 'testing_approved']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -180,7 +181,7 @@ class EnvironmentEditForm(forms.ModelForm):
         model = models.Environment
         fields = ['environment_type', 'description', 'testing_approved']
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -195,7 +196,7 @@ class EnvironmentLocationAddForm(forms.ModelForm):
         model = models.EnvironmentLocation
         fields = ['location', 'notes']
         widgets = {
-            'notes': forms.Textarea(attrs = {'rows': 3})
+            'notes': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -204,7 +205,7 @@ class EnvironmentLocationEditForm(forms.ModelForm):
         model = models.EnvironmentLocation
         fields = ['location', 'notes']
         widgets = {
-            'notes': forms.Textarea(attrs = {'rows': 3})
+            'notes': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -219,7 +220,7 @@ class EngagementAddForm(forms.ModelForm):
             'end_date': 'Scheduled end date'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 5})
+            'description': forms.Textarea(attrs={'rows': 5})
         }
 
     def clean(self):
@@ -241,7 +242,7 @@ class EngagementEditForm(forms.ModelForm):
             'end_date': 'Scheduled end date'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 5})
+            'description': forms.Textarea(attrs={'rows': 5})
         }
 
     def clean(self):
@@ -271,7 +272,7 @@ class EngagementCommentAddForm(forms.ModelForm):
         model = models.EngagementComment
         fields = ['message']
         widgets = {
-            'message': forms.Textarea(attrs = {'rows': 3})
+            'message': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -285,7 +286,7 @@ class ActivityAddForm(forms.ModelForm):
             'users': 'Assigned users'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -297,7 +298,7 @@ class ActivityEditForm(forms.ModelForm):
             'users': 'Assigned users'
         }
         widgets = {
-            'description': forms.Textarea(attrs = {'rows': 3})
+            'description': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -312,7 +313,7 @@ class ActivityCommentAddForm(forms.ModelForm):
         model = models.ActivityComment
         fields = ['message']
         widgets = {
-            'message': forms.Textarea(attrs = {'rows': 3})
+            'message': forms.Textarea(attrs={'rows': 3})
         }
 
 
@@ -348,7 +349,7 @@ class PersonRelationForm(forms.ModelForm):
             'emergency': 'Emergency Contact'
         }
         widgets = {
-            'notes': forms.Textarea(attrs = {'rows': 3})
+            'notes': forms.Textarea(attrs={'rows': 3})
         }
 
 

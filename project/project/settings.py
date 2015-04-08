@@ -89,7 +89,7 @@ URL_PREFIX = ''
 LOGIN_URL = os.path.join('/', URL_PREFIX, 'accounts/login')
 LOGIN_REDIRECT_URL = os.path.join('/', URL_PREFIX)
 
-# Changing error to danger for bootstrap compatability
+# Changing error to danger for bootstrap compatibility
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
@@ -110,5 +110,5 @@ if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, os.pardir, 'media')
     INSTALLED_APPS += (
-        'debug_toolbar',
+        # 'debug_toolbar',
     )
