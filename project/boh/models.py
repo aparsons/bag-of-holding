@@ -9,7 +9,7 @@ from django.utils import timezone
 
 
 class Tag(models.Model):
-    """Associated with application for search and catagorization."""
+    """Associated with application for search and categorization."""
 
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 character hex format.")
 
@@ -123,7 +123,7 @@ class ThreadFix(models.Model):
 
     name = models.CharField(max_length=32, unique=True, help_text='A unique name describing the ThreadFix service.')
     host = models.URLField(help_text='The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)')
-    api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.') # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
+    api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.')  # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
     verify_ssl = models.BooleanField(default=True, help_text='Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.')
 
     class Meta:
@@ -135,14 +135,13 @@ class ThreadFix(models.Model):
 
 
 class Application(models.Model):
-    """Contains infomation about a software application."""
+    """Contains information about a software application."""
 
     WEB_PLATFORM = 'web'
     DESKTOP_PLATFORM = 'desktop'
     MOBILE_PLATFORM = 'mobile'
     WEB_SERVICE_PLATFORM = 'web service'
     PLATFORM_CHOICES = (
-        #(None, 'Not Specified'),
         (WEB_PLATFORM, 'Web'),
         (DESKTOP_PLATFORM, 'Desktop'),
         (MOBILE_PLATFORM, 'Mobile'),
@@ -156,7 +155,6 @@ class Application(models.Model):
     SUSTAIN_LIFECYCLE = 'sustain'
     RETIRE_LIFECYCLE = 'retire'
     LIFECYCLE_CHOICES = (
-        #(None, 'Not Specified'),
         (IDEA_LIFECYCLE, 'Idea'),
         (EXPLORE_LIFECYCLE, 'Explore'),
         (VALIDATE_LIFECYCLE, 'Validate'),
@@ -172,7 +170,6 @@ class Application(models.Model):
     OPEN_SOURCE_ORIGIN = 'open source'
     OUTSOURCED_ORIGIN = 'outsourced'
     ORIGIN_CHOICES = (
-        #(None, 'Not Specified'),
         (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
         (PURCHASED_ORIGIN, 'Purchased'),
         (CONTRACTOR_ORIGIN, 'Contractor'),
@@ -188,7 +185,6 @@ class Application(models.Model):
     VERY_LOW_CRITICALITY = 'very low'
     NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
-        #(None, 'Not Specified'),
         (VERY_HIGH_CRITICALITY, 'Very High'),
         (HIGH_CRITICALITY, 'High'),
         (MEDIUM_CRITICALITY, 'Medium'),
@@ -237,12 +233,14 @@ class Application(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    #source code repo
-    #bug tracking tool
-    #developer experience / familiarity
-    #programming language/s
-    #id for whitehat + checkmarx (third-party ids)
-    #password policy
+    """
+    source code repo
+    bug tracking tool
+    developer experience / familiarity
+    programming language/s
+    id for whitehat + checkmarx (third-party ids)
+    password policy
+    """
 
     organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
     people = models.ManyToManyField(Person, through='Relation', blank=True)
@@ -259,9 +257,9 @@ class Application(models.Model):
         dsv = self.data_sensitivity_value()
         if dsv < 15:
             return Application.DCL_1
-        elif dsv >= 15 and dsv < 100:
+        elif 15 <= dsv < 100:
             return Application.DCL_2
-        elif dsv >= 100 and dsv < 150:
+        elif 100 <= dsv < 150:
             return Application.DCL_3
         else:
             return Application.DCL_4
@@ -286,8 +284,10 @@ class Application(models.Model):
 
         dsv = vector[DataElement.GLOBAL_CATEGORY] * (vector[DataElement.PERSONAL_CATEGORY] + vector[DataElement.STUDENT_CATEGORY] + vector[DataElement.GOVERNMENT_CATEGORY]) + vector[DataElement.PCI_CATEGORY] + vector[DataElement.MEDICAL_CATEGORY] + vector[DataElement.COMPANY_CATEGORY]
 
-        #if dsv > 200:
-        #    dsv = 200
+        """
+        if dsv > 200:
+            dsv = 200
+        """
 
         return dsv
 
@@ -360,10 +360,10 @@ class EnvironmentLocation(models.Model):
 class EnvironmentCredentials(models.Model):
     """Credentials for a specific environment."""
 
-    username = models.CharField(max_length=128, blank=True) # Needs to be encrypted
-    password = models.CharField(max_length=128, blank=True) # Needs to be encrypted
-    role_description = models.CharField(max_length=128, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)') # Needs to be encrypted
-    notes = models.TextField(blank=True, help_text='Additional information about these credentials.') # Needs to be encrypted
+    username = models.CharField(max_length=128, blank=True)
+    password = models.CharField(max_length=128, blank=True)
+    role_description = models.CharField(max_length=128, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)')
+    notes = models.TextField(blank=True, help_text='Additional information about these credentials.')
 
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
@@ -545,13 +545,13 @@ class Comment(models.Model):
         abstract = True
 
 
-class EngagementComment(Comment): # Extends Comment
+class EngagementComment(Comment):  # Extends Comment
     """Comment for a specific engagement."""
 
     engagement = models.ForeignKey(Engagement)
 
 
-class ActivityComment(Comment): # Extends Comment
+class ActivityComment(Comment):  # Extends Comment
     """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)

@@ -6,7 +6,6 @@ from .models import Organization, Application
 
 
 class ApplicationFilter(django_filters.FilterSet):
-
     name = filters.CharFilter(lookup_type='icontains')
     organization = filters.ModelMultipleChoiceFilter(queryset=Organization.objects.all())
     business_criticality = filters.MultipleChoiceFilter(choices=Application.BUSINESS_CRITICALITY_CHOICES)

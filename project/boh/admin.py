@@ -1,34 +1,31 @@
 from django.contrib import admin
 
-from boh.models import Organization, DataElement
-from boh.models import Tag, Application, Environment, EnvironmentLocation, EnvironmentCredentials, Person, Relation, Engagement, Activity, EngagementComment, ActivityComment, ApplicationFileUpload
-from boh.models import ActivityType
-from boh.models import ThreadFix
+from . import models
 
 
 class EnvironmentCredentials(admin.StackedInline):
-    model = EnvironmentCredentials
+    model = models.EnvironmentCredentials
     extra = 0
 
 
 class EnvironmentInline(admin.StackedInline):
-    model = Environment
+    model = models.Environment
     extra = 0
 
 
 class EnvironmentLocationInline(admin.StackedInline):
-    model = EnvironmentLocation
+    model = models.EnvironmentLocation
     extra = 0
 
 
 class RelationInline(admin.StackedInline):
-    model = Relation
+    model = models.Relation
     fields = ['application', 'person', 'owner', 'emergency', 'notes']
     extra = 0
 
 
 class EngagementInline(admin.StackedInline):
-    model = Engagement
+    model = models.Engagement
     fieldsets = [
         (None, {'fields': ['application', 'start_date', 'end_date']}),
         ('Advanced options', {
@@ -40,7 +37,7 @@ class EngagementInline(admin.StackedInline):
 
 
 class ActivityInline(admin.StackedInline):
-    model = Activity
+    model = models.Activity
     fieldsets = [
         (None, {'fields': ['activity_type', 'users']}),
         ('Advanced options', {
@@ -52,17 +49,17 @@ class ActivityInline(admin.StackedInline):
 
 
 class EngagementCommentInline(admin.StackedInline):
-    model = EngagementComment
+    model = models.EngagementComment
     extra = 0
 
 
 class ActivityCommentInline(admin.StackedInline):
-    model = ActivityComment
+    model = models.ActivityComment
     extra = 0
 
 
 class ApplicationFileUploadInline(admin.StackedInline):
-    model = ApplicationFileUpload
+    model = models.ApplicationFileUpload
     extra = 0
 
 
@@ -70,10 +67,10 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'color']
     search_fields = ['^name']
 
-admin.site.register(Tag, TagAdmin)
+admin.site.register(models.Tag, TagAdmin)
 
 
-admin.site.register(Organization)
+admin.site.register(models.Organization)
 
 
 class DataElementAdmin(admin.ModelAdmin):
@@ -81,7 +78,7 @@ class DataElementAdmin(admin.ModelAdmin):
     list_filter = ['category']
     search_fields = ['^name']
 
-admin.site.register(DataElement, DataElementAdmin)
+admin.site.register(models.DataElement, DataElementAdmin)
 
 class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ['created_date','modified_date']
@@ -116,7 +113,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     def data_elements_list(self, obj):
         return ", ".join([data_element.name for data_element in obj.data_elements.all()])
 
-admin.site.register(Application, ApplicationAdmin)
+admin.site.register(models.Application, ApplicationAdmin)
 
 
 class EnvironmentAdmin(admin.ModelAdmin):
@@ -124,7 +121,7 @@ class EnvironmentAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'environment_type', 'application', 'testing_approved']
     inlines = [EnvironmentLocationInline, EnvironmentCredentials]
 
-admin.site.register(Environment, EnvironmentAdmin)
+admin.site.register(models.Environment, EnvironmentAdmin)
 
 
 class PersonAdmin(admin.ModelAdmin):
@@ -132,7 +129,7 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ['^first_name', '^last_name', '^email']
     inlines = [RelationInline]
 
-admin.site.register(Person, PersonAdmin)
+admin.site.register(models.Person, PersonAdmin)
 
 
 class EngagementAdmin(admin.ModelAdmin):
@@ -146,10 +143,10 @@ class EngagementAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'start_date', 'end_date', 'status', 'application']
     inlines = [ActivityInline, EngagementCommentInline]
 
-admin.site.register(Engagement, EngagementAdmin)
+admin.site.register(models.Engagement, EngagementAdmin)
 
 
-admin.site.register(ActivityType)
+admin.site.register(models.ActivityType)
 
 
 class ActivityAdmin(admin.ModelAdmin):
@@ -163,6 +160,6 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'status', 'activity_type']
     inlines = [ActivityCommentInline]
 
-admin.site.register(Activity, ActivityAdmin)
+admin.site.register(models.Activity, ActivityAdmin)
 
-admin.site.register(ThreadFix)
+admin.site.register(models.ThreadFix)

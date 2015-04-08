@@ -3,20 +3,23 @@ from django.utils.safestring import mark_safe
 
 from boh.models import Application
 
+
 register = template.Library()
 
+
 def icon(name, tooltip):
-    return '<span class="fa fa-' + name + ' fa-fw" aria-hidden="true" data-toggle="tooltip" title="' + tooltip + '"></span>'
+    return '<span class="fa fa-' + name + ' fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="' + tooltip + '"></span>'
+
 
 @register.filter
 def platform_icon(value):
     if value == Application.WEB_PLATFORM:
-        return mark_safe(icon('list-alt','Web'))
+        return mark_safe(icon('list-alt', 'Web'))
     elif value == Application.DESKTOP_PLATFORM:
-        return mark_safe(icon('desktop','Desktop'))
+        return mark_safe(icon('desktop', 'Desktop'))
     elif value == Application.MOBILE_PLATFORM:
-        return mark_safe(icon('mobile','Mobile'))
+        return mark_safe(icon('mobile', 'Mobile'))
     elif value == Application.WEB_SERVICE_PLATFORM:
-        return mark_safe(icon('plug','Web Service'))
+        return mark_safe(icon('plug', 'Web Service'))
     else:
         return ''

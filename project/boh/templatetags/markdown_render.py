@@ -3,10 +3,10 @@ import markdown
 from markdown.extensions import Extension
 
 from django import template
-from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 register = template.Library()
+
 
 # http://pythonhosted.org//Markdown/release-2.6.html#safe_mode-deprecated
 class EscapeHtml(Extension):
