@@ -118,6 +118,21 @@ class DataElement(models.Model):
         return self.name
 
 
+class Regulation(models.Model):
+    """Regulations applicable to applications."""
+
+    name = models.CharField(max_length=128, help_text='The name of the legislation.')
+    acronym = models.CharField(max_length=12, unique=True, help_text='A shortened representation of the name.')
+    jurisdiction = models.CharField(max_length=64, help_text='The territory over which the regulation applies.')
+    description = models.TextField(blank=True, help_text='Information about the regulation\'s purpose.')
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.acronym + ' - ' + self.name + ' (' + self.jurisdiction + ')'
+
+
 class ThreadFix(models.Model):
     """ThreadFix server connection information."""
 

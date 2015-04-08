@@ -165,3 +165,9 @@ class ActivityAdmin(admin.ModelAdmin):
 admin.site.register(models.Activity, ActivityAdmin)
 
 admin.site.register(models.ThreadFix)
+
+
+class RegulationAdmin(admin.ModelAdmin):
+    list_display = ['name', 'acronym', 'jurisdiction']
+
+admin.site.register(models.Regulation, RegulationAdmin)
