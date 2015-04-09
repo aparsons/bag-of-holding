@@ -120,11 +120,25 @@ class DataElement(models.Model):
 
 class Regulation(models.Model):
     """Regulations applicable to applications."""
+    PRIVACY_CATEGORY = 'privacy'
+    FINANCE_CATEGORY = 'finance'
+    EDUCATION_CATEGORY = 'education'
+    MEDICAL_CATEGORY = 'medical'
+    OTHER_CATEGORY = 'other'
+    CATEGORY_CHOICES = (
+        (PRIVACY_CATEGORY, 'Privacy'),
+        (FINANCE_CATEGORY, 'Finance'),
+        (EDUCATION_CATEGORY, 'Education'),
+        (MEDICAL_CATEGORY, 'Medical'),
+        (OTHER_CATEGORY, 'Other'),
+    )
 
     name = models.CharField(max_length=128, help_text='The name of the legislation.')
     acronym = models.CharField(max_length=12, unique=True, help_text='A shortened representation of the name.')
+    category = models.CharField(max_length=9, choices=CATEGORY_CHOICES, help_text='The subject of the regulation.')
     jurisdiction = models.CharField(max_length=64, help_text='The territory over which the regulation applies.')
     description = models.TextField(blank=True, help_text='Information about the regulation\'s purpose.')
+    reference = models.URLField(blank=True, help_text='An external URL for more information.')
 
     class Meta:
         ordering = ['name']
@@ -613,6 +627,8 @@ class ApplicationFileUpload(FileUpload):
         (REPORT_FILE_TYPE, 'Report'),
         (DOCUMENTATION_FILE_TYPE, 'Documentation'),
     )
+
+    # Draft boolean field
 
     file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
 

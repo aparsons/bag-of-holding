@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from . import models
 
@@ -168,6 +169,18 @@ admin.site.register(models.ThreadFix)
 
 
 class RegulationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'acronym', 'jurisdiction']
+    list_display = ['name', 'acronym', 'category_display', 'jurisdiction', 'reference_link']
+
+    def category_display(self, obj):
+        return obj.get_category_display()
+    category_display.admin_order_field = 'category'
+    category_display.short_description = 'Category'
+
+    def reference_link(self, obj):
+        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+    reference_link.admin_order_field = 'reference'
+    reference_link.allow_tags = True
+    reference_link.short_description = 'Reference'
+
 
 admin.site.register(models.Regulation, RegulationAdmin)
