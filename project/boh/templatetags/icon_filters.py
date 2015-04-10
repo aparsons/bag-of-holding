@@ -15,6 +15,34 @@ def not_specified_icon(tooltip):
     return '<span class="fa fa-question fa-fw text-danger" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="' + tooltip + '"></span>'
 
 
+def stars(filled, total, tooltip):
+    code = '<span data-toggle="tooltip" data-placement="bottom" title="' + tooltip + '">'
+    for i in range(0, total):
+        if i < filled:
+            code += '<span class="fa fa-star fa-fw" aria-hidden="true"></span>'
+        else:
+            code += '<span class="fa fa-star-o fa-fw text-muted" aria-hidden="true"></span>'
+    code += '</span>'
+    return code
+
+@register.filter
+def business_criticality_icon(value):
+    if value == Application.VERY_HIGH_CRITICALITY:
+        return mark_safe(stars(5, 5, 'Very High'))
+    if value == Application.HIGH_CRITICALITY:
+        return mark_safe(stars(4, 5, 'High'))
+    if value == Application.MEDIUM_CRITICALITY:
+        return mark_safe(stars(3, 5, 'Medium'))
+    if value == Application.LOW_CRITICALITY:
+        return mark_safe(stars(2, 5, 'Low'))
+    if value == Application.VERY_LOW_CRITICALITY:
+        return mark_safe(stars(1, 5, 'Very Low'))
+    if value == Application.NONE_CRITICALITY:
+        return mark_safe(stars(0, 5, 'None'))
+    else:
+        return mark_safe(not_specified_icon('Business Criticality Not Specified'))
+
+
 @register.filter
 def platform_icon(value):
     if value == Application.WEB_PLATFORM:
