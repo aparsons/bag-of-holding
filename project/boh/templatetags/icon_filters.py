@@ -54,7 +54,7 @@ def origin_icon(value):
     if value == Application.PURCHASED_ORIGIN:
         return mark_safe(icon('money', 'Purchased'))
     if value == Application.CONTRACTOR_ORIGIN:
-        return mark_safe(icon('paper-plane', 'Contractor Developed'))
+        return mark_safe(icon('suitcase', 'Contractor Developed'))
     if value == Application.INTERNALLY_DEVELOPED_ORIGIN:
         return mark_safe(icon('home', 'Internally Developed'))
     if value == Application.OPEN_SOURCE_ORIGIN:
@@ -63,3 +63,19 @@ def origin_icon(value):
         return mark_safe(icon('globe', 'Outsourced'))
     else:
         return mark_safe(not_specified_icon('Origin Not Specified'))
+
+
+@register.filter
+def external_audience_icon(value):
+    if value:
+        return mark_safe(icon('users', 'External Audience'))
+    else:
+        return ''
+
+
+@register.filter
+def internet_accessible_icon(value):
+    if value:
+        return mark_safe(icon('cloud', 'Internet Accessible'))
+    else:
+        return ''

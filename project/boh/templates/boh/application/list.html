@@ -131,6 +131,8 @@
                 {{ application.platform|platform_icon }}
                 {{ application.lifecycle|lifecycle_icon }}
                 {{ application.origin|origin_icon }}
+                {{ application.external_audience|external_audience_icon }}
+                {{ application.internet_accessible|internet_accessible_icon }}
               </td>
               <td>
                 {% for tag in application.tags.all %}
