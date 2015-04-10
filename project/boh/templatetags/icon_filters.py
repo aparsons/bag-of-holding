@@ -19,9 +19,9 @@ def stars(filled, total, tooltip):
     code = '<span data-toggle="tooltip" data-placement="bottom" title="' + tooltip + '">'
     for i in range(0, total):
         if i < filled:
-            code += '<span class="fa fa-star fa-fw" aria-hidden="true"></span>'
+            code += '<span class="fa fa-star" aria-hidden="true"></span>'
         else:
-            code += '<span class="fa fa-star-o fa-fw text-muted" aria-hidden="true"></span>'
+            code += '<span class="fa fa-star-o text-muted" aria-hidden="true"></span>'
     code += '</span>'
     return code
 
