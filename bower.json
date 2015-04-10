@@ -17,6 +17,7 @@
     "bootstrap-markdown": "~2.8.0",
     "markdown": "~0.5.0",
     "Chart.js": "~1.0.2",
-    "bootstrap-select": "~1.6.4"
+    "select2": "~3.5.2",
+    "select2-bootstrap-css": "~1.4.6"
   }
 }

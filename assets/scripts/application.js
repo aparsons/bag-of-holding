@@ -5,9 +5,7 @@ $(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 
-  $(".selectpicker").selectpicker({
-    width: '100%'
-  });
+  $('select').select2();
 
   $(".markdown").markdown({
     iconlibrary: "fa",

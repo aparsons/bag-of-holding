@@ -5,7 +5,7 @@ var concat      = require('gulp-concat');
 var minifyCSS   = require('gulp-minify-css');
 var rename      = require('gulp-rename');
 var sass        = require('gulp-sass');
-var uglify      = require('gulp-uglify')
+var uglify      = require('gulp-uglify');
 
 var paths = {
   'bower': 'bower_components',
@@ -26,7 +26,8 @@ gulp.task('styles', function() {
         ]
     }))
     .pipe(addsrc(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css'))
-    .pipe(addsrc(paths.bower + '/bootstrap-select/dist/css/bootstrap-select.css'))
+    .pipe(addsrc(paths.bower + '/select2/select2.css'))
+    .pipe(addsrc(paths.bower + '/select2-bootstrap-css/select2-bootstrap.css'))
     .pipe(concat('application.min.css'));
 
   if (minify)
@@ -41,14 +42,14 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
   // JQuery + Bootstrap + Application
   var scripts = gulp.src([
-      paths.bower + '/jquery/dist/jquery.js',
-      paths.bower + '/bootstrap-sass/assets/javascripts/bootstrap.js',
-      paths.bower + '/markdown/lib/markdown.js',
-      paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js',
-      paths.bower + '/bootstrap-select/dist/js/bootstrap-select.js',
-      paths.assets + '/scripts/application.js'
-    ])
-    .pipe(concat('application.min.js'));
+    paths.bower + '/jquery/dist/jquery.js',
+    paths.bower + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+    paths.bower + '/markdown/lib/markdown.js',
+    paths.bower + '/bootstrap-markdown/js/bootstrap-markdown.js',
+    paths.bower + '/select2/select2.js',
+    paths.assets + '/scripts/application.js'
+  ])
+  .pipe(concat('application.min.js'));
 
   if (minify)
     scripts.pipe(uglify());
@@ -76,6 +77,12 @@ gulp.task('fonts', function() {
   // Font Awesome
   gulp.src(paths.bower + '/fontawesome/fonts/*')
   .pipe(gulp.dest(paths.dist + '/fonts/fontawesome'));
+
+  // Select 2
+  gulp.src([
+    paths.bower + '/select2/select2.png',
+    paths.bower + '/select2/select2-spinner.gif'
+  ]).pipe(gulp.dest(paths.dist + '/css'))
 });
 
 

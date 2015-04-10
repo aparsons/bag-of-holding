@@ -39,12 +39,12 @@
             </div>
             <div class="col-sm-6 col-md-3">
               <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
-                {{ form.organization|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Organization" }}
+                {{ form.organization|add_class:"form-control"|attr:"placeholder:Organization" }}
               </div>
             </div>
             <div class="col-sm-6 col-md-2">
               <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
-                {{ form.business_criticality|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Criticality" }}
+                {{ form.business_criticality|add_class:"form-control"|attr:"placeholder:Criticality" }}
               </div>
             </div>
             <div class="col-sm-12 col-md-5 col-lg-4">
@@ -66,15 +66,15 @@
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label" for="{{ form.platform.id_for_label }}">{{ form.platform.label }}:</label>
-                  {{ form.platform|add_class:"selectpicker" }}
+                  {{ form.platform|add_class:"form-control"|attr:"placeholder:Platform"|attr:"style:width: 100%" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.lifecycle.id_for_label }}">{{ form.lifecycle.label }}:</label>
-                  {{ form.lifecycle|add_class:"selectpicker" }}
+                  {{ form.lifecycle|add_class:"form-control"|attr:"placeholder:Lifecycle" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.origin.id_for_label }}">{{ form.origin.label }}:</label>
-                  {{ form.origin|add_class:"selectpicker" }}
+                  {{ form.origin|add_class:"form-control"|attr:"placeholder:Origin" }}
                 </div>
               </div>
             </div>
@@ -84,11 +84,11 @@
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label" for="{{ form.external_audience.id_for_label }}">{{ form.external_audience.label }}:</label>
-                  {{ form.external_audience|add_class:"selectpicker" }}
+                  {{ form.external_audience|add_class:"form-control" }}
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="{{ form.internet_accessible.id_for_label }}">{{ form.internet_accessible.label }}:</label>
-                  {{ form.internet_accessible|add_class:"selectpicker" }}
+                  {{ form.internet_accessible|add_class:"form-control" }}
                 </div>
               </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>
-                {{ form.tags|add_class:"selectpicker"|attr:"data-selected-text-format:count"|attr:"title:Any Tags" }}
+                {{ form.tags|add_class:"form-control"|attr:"placeholder:Tags" }}
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@
     {% endif %}
   </div>
   <div class="col-sm-3 col-md-2">
-    {{ page_size_form.page_size|add_class:"selectpicker"|add_class:"pagesize" }}
+    {{ page_size_form.page_size|add_class:"form-control"|add_class:"pagesize" }}
   </div>
 </div>
 {% endblock content %}
