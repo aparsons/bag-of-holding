@@ -201,7 +201,7 @@ class Application(models.Model):
     ORIGIN_CHOICES = (
         (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
         (PURCHASED_ORIGIN, 'Purchased'),
-        (CONTRACTOR_ORIGIN, 'Contractor'),
+        (CONTRACTOR_ORIGIN, 'Contractor Developed'),
         (INTERNALLY_DEVELOPED_ORIGIN, 'Internally Developed'),
         (OPEN_SOURCE_ORIGIN, 'Open Source'),
         (OUTSOURCED_ORIGIN, 'Outsourced'),

@@ -127,7 +127,11 @@
               <td><strong><a href="{% url 'boh:application.overview' application.id %}">{{ application.name }}</a></strong>{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="Created {{ application.created_date|naturaltime }}">New!</sup>{% endif %}</td>
               <td><a href="{% url 'boh:organization.overview' application.organization.id %}">{{ application.organization.name }}</a></td>
               <td>{% if application.business_criticality %}{{ application.get_business_criticality_display }}{% endif %}</td>
-              <td>{{ application.platform|platform_icon }}</td>
+              <td>
+                {{ application.platform|platform_icon }}
+                {{ application.lifecycle|lifecycle_icon }}
+                {{ application.origin|origin_icon }}
+              </td>
               <td>
                 {% for tag in application.tags.all %}
                 {% include "boh/snippets/common/tag_label.html" with tag=tag %}
