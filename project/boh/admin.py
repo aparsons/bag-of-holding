@@ -94,6 +94,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             'classes': ['collapse'],
             'fields': ['tags']
         }),
+        ('Regulations', {
+            'classes': ['collapse'],
+            'fields': ['regulations']
+        }),
         ('Data Classification', {
             'classes': ['collapse'],
             'fields': ['data_elements']

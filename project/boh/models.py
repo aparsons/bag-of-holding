@@ -248,6 +248,8 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
+    regulations = models.ManyToManyField(Regulation, blank=True, null=True)
+
     # Data Classification
     data_elements = models.ManyToManyField(DataElement, blank=True, null=True)
     override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Overrides the calculated data classification level.')

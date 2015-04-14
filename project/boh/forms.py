@@ -127,6 +127,12 @@ class ApplicationSettingsTagsForm(forms.ModelForm):
         fields = ['tags']
 
 
+class ApplicationSettingsRegulationsForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['regulations']
+
+
 class ApplicationSettingsDataElementsForm(forms.ModelForm):
     class Meta:
         model = models.Application

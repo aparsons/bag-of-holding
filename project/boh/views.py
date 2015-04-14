@@ -961,6 +961,7 @@ def application_settings_metadata(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
 
     metadata_form = forms.ApplicationSettingsMetadataForm(instance=application)
+    regulations_form = forms.ApplicationSettingsRegulationsForm(instance=application)
     tags_form = forms.ApplicationSettingsTagsForm(instance=application)
 
     if 'submit-metadata' in request.POST:
@@ -968,15 +969,27 @@ def application_settings_metadata(request, application_id):
         if metadata_form.is_valid():
             metadata_form.save()
             messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this application\'s metadata.', extra_tags=random.choice(error_messages))
+    if 'submit-regulations' in request.POST:
+        regulations_form = forms.ApplicationSettingsRegulationsForm(request.POST, instance=application)
+        if regulations_form.is_valid():
+            regulations_form.save()
+            messages.success(request, 'You successfully updated this application\'s regulations.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this application\'s regulations.', extra_tags=random.choice(error_messages))
     elif 'submit-tags' in request.POST:
         tags_form = forms.ApplicationSettingsTagsForm(request.POST, instance=application)
         if tags_form.is_valid():
             tags_form.save()
             messages.success(request, 'You successfully updated this application\'s tags.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this application\'s tags.', extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/application/settings/metadata.html', {
         'application': application,
         'metadata_form': metadata_form,
+        'regulations_form': regulations_form,
         'tags_form': tags_form,
         'active_top': 'applications',
         'active_tab': 'settings',

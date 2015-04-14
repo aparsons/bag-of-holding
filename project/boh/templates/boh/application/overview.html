@@ -9,6 +9,34 @@
 <div class="row">
   <div class="col-md-8">
     {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Architecture</h3>
+          </div>
+          <div class="panel-body">
+            Panel content
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Regulations ({{ application.regulations.count }})</h3>
+          </div>
+          <ul class="list-group">
+          {% for regulation in application.regulations.all %}
+            <li class="list-group-item"><span class="badge">{{ regulation.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ regulation.name }}">{{ regulation.acronym }}</span> <small class="text-muted">{{ regulation.jurisdiction }}</small>{% if regulation.reference %} <small><a href="{{ regulation.reference }}" target="_blank">More <span class="fa fa-external-link" aria-hidden="true"></span></a></small>{% endif %}</li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no regulations.</em></small></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
