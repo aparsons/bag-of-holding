@@ -15,4 +15,4 @@ class ApplicationFilter(django_filters.FilterSet):
 
     class Meta:
         model = Application
-        fields = ['name', 'organization', 'business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags']
+        fields = ['name', 'organization', 'business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'technologies', 'regulations', 'tags']

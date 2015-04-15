@@ -118,6 +118,44 @@ class DataElement(models.Model):
         return self.name
 
 
+class Technology(models.Model):
+    """Architectural details for an application."""
+    PROGRAMMING_LANGUAGE_CATEGORY = 'language'
+    OPERATING_SYSTEM_CATEGORY = 'operating system'
+    DATA_STORE_CATEGORY = 'data store'
+    FRAMEWORK_CATEGORY = 'framework'
+    THIRD_PARTY_COMPONENT = 'third-party component'
+    WEB_SERVER_CATEGORY = 'web server'
+    APPLICATION_SERVER_CATEGORY = 'application server'
+    HOSTING_PROVIDER_CATEGORY = 'hosting provider'
+    DENIAL_OF_SERVICE_CATEGORY = 'denial of service'
+    FIREWALL_CATEGORY = 'firewall'
+    CATEGORY_CHOICES = (
+        (PROGRAMMING_LANGUAGE_CATEGORY, 'Language'),
+        (OPERATING_SYSTEM_CATEGORY, 'Operating System'),
+        (DATA_STORE_CATEGORY, 'Data Store'),
+        (FRAMEWORK_CATEGORY, 'Framework'),
+        (THIRD_PARTY_COMPONENT, 'Third-Party Component'),
+        (APPLICATION_SERVER_CATEGORY, 'Application Server'),
+        (WEB_SERVER_CATEGORY, 'Web Server'),
+        (HOSTING_PROVIDER_CATEGORY, 'Hosting Provider'),
+        (DENIAL_OF_SERVICE_CATEGORY, 'DDoS Protection'),
+        (FIREWALL_CATEGORY, 'Firewall'),
+    )
+
+    name = models.CharField(max_length=64)
+    category = models.CharField(max_length=21, choices=CATEGORY_CHOICES)
+    description = models.CharField(max_length=256, blank=True)
+    reference = models.URLField(blank=True, help_text='An external URL for more information.')
+
+    class Meta:
+        ordering = ['category', 'name']
+        verbose_name_plural = 'Technologies'
+
+    def __str__(self):
+        return self.get_category_display() + ' :: ' + self.name
+
+
 class Regulation(models.Model):
     """Regulations applicable to applications."""
     PRIVACY_CATEGORY = 'privacy'
@@ -144,7 +182,7 @@ class Regulation(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.acronym + ' - ' + self.name + ' (' + self.jurisdiction + ')'
+        return self.acronym + ' (' + self.jurisdiction + ')'
 
 
 class ThreadFix(models.Model):
@@ -248,6 +286,7 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
+    technologies = models.ManyToManyField(Technology, blank=True, null=True)
     regulations = models.ManyToManyField(Regulation, blank=True, null=True)
 
     # Data Classification

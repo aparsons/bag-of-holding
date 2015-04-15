@@ -751,7 +751,7 @@ def application_list(request):
 
     #
     show_advanced = False
-    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('tags') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
         show_advanced = True
 
     return render(request, 'boh/application/list.html', {
@@ -961,6 +961,7 @@ def application_settings_metadata(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
 
     metadata_form = forms.ApplicationSettingsMetadataForm(instance=application)
+    technologies_form = forms.ApplicationSettingsTechnologiesForm(instance=application)
     regulations_form = forms.ApplicationSettingsRegulationsForm(instance=application)
     tags_form = forms.ApplicationSettingsTagsForm(instance=application)
 
@@ -971,6 +972,13 @@ def application_settings_metadata(request, application_id):
             messages.success(request, 'You successfully updated this application\'s metadata.', extra_tags=random.choice(success_messages))
         else:
             messages.error(request, 'There was a problem updating this application\'s metadata.', extra_tags=random.choice(error_messages))
+    if 'submit-technologies' in request.POST:
+        technologies_form = forms.ApplicationSettingsTechnologiesForm(request.POST, instance=application)
+        if technologies_form.is_valid():
+            technologies_form.save()
+            messages.success(request, 'You successfully updated this application\'s technologies.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this application\'s technologies.', extra_tags=random.choice(error_messages))
     if 'submit-regulations' in request.POST:
         regulations_form = forms.ApplicationSettingsRegulationsForm(request.POST, instance=application)
         if regulations_form.is_valid():
@@ -989,6 +997,7 @@ def application_settings_metadata(request, application_id):
     return render(request, 'boh/application/settings/metadata.html', {
         'application': application,
         'metadata_form': metadata_form,
+        'technologies_form': technologies_form,
         'regulations_form': regulations_form,
         'tags_form': tags_form,
         'active_top': 'applications',

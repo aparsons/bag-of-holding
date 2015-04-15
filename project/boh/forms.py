@@ -121,16 +121,22 @@ class ApplicationSettingsMetadataForm(forms.ModelForm):
         fields = ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
 
 
-class ApplicationSettingsTagsForm(forms.ModelForm):
+class ApplicationSettingsTechnologiesForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['tags']
+        fields = ['technologies']
 
 
 class ApplicationSettingsRegulationsForm(forms.ModelForm):
     class Meta:
         model = models.Application
         fields = ['regulations']
+
+
+class ApplicationSettingsTagsForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['tags']
 
 
 class ApplicationSettingsDataElementsForm(forms.ModelForm):

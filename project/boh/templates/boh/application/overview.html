@@ -14,21 +14,25 @@
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Architecture</h3>
+            <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> Technologies</h3>
           </div>
-          <div class="panel-body">
-            Panel content
-          </div>
+          <ul class="list-group">
+          {% for technology in application.technologies.all %}
+            <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no technologies.</em></small></li>
+          {% endfor %}
+          </ul>
         </div>
       </div>
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Regulations ({{ application.regulations.count }})</h3>
+            <h3 class="panel-title"><span class="fa fa-gavel" aria-hidden="true"></span> Regulations ({{ application.regulations.count }})</h3>
           </div>
           <ul class="list-group">
           {% for regulation in application.regulations.all %}
-            <li class="list-group-item"><span class="badge">{{ regulation.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ regulation.name }}">{{ regulation.acronym }}</span> <small class="text-muted">{{ regulation.jurisdiction }}</small>{% if regulation.reference %} <small><a href="{{ regulation.reference }}" target="_blank">More <span class="fa fa-external-link" aria-hidden="true"></span></a></small>{% endif %}</li>
+            <li class="list-group-item"><span class="badge">{{ regulation.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ regulation.name }}">{{ regulation.acronym }}</span> <small class="text-muted">{{ regulation.jurisdiction }}</small></li>
           {% empty %}
             <li class="list-group-item"><small class="text-muted"><em>There are no regulations.</em></small></li>
           {% endfor %}

@@ -29,6 +29,21 @@
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
+      <h3 class="panel-title">Technologies</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=technologies_form.technologies %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-technologies" type="submit">Update Technologies</button>
+    </div>
+  </div>
+</form>
+
+<form method="post" action="{% url 'boh:application.settings.metadata' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <h3 class="panel-title">Regulations</h3>
     </div>
     <div class="panel-body">

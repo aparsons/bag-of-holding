@@ -94,6 +94,18 @@
             </div>
           </div>
           <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <label class="control-label" for="{{ form.technologies.id_for_label }}">{{ form.technologies.label }}:</label>
+                {{ form.technologies|add_class:"form-control"|attr:"placeholder:Technologies" }}
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <label class="control-label" for="{{ form.regulations.id_for_label }}">{{ form.regulations.label }}:</label>
+                {{ form.regulations|add_class:"form-control"|attr:"placeholder:Regulations" }}
+              </div>
+            </div>
             <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>

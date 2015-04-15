@@ -94,6 +94,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             'classes': ['collapse'],
             'fields': ['tags']
         }),
+        ('Technologies', {
+            'classes': ['collapse'],
+            'fields': ['technologies']
+        }),
         ('Regulations', {
             'classes': ['collapse'],
             'fields': ['regulations']
@@ -111,14 +115,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             'fields': ['created_date', 'modified_date']
         }),
     ]
-    list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible', 'data_elements_list', 'data_sensitivity_value', 'data_classification_level']
+    list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible']
     list_filter = ('external_audience', 'internet_accessible')
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
-
-    @staticmethod
-    def data_elements_list(obj):
-        return ", ".join([data_element.name for data_element in obj.data_elements.all()])
 
 admin.site.register(models.Application, ApplicationAdmin)
 
@@ -170,6 +170,23 @@ class ActivityAdmin(admin.ModelAdmin):
 admin.site.register(models.Activity, ActivityAdmin)
 
 admin.site.register(models.ThreadFix)
+
+
+class TechnologyAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'category_display', 'name', 'description', 'reference_link']
+
+    def category_display(self, obj):
+        return obj.get_category_display()
+    category_display.admin_order_field = 'category'
+    category_display.short_description = 'Category'
+
+    def reference_link(self, obj):
+        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+    reference_link.admin_order_field = 'reference'
+    reference_link.allow_tags = True
+    reference_link.short_description = 'Reference'
+
+admin.site.register(models.Technology, TechnologyAdmin)
 
 
 class RegulationAdmin(admin.ModelAdmin):
