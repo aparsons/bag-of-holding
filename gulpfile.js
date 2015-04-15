@@ -27,6 +27,7 @@ gulp.task('styles', function() {
     }))
     .pipe(addsrc(paths.bower + '/bootstrap-markdown/css/bootstrap-markdown.min.css'))
     .pipe(addsrc(paths.bower + '/select2/select2.css'))
+    //.pipe(addsrc(paths.bower + '/select2/select2-bootstrap.css'))
     .pipe(addsrc(paths.bower + '/select2-bootstrap-css/select2-bootstrap.css'))
     .pipe(concat('application.min.css'));
 
