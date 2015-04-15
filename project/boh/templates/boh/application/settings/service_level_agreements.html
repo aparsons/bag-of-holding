@@ -1,0 +1,20 @@
+{% extends "boh/application/settings/base_settings.html" %}
+
+{% block title %}{{ application.name }} | Settings | Service Level Agreements{% endblock %}
+
+{% block settings_content %}
+<form method="post" action="{% url 'boh:application.settings.service-level-agreements' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Service Level Agreements</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=sla_form.service_level_agreements %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-sla" type="submit">Update Service Level Agreements</button>
+    </div>
+  </div>
+</form>
+{% endblock settings_content %}

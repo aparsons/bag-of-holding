@@ -83,7 +83,7 @@ admin.site.register(models.DataElement, DataElementAdmin)
 
 
 class ApplicationAdmin(admin.ModelAdmin):
-    readonly_fields = ['created_date','modified_date']
+    readonly_fields = ['created_date', 'modified_date']
     fieldsets = [
         (None, {'fields': ['organization', 'name', 'description']}),
         ('Metadata', {
@@ -106,6 +106,10 @@ class ApplicationAdmin(admin.ModelAdmin):
             'classes': ['collapse'],
             'fields': ['data_elements']
         }),
+        ('Service Level Agreements', {
+            'classes': ['collapse'],
+            'fields': ['service_level_agreements']
+        }),
         ('ThreadFix', {
             'classes': ['collapse'],
             'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
@@ -115,8 +119,8 @@ class ApplicationAdmin(admin.ModelAdmin):
             'fields': ['created_date', 'modified_date']
         }),
     ]
-    list_display = ['name', 'platform', 'lifecycle', 'origin', 'business_criticality', 'external_audience', 'internet_accessible']
-    list_filter = ('external_audience', 'internet_accessible')
+    list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'created_date', 'modified_date']
+    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'technologies', 'tags']
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
 
@@ -205,3 +209,9 @@ class RegulationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Regulation, RegulationAdmin)
+
+
+class ServiceLevelAgreementAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description']
+
+admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)

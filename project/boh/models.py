@@ -143,9 +143,9 @@ class Technology(models.Model):
         (FIREWALL_CATEGORY, 'Firewall'),
     )
 
-    name = models.CharField(max_length=64)
-    category = models.CharField(max_length=21, choices=CATEGORY_CHOICES)
-    description = models.CharField(max_length=256, blank=True)
+    name = models.CharField(max_length=64, help_text='The name of the technology.')
+    category = models.CharField(max_length=21, choices=CATEGORY_CHOICES, help_text='The type of technology.')
+    description = models.CharField(max_length=256, blank=True, help_text='Information about the technology.')
     reference = models.URLField(blank=True, help_text='An external URL for more information.')
 
     class Meta:
@@ -183,6 +183,18 @@ class Regulation(models.Model):
 
     def __str__(self):
         return self.acronym + ' (' + self.jurisdiction + ')'
+
+
+class ServiceLevelAgreement(models.Model):
+    """Service Level Agreements to be applied to applications."""
+    name = models.CharField(max_length=64, help_text='The name of the service level agreement.')
+    description = models.CharField(max_length=256, blank=True, help_text='Information about this service level agreement\'s scope, quality, and responsibilities.')
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 class ThreadFix(models.Model):
@@ -277,10 +289,10 @@ class Application(models.Model):
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
 
     # Metadata
+    business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
-    business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     user_records = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
     revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text='Estimate the application\'s revenue in USD.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
@@ -288,6 +300,7 @@ class Application(models.Model):
 
     technologies = models.ManyToManyField(Technology, blank=True, null=True)
     regulations = models.ManyToManyField(Regulation, blank=True, null=True)
+    service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True, null=True)
 
     # Data Classification
     data_elements = models.ManyToManyField(DataElement, blank=True, null=True)

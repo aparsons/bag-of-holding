@@ -751,7 +751,7 @@ def application_list(request):
 
     #
     show_advanced = False
-    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or request.GET.get('service_level_agreements') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
         show_advanced = True
 
     return render(request, 'boh/application/list.html', {
@@ -1029,6 +1029,29 @@ def application_settings_data_elements(request, application_id):
         'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'data_elements'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_settings_service_level_agreements(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+
+    sla_form = forms.ApplicationSettingsServiceLevelAgreementForm(request.POST or None, instance=application)
+
+    if request.method == 'POST':
+        if sla_form.is_valid():
+            sla_form.save()
+            messages.success(request, 'You successfully updated this application\'s service level agreements.', extra_tags=random.choice(success_messages))
+        else:
+            messages.error(request, 'There was a problem updating this application\'s service level agreements.', extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/application/settings/service_level_agreements.html', {
+        'application': application,
+        'sla_form': sla_form,
+        'active_top': 'applications',
+        'active_tab': 'settings',
+        'active_side': 'agreements'
     })
 
 

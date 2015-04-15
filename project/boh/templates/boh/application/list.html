@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
+            <div class="panel panel-default">
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label" for="{{ form.external_audience.id_for_label }}">{{ form.external_audience.label }}:</label>
@@ -92,24 +92,30 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.technologies.id_for_label }}">{{ form.technologies.label }}:</label>
                 {{ form.technologies|add_class:"form-control"|attr:"placeholder:Technologies" }}
               </div>
             </div>
+          </div>
+          <div class="col-md-4">
             <div class="panel panel-default">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.regulations.id_for_label }}">{{ form.regulations.label }}:</label>
                 {{ form.regulations|add_class:"form-control"|attr:"placeholder:Regulations" }}
               </div>
             </div>
-            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
+            <div class="panel panel-default">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>
                 {{ form.tags|add_class:"form-control"|attr:"placeholder:Tags" }}
+              </div>
+            </div>
+            <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
+              <div class="panel-body">
+                <label class="control-label" for="{{ form.service_level_agreements.id_for_label }}">{{ form.service_level_agreements.label }}:</label>
+                {{ form.service_level_agreements|add_class:"form-control"|attr:"placeholder:Service Level Agreements" }}
               </div>
             </div>
           </div>

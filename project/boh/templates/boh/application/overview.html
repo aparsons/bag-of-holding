@@ -11,10 +11,27 @@
     {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
 
     <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Level Agreements ({{ application.service_level_agreements.count }})</h3>
+          </div>
+          <ul class="list-group">
+          {% for agreement in application.service_level_agreements.all %}
+            <li class="list-group-item">{{ agreement.name }} <small class="text-muted">{{ agreement.description }}</small></li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no service level agreements.</em></small></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> Technologies</h3>
+            <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> Technologies ({{ application.technologies.count }})</h3>
           </div>
           <ul class="list-group">
           {% for technology in application.technologies.all %}
@@ -51,6 +68,10 @@
         <table class="table table-striped">
           <tbody>
             <tr>
+              <td><strong>Business Criticality</strong></td>
+              <td>{{ application.get_business_criticality_display }}</td>
+            </tr>
+            <tr>
               <td><strong>Platform</strong></td>
               <td>{{ application.get_platform_display }}</td>
             </tr>
@@ -61,10 +82,6 @@
             <tr>
               <td><strong>Origin</strong></td>
               <td>{{ application.get_origin_display }}</td>
-            </tr>
-            <tr>
-              <td><strong>Business Criticality</strong></td>
-              <td>{{ application.get_business_criticality_display }}</td>
             </tr>
             <tr>
               <td><strong>User Records</strong></td>

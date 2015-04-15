@@ -160,6 +160,12 @@ class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
         }
 
 
+class ApplicationSettingsServiceLevelAgreementForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['service_level_agreements']
+
+
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:
         model = models.Application
