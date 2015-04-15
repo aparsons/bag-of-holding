@@ -8,7 +8,11 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-md-12">
