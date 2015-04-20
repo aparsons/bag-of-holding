@@ -1,5 +1,34 @@
 # Bag of Holding Releases
 
+## 1.0.2 - 04/20/2015
+
+Our goal for the 1.0.2 release was to rework the application list view and add other needed metadata.
+
+### What's New
+
+* Dependencies. The project **requirements.txt** has been updated to require the following additional dependencies:
+    * django-filter - Added 0.9.2
+    * phonenumbers - Updated 7.0.2 to 7.0.4
+    * pytz - Updated 2014.10 to 2015.2
+    * requests - Updated 2.5.3 to 2.6.0
+* Regulations can now be applied to applications. The following will be pre-loaded with the migration:
+    * 12 Regulations
+* Technologies can now be applied to applications. The following will be pre-loaded with the migration:
+    * 24 Programming Languages
+    * 5 Operating Systems
+    * 13 Data Stores
+    * 32 Frameworks
+    * 5 Third-Party Components
+    * 3 Web Servers
+    * 7 Application Servers
+    * 5 Hosting Providers
+    * 4 Denial of Service Protections
+    * 5 Firewalls
+* Application List View Enhancements
+    * Filtering, Search, Pagination, Page Size
+* If an activity's status is changed to open, the parent engagement will be opened.
+* If all an engagement's activities are closed, the parent engagement will be closed.
+
 ## 1.0.1 - 03/30/2015
 
 Our goals for the 1.0.1 release was to finish views for the existing data model. However, we did get in some usability and editing changes. We have gotten some very useful feedback and will be incorporating the suggestions into future releases. Keep the feedback coming and I hope you like version 1.0.1.

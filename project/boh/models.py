@@ -172,14 +172,14 @@ class Regulation(models.Model):
     )
 
     name = models.CharField(max_length=128, help_text='The name of the legislation.')
-    acronym = models.CharField(max_length=12, unique=True, help_text='A shortened representation of the name.')
+    acronym = models.CharField(max_length=20, unique=True, help_text='A shortened representation of the name.')
     category = models.CharField(max_length=9, choices=CATEGORY_CHOICES, help_text='The subject of the regulation.')
     jurisdiction = models.CharField(max_length=64, help_text='The territory over which the regulation applies.')
     description = models.TextField(blank=True, help_text='Information about the regulation\'s purpose.')
     reference = models.URLField(blank=True, help_text='An external URL for more information.')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['jurisdiction', 'category', 'name']
 
     def __str__(self):
         return self.acronym + ' (' + self.jurisdiction + ')'

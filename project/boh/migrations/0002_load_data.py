@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+
 def load_data(apps, schema_editor):
     """Loads the initial data into the application."""
 

@@ -120,7 +120,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         }),
     ]
     list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'created_date', 'modified_date']
-    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'technologies', 'tags']
+    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags']
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
 
@@ -178,6 +178,8 @@ admin.site.register(models.ThreadFix)
 
 class TechnologyAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'category_display', 'name', 'description', 'reference_link']
+    list_filter = ['category']
+    search_fields = ['name']
 
     def category_display(self, obj):
         return obj.get_category_display()
@@ -195,6 +197,8 @@ admin.site.register(models.Technology, TechnologyAdmin)
 
 class RegulationAdmin(admin.ModelAdmin):
     list_display = ['name', 'acronym', 'category_display', 'jurisdiction', 'reference_link']
+    list_filter = ['category', 'jurisdiction']
+    search_fields = ['name', '^acronym']
 
     def category_display(self, obj):
         return obj.get_category_display()
