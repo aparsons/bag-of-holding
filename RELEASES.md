@@ -11,6 +11,7 @@ Our goal for the 1.0.2 release was to rework the application list view and add o
     * phonenumbers - Updated 7.0.2 to 7.0.4
     * pytz - Updated 2014.10 to 2015.2
     * requests - Updated 2.5.3 to 2.6.0
+* Service Level Agreements can now be applied to applications. This functionality is preliminary. In the future, rules will be able to be applied to the SLAs.
 * Regulations can now be applied to applications. The following will be pre-loaded with the migration:
     * 12 Regulations
 * Technologies can now be applied to applications. The following will be pre-loaded with the migration:
@@ -25,9 +26,13 @@ Our goal for the 1.0.2 release was to rework the application list view and add o
     * 4 Denial of Service Protections
     * 5 Firewalls
 * Application List View Enhancements
+    * Table View
     * Filtering, Search, Pagination, Page Size
+    * Responsive!
+* A new select form control
 * If an activity's status is changed to open, the parent engagement will be opened.
 * If all an engagement's activities are closed, the parent engagement will be closed.
+* When a new comment is made, the application will redirect to the in-page location of that comment.
 
 ## 1.0.1 - 03/30/2015
 
