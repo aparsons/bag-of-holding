@@ -19,6 +19,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
 from . import filters, forms, models
+from .connectors.threadfix import ThreadFixAPI
 
 
 # Messages shown on successful actions
@@ -410,37 +411,15 @@ def management_services_threadfix_edit(request, threadfix_id):
 def management_services_threadfix_test(request, threadfix_id):
     threadfix = get_object_or_404(models.ThreadFix, pk=threadfix_id)
 
-    url = threadfix.host + 'rest/teams'
-    payload = {'apiKey': threadfix.api_key}
-    headers = {'Accept': 'application/json'}
-    timeout = 25  # Seconds
+    api = ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
+    response = api.list_teams()
 
-    if not threadfix.verify_ssl:
-        requests.packages.urllib3.disable_warnings()
+    if response.success:
+        messages.success(request, 'Everything appears to be working correctly for the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
+    else:
+        messages.error(request, 'An error occurred when testing "' + threadfix.name + '". ' + response.message, extra_tags=random.choice(error_messages))
 
-    try:
-        response = requests.get(url, params=payload, headers=headers, timeout=timeout, verify=threadfix.verify_ssl)
-
-        if response.status_code == 200:
-            try:
-                json_data = json.loads(response.text)
-
-                if json_data['success']:
-                    messages.success(request, 'Everything appears to be working correctly for the "' + threadfix.name + '" ThreadFix service.', extra_tags=random.choice(success_messages))
-                else:
-                    messages.error(request, 'An error occurred when testing "' + threadfix.name + '". ' + json_data['message'], extra_tags=random.choice(error_messages))
-            except ValueError:
-                messages.error(request, 'An error occurred when testing "' + threadfix.name + '". The response was not a valid JSON format.', extra_tags=random.choice(error_messages))
-        else:
-            messages.error(request, 'An error occurred when testing "' + threadfix.name + '". We received invalid response (' + str(response.status_code) + '). Please check your host settings.', extra_tags=random.choice(error_messages))
-    except requests.exceptions.SSLError:
-        messages.error(request, 'An error occurred when testing "' + threadfix.name + '". An SSL error occurred. Check your host and verify SSL settings.', extra_tags=random.choice(error_messages))
-    except requests.exceptions.Timeout:
-        messages.error(request, 'An error occurred when testing "' + threadfix.name + '". The request timed out after ' + str(timeout) + ' seconds. Please check your host settings.', extra_tags=random.choice(error_messages))
-    except requests.exceptions.RequestException:
-        messages.error(request, 'An unknown error occurred when testing "' + threadfix.name + '".', extra_tags=random.choice(error_messages))
-    finally:
-        return redirect('boh:management.services')
+    return redirect('boh:management.services')
 
 
 @login_required
@@ -452,43 +431,30 @@ def management_services_threadfix_import(request, threadfix_id):
     ImportFormSet = formset_factory(forms.ThreadFixApplicationImportForm, extra=0)
 
     if request.method == 'GET':
-        url = threadfix.host + 'rest/teams'
-        payload = {'apiKey': threadfix.api_key}
-        headers = {'Accept': 'application/json'}
-        timeout = 25  # Seconds
+        api = ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
+        teams_response = api.list_teams()
 
-        if not threadfix.verify_ssl:
-            requests.packages.urllib3.disable_warnings()
+        if teams_response.success:
+            import_applications = []
+            application_count = 0
 
-        try:
-            response = requests.get(url, params=payload, headers=headers, timeout=timeout, verify=threadfix.verify_ssl)
-            json_data = json.loads(response.text)
+            for json_team in teams_response.data:
+                for json_application in json_team['applications']:
+                    application = {'team_id': json_team['id'], 'team_name': json_team['name'][:128], 'application_name': json_application['name'][:128], 'application_id': json_application['id']}
+                    import_applications.append(application)
+                    application_count += 1
 
-            if json_data['success']:
-                import_applications = []
-                application_count = 0
+            import_formset = ImportFormSet(initial=import_applications)
 
-                for json_team in json_data['object']:
-                    for json_application in json_team['applications']:
-                        application = {'team_id': json_team['id'], 'team_name': json_team['name'][:128], 'application_name': json_application['name'][:128], 'application_id': json_application['id']}
-                        import_applications.append(application)
-                        application_count += 1
-
-                import_formset = ImportFormSet(initial=import_applications)
-
-                return render(request, 'boh/management/threadfix/import.html', {
-                    'threadfix': threadfix,
-                    'import_formset': import_formset,
-                    'active_top': 'management',
-                    'active_side': 'services'
-                })
-            else:
-                messages.error(request, 'An error occurred when importing from "' + threadfix.name + '". ' + json_data['message'], extra_tags=random.choice(error_messages))
-                return redirect('boh:management.services')
-        except (requests.exceptions.RequestException, ValueError):
-            messages.error(request, 'An error occurred when importing from "' + threadfix.name + '". Try testing it for more information.', extra_tags=random.choice(error_messages))
+            return render(request, 'boh/management/threadfix/import.html', {
+                'threadfix': threadfix,
+                'import_formset': import_formset,
+                'active_top': 'management',
+                'active_side': 'services'
+            })
+        else:
+            messages.error(request, 'An error occurred when importing from "' + threadfix.name + '". ' + teams_response.message, extra_tags=random.choice(error_messages))
             return redirect('boh:management.services')
-
     elif request.method == 'POST':
         import_formset = ImportFormSet(request.POST)
 
