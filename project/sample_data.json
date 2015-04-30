@@ -294,5 +294,15 @@
       "environment": 3,
       "location": "http://parcc.pearson.com/"
     }
+  },
+  {
+    "model": "boh.threadfix",
+    "pk": 1,
+    "fields": {
+      "name": "Adam's Test VM",
+      "host": "https://192.168.1.126:8443/threadfix/",
+      "api_key": "DJRQjwFrOfAFf7jz1yKFK0YIVKGv9Cp8utY6IcvyE6w",
+      "verify_ssl": 0
+    }
   }
 ]
