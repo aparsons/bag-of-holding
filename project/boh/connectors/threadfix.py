@@ -9,13 +9,14 @@ from boh import __version__ as version
 class ThreadFixAPI(object):
     """An API wrapper to facilitate interactions to and from ThreadFix."""
 
-    def __init__(self, host, api_key, verify_ssl=True, timeout=30):
+    def __init__(self, host, api_key, verify_ssl=True, timeout=30, debug=False):
         """Initialize a ThreadFix API instance."""
 
         self.host = host
         self.api_key = api_key
         self.verify_ssl = verify_ssl
         self.timeout = timeout
+        self.debug = debug  # Prints request and response information.
 
         if not self.verify_ssl:
             requests.packages.urllib3.disable_warnings()  # Disabling SSL warning messages if verification is disabled.
@@ -59,7 +60,6 @@ class ThreadFixAPI(object):
         }
         return self._request('POST', 'rest/applications/' + str(application_id) + '/setParameters', params)
 
-    # TODO Sets new URL but responds with a HTML system error, test on latest version. See https://github.com/denimgroup/threadfix/issues/1109
     def set_application_url(self, application_id, url):
         """Sets the application's URL."""
         return self._request('POST', 'rest/applications/' + str(application_id) + '/addUrl', {'url': url})
@@ -68,8 +68,77 @@ class ThreadFixAPI(object):
         """Sets the application's WAF to the WAF with the specified id."""
         return self._request('POST', 'rest/applications/' + str(application_id) + '/setWaf', {'wafId': waf_id})
 
-    # TODO Upload Scan
-    # TODO add manual finding
+    # Findings
+
+    def create_manual_finding(self, application_id, vulnerability_type, description, severity, full_url=None,
+                              native_id=None, path=None):
+        """
+        Creates a manual finding with given properties.
+        :param application_id: Application identifier number.
+        :param vulnerability_type: Name of CWE vulnerability.
+        :param description: General description of the issue.
+        :param severity: Severity level from 0-8.
+        :param full_url: Absolute URL to the page with the vulnerability.
+        :param native_id: Specific identifier for vulnerability.
+        :param path: Relative path to vulnerability page.
+        """
+
+        params = {
+            'isStatic': False,
+            'vulnType': vulnerability_type,
+            'longDescription': description,
+            'severity': severity
+        }
+
+        if full_url:
+            params['fullUrl'] = full_url
+        if native_id:
+            params['nativeId'] = native_id
+        if path:
+            params['path'] = path
+
+        return self._request('POST', 'rest/applications/' + str(application_id) + '/addFinding', params)
+
+    def create_static_finding(self, application_id, vulnerability_type, description, severity, parameter=None,
+                              file_path=None, native_id=None, column=None, line_text=None, line_number=None):
+        """
+        Creates a static finding with given properties.
+        :param application_id: Application identifier number.
+        :param vulnerability_type: Name of CWE vulnerability.
+        :param description: General description of the issue.
+        :param severity: Severity level from 0-8.
+        :param parameter: Request parameter for vulnerability.
+        :param file_path: Location of source file.
+        :param native_id: Specific identifier for vulnerability.
+        :param column: Column number for finding vulnerability source.
+        :param line_text: Specific line text to finding vulnerability.
+        :param line_number: Specific source line number to find vulnerability.
+        """
+
+        if not parameter and not file_path:
+            raise AttributeError('Static findings require either parameter or file_path to be present.')
+
+        params = {
+            'isStatic': True,
+            'vulnType': vulnerability_type,
+            'longDescription': description,
+            'severity': severity
+        }
+
+        if native_id:
+            params['nativeId'] = native_id
+        if column:
+            params['column'] = column
+        if line_text:
+            params['lineText'] = line_text
+        if line_number:
+            params['lineNumber'] = line_number
+
+        return self._request('POST', 'rest/applications/' + str(application_id) + '/addFinding', params)
+
+    def upload_scan(self, application_id, file_path):
+        """Uploads and processes the scan."""
+        return self._request('POST', 'rest/applications/' + str(application_id) + '/upload', files={'file': open(file_path, 'rb')})
 
     # WAF
 
@@ -100,7 +169,9 @@ class ThreadFixAPI(object):
         """
         return self._request('GET', 'rest/wafs/' + str(waf_id) + '/rules/app/' + str(application_id))
 
-    # TODO upload waf log
+    def upload_waf_log(self, waf_id, file_path):
+        """Uploads and processes a WAF log."""
+        return self._request('POST', 'rest/wafs/' + str(waf_id) + '/uploadLog', files={'file': open(file_path, 'rb')})
 
     # Vulnerabilities
 
@@ -192,7 +263,7 @@ class ThreadFixAPI(object):
             params[str(param_name) + '[0].' + str(key)] = str(values)
         return params
 
-    def _request(self, method, url, params=None):
+    def _request(self, method, url, params=None, files=None):
         """Common handler for all HTTP requests."""
         if not params:
             params = {}
@@ -204,7 +275,16 @@ class ThreadFixAPI(object):
         }
 
         try:
-            response = requests.request(method=method, url=self.host + url, params=params, headers=headers, timeout=self.timeout, verify=self.verify_ssl)
+            if self.debug:
+                print(method + ' ' + url)
+                print(params)
+
+            response = requests.request(method=method, url=self.host + url, params=params, files=files, headers=headers, timeout=self.timeout, verify=self.verify_ssl)
+
+            if self.debug:
+                print(response.status_code)
+                print(response.text)
+
             try:
                 json_response = response.json()
 
@@ -214,7 +294,7 @@ class ThreadFixAPI(object):
                 data = json_response['object']
 
                 return ThreadFixResponse(message=message, success=success, response_code=response_code, data=data)
-            except ValueError:  # JSON response could not be decoded
+            except ValueError:
                 return ThreadFixResponse(message='JSON response could not be decoded.', success=False)
         except requests.exceptions.SSLError:
             return ThreadFixResponse(message='An SSL error occurred.', success=False)

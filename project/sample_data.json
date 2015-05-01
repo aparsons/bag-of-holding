@@ -299,9 +299,9 @@
     "model": "boh.threadfix",
     "pk": 1,
     "fields": {
-      "name": "Adam's Test VM",
+      "name": "ThreadFix 2.2.2 (Apr 30)",
       "host": "https://192.168.1.126:8443/threadfix/",
-      "api_key": "DJRQjwFrOfAFf7jz1yKFK0YIVKGv9Cp8utY6IcvyE6w",
+      "api_key": "KRSRdVtbrUePq3P9XODQAxo3bIHUZwqgb2d8bKc6ApE",
       "verify_ssl": 0
     }
   }
