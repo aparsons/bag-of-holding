@@ -595,6 +595,7 @@ class Activity(models.Model):
                     self.close_date = timezone.now()
 
                     # If all of the parent engagement activities are closed, close the parent engagement
+                    # TODO Fix for if only one activity present
                     close = True
                     for current_activity in self.engagement.activity_set.all():
                         if self.id is not current_activity.id and current_activity.status != Activity.CLOSED_STATUS:
