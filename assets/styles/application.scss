@@ -7,7 +7,7 @@
 
 @import "codehilite/monokai";
 
-
+// margin adjustments
 .margin-bottom {
   margin-bottom: $line-height-computed;
 }
@@ -39,6 +39,47 @@
 
 .badge-danger {
   background-color: $brand-danger;
+}
+
+// Vulnerability colors
+$color-critical: #d43f3a;
+$color-high: #D57A1D; //#ee9336;
+$color-medium: #E4AB18; //#fdc431;
+$color-low: #4cae4c;
+$color-info: #357abd;
+
+.bg-vuln-critical {
+  background-color: $color-critical;
+}
+
+.bg-vuln-high {
+  background-color: $color-high;
+}
+
+.bg-vuln-medium {
+  background-color: $color-medium;
+}
+
+.bg-vuln-low {
+  background-color: $color-low;
+}
+
+.bg-vuln-info {
+  background-color: $color-info;
+}
+
+.bg-muted {
+  background-color: $gray-light;
+}
+
+.vuln-count {
+  color: #ffffff;
+  font-size: ceil(($font-size-base * 1.5));
+  font-weight: bold;
+  small {
+    font-size: $font-size-small;
+    font-weight: normal;
+  }
 }
 
 // Tweaking Markdown Editor to look more like Bootstrap

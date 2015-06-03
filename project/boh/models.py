@@ -206,7 +206,7 @@ class ThreadFix(models.Model):
     verify_ssl = models.BooleanField(default=True, help_text='Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.')
 
     class Meta:
-        verbose_name = "ThreadFix"
+        verbose_name = 'ThreadFix'
         verbose_name_plural = 'ThreadFix'
 
     def __str__(self):
@@ -298,12 +298,12 @@ class Application(models.Model):
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
 
-    technologies = models.ManyToManyField(Technology, blank=True, null=True)
-    regulations = models.ManyToManyField(Regulation, blank=True, null=True)
-    service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True, null=True)
+    technologies = models.ManyToManyField(Technology, blank=True)
+    regulations = models.ManyToManyField(Regulation, blank=True)
+    service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True)
 
     # Data Classification
-    data_elements = models.ManyToManyField(DataElement, blank=True, null=True)
+    data_elements = models.ManyToManyField(DataElement, blank=True)
     override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Overrides the calculated data classification level.')
     override_reason = models.TextField(blank=True, help_text='Specify why the calculated data classification level is being overridden.')
 
@@ -329,12 +329,12 @@ class Application(models.Model):
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
+    class Meta:
+        get_latest_by = 'modified_date'
+        ordering = ['name']
+
     def __str__(self):
         return self.name
-
-    class Meta:
-        get_latest_by = "modified_date"
-        ordering = ['name']
 
     def data_classification_level(self):
         dsv = self.data_sensitivity_value()
@@ -379,6 +379,28 @@ class Application(models.Model):
         delta = self.created_date - timezone.now()
         return delta >= timedelta(days=-7)
 
+
+class ThreadFixMetrics(models.Model):
+    """Point in time metrics from ThreadFix for an application."""
+
+    critical_count = models.PositiveIntegerField(default=0)
+    high_count = models.PositiveIntegerField(default=0)
+    medium_count = models.PositiveIntegerField(default=0)
+    low_count = models.PositiveIntegerField(default=0)
+    informational_count = models.PositiveIntegerField(default=0)
+
+    application = models.ForeignKey(Application)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        get_latest_by = 'created_date'
+        verbose_name = 'ThreadFix metrics'
+        verbose_name_plural = 'ThreadFix metrics'
+
+    def total(self):
+        return self.critical_count + self.high_count + self.medium_count + self.low_count + self.informational_count
 
 class Relation(models.Model):
     """Associates a person with an application with a role."""
@@ -484,6 +506,7 @@ class Engagement(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        get_latest_by = 'close_date'
         ordering = ['start_date']
 
     def save(self, *args, **kwargs):

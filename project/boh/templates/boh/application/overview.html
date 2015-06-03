@@ -14,6 +14,45 @@
       </div>
     </div>
 
+    {% with metrics=application.threadfixmetrics_set.latest %}
+    {% if metrics %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-pie-chart" aria-hidden="true"></span> ThreadFix Metrics</h3>
+          </div>
+          <table class="table table-condensed">
+            <!--
+            <thead>
+              <tr>
+                <th class="col-md-2 text-center">Critical</th>
+                <th class="col-md-2 text-center">High</th>
+                <th class="col-md-2 text-center">Medium</th>
+                <th class="col-md-2 text-center">Low</th>
+                <th class="col-md-2 text-center">Informational</th>
+                <th class="col-md-2 text-center">Total</th>
+              </tr>
+            </thead>
+            -->
+            <tbody>
+              <tr>
+                <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{{ metrics.critical_count }}<span class="hidden-xs"><br><small>CRITICAL</small></span></td>
+                <td class="col-sm-2 bg-vuln-high vuln-count text-center">{{ metrics.high_count }}<span class="hidden-xs"><br><small>HIGH</small></span></td>
+                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{{ metrics.medium_count }}<span class="hidden-xs"><br><small>MEDIUM</small></span></td>
+                <td class="col-sm-2 bg-vuln-low vuln-count text-center">{{ metrics.low_count }}<span class="hidden-xs"><br><small>LOW</small></span></td>
+                <td class="col-sm-2 bg-vuln-info vuln-count text-center">{{ metrics.informational_count }}<span class="hidden-xs"><br><small>INFORMATIONAL</small></span></td>
+                <td class="col-sm-2 bg-muted vuln-count text-center">{{ metrics.total }}<span class="hidden-xs"><br><small>TOTAL</small></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
     <div class="row">
       <div class="col-md-12">
         <div class="panel panel-default">

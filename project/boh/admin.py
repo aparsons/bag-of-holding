@@ -176,6 +176,26 @@ admin.site.register(models.Activity, ActivityAdmin)
 admin.site.register(models.ThreadFix)
 
 
+class ThreadFixMetricsAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['application']}),
+        ('Metrics', {
+            'fields': ['critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count']
+        })
+    ]
+    list_display = ['application', 'critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count', 'created_date']
+    list_filter = ['application']
+    ordering = ['-created_date']
+    readonly_fields = ['created_date']
+    search_fields = ['^application__name']
+
+    class Meta:
+        verbose_name = 'ThreadFix Metrics'
+        verbose_name_plural = 'ThreadFix Metrics'
+
+admin.site.register(models.ThreadFixMetrics, ThreadFixMetricsAdmin)
+
+
 class TechnologyAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'category_display', 'name', 'description', 'reference_link']
     list_filter = ['category']
