@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^team/$', views.dashboard_team, name='dashboard.team'),
     url(r'^metrics/$', views.dashboard_metrics, name='dashboard.metrics'),
     url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
+    url(r'^reports/download/$', views.dashboard_reports_download, name='dashboard.reports.download'),
 
     # Management
     url(r'^manage/$', views.management_overview, name='management.overview'),

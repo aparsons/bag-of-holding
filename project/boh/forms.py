@@ -17,6 +17,22 @@ class PageSizeForm(forms.Form):
     page_size = forms.ChoiceField(choices=PAGE_SIZE_CHOICES)
 
 
+# Dashboard
+
+class EngagementCoverageReportForm(forms.Form):
+    HTML_FORMAT = 'html'
+    CSV_FORMAT = 'csv'
+    FORMAT_CHOICES = (
+        (HTML_FORMAT, 'HTML'),
+        (CSV_FORMAT, 'CSV'),
+    )
+
+    organizations = forms.ModelMultipleChoiceField(
+        queryset=models.Organization.objects.all(),
+        required=False
+    )
+    format = forms.ChoiceField(choices=FORMAT_CHOICES)
+
 # User
 
 class UserProfileForm(forms.ModelForm):

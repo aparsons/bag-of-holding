@@ -10,7 +10,10 @@ var uglify      = require('gulp-uglify');
 var paths = {
   'bower': 'bower_components',
   'assets': 'assets',
-  'dist': 'project/boh/static/boh'
+  'dist': 'project/boh/static/boh',
+  'templates': {
+    'reports': 'project/boh/templates/boh/reports'
+  }
 };
 
 var minify = true;
@@ -37,6 +40,27 @@ gulp.task('styles', function() {
     }));
 
   styles.pipe(gulp.dest(paths.dist + '/css'));
+});
+
+// Styles for Reports
+gulp.task('report-styles', function() {
+  var styles = gulp.src([
+      paths.assets + '/styles/reports.scss'
+    ])
+    .pipe(sass({
+      includePaths: [
+        paths.bower + '/bootstrap-sass/assets/stylesheets',
+        paths.bower + '/fontawesome/scss'
+      ]
+    }))
+    .pipe(rename('base.css'));
+
+  if (minify)
+    styles.pipe(minifyCSS({
+      keepSpecialComments: 0
+    }));
+
+  styles.pipe(gulp.dest(paths.templates.reports));
 });
 
 
@@ -119,7 +143,7 @@ gulp.task('vendor', function() {
 });
 
 
-gulp.task('default', ['styles', 'scripts', 'fonts', 'vendor']);
+gulp.task('default', ['styles', 'report-styles', 'scripts', 'fonts', 'vendor']);
 
 
 gulp.task('development', function() {
@@ -129,12 +153,12 @@ gulp.task('development', function() {
 
 
 gulp.task('watch', ['default'], function() {
-  gulp.watch(paths.assets + '/styles/**/*.scss', ['styles']);
+  gulp.watch(paths.assets + '/styles/**/*.scss', ['styles', 'report-styles']);
   gulp.watch(paths.assets + '/scripts/**/*.js', ['scripts']);
 });
 
 
 gulp.task('watch-development', ['development'], function() {
-  gulp.watch(paths.assets + '/styles/**/*.scss', ['styles']);
+  gulp.watch(paths.assets + '/styles/**/*.scss', ['styles', 'report-styles']);
   gulp.watch(paths.assets + '/scripts/**/*.js', ['scripts']);
 });

@@ -300,7 +300,7 @@
     "pk": 1,
     "fields": {
       "name": "ThreadFix 2.2.2 (Apr 30)",
-      "host": "https://192.168.1.126:8443/threadfix/",
+      "host": "https://192.168.1.127:8443/threadfix/",
       "api_key": "KRSRdVtbrUePq3P9XODQAxo3bIHUZwqgb2d8bKc6ApE",
       "verify_ssl": 0
     }

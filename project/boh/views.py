@@ -1,6 +1,4 @@
-import json
 import random
-import requests
 
 from django import forms as django_forms
 from django.contrib import messages
@@ -15,11 +13,13 @@ from django.db import IntegrityError
 from django.db.models import Count, Prefetch, Q
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods
 
-from . import filters, forms, models
-from .connectors.threadfix import ThreadFixAPI
+from . import filters, forms, models, reports
+
+from threadfix_api import threadfix as tf_api
 
 
 # Messages shown on successful actions
@@ -162,12 +162,28 @@ def dashboard_reports(request):
 
     # BISO Reports
     # Top 10 Reports
+    ec_report_form = forms.EngagementCoverageReportForm()
 
     return render(request, 'boh/dashboard/reports.html', {
+        'ec_report_form': ec_report_form,
         'active_top': 'dashboard',
         'active_tab': 'reports'
     })
 
+@login_required
+@require_http_methods(['POST'])
+def dashboard_reports_download(request):
+    timestamp = timezone.now().strftime('%y%m%d%H%M%S')
+
+    report_type = request.GET.get('report_type')
+    if report_type == 'engagement_coverage':
+        form = forms.EngagementCoverageReportForm(request.POST)
+        if form.is_valid():
+            file_name = 'engagement-coverage_' + timestamp
+            return reports.EngagementCoverageReport(file_name, form.cleaned_data['format'], form.cleaned_data['organizations'], request.user).response()
+
+    messages.error(request, 'There was a problem downloading the report.', extra_tags=random.choice(error_messages))
+    return redirect('boh:dashboard.reports')
 
 # Management
 
@@ -411,7 +427,7 @@ def management_services_threadfix_edit(request, threadfix_id):
 def management_services_threadfix_test(request, threadfix_id):
     threadfix = get_object_or_404(models.ThreadFix, pk=threadfix_id)
 
-    api = ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
+    api = tf_api.ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
     response = api.list_teams()
 
     if response.success:
@@ -431,7 +447,7 @@ def management_services_threadfix_import(request, threadfix_id):
     ImportFormSet = formset_factory(forms.ThreadFixApplicationImportForm, extra=0)
 
     if request.method == 'GET':
-        api = ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
+        api = tf_api.ThreadFixAPI(host=threadfix.host, api_key=threadfix.api_key, verify_ssl=threadfix.verify_ssl)
         teams_response = api.list_teams()
 
         if teams_response.success:
