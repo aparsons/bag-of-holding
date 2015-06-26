@@ -1,6 +1,6 @@
 {
   "name": "bag-of-holding",
-  "version": "1.0.3",
+  "version": "0.0.3",
   "private": true,
   "ignore": [
     "**/.*",
