@@ -97,18 +97,6 @@ $hr-border: $pearson-green;
 
 //@import "bootstrap/theme";
 
-@media print {
-  .no-print, .no-print * {
-    display: none !important;
-  }
-  .page-header {
-    margin-top: 0;
-    h1 {
-      margin-top: 0;
-    }
-  }
-}
-
 h1 {
   color: $pearson-green;
 }
@@ -118,11 +106,37 @@ body {
   font-family: $pearson-fonts;
 }
 
-#header {
-  height: 40px;
-  background-color: $pearson-green;
+// Vulnerability colors
+$color-critical: #D43F3A;
+$color-high: #D57A1D;
+$color-medium: #E4AB18;
+$color-low: #4CAE4C;
+$color-info: #357ABD;
+
+.bg-vuln-critical {
+  background-color: $color-critical;
 }
 
-#footer {
-  margin-bottom: 16px;
+.bg-vuln-high {
+  background-color: $color-high;
+}
+
+.bg-vuln-medium {
+  background-color: $color-medium;
+}
+
+.bg-vuln-low {
+  background-color: $color-low;
+}
+
+.bg-vuln-info {
+  background-color: $color-info;
+}
+
+.bg-muted {
+  background-color: $gray-light;
+}
+
+.white {
+  color: #ffffff;
 }

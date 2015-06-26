@@ -1,0 +1,43 @@
+{% extends "boh/reports/base.html" %}
+
+{% block title %}ThreadFix Summary Report | {{ current_datetime|date:"SHORT_DATE_FORMAT" }}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>ThreadFix Summary <small>Application Security</small></h1>
+  </div>
+  <p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requestor.get_full_name }} &lt;{{ requestor.email }}&gt;</p>
+  {% for organization in organizations %}
+    <h2>{{ organization.name }}</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-5">Application Name</th>
+          <th class="col-md-1 bg-vuln-critical white">Critical</th>
+          <th class="col-md-1 bg-vuln-high white">High</th>
+          <th class="col-md-1 bg-vuln-medium white">Medium</th>
+          <th class="col-md-1 bg-vuln-low white">Low</th>
+          <th class="col-md-1 bg-vuln-info white">Info</th>
+          <th class="col-md-1 bg-muted white">Total</th>
+          <th class="col-md-1">Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for application in organization.application_set.all %}
+      {% with metrics=application.threadfixmetrics_set.latest %}
+        <tr>
+          <td>{{ application.name }}</td>
+          <td>{{ metrics.critical_count }}</td>
+          <td>{{ metrics.high_count }}</td>
+          <td>{{ metrics.medium_count }}</td>
+          <td>{{ metrics.low_count }}</td>
+          <td>{{ metrics.informational_count }}</td>
+          <td>{{ metrics.total }}</td>
+          <td><small>{{ metrics.created_date|date:"SHORT_DATE_FORMAT" }}</small></td>
+        </tr>
+      {% endwith %}
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endblock %}

@@ -7,8 +7,6 @@
     <h1>Engagement Coverage <small>Application Security</small></h1>
   </div>
   <p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requestor.get_full_name }} &lt;{{ requestor.email }}&gt;</p>
-  <p><small>The information contained within this report is considered proprietary and confidential to Pearson. Inappropriate and unauthorized disclosure of this report or portions of it could result in significant damage or loss to Pearson. This report should be distributed to individuals on a need-to-know basis only. Paper copies should be locked up when not in use. Electronic copies should be stored offline and protected appropriately.</small></p>
-  <p>What is this report?</p>
   {% for organization in organizations %}
     <h2>{{ organization.name }}</h2>
     <table class="table table-striped">
