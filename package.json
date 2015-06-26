@@ -6,7 +6,7 @@
     "type": "git",
     "url": "ssh://git@devops-tools.pearson.com/appsec/bag-of-holding.git"
   },
-  "license": "MIT",
+  "license": "Apache 2",
   "devDependencies": {
     "bower": "^1.4.1",
     "gulp": "^3.8.11",
