@@ -3,8 +3,8 @@
 The **Bag of Holding** is an application security utility to assist in the organization and prioritization of software security activities.
 
 Check out these talks which cover building your own AppSec pipeline:
-* [AppSec EU15 - Aaron Weaver - Building An AppSec Pipeline: Keeping Your Program, And Your Life, Sane](https://www.youtube.com/watch?v=1CDSOSl4DQU)
-* [AppSec EU15 - Matt Tesauro - Lessons From DevOps: Taking DevOps Practices Into Your AppSec Life](https://www.youtube.com/watch?v=tDnyFitE0y4)
+* [Aaron Weaver - Building An AppSec Pipeline: Keeping Your Program, And Your Life, Sane](https://www.youtube.com/watch?v=1CDSOSl4DQU)
+* [Matt Tesauro - Lessons From DevOps: Taking DevOps Practices Into Your AppSec Life](https://www.youtube.com/watch?v=tDnyFitE0y4)
 
 ## Releases
 
