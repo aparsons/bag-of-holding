@@ -49,12 +49,6 @@ deactivate
 pip install -r requirements.txt
 ```
 
-If you install more packages to the virtual environment and need to modify the requirements later on you type:
-
-```sh
-pip freeze > requirements.txt
-```
-
 ## Common Commands
 
 **Create and update migrations**
