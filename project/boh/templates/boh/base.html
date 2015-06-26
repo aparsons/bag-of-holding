@@ -56,6 +56,7 @@
             <li{% if active_top == 'people' %} class="active"{% endif %}><a href="{% url 'boh:person.list' %}"><i class="fa fa-users" aria-hidden="true"></i> People</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'boh_api:api-root' %}" target="_blank"><span class="fa fa-code" aria-hidden="true"></span><span class="hidden-sm"> API</span></a></li>
             {% if user.is_staff %}
             <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.overview' %}"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-sm"> Manage</span></a></li>
             {% endif %}
@@ -96,8 +97,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 clearfix">
-          <span class="text-muted pull-right"><strong>CONFIDENTIAL</strong></span>
-          <span class="text-muted"><span class="fa fa-copyright" aria-hidden="true"></span> 2015 Pearson{% if user.is_authenticated %} &raquo; <a href="https://devops-tools.pearson.com/stash/projects/APPSEC/repos/bag-of-holding/" target="_blank">v1.0.3</a>{% endif %}</span>
+          {% if user.is_authenticated %}<span class="text-muted pull-right">v0.0.3</span>{% endif %}
+          <span class="text-muted"><span class="fa fa-copyright" aria-hidden="true"></span> 2015 Pearson &raquo; Licensed under MIT</span>
         </div>
       </div>
     </div>

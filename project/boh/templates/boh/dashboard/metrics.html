@@ -1,112 +1,72 @@
 {% extends "boh/dashboard/base_dashboard.html" %}
 
-{% load staticfiles %}
-
 {% block title %}Metrics{% endblock %}
 
 {% block dashboard_content %}
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading">Activities by type (all time)</div>
-      <div class="panel-body">
-        <div class="row">
-          <canvas id="activityTypeChart" class="col-md-12"></canvas>
-        </div>
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
       </div>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>Pending</td>
+            <td>{{ engagement_stats.pending_count }}</td>
+          </tr>
+          <tr>
+            <td>Open</td>
+            <td>{{ engagement_stats.open_count }}</td>
+          </tr>
+          <tr>
+            <td>Closed</td>
+            <td>{{ engagement_stats.closed_count }}</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>{{ engagement_stats.total_count }}</td>
+          </tr>
+          <tr>
+            <td>Average Length</td>
+            <td>{{ engagement_stats.average_duration }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h3>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-5">Activity</th>
+            <th class="col-md-1">Pending</th>
+            <th class="col-md-1">Open</th>
+            <th class="col-md-1">Closed</th>
+            <th class="col-md-1">Total</th>
+            <th class="col-md-3">Average Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for activity in activity_stats %}
+          <tr>
+            <td>{{ activity.name }}</td>
+            <td{% if activity.pending_count == 0 %} class="text-muted"{% endif %}>{{ activity.pending_count }}</td>
+            <td{% if activity.open_count == 0 %} class="text-muted"{% endif %}>{{ activity.open_count }}</td>
+            <td{% if activity.closed_count == 0 %} class="text-muted"{% endif %}>{{ activity.closed_count }}</td>
+            <td{% if activity.total_count == 0 %} class="text-muted"{% endif %}>{{ activity.total_count }}</td>
+            <td>{% if activity.average_duration %}{{ activity.average_duration }}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </div>
 {% endblock dashboard_content %}
-
-{% block js %}
-<script src="{% static 'boh/js/chart.min.js' %}"></script>
-<script>
-$(function () {
-  var colors = [
-    {
-      'color': '#9C4444',
-      'highlight': '#BF6E6E',
-    },
-    {
-      'color': '#9C7044',
-      'highlight': '#BF966E',
-    },
-    {
-      'color': '#9C9C44',
-      'highlight': '#BFBF6E',
-    },
-    {
-      'color': '#709C44',
-      'highlight': '#96BF6E',
-    },
-    {
-      'color': '#449C44',
-      'highlight': '#6EBF6E',
-    },
-    {
-      'color': '#449C70',
-      'highlight': '#6EBF96',
-    },
-    {
-      'color': '#449C9C',
-      'highlight': '#6EBFBF',
-    },
-    {
-      'color': '#44709C',
-      'highlight': '#6E96BF',
-    },
-    {
-      'color': '#44449C',
-      'highlight': '#6E6EBF',
-    },
-    {
-      'color': '#70449C',
-      'highlight': '#966EBF',
-    },
-    {
-      'color': '#9C449C',
-      'highlight': '#BF6E96',
-    },
-    {
-      'color': '#9C4470',
-      'highlight': '#BF6EBF',
-    },
-  ];
-
-  // Cycles through the available color palette
-  function getColor(position) {
-    return colors[position % colors.length]
-  }
-
-
-  Chart.defaults.global.responsive = true;
-  Chart.defaults.global.maintainAspectRatio = false;
-
-  var ctx = $("#activityTypeChart").get(0).getContext("2d");
-
-  var data = [
-    {% for activity_type in activity_types %}
-    {% if activity_type.activity_count > 0 %}
-    {
-      label: '{{ activity_type.name }}',
-      value: {{ activity_type.activity_count }},
-      color: getColor({{ forloop.counter0 }}).color,
-      highlight: getColor({{ forloop.counter0 }}).highlight,
-    },
-    {% endif %}
-    {% endfor %}
-  ]
-
-  var options = {
-  }
-
-  var activityTypeDoughnutChart = new Chart(ctx).Doughnut(data, options);
-
-
-});
-</script>
-{% endblock js %}

@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     # Dashboard
     url(r'^$', views.dashboard_personal, name='dashboard.personal'),
     url(r'^team/$', views.dashboard_team, name='dashboard.team'),
+    url(r'^external-requests/$', views.dashboard_requests, name='dashboard.requests'),
     url(r'^metrics/$', views.dashboard_metrics, name='dashboard.metrics'),
     url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
     url(r'^reports/download/$', views.dashboard_reports_download, name='dashboard.reports.download'),
@@ -90,5 +91,4 @@ urlpatterns = patterns('',
     url(r'^people/(?P<person_id>\d+)/$', views.person_detail, name='person.detail'),
     url(r'^people/(?P<person_id>\d+)/edit/$', views.person_edit, name='person.edit'),
     url(r'^people/(?P<person_id>\d+)/delete/$', views.person_delete, name='person.delete'),
-
 )

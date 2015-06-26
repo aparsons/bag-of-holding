@@ -1,0 +1,68 @@
+{% extends "pearson_requests/wizards/wizard_base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Application Security Service Request{% endblock %}
+
+{% block css %}
+<link href="{% static 'boh/css/datepicker.min.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block header %}Service Request{% endblock %}
+
+{% block header_subtext %}Application Security{% endblock %}
+
+{% block panel_title %}How can we be of assistance?{% endblock %}
+
+{% block form %}
+  {% include "boh/snippets/form/_general.html" with control=wizard.form.application label='What application can we help you with?'%}
+  {% include "boh/snippets/form/_general.html" with control=wizard.form.activity_types label='What would you like us to do?' %}
+
+  <marquee>BELOW IS A MOCKUP</marquee>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Activity</th>
+        <th>Description</th>
+        <th>Typical Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>AppScan Onboarding</td>
+        <td>We Scan Ya</td>
+        <td>1 Week</td>
+      </tr>
+      <tr>
+        <td>Checkmarx Onboarding</td>
+        <td>We Source Ya</td>
+        <td>2 Days</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><small>Activity durations can vary depending on application size, environment speed, and assessment thoroughness.</small></p>
+
+  <div class="row">
+    <div class="input-daterange">
+      <div class="col-md-6">
+        {% include "boh/snippets/form/_general.html" with control=form.start_date %}
+      </div>
+      <div class="col-md-6">
+        {% include "boh/snippets/form/_general.html" with control=form.end_date %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'boh/js/datepicker.min.js' %}"></script>
+<script>
+$('.input-daterange').datepicker({
+  format: "yyyy-mm-dd",
+  todayBtn: "linked",
+  todayHighlight: true
+});
+</script>
+{% endblock js %}

@@ -161,7 +161,9 @@
     "model": "boh.activitytype",
     "pk": 1,
     "fields": {
-      "name": "External Penetration Test"
+      "name": "External Penetration Test",
+      "created_date": "2011-09-01T13:20:30+03:00",
+      "modified_date": "2011-09-01T13:20:30+03:00"
     }
   },
   {

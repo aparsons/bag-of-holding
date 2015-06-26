@@ -116,11 +116,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         }),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['created_date', 'modified_date']
+            'fields': ['requestable', 'created_date', 'modified_date']
         }),
     ]
     list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'created_date', 'modified_date']
-    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags']
+    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
 
@@ -145,31 +145,39 @@ admin.site.register(models.Person, PersonAdmin)
 
 class EngagementAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['application', 'start_date', 'end_date']}),
+        (None, {'fields': ['application', 'start_date', 'end_date', 'status']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['status', 'open_date', 'close_date']
+            'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['__str__', 'start_date', 'end_date', 'status', 'application']
+    list_display = ['__str__', 'start_date', 'end_date', 'status', 'application', 'open_date', 'close_date', 'duration']
+    list_filter = ['status']
     inlines = [ActivityInline, EngagementCommentInline]
+    readonly_fields = ['duration']
 
 admin.site.register(models.Engagement, EngagementAdmin)
 
 
-admin.site.register(models.ActivityType)
+class ActivityTypeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'requestable']
+    list_filter = ['requestable']
+
+admin.site.register(models.ActivityType, ActivityTypeAdmin)
 
 
 class ActivityAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['engagement', 'activity_type', 'users']}),
+        (None, {'fields': ['engagement', 'activity_type', 'status', 'users']}),
         ('Advanced options', {
             'classes': ['collapse'],
-            'fields': ['status', 'open_date', 'close_date']
+            'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['__str__', 'status', 'activity_type']
+    list_display = ['__str__', 'status', 'activity_type', 'open_date', 'close_date', 'duration']
+    list_filter = ['status']
     inlines = [ActivityCommentInline]
+    readonly_fields = ['duration']
 
 admin.site.register(models.Activity, ActivityAdmin)
 
@@ -239,3 +247,5 @@ class ServiceLevelAgreementAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
 
 admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)
+
+admin.site.register(models.ExternalRequest)

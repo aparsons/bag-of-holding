@@ -7,6 +7,7 @@
     <ul class="nav nav-tabs horizontal-bar">
       <li role="presentation"{% if active_tab == 'personal' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-user" aria-hidden="true"></span><span class="hidden-xs"> My Dashboard</span></a></li>
       <li role="presentation"{% if active_tab == 'team' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.team' %}"><span class="fa fa-users" aria-hidden="true"></span><span class="hidden-xs"> Team Dashboard</span></a></li>
+      <!--<li role="presentation"{% if active_tab == 'requests' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.requests' %}"><span class="fa fa-inbox" aria-hidden="true"></span><span class="hidden-xs"> Requests</span></a></li>-->
       <li role="presentation"{% if active_tab == 'metrics' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.metrics' %}"><span class="fa fa-bar-chart" aria-hidden="true"></span><span class="hidden-xs"> Metrics</span></a></li>
       <li role="presentation"{% if active_tab == 'reports' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.reports' %}"><span class="fa fa-file-text" aria-hidden="true"></span><span class="hidden-xs"> Reports</span></a></li>
     </ul>

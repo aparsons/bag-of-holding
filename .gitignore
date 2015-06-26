@@ -5,7 +5,7 @@ project/*/migrations/*
 !project/boh/migrations/0002_load_data.py
 !project/boh/migrations/0003_v1_0_1.py
 !project/boh/migrations/0004_v1_0_2.py
-
+!project/boh/migrations/0005_v1_0_3.py
 .idea
 
 # Byte-compiled / optimized / DLL files

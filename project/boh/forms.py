@@ -24,7 +24,7 @@ class EngagementCoverageReportForm(forms.Form):
     CSV_FORMAT = 'csv'
     FORMAT_CHOICES = (
         (HTML_FORMAT, 'HTML'),
-        (CSV_FORMAT, 'CSV'),
+        #(CSV_FORMAT, 'CSV'),
     )
 
     organizations = forms.ModelMultipleChoiceField(
@@ -32,6 +32,22 @@ class EngagementCoverageReportForm(forms.Form):
         required=False
     )
     format = forms.ChoiceField(choices=FORMAT_CHOICES)
+
+
+class ThreadFixSummaryReportForm(forms.Form):
+    HTML_FORMAT = 'html'
+    CSV_FORMAT = 'csv'
+    FORMAT_CHOICES = (
+        (HTML_FORMAT, 'HTML'),
+        #(CSV_FORMAT, 'CSV'),
+    )
+
+    organizations = forms.ModelMultipleChoiceField(
+        queryset=models.Organization.objects.all(),
+        required=False
+    )
+    format = forms.ChoiceField(choices=FORMAT_CHOICES)
+
 
 # User
 

@@ -42,11 +42,11 @@
 }
 
 // Vulnerability colors
-$color-critical: #d43f3a;
-$color-high: #D57A1D; //#ee9336;
-$color-medium: #E4AB18; //#fdc431;
-$color-low: #4cae4c;
-$color-info: #357abd;
+$color-critical: #D43F3A;
+$color-high: #D57A1D;
+$color-medium: #E4AB18;
+$color-low: #4CAE4C;
+$color-info: #357ABD;
 
 .bg-vuln-critical {
   background-color: $color-critical;

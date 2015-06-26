@@ -10,7 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.db.models import Count, Prefetch, Q
+from django.db.models import Avg, Count, Prefetch, Q
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.utils import timezone
@@ -134,23 +134,27 @@ def dashboard_team(request):
         'active_tab': 'team'
     })
 
+@login_required
+@require_http_methods(['GET'])
+def dashboard_requests(request):
+    external_requests = models.ExternalRequest.objects.all()
+
+    return render(request, 'boh/dashboard/requests.html', {
+        'external_requests': external_requests,
+        'active_top': 'dashboard',
+        'active_tab': 'requests'
+    })
 
 @login_required
 @require_http_methods(['GET'])
 def dashboard_metrics(request):
 
-    # Current Number of Pending/Open/Closed Activities - This week/month/year/alltime
-    # Current Number of Pending/Open/Closed Engagements
-    # Average Engagement Lengths
-    # Average Activity Lengths By Activity
-
-    # Activity Type Count
-    activity_types = models.ActivityType.objects.values('name') \
-        .filter(~Q(activity=None)) \
-        .annotate(activity_count=Count('activity'))
+    engagement_stats = models.Engagement.metrics.stats()
+    activity_stats = models.ActivityType.metrics.stats()
 
     return render(request, 'boh/dashboard/metrics.html', {
-        'activity_types': activity_types,
+        'engagement_stats': engagement_stats,
+        'activity_stats': activity_stats,
         'active_top': 'dashboard',
         'active_tab': 'metrics'
     })
@@ -163,9 +167,11 @@ def dashboard_reports(request):
     # BISO Reports
     # Top 10 Reports
     ec_report_form = forms.EngagementCoverageReportForm()
+    tf_report_form = forms.ThreadFixSummaryReportForm()
 
     return render(request, 'boh/dashboard/reports.html', {
         'ec_report_form': ec_report_form,
+        'tf_report_form': tf_report_form,
         'active_top': 'dashboard',
         'active_tab': 'reports'
     })
@@ -181,6 +187,11 @@ def dashboard_reports_download(request):
         if form.is_valid():
             file_name = 'engagement-coverage_' + timestamp
             return reports.EngagementCoverageReport(file_name, form.cleaned_data['format'], form.cleaned_data['organizations'], request.user).response()
+    elif report_type == 'threadfix_summary':
+        form = forms.ThreadFixSummaryReportForm(request.POST)
+        if form.is_valid():
+            file_name = 'threadfix-summary_' + timestamp
+            return reports.ThreadFixSummaryReport(file_name, form.cleaned_data['format'], form.cleaned_data['organizations'], request.user).response()
 
     messages.error(request, 'There was a problem downloading the report.', extra_tags=random.choice(error_messages))
     return redirect('boh:dashboard.reports')
@@ -1540,3 +1551,5 @@ def person_delete(request, person_id):
         return redirect('boh:person.list')
     else:
         return redirect('boh:person.detail', person.id)
+
+

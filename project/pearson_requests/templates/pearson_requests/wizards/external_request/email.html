@@ -1,0 +1,13 @@
+{% extends "pearson_requests/wizards/wizard_base.html" %}
+
+{% block title %}Application Security Service Request{% endblock %}
+
+{% block header %}Service Request{% endblock %}
+
+{% block header_subtext %}Application Security{% endblock %}
+
+{% block panel_title %}Let's Get Started{% endblock %}
+
+{% block form %}
+  {% include "boh/snippets/form/_general.html" with control=wizard.form.email label='What is your Pearson email address?' %}
+{% endblock %}

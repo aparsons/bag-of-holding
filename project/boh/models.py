@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import uuid
 
 import phonenumbers
 
@@ -6,6 +7,10 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
 from django.utils import timezone
+from django.utils.translation import ugettext as _
+
+from .behaviors import TimeStampedModel
+from . import managers
 
 
 class Tag(models.Model):
@@ -14,8 +19,9 @@ class Tag(models.Model):
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 character hex format.")
 
     name = models.CharField(max_length=64, unique=True, help_text='A unique name for this tag.')
-    description = models.CharField(max_length=64, blank=True, help_text='A short description of this tag\'s purpose to be shown in tooltips.')
     color = models.CharField(max_length=6, validators=[color_regex], help_text='Specify a 6 character hex color value. (e.g., \'d94d59\')')
+
+    description = models.CharField(max_length=64, blank=True, help_text='A short description of this tag\'s purpose to be shown in tooltips.')
 
     class Meta:
         ordering = ['name']
@@ -51,10 +57,10 @@ class Person(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     email = models.EmailField(unique=True)
+    role = models.CharField(max_length=17, choices=ROLE_CHOICES)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     job_title = models.CharField(max_length=128, blank=True)
-    role = models.CharField(max_length=17, choices=ROLE_CHOICES)
 
     class Meta:
         ordering = ['last_name']
@@ -68,6 +74,7 @@ class Person(models.Model):
             self.phone_work = phonenumbers.format_number(phonenumbers.parse(self.phone_work, 'US'), phonenumbers.PhoneNumberFormat.E164)
         if self.phone_mobile:
             self.phone_mobile = phonenumbers.format_number(phonenumbers.parse(self.phone_mobile, 'US'), phonenumbers.PhoneNumberFormat.E164)
+        self.email = self.email.lower()
         super(Person, self).save(*args, **kwargs)
 
 
@@ -213,7 +220,7 @@ class ThreadFix(models.Model):
         return self.name + ' - ' + self.host
 
 
-class Application(models.Model):
+class Application(TimeStampedModel, models.Model):
     """Contains information about a software application."""
 
     WEB_PLATFORM = 'web'
@@ -297,12 +304,14 @@ class Application(models.Model):
     revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text='Estimate the application\'s revenue in USD.')
     external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
     internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
+    requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
     technologies = models.ManyToManyField(Technology, blank=True)
     regulations = models.ManyToManyField(Regulation, blank=True)
     service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True)
 
     # Data Classification
+    # TODO Move to Data Classification Benchmark
     data_elements = models.ManyToManyField(DataElement, blank=True)
     override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Overrides the calculated data classification level.')
     override_reason = models.TextField(blank=True, help_text='Specify why the calculated data classification level is being overridden.')
@@ -313,8 +322,8 @@ class Application(models.Model):
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique application identifier used within ThreadFix.')
 
     # Misc
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    #created_date = models.DateTimeField(auto_now_add=True)
+    #modified_date = models.DateTimeField(auto_now=True)
 
     """
     source code repo
@@ -328,6 +337,8 @@ class Application(models.Model):
     organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+
+    objects = managers.ApplicationManager.from_queryset(managers.ApplicationQuerySet)()
 
     class Meta:
         get_latest_by = 'modified_date'
@@ -380,7 +391,7 @@ class Application(models.Model):
         return delta >= timedelta(days=-7)
 
 
-class ThreadFixMetrics(models.Model):
+class ThreadFixMetrics(TimeStampedModel, models.Model):
     """Point in time metrics from ThreadFix for an application."""
 
     critical_count = models.PositiveIntegerField(default=0)
@@ -391,9 +402,6 @@ class ThreadFixMetrics(models.Model):
 
     application = models.ForeignKey(Application)
 
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
-
     class Meta:
         get_latest_by = 'created_date'
         verbose_name = 'ThreadFix metrics'
@@ -401,6 +409,7 @@ class ThreadFixMetrics(models.Model):
 
     def total(self):
         return self.critical_count + self.high_count + self.medium_count + self.low_count + self.informational_count
+
 
 class Relation(models.Model):
     """Associates a person with an application with a role."""
@@ -447,7 +456,7 @@ class Environment(models.Model):
         ordering = ['-testing_approved', 'environment_type']
 
     def __str__(self):
-        return self.application.name + ' ' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type]
+        return self.application.name + ' (' + dict(Environment.ENVIRONMENT_CHOICES)[self.environment_type] + ')'
 
 
 class EnvironmentLocation(models.Model):
@@ -462,16 +471,13 @@ class EnvironmentLocation(models.Model):
         return self.location
 
 
-class EnvironmentCredentials(models.Model):
+class EnvironmentCredentials(TimeStampedModel, models.Model):
     """Credentials for a specific environment."""
 
     username = models.CharField(max_length=128, blank=True)
     password = models.CharField(max_length=128, blank=True)
     role_description = models.CharField(max_length=128, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)')
     notes = models.TextField(blank=True, help_text='Additional information about these credentials.')
-
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
 
     environment = models.ForeignKey(Environment)
 
@@ -480,7 +486,7 @@ class EnvironmentCredentials(models.Model):
         ordering = ['username', 'password']
 
 
-class Engagement(models.Model):
+class Engagement(TimeStampedModel, models.Model):
     """Container for activities performed for an application over a duration."""
 
     PENDING_STATUS = 'pending'
@@ -496,14 +502,16 @@ class Engagement(models.Model):
     start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
     end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
     description = models.TextField(blank=True)
+
     open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
+    duration = models.DurationField(blank=True, null=True)
 
     requestor = models.ForeignKey(Person, blank=True, null=True, help_text='Specify who requested this engagement.')
     application = models.ForeignKey(Application)
 
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    objects = managers.EngagementManager.from_queryset(managers.EngagementQuerySet)()
+    metrics = managers.EngagementMetrics.from_queryset(managers.EngagementQuerySet)()
 
     class Meta:
         get_latest_by = 'close_date'
@@ -513,18 +521,21 @@ class Engagement(models.Model):
         """Automatically sets the open and closed dates when the status changes."""
         if self.pk is not None:
             engagement = Engagement.objects.get(pk=self.pk)
+            now = timezone.now()
             if engagement.status != self.status:
                 if self.status == Engagement.PENDING_STATUS:
                     self.open_date = None
                     self.close_date = None
                 elif self.status == Engagement.OPEN_STATUS:
-                    self.open_date = timezone.now()
+                    self.open_date = now
                     self.close_date = None
                 elif self.status == Engagement.CLOSED_STATUS:
                     if self.open_date is None:
-                        self.open_date = timezone.now()
-                    self.close_date = timezone.now()
+                        self.open_date = now
+                    self.close_date = now
 
+        if self.open_date is not None and self.close_date is not None:
+            self.duration = self.close_date - self.open_date
         super(Engagement, self).save(*args, **kwargs)
 
     def is_pending(self):
@@ -551,11 +562,17 @@ class Engagement(models.Model):
         return False
 
 
-class ActivityType(models.Model):
+class ActivityType(TimeStampedModel, models.Model):
     """Types of work."""
 
-    name = models.CharField(max_length=128, unique=True, help_text='A unique name for this activity type.')
-    documentation = models.TextField(blank=True, help_text='Guidelines, procedures, and techniques for this activity type.')
+    name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for this activity type.'))
+    documentation = models.TextField(blank=True, help_text=_('Guidelines, procedures, and techniques for this activity type.'))
+    requestable = models.NullBooleanField(default=False, help_text=_('Specify if this activity type can be externally requested.'))
+
+    # TODO public description
+
+    objects = managers.ActivityTypeManager.from_queryset(managers.ActivityTypeQuerySet)()
+    metrics = managers.ActivityTypeMetrics.from_queryset(managers.ActivityTypeQuerySet)()
 
     class Meta:
         ordering = ['name']
@@ -580,17 +597,20 @@ class Activity(models.Model):
     description = models.TextField(blank=True)
     open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
+    duration = models.DurationField(blank=True, null=True)
 
     activity_type = models.ForeignKey(ActivityType)
     engagement = models.ForeignKey(Engagement)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
-    def __str__(self):
-        return self.activity_type.name
+    objects = managers.ActivityManager.from_queryset(managers.ActivityQuerySet)()
 
     class Meta:
         ordering = ['engagement__start_date']
         verbose_name_plural = 'Activities'
+
+    def __str__(self):
+        return self.activity_type.name
 
     def save(self, *args, **kwargs):
         """
@@ -601,11 +621,12 @@ class Activity(models.Model):
         if self.pk is not None:
             activity = Activity.objects.get(pk=self.pk)
             if activity.status != self.status:  # When status changed
+                now = timezone.now()
                 if self.status == Activity.PENDING_STATUS:
                     self.open_date = None
                     self.close_date = None
                 elif self.status == Activity.OPEN_STATUS:
-                    self.open_date = timezone.now()
+                    self.open_date = now
                     self.close_date = None
 
                     # Open the parent engagement if the activity is opened
@@ -614,19 +635,20 @@ class Activity(models.Model):
                         self.engagement.save()
                 elif self.status == Activity.CLOSED_STATUS:
                     if self.open_date is None:
-                        self.open_date = timezone.now()
-                    self.close_date = timezone.now()
+                        self.open_date = now
+                    self.close_date = now
 
                     # If all of the parent engagement activities are closed, close the parent engagement
-                    # TODO Fix for if only one activity present
                     close = True
-                    for current_activity in self.engagement.activity_set.all():
-                        if self.id is not current_activity.id and current_activity.status != Activity.CLOSED_STATUS:
+                    for current_activity in self.engagement.activity_set.exclude(id=self.id):
+                        if current_activity.status != Activity.CLOSED_STATUS:
                             close = False
                             break
                     if close:
                         self.engagement.status = Engagement.CLOSED_STATUS
                         self.engagement.save()
+        if self.open_date is not None and self.close_date is not None:
+            self.duration = self.close_date - self.open_date
         super(Activity, self).save(*args, **kwargs)
 
     def is_pending(self):
@@ -639,27 +661,24 @@ class Activity(models.Model):
         return self.status == Activity.CLOSED_STATUS
 
     def is_ready_for_work(self):
-        """If the activity is pending on or after the engagement's start date."""
+        """If the activity is pending on or after the parent engagement's start date."""
         if self.status == Activity.PENDING_STATUS:
             if date.today() >= self.engagement.start_date:
                 return True
         return False
 
     def is_past_due(self):
-        """If the activity is not closed by the engagement's end date."""
+        """If the activity is not closed by the parent engagement's end date."""
         if self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS:
             if date.today() > self.engagement.end_date:
                 return True
         return False
 
 
-class Comment(models.Model):
+class Comment(TimeStampedModel, models.Model):
     """Abstract message about an engagement or activity."""
 
     message = models.TextField()
-
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -670,25 +689,39 @@ class Comment(models.Model):
         abstract = True
 
 
-class EngagementComment(Comment):  # Extends Comment
+class EngagementComment(Comment):
     """Comment for a specific engagement."""
 
     engagement = models.ForeignKey(Engagement)
 
 
-class ActivityComment(Comment):  # Extends Comment
+class ActivityComment(Comment):
     """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)
 
 
-class FileUpload(models.Model):
+class ExternalRequest(TimeStampedModel, models.Model):
+    """An external request for engagement."""
+
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    requestor = models.ForeignKey(Person)
+    application = models.ForeignKey(Application, blank=True)
+    activities = models.ManyToManyField(ActivityType, limit_choices_to={'requestable': True})
+    # Application FK
+    # Person FK (Can be blank)
+    # Requested Activities (Multiple)
+    # Status Page UUID
+    # Created Engagement (blank)
+
+    # Some sort of accept/decline/other status
+
+
+class FileUpload(TimeStampedModel, models.Model):
     """Abstract file upload by a user."""
 
     file = models.FileField()
-
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -711,3 +744,6 @@ class ApplicationFileUpload(FileUpload):
     file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
 
     application = models.ForeignKey(Application)
+
+
+
