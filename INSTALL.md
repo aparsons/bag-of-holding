@@ -16,13 +16,6 @@ sudo apt-get install python3-pip
 sudo pip3 install virtualenv
 ```
 
-**Clone the project**
-
-_You may need to setup SSH keys and add them to Stash to clone the project._
-
-```sh
-git clone ssh://git@devops-tools.pearson.com/appsec/bag-of-holding.git
-```
 
 **Open the directory**
 
