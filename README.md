@@ -6,14 +6,19 @@ The **Bag of Holding** is an application security utility to assist in the organ
 
 For information about **what's new** as well as **known issues**, see [RELEASES.md](RELEASES.md)
 
-## Deployment
-
-For information about how to create a deployment, see [DEPLOY.md](DEPLOY.md).
-
 ## Development Setup
 
 For information on setting up a development environment, see [INSTALL.md](INSTALL.md).
 
+## Commands
+
+#### ThreadFix
+The following command will retrieve the latest metrics from ThreadFix for connected applications. We recommend this be run daily as a Cron job.
+
+```
+python manage.py cron --threadfix
+```
+
 ## License
 
-Please refer to [LICENSE.md](LICENSE.md).
+* [Licensed under the Apache License, Version 2.0](LICENSE.md).

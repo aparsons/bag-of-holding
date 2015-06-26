@@ -1,8 +1,31 @@
 # Bag of Holding Releases
 
-## 1.0.3 - 06/26/2015
+## 0.0.3 - 06/26/2015
 
+Our goal for the 0.0.3 release was to improve the metrics and reports. You will also find there is now an API available for use.
 
+### What's New
+
+* Dependencies. The project **requirements.txt** has been updated to require the following additional dependencies:
+    * Django - Updated 1.7.7 to 1.8.2
+    * django-filter - Updated 0.9.2 to 0.10.0
+    * Markdown - Updated 2.6.1 to 2.6.2
+    * pytz - Updated 2015.2 to 2015.4
+    * requests - Updated 2.6.0 to 2.7.0
+    * threadfix-api - New 1.1.1
+* Metrics
+    * Average Time Per Activity
+    * Engagement and Activity Stats
+* Reports
+    * Engagement Coverage Report
+    * ThreadFix Summary Report
+* API
+    * Applications (including ThreadFix metrics)
+    * Organizations
+* ThreadFix cron task to pull in metrics daily
+* 47 Test Cases
+* Model managers to get code more centralized
+* Project restructuring for requirements and settings
 
 ## 1.0.2 - 04/20/2015
 
