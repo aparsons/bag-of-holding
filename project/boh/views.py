@@ -1160,6 +1160,7 @@ def environment_edit_locations(request, environment_id):
         inlineformset_factory(
             models.Environment,
             models.EnvironmentLocation,
+            fields=('location', 'notes'),
             extra=1,
             widgets={
                 'notes': django_forms.Textarea(attrs={'rows': 2})
@@ -1192,6 +1193,7 @@ def environment_edit_credentials(request, environment_id):
         inlineformset_factory(
             models.Environment,
             models.EnvironmentCredentials,
+            fields=('username', 'password', 'role_description', 'notes'),
             extra=1,
             widgets={
                 'notes': django_forms.Textarea(attrs={'rows': 2})
