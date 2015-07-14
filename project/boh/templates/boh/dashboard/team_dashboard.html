@@ -9,7 +9,8 @@
     <h3>Activities by User</h3>
     <p class="text-muted">Find open and pending activities for each user.</p>
     <div class="panel-group" id="user-accordion" role="tablist" aria-multiselectable="true">
-      {% for user in activities_by_user %}
+      {% for user in  activities_by_user%}
+      {% if user.activity_set.count > 0 %}
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="user-{{ user.id }}-heading">
           <h4 class="panel-title">
@@ -32,6 +33,7 @@
           {% endif %}
         </div>
       </div>
+      {% endif %}
       {% endfor %}
     </div>
   </div>
