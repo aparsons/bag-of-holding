@@ -8,6 +8,8 @@ project/*/migrations/*
 !project/boh/migrations/0005_v1_0_3.py
 .idea
 
+project/project/settings/dev_aparsons.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
