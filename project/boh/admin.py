@@ -119,10 +119,15 @@ class ApplicationAdmin(admin.ModelAdmin):
             'fields': ['requestable', 'created_date', 'modified_date']
         }),
     ]
-    list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'created_date', 'modified_date']
+    list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date']
     list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
     search_fields = ['^name']
+
+    def dcl_display(self, obj):
+        return obj.data_classification_level()
+    dcl_display.short_description = 'DCL'
+
 
 admin.site.register(models.Application, ApplicationAdmin)
 
