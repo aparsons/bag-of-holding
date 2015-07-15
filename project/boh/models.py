@@ -56,7 +56,7 @@ class Person(models.Model):
 
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(max_length=128, unique=True)
     role = models.CharField(max_length=17, choices=ROLE_CHOICES)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)

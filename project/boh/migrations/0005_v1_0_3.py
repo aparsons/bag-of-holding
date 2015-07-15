@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='email',
-            field=models.EmailField(unique=True, max_length=254),
+            field=models.EmailField(max_length=128, unique=True),
         ),
         migrations.AddField(
             model_name='threadfixmetrics',
