@@ -1,6 +1,14 @@
-from django import template
+import phonenumbers
 
+from django import template
 
 register = template.Library()
 
-# TODO Move all custom template tags to this file
+
+@register.filter(name='format_phone')
+def format_phone(value):
+    if value:
+        number = phonenumbers.parse(value, 'US')
+        return phonenumbers.format_number(number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+    else:
+        return ''
