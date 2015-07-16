@@ -51,9 +51,7 @@ class ActivityTypeMetrics(models.Manager):
 
 
 class ActivityTypeQuerySet(models.QuerySet):
-    def requestable(self):
-        """Returns ActivityTypes that can be requested."""
-        return self.filter(requestable=True)
+    pass
 
 
 class EngagementManager(models.Manager):

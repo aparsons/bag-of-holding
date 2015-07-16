@@ -567,9 +567,6 @@ class ActivityType(TimeStampedModel, models.Model):
 
     name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for this activity type.'))
     documentation = models.TextField(blank=True, help_text=_('Guidelines, procedures, and techniques for this activity type.'))
-    requestable = models.NullBooleanField(default=False, help_text=_('Specify if this activity type can be externally requested.'))
-
-    # TODO public description
 
     objects = managers.ActivityTypeManager.from_queryset(managers.ActivityTypeQuerySet)()
     metrics = managers.ActivityTypeMetrics.from_queryset(managers.ActivityTypeQuerySet)()

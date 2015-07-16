@@ -165,8 +165,7 @@ admin.site.register(models.Engagement, EngagementAdmin)
 
 
 class ActivityTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'requestable']
-    list_filter = ['requestable']
+    list_display = ['name']
 
 admin.site.register(models.ActivityType, ActivityTypeAdmin)
 
