@@ -16,29 +16,24 @@
 
 {% block form %}
   {% include "boh/snippets/form/_general.html" with control=wizard.form.application label='What application can we help you with?'%}
-  {% include "boh/snippets/form/_general.html" with control=wizard.form.activity_types label='What would you like us to do?' %}
-
-  <marquee>BELOW IS A MOCKUP</marquee>
+  {% include "boh/snippets/form/_general.html" with control=wizard.form.service_bundle label='What would you like us to do?' %}
 
   <table class="table">
     <thead>
       <tr>
-        <th>Activity</th>
+        <th>Service</th>
         <th>Description</th>
         <th>Typical Duration</th>
       </tr>
     </thead>
     <tbody>
+      {% for service_bundle in service_bundles %}
       <tr>
-        <td>AppScan Onboarding</td>
-        <td>We Scan Ya</td>
-        <td>1 Week</td>
+        <td>{{ service_bundle.name }}</td>
+        <td>{{ service_bundle.description }}</td>
+        <td>{{ service_bundle.time_estimate }}</td>
       </tr>
-      <tr>
-        <td>Checkmarx Onboarding</td>
-        <td>We Source Ya</td>
-        <td>2 Days</td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 

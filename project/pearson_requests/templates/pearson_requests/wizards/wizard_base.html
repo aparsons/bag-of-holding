@@ -29,7 +29,7 @@
       {% endif %}
 
       {% if wizard.steps.prev %}
-        <button name="wizard_goto_step" type="submit" class="btn btn-default" value="{{ wizard.steps.first }}">First</button>
+        <button name="wizard_goto_step" type="submit" class="btn btn-default" value="{{ wizard.steps.first }}">Start Over</button>
         <button name="wizard_goto_step" type="submit" class="btn btn-default" value="{{ wizard.steps.prev }}">Previous</button>
       {% endif %}
       <button type="submit" class="btn btn-primary">{% block submit_value %}Continue{% endblock %}</button>

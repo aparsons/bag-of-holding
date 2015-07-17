@@ -1,18 +1,53 @@
 {% extends "pearson_requests/wizards/wizard_base.html" %}
 
+{% load boh_tags %}
+
 {% block title %}Application Security Service Request{% endblock %}
 
 {% block header %}Service Request{% endblock %}
 
 {% block header_subtext %}Application Security{% endblock %}
 
-{% block panel_title %}Confirm your request{% endblock %}
+{% block panel_title %}Does everything look correct?{% endblock %}
 
 {% block form %}
-  <h4>Requestor</h4>
+  <h4>Requester</h4>
+  <div class="row">
+    <div class="col-md-3">
+      <dl>
+        <dt>Name</dt>
+        <dd>{{ person_data.first_name }} {{ person_data.last_name }}</dd>
+        <dt>Email</dt>
+        <dd>{{ person_data.email }}</dd>
+      </dl>
+    </div>
+    <div class="col-md-3">
+      <dl>
+        <dt>Role</dt>
+        <dd>{{ person_data.get_role_display }}</dd>
+        <dt>Job Title</dt>
+        <dd>{{ person_data.job_title }}</dd>
+      </dl>
+    </div>
+    <div class="col-md-3">
+      <dl>
+        <dt>Phone Work</dt>
+        <dd>{{ person_data.phone_work|format_phone }}</dd>
+        <dt>Phone Mobile</dt>
+        <dd>{{ person_data.phone_mobile|format_phone }}</dd>
+      </dl>
+    </div>
+  </div>
+
   <h4>Application</h4>
-  <h4>Activities</h4>
+  <p>{{ application_data.application.name }}</p>
+
+  <h4>Service</h4>
+  <p>{{ application_data.service_bundle.name }} - {{ application_data.service_bundle.description }}</p>
+
   <h4>Availability</h4>
+  <p>{{ application_data.start_date }} - {{ application_data.end_date }}</p>
+
 {% endblock %}
 
-{% block submit_value %}Submit Request{% endblock %}
+{% block submit_value %}Submit Service Request{% endblock %}
