@@ -12,6 +12,7 @@ base_urlpatterns = patterns('',
 
     #url(r'^2/', include('boh_ui.urls', namespace='boh_ui')),
     #url(r'^requests/', include('pearson_requests.urls', namespace='pearson_requests')),
+    url(r'^dcl/', include('pearson_dcl.urls', namespace='pearson_dcl')),
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),

@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 from .behaviors import TimeStampedModel
-from . import managers
+from . import helpers, managers
 
 
 class Tag(models.Model):
@@ -322,8 +322,6 @@ class Application(TimeStampedModel, models.Model):
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique application identifier used within ThreadFix.')
 
     # Misc
-    #created_date = models.DateTimeField(auto_now_add=True)
-    #modified_date = models.DateTimeField(auto_now=True)
 
     """
     source code repo
@@ -348,42 +346,12 @@ class Application(TimeStampedModel, models.Model):
         return self.name
 
     def data_classification_level(self):
-        dsv = self.data_sensitivity_value()
-        if dsv < 15:
-            return Application.DCL_1
-        elif 15 <= dsv < 100:
-            return Application.DCL_2
-        elif 100 <= dsv < 150:
-            return Application.DCL_3
-        else:
-            return Application.DCL_4
+        """Returns the data classification level of the selected data elements."""
+        return helpers.data_classification_level(self.data_sensitivity_value())
 
     def data_sensitivity_value(self):
-        """
-        Calculates the data sensitivity value.
-        DSV = Global * (Personal + Student + Government) + PCI + Health + Company
-        """
-        vector = {
-            DataElement.GLOBAL_CATEGORY: 1.0,
-            DataElement.PERSONAL_CATEGORY: 0.0,
-            DataElement.COMPANY_CATEGORY: 0.0,
-            DataElement.STUDENT_CATEGORY: 0.0,
-            DataElement.GOVERNMENT_CATEGORY: 0.0,
-            DataElement.PCI_CATEGORY: 0.0,
-            DataElement.MEDICAL_CATEGORY: 0.0,
-        }
-
-        for data_element in self.data_elements.all():
-            vector[data_element.category] += data_element.weight
-
-        dsv = vector[DataElement.GLOBAL_CATEGORY] * (vector[DataElement.PERSONAL_CATEGORY] + vector[DataElement.STUDENT_CATEGORY] + vector[DataElement.GOVERNMENT_CATEGORY]) + vector[DataElement.PCI_CATEGORY] + vector[DataElement.MEDICAL_CATEGORY] + vector[DataElement.COMPANY_CATEGORY]
-
-        """
-        if dsv > 200:
-            dsv = 200
-        """
-
-        return dsv
+        """Returns the calculated data sensitivity value of the selected data elements."""
+        return helpers.data_sensitivity_value(self.data_elements.all())
 
     def is_new(self):
         """Returns true if the application was created in the last 7 days"""
