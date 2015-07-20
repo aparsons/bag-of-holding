@@ -31,7 +31,9 @@ INSTALLED_APPS = (
     'widget_tweaks',
 
     'boh',
-    'boh_api'
+    'boh_api',
+
+    'pearson_dcl'
 )
 
 MIDDLEWARE_CLASSES = (
