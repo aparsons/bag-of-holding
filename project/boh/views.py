@@ -751,7 +751,7 @@ def application_list(request):
 
     #
     show_advanced = False
-    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or request.GET.get('service_level_agreements') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or request.GET.get('service_level_agreements') or request.GET.get('asvs_level') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
         show_advanced = True
 
     return render(request, 'boh/application/list.html', {
