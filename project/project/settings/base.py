@@ -29,7 +29,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'django_filters',
     'widget_tweaks',
-
+    'debug_toolbar',
     'boh',
     'boh_api',
 

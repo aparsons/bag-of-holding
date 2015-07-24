@@ -141,6 +141,27 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-bullseye fa-fw" aria-hidden="true"></span> OWASP ASVS</h3>
+      </div>
+      <div class="list-group">
+        {% if application.asvs_level %}
+        <li class="list-group-item">
+          ASVS Level {{ application.asvs_level }}</td>
+        </li>
+        <li class="list-group-item">
+        {{ application.asvs_level_percent_achieved }}% Compliant to ASVS Level {{ application.asvs_level_target }}</td>
+        </li>
+        <a href="{{ application.asvs_doc_url }}" target="_blank" class="list-group-item text-primary">ASVS Detailed Report <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        {% else %}
+        <li class="list-group-item">
+          Not Assessed
+        </li>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
         <h3 class="panel-title"><span class="fa fa-link fa-fw" aria-hidden="true"></span> Resources</h3>
       </div>
       <div class="list-group">

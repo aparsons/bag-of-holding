@@ -1,5 +1,9 @@
 # Bag of Holding Releases
 
+## 0.0.4 - 07/24/2015
+
+Minor release with reporting application summmary and initial addition of ASVS
+
 ## 0.0.3 - 06/26/2015
 
 Our goal for the 0.0.3 release was to improve the metrics and reports. You will also find there is now an API available for use.

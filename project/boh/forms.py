@@ -48,6 +48,20 @@ class ThreadFixSummaryReportForm(forms.Form):
     )
     format = forms.ChoiceField(choices=FORMAT_CHOICES)
 
+class AppSummaryReportForm(forms.Form):
+    HTML_FORMAT = 'html'
+    CSV_FORMAT = 'csv'
+    FORMAT_CHOICES = (
+        (HTML_FORMAT, 'HTML'),
+        #(CSV_FORMAT, 'CSV'),
+    )
+
+    applications = forms.ModelMultipleChoiceField(
+        queryset=models.Application.objects.all(),
+        required=False
+    )
+    format = forms.ChoiceField(choices=FORMAT_CHOICES)
+
 
 # User
 
@@ -197,6 +211,16 @@ class ApplicationSettingsServiceLevelAgreementForm(forms.ModelForm):
         model = models.Application
         fields = ['service_level_agreements']
 
+class ApplicationSettingsASVSForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['asvs_level', 'asvs_level_percent_achieved', 'asvs_doc_url', 'asvs_level_target']
+        labels = {
+            'asvs_level': 'ASVS Level',
+            'asvs_level_percent_achieved': 'Percent Achived Towards Targeted Level',
+            'asvs_doc_url': 'ASVS Document',
+            'asvs_level_target': 'Target ASVS Level'
+        }
 
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:

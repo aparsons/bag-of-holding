@@ -168,10 +168,12 @@ def dashboard_reports(request):
     # Top 10 Reports
     ec_report_form = forms.EngagementCoverageReportForm()
     tf_report_form = forms.ThreadFixSummaryReportForm()
+    as_report_form = forms.AppSummaryReportForm()
 
     return render(request, 'boh/dashboard/reports.html', {
         'ec_report_form': ec_report_form,
         'tf_report_form': tf_report_form,
+        'as_report_form': as_report_form,
         'active_top': 'dashboard',
         'active_tab': 'reports'
     })
@@ -192,6 +194,11 @@ def dashboard_reports_download(request):
         if form.is_valid():
             file_name = 'threadfix-summary_' + timestamp
             return reports.ThreadFixSummaryReport(file_name, form.cleaned_data['format'], form.cleaned_data['organizations'], request.user).response()
+    elif report_type == 'app_summary':
+        form = forms.AppSummaryReportForm(request.POST)
+        if form.is_valid():
+            file_name = 'app-summary_' + timestamp
+            return reports.AppSummaryReport(file_name, form.cleaned_data['format'], form.cleaned_data['applications'], request.user).response()
 
     messages.error(request, 'There was a problem downloading the report.', extra_tags=random.choice(error_messages))
     return redirect('boh:dashboard.reports')
@@ -784,7 +791,7 @@ def application_engagements(request, application_id):
 
     pending_engagements = engagements.filter(status=models.Engagement.PENDING_STATUS)
     open_engagements = engagements.filter(status=models.Engagement.OPEN_STATUS)
-    closed_engagements = engagements.filter(status=models.Engagement.CLOSED_STATUS)
+    closed_engagements = engagements.filter(status=models.Engagement.CLOSED_STATUS).order_by('-end_date')
 
     return render(request, 'boh/application/engagements.html', {
         'application': application,
@@ -1082,6 +1089,28 @@ def application_settings_services(request, application_id):
         'active_tab': 'settings',
         'active_side': 'services'
     })
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_settings_owasp_asvs(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+
+    asvs_form = forms.ApplicationSettingsASVSForm(instance=application)
+
+    if 'submit-asvs' in request.POST:
+        asvs_form = forms.ApplicationSettingsASVSForm(request.POST, instance=application)
+        if asvs_form.is_valid():
+            asvs_form.save()
+            messages.success(request, 'You successfully updated this application\'s ASVS information.', extra_tags=random.choice(success_messages))
+
+    return render(request, 'boh/application/settings/owasp_asvs.html', {
+        'application': application,
+        'asvs_form': asvs_form,
+        'active_top': 'applications',
+        'active_tab': 'settings',
+        'active_side': 'owasp'
+    })
+
 
 
 @login_required
@@ -1553,5 +1582,3 @@ def person_delete(request, person_id):
         return redirect('boh:person.list')
     else:
         return redirect('boh:person.detail', person.id)
-
-

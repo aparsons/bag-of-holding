@@ -76,3 +76,24 @@ class ThreadFixSummaryReport(Report):
             return template.render(context)
         else:
             return 'test, test'
+
+class AppSummaryReport(Report):
+
+    def __init__(self, file_name, file_format, applications, requestor):
+        super().__init__('Application Summary Report', file_name, file_format, requestor)
+        self.applications = applications
+
+    def generate(self):
+        if not self.applications:
+            self.applications = models.Application.objects.all()
+
+        if self.file_format == 'html':
+            template = loader.get_template('boh/reports/app_summary.html')
+            context = Context({
+                'current_datetime': timezone.now(),
+                'requestor': self.requestor,
+                'applications': self.applications
+            })
+            return template.render(context)
+        else:
+            return 'test, test'

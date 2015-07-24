@@ -53,4 +53,30 @@
     </form>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-6">
+    <form action="{% url 'boh:dashboard.reports.download' %}?report_type=app_summary" method="post">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Application Summary Report</h3>
+        </div>
+        <div class="panel-body">
+          <p>This report details all vulnerability and application meta data.</p>
+          <div class="row">
+            <div class="col-md-6">
+              {% include "boh/snippets/form/_general.html" with control=as_report_form.applications %}
+            </div>
+            <div class="col-md-6">
+              {% include "boh/snippets/form/_general.html" with control=as_report_form.format %}
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> Download Report</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
 {% endblock dashboard_content %}

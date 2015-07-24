@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     url(r'^applications/(?P<application_id>\d+)/settings/data-elements/$', views.application_settings_data_elements, name='application.settings.data-elements'),
     url(r'^applications/(?P<application_id>\d+)/settings/data-elements/override/$', views.application_settings_data_elements_override, name='application.settings.data-elements.override'),
     url(r'^applications/(?P<application_id>\d+)/settings/service-level-agreements/$', views.application_settings_service_level_agreements, name='application.settings.service-level-agreements'),
+    url(r'^applications/(?P<application_id>\d+)/settings/owasp/$', views.application_settings_owasp_asvs, name='application.settings.owasp-asvs'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
 

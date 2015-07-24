@@ -291,6 +291,18 @@ class Application(TimeStampedModel, models.Model):
         (DCL_4, 'DCL 4'),
     )
 
+    ASVS_0 = 0
+    ASVS_1 = 1
+    ASVS_2 = 2
+    ASVS_3 = 3
+    ASVS_CHOICES = (
+        (None, 'Not Specified'),
+        (ASVS_0, '0'),
+        (ASVS_1, '1'),
+        (ASVS_2, '2'),
+        (ASVS_3, '3'),
+    )
+
     # General
     name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
     description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
@@ -320,6 +332,13 @@ class Application(TimeStampedModel, models.Model):
     threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text='The ThreadFix service to connect to this application.')
     threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique team identifier used within ThreadFix.')
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique application identifier used within ThreadFix.')
+
+    # OWASP
+    # TODO Move to OWASP ASVS Benchmark
+    asvs_level = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Assessed ASVS Level')
+    asvs_level_percent_achieved = models.PositiveIntegerField(blank=True, null=True, help_text='Percent compliant to the targeted ASVS level.')
+    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
+    asvs_level_target = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Targeted ASVS level for this application.')
 
     # Misc
 
@@ -709,6 +728,3 @@ class ApplicationFileUpload(FileUpload):
     file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
 
     application = models.ForeignKey(Application)
-
-
-
