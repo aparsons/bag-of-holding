@@ -13,13 +13,13 @@
 {% block engagement_content %}
 <div class="row">
   <div class="col-md-8">
-    <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }} <small>({% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %})</small></h2>
+    <h3 class="no-margin-top"><span class="fa fa-calendar" aria-hidden="true"></span> {{ engagement.start_date }} - {{ engagement.end_date }} <small>({% if engagement.start_date == engagement.end_date %}1 day{% else %}{{ engagement.start_date|timesince:engagement.end_date }}{% endif %})</small></h3>
     {{ engagement.description|markdown_render }}
     {% if engagement.requestor %}<p>Requested by <strong><a href="{% url 'boh:person.detail' engagement.requestor.id %}">{{ engagement.requestor.first_name }} {{ engagement.requestor.last_name }}</a></strong>.</p>{% endif %}
 
     <hr>
 
-    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h2>
+    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h3>
     <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
     <p><a href="{% url 'boh:activity.add' engagement.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Activity</span></a></p>
 

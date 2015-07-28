@@ -252,4 +252,8 @@ class ServiceLevelAgreementAdmin(admin.ModelAdmin):
 
 admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)
 
-admin.site.register(models.ExternalRequest)
+
+class ServiceRequestAdmin(admin.ModelAdmin):
+    list_display = ['requester', 'application', 'token']
+
+admin.site.register(models.ServiceRequest, ServiceRequestAdmin)
