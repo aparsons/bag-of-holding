@@ -666,21 +666,23 @@ class ActivityComment(Comment):
     activity = models.ForeignKey(Activity)
 
 
-class ExternalRequest(TimeStampedModel, models.Model):
+class ServiceRequest(TimeStampedModel, models.Model):
     """An external request for engagement."""
 
-    token = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    requestor = models.ForeignKey(Person)
-    application = models.ForeignKey(Application, blank=True)
-    activities = models.ManyToManyField(ActivityType, limit_choices_to={'requestable': True})
-    # Application FK
-    # Person FK (Can be blank)
-    # Requested Activities (Multiple)
-    # Status Page UUID
-    # Created Engagement (blank)
+    token = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
+    requester = models.ForeignKey(Person)
+    application = models.ForeignKey(Application)
+    activities = models.ManyToManyField(ActivityType)
+    description = models.TextField(blank=True)
+    engagement = models.ForeignKey(Engagement, blank=True, null=True)
 
     # Some sort of accept/decline/other status
+
+
+class ServiceRequestComment(Comment):
+    """Comment for a specific service request."""
+
+    service_request = models.ForeignKey(ServiceRequest)
 
 
 class FileUpload(TimeStampedModel, models.Model):

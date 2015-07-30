@@ -33,7 +33,8 @@ INSTALLED_APPS = (
     'boh',
     'boh_api',
 
-    'pearson_dcl'
+    'pearson_dcl',
+    'pearson_requests'
 )
 
 MIDDLEWARE_CLASSES = (

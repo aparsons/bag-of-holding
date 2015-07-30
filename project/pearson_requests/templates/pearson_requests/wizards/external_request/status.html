@@ -1,0 +1,13 @@
+{% extends "pearson_requests/base.html" %}
+
+{% block content %}
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>Service Request Status <small>Application Security</small></h1>
+    </div>
+    <p>{{ service_request.requester }}</p>
+    <p>{{ service_request.application }}</p>
+    <p>{% for activity_type in service_request.activities.all %}{{ activity_type }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p>{{ service_request.description }}</p>
+  </div>
+{% endblock %}

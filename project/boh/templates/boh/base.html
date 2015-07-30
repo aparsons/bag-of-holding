@@ -93,15 +93,17 @@
     </div>
   </div>
 
+  {% if user.is_authenticated %}
   <footer id="footer" class="footer">
     <div class="container">
       <div class="row">
         <div class="col-md-12 clearfix">
-          {% if user.is_authenticated %}<span class="text-muted pull-right">v0.0.3</span>{% endif %}
+          <span class="text-muted pull-right">v0.0.3</span>
         </div>
       </div>
     </div>
   </footer>
+  {% endif %}
 
   <script src="{% static 'boh/js/application.min.js' %}"></script>
   {% block js %}

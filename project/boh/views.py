@@ -134,16 +134,18 @@ def dashboard_team(request):
         'active_tab': 'team'
     })
 
+
 @login_required
 @require_http_methods(['GET'])
 def dashboard_requests(request):
-    external_requests = models.ExternalRequest.objects.all()
+    service_requests = models.ServiceRequest.objects.all()
 
     return render(request, 'boh/dashboard/requests.html', {
-        'external_requests': external_requests,
+        'service_requests': service_requests,
         'active_top': 'dashboard',
         'active_tab': 'requests'
     })
+
 
 @login_required
 @require_http_methods(['GET'])

@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     # Dashboard
     url(r'^$', views.dashboard_personal, name='dashboard.personal'),
     url(r'^team/$', views.dashboard_team, name='dashboard.team'),
-    url(r'^external-requests/$', views.dashboard_requests, name='dashboard.requests'),
+    url(r'^service-requests/$', views.dashboard_requests, name='dashboard.requests'),
     url(r'^metrics/$', views.dashboard_metrics, name='dashboard.metrics'),
     url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
     url(r'^reports/download/$', views.dashboard_reports_download, name='dashboard.reports.download'),
