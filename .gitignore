@@ -6,9 +6,8 @@ project/*/migrations/*
 !project/boh/migrations/0003_v1_0_1.py
 !project/boh/migrations/0004_v1_0_2.py
 !project/boh/migrations/0005_v1_0_3.py
-.idea
 
-project/project/settings/dev_aparsons.py
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -73,3 +72,5 @@ node_modules
 .temp
 .sass-cache
 bower_components
+
+project/project/settings/dev_aparsons.py
