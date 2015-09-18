@@ -1,0 +1,64 @@
+{% extends "pearson_requests/wizards/wizard_base.html" %}
+
+{% load markdown_render %}
+{% load staticfiles %}
+
+{% block title %}Application Security Service Request{% endblock %}
+
+{% block header %}Service Request{% endblock %}
+
+{% block header_subtext %}Application Security{% endblock %}
+
+{% block panel_title %}How can we be of assistance?{% endblock %}
+
+{% block form %}
+  <div class="row">
+    <div class="col-md-6">
+      {% include "boh/snippets/form/_general.html" with control=wizard.form.application label='What application can we help you with?'%}
+    </div>
+    <div class="col-md-6">
+      {% include "boh/snippets/form/_general.html" with control=wizard.form.version label='What version will we be working on (for example, 1.4.12)?'%}
+    </div>
+  </div>
+
+  {% include "boh/snippets/form/_general.html" with control=wizard.form.service_bundle label='What would you like us to do?' %}
+
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-3">Service</th>
+        <th class="col-md-7">Description</th>
+        <th class="col-md-2">Typical Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for service_bundle in service_bundles %}
+      <tr>
+        <td>{{ service_bundle.name }}</td>
+        <td>{{ service_bundle.brief_description }}{% if service_bundle.detailed_description %} <a class="pull-right" data-toggle="modal" data-target="#description-{{ service_bundle.id }}" style="cursor:pointer;">More Information</a>{% endif %}</td>
+        <td>{{ service_bundle.time_estimate }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% for service_bundle in service_bundles %}
+  <div class="modal fade" id="description-{{ service_bundle.id }}" tabindex="-1" role="dialog" aria-labelledby="description-{{ service_bundle.id }}-label">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="description-{{ service_bundle.id }}-label"><strong>{{ service_bundle.name }}</strong></h4>
+        </div>
+        <div class="modal-body">
+          {{ service_bundle.detailed_description|markdown_render }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-close" aria-hidden="true"></span> Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}

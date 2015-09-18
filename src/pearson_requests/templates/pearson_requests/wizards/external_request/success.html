@@ -1,0 +1,17 @@
+{% extends "pearson/base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2 class="m-t-0 text-center"><span class="fa fa-smile-o" aria-hidden="true"></span> Thank You {{ person.first_name }}!</h2>
+          <p class="lead text-center">Your work request has been successfully received.</p>
+          <hr>
+          <p class="text-center">Your request has a dedicated page where you can view the status of your request and communicate with us. This link is unique to your request and can be shared with others.</p>
+          <a class="btn btn-primary center-block" href="{% url 'pearson_requests:status' token %}" role="button" target="_blank">Check your request's status <span class="fa fa-angle-double-right" aria-hidden="true"></span> </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

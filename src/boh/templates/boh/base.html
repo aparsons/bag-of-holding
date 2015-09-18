@@ -1,0 +1,112 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Bag of Holding | {% block title %}{% endblock %}</title>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'boh/favicons/apple-touch-icon-57x57.png' %}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'boh/favicons/apple-touch-icon-60x60.png' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'boh/favicons/apple-touch-icon-72x72.png' %}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'boh/favicons/apple-touch-icon-76x76.png' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'boh/favicons/apple-touch-icon-114x114.png' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'boh/favicons/apple-touch-icon-120x120.png' %}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'boh/favicons/apple-touch-icon-144x144.png' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'boh/favicons/apple-touch-icon-152x152.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'boh/favicons/apple-touch-icon-180x180.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-32x32.png' %}" sizes="32x32">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/android-chrome-192x192.png' %}" sizes="192x192">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-96x96.png' %}" sizes="96x96">
+  <link rel="icon" type="image/png" href="{% static 'boh/favicons/favicon-16x16.png' %}" sizes="16x16">
+  <link rel="shortcut icon" href="{% static 'boh/favicons/favicon.ico' %}" />
+  <link rel="manifest" href="{% static 'boh/favicons/manifest.json' %}">
+  <meta name="msapplication-TileColor" content="#2b5797">
+  <meta name="msapplication-TileImage" content="{% static 'boh/favicons/mstile-144x144.png' %}">
+  <meta name="theme-color" content="#ffffff">
+
+  <link href="{% static 'boh/css/application.min.css' %}" rel="stylesheet">
+  {% block css %}
+  {% endblock css %}
+
+  <script src="{% static 'boh/js/modernizr.min.js' %}"></script>
+</head>
+<body>
+  <div class="wrapper">
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'boh:dashboard.personal' %}" style="padding-top: 5px;">
+            <img alt="Bag of Holding" width="40" height="40" src="{% static 'boh/img/brand.png' %}">
+          </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li{% if active_top == 'dashboard' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-tasks" aria-hidden="true"></span> Dashboard</a></li>
+            <li{% if active_top == 'applications' %} class="active"{% endif %}><a href="{% url 'boh:application.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</a></li>
+            <li{% if active_top == 'people' %} class="active"{% endif %}><a href="{% url 'boh:person.list' %}"><span class="fa fa-users" aria-hidden="true"></span> People</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'boh_api:api-root' %}" target="_blank"><span class="fa fa-code" aria-hidden="true"></span><span class="hidden-sm"> API</span></a></li>
+            {% if user.is_staff %}
+            <li{% if active_top == 'management' %} class="active"{% endif %}><a href="{% url 'boh:management.overview' %}"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-sm"> Manage</span></a></li>
+            {% endif %}
+            <li class="dropdown{% if active_top == 'user' %} active{% endif %}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.first_name }} {{ user.last_name }} <span class="fa fa-caret-down" aria-hidden="true"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'boh:user.profile' %}"><span class="fa fa-user" aria-hidden="true"></span> My Profile</a></li>
+                <li><a href="{% url 'boh:user.change_password' %}"><span class="fa fa-key" aria-hidden="true"></span> Change Password</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endif %}
+    <div class="container">
+      {% if messages %}
+      <div class="row">
+        <div class="col-md-12">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.level_tag }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times" aria-hidden="true"></span></button>
+            {% if message.extra_tags %}<strong>{{ message.extra_tags }}</strong> {% endif %}{{ message }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 clearfix">
+          <span class="text-muted pull-right">v0.0.3</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  {% endif %}
+
+  <script src="{% static 'boh/js/application.min.js' %}"></script>
+  {% block js %}
+  {% endblock js %}
+</body>
+</html>

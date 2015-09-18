@@ -1,0 +1,221 @@
+{% extends "pearson/base.html" %}
+
+{% load humanize %}
+
+{% block page_title %}Status | {{ engagement_request.name }}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2 class="m-t-0"><strong>{{ engagement_request.name }}</strong> <small>Work Request Status</small></h2>
+          <p class="text-muted m-b-0">{{ subscription.name }}, this status page allows you to view the state of a work request and interact with the security team. You can also contact us anytime at <a href="mailto://appsec@pearson.com">appsec@pearson.com</a> or via <a href="https://pearson.hipchat.com/chat/room/839265" target="_blank">HipChat</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Request Details</h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-{% if engagement_request.is_pending %}info{% elif engagement_request.is_accepted %}success{% elif engagement_request.is_declined %}danger{% endif %}">
+            <h4 class="list-group-item-heading text-center m-b-0">
+              {% if engagement_request.is_pending %}
+                This request is currently <strong>{{ engagement_request.get_status_display|upper }}</strong>.
+              {% else %}
+                This request has been <strong>{{ engagement_request.get_status_display|upper }}</strong>.
+              {% endif %}
+            </h4>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Name</h4>
+            <p class="list-group-item-text">{{ engagement_request.name }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Created</h4>
+            <p class="list-group-item-text">{{ engagement_request.created_date|naturaltime }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Description</h4>
+            <p class="list-group-item-text">{{ engagement_request.description }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-comments" aria-hidden="true"></span> Comment History</h3>
+        </div>
+        <ul class="list-group">
+          {% for comment in engagement_request.engagementrequestcomment_set.all %}
+            <li class="list-group-item">
+              <p class="list-group-item-text text-muted">
+                <strong>
+                  {% if comment.user %}
+                    {% if comment.user.first_name and comment.user.last_name %}{{ comment.user.get_full_name }}{% else %}{{ user }}{% endif %}
+                  {% elif comment.subscription %}
+                    {{ comment.subscription.name }}
+                  {% else %}
+                    <span class="text-danger">[Deleted]</span>
+                  {% endif %}
+                </strong>
+                commented {{ comment.modified_date|naturaltime }}
+              </p>
+              <p class="list-group-item-text">{{ comment.message|linebreaksbr }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-comment" aria-hidden="true"></span> Add Comment</h3>
+        </div>
+        <div class="panel-body">
+          <p><small class="text-muted">Notifications of new comments will be sent to subscribers.</small></p>
+          <form method="post" action="{% url 'pearson_requests:status.comment' subscription.token %}">
+            {% csrf_token %}
+            {% include "boh/snippets/form/_general.html" with control=comment_form.message %}
+            <button class="btn btn-primary" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> Post Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-list-alt" aria-hidden="true"></span> Application Details</h3>
+        </div>
+        <ul class="list-group">
+          {% if user.is_authenticated %}
+            <a class="list-group-item" href="{% url 'boh:application.overview' engagement_request.application.id %}" target="_blank">
+              <h4 class="list-group-item-heading">Name</h4>
+              <p class="list-group-item-text">{{ engagement_request.application.name }}</p>
+            </a>
+          {% else %}
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Name</h4>
+              <p class="list-group-item-text">{{ engagement_request.application.name }}</p>
+            </li>
+          {% endif %}
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Version</h4>
+            <p class="list-group-item-text">{{ engagement_request.version }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-user" aria-hidden="true"></span> Requester Details</h3>
+        </div>
+        <ul class="list-group">
+          {% if user.is_authenticated %}
+            <a class="list-group-item" href="{% url 'boh:person.detail' engagement_request.requester.id %}" target="_blank">
+              <h4 class="list-group-item-heading">Name</h4>
+              <p class="list-group-item-text">{{ engagement_request.requester }}</p>
+            </a>
+          {% else %}
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Name</h4>
+              <p class="list-group-item-text">{{ engagement_request.requester }}</p>
+            </li>
+          {% endif %}
+          <a class="list-group-item" href="mailto://{{ engagement_request.requester.email }}">
+            <h4 class="list-group-item-heading">Email</h4>
+            <p class="list-group-item-text">{{ engagement_request.requester.email }}</p>
+          </a>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-cog" aria-hidden="true"></span> Subscription Settings</h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <small class="text-muted">Change your subscription settings or cancel subscription</small>
+          </li>
+          <li class="list-group-item">
+            <small class="text-muted">Notifications will be sent to you when there are:</small>
+            <form method="post" action="{% url 'pearson_requests:status.settings' subscription.token %}">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                  {% include "boh/snippets/form/_checkbox.html" with control=subscription_settings_form.send_status_updates label='Status Updates' help_text=' ' %}
+                </div>
+                <div class="col-md-6">
+                  {% include "boh/snippets/form/_checkbox.html" with control=subscription_settings_form.send_comments label='New Comments' help_text=' ' %}
+                </div>
+              </div>
+              <div class="clearfix">
+                <button class="btn btn-primary btn-sm pull-left" type="submit"><span class="fa fa-edit" aria-hidden="true"></span> Update Settings</button>
+                <button type="button" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#cancelModal"><span class="fa fa-bomb" aria-hidden="true"></span> Cancel Subscription</button>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fa fa-times" aria-hidden="true"></span></button>
+              <h4 class="modal-title" id="myModalLabel"><span class="fa fa-question-circle fa-lg" aria-hidden="true"></span> Confirm Subscription Cancellation</h4>
+            </div>
+            <div class="modal-body">
+              <p><strong>Are you sure you want to cancel this subscription?</strong></p>
+              <p class="m-b-0">You will no longer be able to view this page and receive email notifications.</p>
+            </div>
+            <div class="modal-footer">
+              <form method="post" action="{% url 'pearson_requests:status.cancel' subscription.token %}">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit"><span class="fa fa-bomb" aria-hidden="true"></span> Cancel Subscription</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times" aria-hidden="true"></span> Close</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-feed" aria-hidden="true"></span> Subscribers</h3>
+        </div>
+        <div class="panel-body">
+          <small class="text-muted">The following receive email notifications.</small>
+        </div>
+        <ul class="list-group">
+          {% for subscriber in engagement_request.engagementrequestsubscription_set.all %}
+            <li class="list-group-item{% if subscriber.token == subscription.token %} active{% endif %}">
+              {% if subscriber.label %}
+                <span class="badge">{{ subscriber.label }}</span>
+              {% endif %}
+              <h4 class="list-group-item-heading">{{ subscriber.name }}</h4>
+              <p class="list-group-item-text">
+                {{ subscriber.email }}
+                <span class="pull-right">
+                  {% if subscriber.send_status_updates %}
+                    <span class="fa fa-flag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Notify on status updates"></span>
+                  {% endif %}
+                  {% if subscriber.send_comments %}
+                    <span class="fa fa-comments fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Notify on comment updates"></span>
+                  {% endif %}
+                </span>
+              </p>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html lang="en">
+  <head>{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{% block title %}Pearson AppSec | {% block page_title %}Home{% endblock %}{% endblock %}</title>
+
+    <link href="{% static "pearson/styles/application.min.css" %}" rel="stylesheet">
+    {% block css %}{% endblock %}
+
+  </head>
+  <body>{% block body %}
+    {% include "pearson/layout/navbar.html" %}
+    <div class="container">
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-12">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.level_tag }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times" aria-hidden="true"></span></button>
+                {% if message.extra_tags %}<strong>{{ message.extra_tags }}</strong> {% endif %}{{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+
+      <hr class="m-t-0">
+      <p class="text-muted">Contact us anytime at <a href="mailto://appsec@pearson.com">appsec@pearson.com</a> or via <a href="https://pearson.hipchat.com/chat/room/839265" target="_blank">HipChat</a></p>
+    </div>
+    <script src="{% static "pearson/scripts/modernizr.min.js" %}"></script>{% endblock %}
+    <script src="{% static "pearson/scripts/application.min.js" %}"></script>
+    {% block js %}{% endblock %}{% endblock %}
+  </body>
+</html>

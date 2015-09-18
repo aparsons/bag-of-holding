@@ -1,0 +1,28 @@
+{% extends 'pearson/base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-6 col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <img class="img-rounded img-responsive hidden-xs m-b" src="{% static 'pearson/images/chalk.png' %}" alt="Chalkboard">
+        <h3 class="m-t-0"><span class="fa fa-graduation-cap" aria-hidden="true"></span> <strong>Security Best Practices</strong></h3>
+        <p>Review our security best practices and stop vulnerabilities early.</p>
+        <a class="btn btn-primary btn-lg" href="https://sites.google.com/a/pearson.com/pearson-developers/application-security-best-practices" target="_blank">View Documentation <span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <img class="img-rounded img-responsive hidden-xs m-b" src="{% static 'pearson/images/cyber.png' %}" alt="Cyberspace">
+        <h3 class="m-t-0"><span class="fa fa-check-square" aria-hidden="true"></span> <strong>Assess Your Application</strong></h3>
+        <p>Let's work together to make your application more secure.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'pearson_requests:index' %}">Get Started <span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

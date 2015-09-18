@@ -1,0 +1,33 @@
+<div class="container">
+  <h1 class="text-primary"><strong>Pearson</strong> <small class="text-muted">Application Security</small></h1>
+  <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li{% if active_top == 'home' %} class="active"{% endif %}><a href="{% url 'pearson:index' %}"><span class="fa fa-home" aria-hidden="true"></span> Home</a></li>
+        <li class="dropdown{% if active_top == 'tools' %} active{% endif %}">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-wrench" aria-hidden="true"></span> Tools <span class="fa fa-caret-down" aria-hidden="true"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'pearson_dcl:index' %}"><span class="fa fa-calculator" aria-hidden="true"></span> DCL Calculator</a></li>
+          </ul>
+        </li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'boh:dashboard.personal' %}" target="_blank"><span class="fa fa-database" aria-hidden="true"></span> Bag of Holding</a></li>
+        {% endif %}
+        {% if user.is_staff %}
+          <li><a href="{% url 'admin:index' %}" target="_blank"><span class="fa fa-user-secret" aria-hidden="true"></span> Django Admin</a></li>
+        {% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li{% if active_top == 'requests' %} class="active"{% endif %}><a href="{% url 'pearson_requests:index' %}"><span class="fa fa-send" aria-hidden="true"></span> Submit A Work Request</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>

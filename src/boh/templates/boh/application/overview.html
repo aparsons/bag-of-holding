@@ -1,0 +1,160 @@
+{% extends "boh/application/base_applications.html" %}
+
+{% load humanize %}
+{% load markdown_render %}
+
+{% block title %}{{ application.name }} | Environments{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>There is no description.</em></small></p>{% endif %}
+      </div>
+    </div>
+
+    {% with metrics=application.threadfixmetrics_set.latest %}
+    {% if metrics %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-pie-chart" aria-hidden="true"></span> ThreadFix Metrics</h3>
+          </div>
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{{ metrics.critical_count }}<span class="hidden-xs"><br><small>CRITICAL</small></span></td>
+                <td class="col-sm-2 bg-vuln-high vuln-count text-center">{{ metrics.high_count }}<span class="hidden-xs"><br><small>HIGH</small></span></td>
+                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{{ metrics.medium_count }}<span class="hidden-xs"><br><small>MEDIUM</small></span></td>
+                <td class="col-sm-2 bg-vuln-low vuln-count text-center">{{ metrics.low_count }}<span class="hidden-xs"><br><small>LOW</small></span></td>
+                <td class="col-sm-2 bg-vuln-info vuln-count text-center">{{ metrics.informational_count }}<span class="hidden-xs"><br><small>INFORMATIONAL</small></span></td>
+                <td class="col-sm-2 bg-muted vuln-count text-center">{{ metrics.total }}<span class="hidden-xs"><br><small>TOTAL</small></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> Service Level Agreements ({{ application.service_level_agreements.count }})</h3>
+          </div>
+          <ul class="list-group">
+          {% for agreement in application.service_level_agreements.all %}
+            <li class="list-group-item">{{ agreement.name }} <small class="text-muted">{{ agreement.description }}</small></li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no service level agreements.</em></small></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> Technologies ({{ application.technologies.count }})</h3>
+          </div>
+          <ul class="list-group">
+          {% for technology in application.technologies.all %}
+            <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no technologies.</em></small></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-gavel" aria-hidden="true"></span> Regulations ({{ application.regulations.count }})</h3>
+          </div>
+          <ul class="list-group">
+          {% for regulation in application.regulations.all %}
+            <li class="list-group-item"><span class="badge">{{ regulation.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ regulation.name }}">{{ regulation.acronym }}</span> <small class="text-muted">{{ regulation.jurisdiction }}</small></li>
+          {% empty %}
+            <li class="list-group-item"><small class="text-muted"><em>There are no regulations.</em></small></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-info-circle fa-fw" aria-hidden="true"></span> Metadata</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <td><strong>Business Criticality</strong></td>
+              <td>{{ application.get_business_criticality_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>Platform</strong></td>
+              <td>{{ application.get_platform_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>Lifecycle</strong></td>
+              <td>{{ application.get_lifecycle_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>Origin</strong></td>
+              <td>{{ application.get_origin_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>User Records</strong></td>
+              <td>{{ application.user_records|intcomma }}</td>
+            </tr>
+            <tr>
+              <td><strong>Revenue (USD)</strong></td>
+              <td>{% if application.revenue < 1000000 %}{{ application.revenue|intcomma }}{% else %}{{ application.revenue|intword }}{% endif %}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-link fa-fw" aria-hidden="true"></span> Resources</h3>
+      </div>
+      <div class="list-group">
+        {% if application.threadfix %}
+        <a href="{{ application.threadfix.host }}" target="_blank" class="list-group-item text-primary">ThreadFix ({{ application.threadfix.name }}) <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-tags fa-fw" aria-hidden="true"></span> Tags</h3>
+      </div>
+      <div class="panel-body">
+        {% for tag in application.tags.all %}
+        {% include "boh/snippets/common/tag_label.html" with tag=tag %}
+        {% empty %}
+        <small class="text-muted"><em>There are no tags.</em></small>
+        {% endfor %}
+      </div>
+    </div>
+
+    <small class="text-muted">
+      <em>Created {{ application.created_date|naturaltime }}<br>
+      Last modified {{ application.modified_date|naturaltime }}</em>
+    </small>
+  </div>
+</div>
+{% endblock application_content %}

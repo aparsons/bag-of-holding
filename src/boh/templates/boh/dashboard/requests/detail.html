@@ -1,0 +1,173 @@
+{% extends "boh/dashboard/base_dashboard.html" %}
+
+{% load boh_tags %}
+{% load humanize %}
+{% load icon_filters %}
+{% load markdown_render %}
+
+{% block title %}Requests | {{ engagement_request.name }}{% endblock %}
+
+{% block dashboard_content %}
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-{% if engagement_request.status == 'pending' %}info{% elif engagement_request.status == 'accepted' %}success{% elif engagement_request.status == 'declined' %}danger{% endif %}">
+        <div class="panel-heading">
+          <h3 class="panel-title">Request Details <span class="label label-{% if engagement_request.status == 'pending' %}info{% elif engagement_request.status == 'accepted' %}success{% elif engagement_request.status == 'declined' %}danger{% endif %} pull-right"><span class="fa fa-{% if engagement_request.status == 'accepted' %}thumbs-up{% elif engagement_request.status == 'declined' %}thumbs-down{% elif engagement_request.status == 'pending' %}question-circle{% endif %}" aria-hidden="true"></span> {{ engagement_request.get_status_display }}</span></h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Name</h4>
+            <p class="list-group-item-text">{{ engagement_request.name }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Requested Date</h4>
+            <p class="list-group-item-text">{{ engagement_request.created_date }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Requester</h4>
+            <p class="list-group-item-text"><a href="{% url 'boh:person.detail' engagement_request.requester.id %}">{{ engagement_request.requester }}</a></p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Application</h4>
+            <p class="list-group-item-text"><a href="{% url 'boh:application.overview' engagement_request.application.id %}">{{ engagement_request.application }}</a></p>
+          </li>
+          {% if engagement_request.version %}
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Version</h4>
+              <p class="list-group-item-text">{{ engagement_request.version }}</p>
+            </li>
+          {% endif %}
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Activities</h4>
+            <p class="list-group-item-text">{{ engagement_request.activity_types.all|join:', ' }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Description</h4>
+            <p class="list-group-item-text">{{ engagement_request.description|markdown_render }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <a class="btn btn-default" href="{% url 'boh:dashboard.requests.edit' engagement_request.id %}" role="button">Edit Request</a>
+        </div>
+      </div>
+
+      <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
+      <p class="text-muted">Comments are shared with subscribers.</p>
+      {% for comment in engagement_request.engagementrequestcomment_set.all %}
+        <div id="comment-{{ comment.id }}" class="panel panel-default">
+          <div class="panel-heading">
+            <span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.get_full_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> commented {{ comment.modified_date|naturaltime }}</span></span>
+          </div>
+          <div class="panel-body">
+            {{ comment.message }}
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Leave a comment</h3>
+        </div>
+        <div class="panel-body">
+          <form method="post" action="">
+            {% csrf_token %}
+            {% include "boh/snippets/form/_general.html" with control=comment_form.message %}
+            <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> Post Comment</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="fa fa-list-alt" aria-hidden="true"></span> Application Summary</div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Name</h4>
+            <p class="list-group-item-text"><a href="{% url 'boh:application.overview' engagement_request.application.id %}">{{ engagement_request.application }}</a></p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Criticality</h4>
+            <p class="list-group-item-text">{{ engagement_request.application.business_criticality|business_criticality_icon }} {{ engagement_request.application.get_business_criticality_display }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Platform</h4>
+            <p class="list-group-item-text">{{ engagement_request.application.platform|platform_icon }} {{ engagement_request.application.get_platform_display }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Lifecycle</h4>
+            <p class="list-group-item-text">{{ engagement_request.application.lifecycle|lifecycle_icon }} {{ engagement_request.application.get_lifecycle_display }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Origin</h4>
+            <p class="list-group-item-text">{{ engagement_request.application.origin|origin_icon }} {{ engagement_request.application.get_origin_display }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="fa fa-user" aria-hidden="true"></span> Requester Summary</div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Name</h4>
+            <p class="list-group-item-text"><a href="{% url 'boh:person.detail' engagement_request.requester.id %}">{{ engagement_request.requester }}</a></p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Job Title</h4>
+            <p class="list-group-item-text">{{ engagement_request.requester.job_title }}</p>
+          </li>
+          <a class="list-group-item" href="mailto://{{ engagement_request.requester.email }}">
+            <h4 class="list-group-item-heading">Email</h4>
+            <p class="list-group-item-text">{{ engagement_request.requester.email }}</p>
+          </a>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Phone Work</h4>
+            <p class="list-group-item-text">{{ engagement_request.requester.phone_work|format_phone }}</p>
+          </li>
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Phone Mobile</h4>
+            <p class="list-group-item-text">{{ engagement_request.requester.phone_mobile|format_phone }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="fa fa-feed" aria-hidden="true"></span> Subscribers</h3>
+        </div>
+        <div class="panel-body">
+          <small class="text-muted">
+            The following receive email notifications.<br>
+            Click on the names below to edit each subscription.
+          </small>
+        </div>
+        <div class="list-group">
+          {% for subscriber in engagement_request.engagementrequestsubscription_set.all %}
+            <a class="list-group-item{% if subscriber.token == subscription.token %} active{% endif %}" href="">
+              {% if subscriber.label %}
+                <span class="badge">{{ subscriber.label }}</span>
+              {% endif %}
+              <h4 class="list-group-item-heading">{{ subscriber.name }}</h4>
+              <p class="list-group-item-text">
+                {{ subscriber.email }}
+                <span class="pull-right">
+                  {% if subscriber.send_status_updates %}
+                    <span class="fa fa-flag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Notify on status updates"></span>
+                  {% endif %}
+                  {% if subscriber.send_comments %}
+                    <span class="fa fa-comments fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Notify on comment updates"></span>
+                  {% endif %}
+                </span>
+              </p>
+            </a>
+          {% endfor %}
+        </div>
+        <div class="panel-footer"><a class="btn btn-primary btn-sm" href="" role="button"><span class="fa fa-plus" aria-hidden="true"></span> Add Subscriber</a></div>
+      </div>
+    </div>
+  </div>
+{% endblock dashboard_content %}
