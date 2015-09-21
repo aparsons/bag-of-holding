@@ -9,11 +9,11 @@ from . import models
 class Report(object):
     """Base class used for generating reports."""
 
-    def __init__(self, report_type, file_name, file_format, requestor):
+    def __init__(self, report_type, file_name, file_format, requester):
         self.report_type = report_type
         self.file_name = file_name
         self.file_format = file_format
-        self.requestor = requestor
+        self.requester = requester
 
         content_types = {
             'csv': 'text/csv',
@@ -35,10 +35,11 @@ class Report(object):
         response.write(self.generate())
         return response
 
+
 class EngagementCoverageReport(Report):
 
-    def __init__(self, file_name, file_format, organizations, requestor):
-        super().__init__('Engagement Coverage Report', file_name, file_format, requestor)
+    def __init__(self, file_name, file_format, organizations, requester):
+        super(EngagementCoverageReport, self).__init__('Engagement Coverage Report', file_name, file_format, requester)
         self.organizations = organizations
 
     def generate(self):
@@ -49,17 +50,18 @@ class EngagementCoverageReport(Report):
             template = loader.get_template('boh/reports/engagement_coverage.html')
             context = Context({
                 'current_datetime': timezone.now(),
-                'requestor': self.requestor,
+                'requestor': self.requester,
                 'organizations': self.organizations
             })
             return template.render(context)
         else:
             return 'test, test'
 
+
 class ThreadFixSummaryReport(Report):
 
-    def __init__(self, file_name, file_format, organizations, requestor):
-        super().__init__('ThreadFix Summary Report', file_name, file_format, requestor)
+    def __init__(self, file_name, file_format, organizations, requester):
+        super(ThreadFixSummaryReport, self).__init__('ThreadFix Summary Report', file_name, file_format, requester)
         self.organizations = organizations
 
     def generate(self):
@@ -70,7 +72,7 @@ class ThreadFixSummaryReport(Report):
             template = loader.get_template('boh/reports/threadfix_summary.html')
             context = Context({
                 'current_datetime': timezone.now(),
-                'requestor': self.requestor,
+                'requestor': self.requester,
                 'organizations': self.organizations
             })
             return template.render(context)
