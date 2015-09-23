@@ -13,6 +13,7 @@ RUN python /bag-of-holding/src/manage.py makemigrations
 RUN python /bag-of-holding/src/manage.py migrate
 RUN python /bag-of-holding/src/manage.py loaddata /bag-of-holding/src/sample_data.json
 
+# docker pull disenchant/bag-of-holding
 # docker run -d -p 8000:8000 --name boh-server disenchant/bag-of-holding:latest python /bag-of-holding/src/manage.py runserver 0.0.0.0:8000
 # docker exec -it boh-server bash
 # python /bag-of-holding/src/manage.py createsuperuser
