@@ -141,6 +141,7 @@ class ServiceRequestWizard(SessionWizardView):
         # Aggregate description
         description = "nothing yet"
 
+        import uuid
 
         # Create new service request
         request = EngagementRequest.objects.create(
@@ -155,6 +156,8 @@ class ServiceRequestWizard(SessionWizardView):
             request.activity_types.add(activity_type)
 
         request.save()
+
+        # TODO - Fix Broken - Make sure to create a new subscriber and add the token to the response
 
         # TODO Send two emails
 
