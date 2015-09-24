@@ -170,7 +170,9 @@ class ServiceRequestWizard(SessionWizardView):
                 name=default_subscriber.name,
                 email=default_subscriber.email,
                 label=default_subscriber.label,
-                engagement_request=engagement_request
+                engagement_request=engagement_request,
+                send_status_updates=default_subscriber.send_status_updates,
+                send_comments=default_subscriber.send_comments
             )
             default_subscription.save()
 
