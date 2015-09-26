@@ -15,4 +15,4 @@ CMD python3 /bag-of-holding/src/manage.py runserver 0.0.0.0:8000
 
 # docker run -d -p 8000:8000 --name boh-server disenchant/bag-of-holding:latest
 # docker exec -it boh-server bash
-# python /bag-of-holding/src/manage.py createsuperuser
+# python3 /bag-of-holding/src/manage.py createsuperuser
