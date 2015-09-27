@@ -9,3 +9,4 @@ Pygments==2.0.2
 pytz==2015.4
 requests==2.7.0
 threadfix-api==1.1.1
+django-admin-bootstrapped==2.5.5
