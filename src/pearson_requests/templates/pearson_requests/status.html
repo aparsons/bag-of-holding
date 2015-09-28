@@ -68,6 +68,10 @@
               </p>
               <p class="list-group-item-text">{{ comment.message|linebreaksbr }}</p>
             </li>
+          {% empty %}
+            <li class="list-group-item">
+              <p class="list-group-item-text"><small class="text-muted">No comments</small></p>
+            </li>
           {% endfor %}
         </ul>
       </div>

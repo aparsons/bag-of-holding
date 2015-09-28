@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 
 from formtools.wizard.views import SessionWizardView
 
-from boh.models import Person, EngagementRequest
+from boh.models import Person, EngagementRequest, EngagementRequestSubscription
 
 from . import forms, models
 
@@ -139,11 +139,10 @@ class ServiceRequestWizard(SessionWizardView):
         checkmarx_data = self.get_cleaned_data_for_step(ServiceRequestWizard.CHECKMARX_STEP)
 
         # Aggregate description
-        description = "nothing yet"
-
+        description = "nothing yet" # TODO FIX
 
         # Create new service request
-        request = EngagementRequest.objects.create(
+        engagement_request = EngagementRequest.objects.create(
             name=application_data['service_bundle'].name,
             description=description,
             version=application_data['version'],
@@ -152,13 +151,34 @@ class ServiceRequestWizard(SessionWizardView):
         )
 
         for activity_type in application_data['service_bundle'].activities.all():
-            request.activity_types.add(activity_type)
+            engagement_request.activity_types.add(activity_type)
 
-        request.save()
+        engagement_request.save()
 
-        # TODO Send two emails
+        # Add requester subscription
+        requester_subscription = EngagementRequestSubscription.objects.create(
+            name=person.first_name + ' ' + person.last_name,
+            email=person.email,
+            label='Requester',
+            engagement_request=engagement_request
+        )
+        requester_subscription.save()
+
+        # Add default requester subscriptions
+        for default_subscriber in application_data['service_bundle'].default_subscribers.all():
+            default_subscription = EngagementRequestSubscription.objects.create(
+                name=default_subscriber.name,
+                email=default_subscriber.email,
+                label=default_subscriber.label,
+                engagement_request=engagement_request,
+                send_status_updates=default_subscriber.send_status_updates,
+                send_comments=default_subscriber.send_comments
+            )
+            default_subscription.save()
+
+        # TODO Send emails
 
         return render_to_response('pearson_requests/wizards/external_request/success.html', {
             'person': person,
-            'token': request.token
+            'token': requester_subscription.token
         })
