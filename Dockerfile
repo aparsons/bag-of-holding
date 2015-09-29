@@ -1,20 +1,19 @@
-FROM python:3
+FROM alpine
 
-# Essentials
-RUN apt-get update -qq && \
-    apt-get install -y build-essential vim python3-pip
+RUN apk --update add python3
 
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /bag-of-holding
 WORKDIR /bag-of-holding
 ADD . /bag-of-holding/
-RUN pip install -r requirements.txt
-RUN python /bag-of-holding/src/manage.py makemigrations
-RUN python /bag-of-holding/src/manage.py migrate
-RUN python /bag-of-holding/src/manage.py loaddata /bag-of-holding/src/sample_data.json
+RUN pip3 install -r requirements.txt
+RUN python3 /bag-of-holding/src/manage.py makemigrations
+RUN python3 /bag-of-holding/src/manage.py migrate
+RUN python3 /bag-of-holding/src/manage.py loaddata /bag-of-holding/src/sample_data.json
+
+CMD python3 /bag-of-holding/src/manage.py runserver 0.0.0.0:8000
 
 # Instructions:
-# docker pull PearsonEducation/bag-of-holding
-# docker run -d -p 8000:8000 --name boh-server PearsonEducation/bag-of-holding:latest python /bag-of-holding/src/manage.py runserver 0.0.0.0:8000
+# docker run -d -p 8000:8000 --name boh-server disenchant/bag-of-holding:latest
 # docker exec -it boh-server bash
-# python /bag-of-holding/src/manage.py createsuperuser
+# python3 /bag-of-holding/src/manage.py createsuperuser
