@@ -1,3 +1,0 @@
--r base.txt
-
-coverage==4.0a5
