@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'boh.core.applications',
     'boh.core.engagements',
     'boh.core.organizations',
+    'boh.frontend',
 ]
 
 MIDDLEWARE_CLASSES = [

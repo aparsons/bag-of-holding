@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from . import models
+
+
+admin.site.register(models.Engagement)
+
+admin.site.register(models.ActivityType)
+
+admin.site.register(models.Activity)
