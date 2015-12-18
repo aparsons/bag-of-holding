@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'boh.core.applications',
     'boh.core.engagements',
     'boh.core.organizations',
+    'boh.core.users',
     'boh.frontend',
 ]
 
@@ -80,10 +81,12 @@ DATABASES = {
     }
 }
 
+# Auth User Model
+# https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#substituting-a-custom-user-model
+AUTH_USER_MODEL = 'users.User'
 
-# Password validation
+# Password Validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

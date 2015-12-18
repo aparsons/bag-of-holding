@@ -1,6 +1,6 @@
 [
   {
-    "model": "auth.user",
+    "model": "users.User",
     "pk": 1,
     "fields": {
       "username": "dev",
@@ -10,7 +10,9 @@
       "email": "dev@localhost",
       "is_staff": 1,
       "is_active": 1,
-      "is_superuser": 1
+      "is_superuser": 1,
+      "created": "2015-12-18T00:00:00-05:00",
+      "modified": "2015-12-18T00:00:00-05:00"
     }
   }
 ]
