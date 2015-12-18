@@ -22,6 +22,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+
 INSTALLED_APPS = [
     # Django
     'django.contrib.admin',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'boh.core.users',
     'boh.frontend',
 ]
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,12 +83,16 @@ DATABASES = {
     }
 }
 
+
 # Auth User Model
 # https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#substituting-a-custom-user-model
+
 AUTH_USER_MODEL = 'users.User'
+
 
 # Password Validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -121,3 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Email
+# https://docs.djangoproject.com/en/1.9/topics/email/#console-backend
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
