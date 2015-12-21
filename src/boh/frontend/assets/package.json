@@ -1,0 +1,14 @@
+{
+  "name": "bag-of-holding",
+  "version": "2.0.0",
+  "private": true,
+  "devDependencies": {
+    "bower": "^1.7.1",
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.1.1"
+  },
+  "scripts": {
+    "bower-install": "bower install",
+    "gulp": "gulp"
+  }
+}

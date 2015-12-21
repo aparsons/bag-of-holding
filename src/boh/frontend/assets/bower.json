@@ -1,0 +1,15 @@
+{
+  "name": "bag-of-holding",
+  "version": "2.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.2",
+    "fontawesome": "~4.5.0"
+  }
+}
