@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +9,12 @@
 
   <title>{% block title %}Bag of Holding | {% block page_title %}Home{% endblock %}{% endblock %}</title>
 
+  <link href="{% static "frontend/styles/application.min.css" %}" rel="stylesheet">
   {% block css %}{% endblock %}
 </head>
 <body>
   {% block content %}{% endblock %}
+  <script src="{% static "frontend/scripts/application.min.js" %}"></script>
   {% block js %}{% endblock %}
 </body>
 </html>
