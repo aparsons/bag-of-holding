@@ -3,6 +3,9 @@ from django.contrib import admin
 from . import models
 
 
+admin.site.register(models.Regulation)
+
+
 admin.site.register(models.Technology)
 
 
