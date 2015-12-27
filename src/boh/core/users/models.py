@@ -34,6 +34,8 @@ class User(behaviors.Timestampable, AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         ordering = ['username']
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
 
     def __str__(self):
         return self.get_full_name()

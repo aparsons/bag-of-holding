@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -13,10 +12,12 @@ class Engagement(behaviors.Timestampable, models.Model):
     end_date = models.DateField(_('end date'), help_text=_('The date the engagement is scheduled to conclude.'))
     description = models.TextField(_('description'), blank=True, help_text=_('Optional information about the engagement\'s objectives, scope, and methodology.'))
 
-    applications = models.ManyToManyField(applications_models.Application, blank=True, help_text=_('The applications included in the engagement.'))
+    applications = models.ManyToManyField(applications_models.Application, blank=True, verbose_name=_('Application'), help_text=_('The applications included in the engagement.'))
 
     class Meta:
         ordering = ['start_date']
+        verbose_name = _('Engagement')
+        verbose_name_plural = _('Engagements')
 
 
 class ActivityType(behaviors.Timestampable, models.Model):
@@ -26,6 +27,8 @@ class ActivityType(behaviors.Timestampable, models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('Activity Type')
+        verbose_name_plural = _('Activity Types')
 
     def __str__(self):
         return self.name
@@ -36,8 +39,9 @@ class Activity(behaviors.Timestampable, models.Model):
 
     description = models.TextField(_('description'), blank=True, help_text=_('Optional information about the activity.'))
 
-    activity_type = models.ForeignKey(ActivityType, help_text=_('The type of activity to be performed.'))
-    engagement = models.ForeignKey(Engagement, help_text=_('The engagement containing the activity.'))
+    activity_type = models.ForeignKey(ActivityType, verbose_name=_('Activity Type'), help_text=_('The type of activity to be performed.'))
+    engagement = models.ForeignKey(Engagement, verbose_name=_('Engagement'), help_text=_('The engagement containing the activity.'))
 
     class Meta:
+        verbose_name = _('Activity')
         verbose_name_plural = _('Activities')

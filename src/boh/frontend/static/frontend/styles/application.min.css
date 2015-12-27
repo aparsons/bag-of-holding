@@ -254,7 +254,7 @@ html {
   width: device-width; }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
   -webkit-tap-highlight-color: transparent; }
 
 body {
@@ -6637,3 +6637,6 @@ a.bg-danger:focus, a.bg-danger:hover {
 
 .fa-percent:before {
   content: ""; }
+
+body {
+  padding-top: 5rem; }

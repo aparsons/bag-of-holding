@@ -1,7 +1,21 @@
-{% extends "base.html" %}
+{% extends "frontend/authenticated.html" %}
 
 {% block page_title %}Applications{% endblock %}
 
 {% block content %}
-  Applications
+  <h2>Applications</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application in applications %}
+        <tr>
+          <td><strong><a href="{% url 'frontend:applications.overview' application.id %}">{{ application.name }}</a></strong></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
