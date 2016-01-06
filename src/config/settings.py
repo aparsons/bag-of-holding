@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Bag of Holding
+    'boh.core.activities',
     'boh.core.applications',
     'boh.core.engagements',
     'boh.core.organizations',
