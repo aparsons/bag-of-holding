@@ -23,3 +23,4 @@ class Follow(behaviors.Timestampable, models.Model):
     class Meta:
         ordering = ['created']
         verbose_name = _('Follow')
+        verbose_name_plural = _('Follows')
