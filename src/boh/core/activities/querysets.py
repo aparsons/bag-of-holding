@@ -2,4 +2,7 @@ from django.db import models
 
 
 class ActionQuerySet(models.QuerySet):
-    pass
+
+    def public(self):
+        """Returns public actions only."""
+        return self.filter(public=True)
