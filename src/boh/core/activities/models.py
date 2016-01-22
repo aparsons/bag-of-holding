@@ -1,8 +1,9 @@
-from django.db import models
+from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
@@ -63,7 +64,19 @@ class Action(behaviors.Timestampable, models.Model):
 class Follow(behaviors.Timestampable, models.Model):
     """Allows users to follow the actions of actors."""
 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    actor_type = models.ForeignKey(ContentType)
+    actor_id = models.CharField(_('actor id'), max_length=255)
+    actor = GenericForeignKey('actor_type', 'actor_id')
+
+    objects = managers.FollowManager.from_queryset(querysets.FollowQuerySet)()
+
     class Meta:
         ordering = ['-created']
+        unique_together = ('user', 'actor_type', 'actor_id')
         verbose_name = _('Follow')
         verbose_name_plural = _('Follows')
+
+    def __str__(self):
+        return '%s -> %s' % (self.user, self.actor)
