@@ -5,9 +5,10 @@ from . import models
 
 class EventAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
-    list_display = ['__str__', 'actor', 'verb', 'action', 'target', 'public', 'created']
+    list_display = ['__str__', 'actor', 'verb', 'action', 'preposition', 'target', 'public', 'created']
     list_filter = ['public', 'created']
     readonly_fields = ['created', 'modified']
+    search_fields = ['verb']
 admin.site.register(models.Event, EventAdmin)
 
 

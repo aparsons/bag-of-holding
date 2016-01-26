@@ -13,18 +13,26 @@ from . import managers, querysets
 
 
 class Event(behaviors.Timestampable, models.Model):
-    """Describes an actor performing a verb on an optional target."""
+    """
+    Describes an actor performing a verb on an optional target.
+
+    Format:
+        <actor> <verb> <time>
+        <actor> <verb> <action> <preposition> <target> <time>
+
+    """
 
     actor_type = models.ForeignKey(ContentType, related_name='actor')
     actor_id = models.CharField(_('actor id'), max_length=255)
     actor = GenericForeignKey('actor_type', 'actor_id')
 
     verb = models.CharField(_('verb'), max_length=255)
-    #description?
 
     action_type = models.ForeignKey(ContentType, blank=True, null=True, related_name='action')
     action_id = models.CharField(_('action id'), max_length=255, blank=True, null=True)
     action = GenericForeignKey('action_type', 'action_id')
+
+    preposition = models.CharField(_('preposition'), max_length=255, blank=True, null=True)
 
     target_type = models.ForeignKey(ContentType, blank=True, null=True, related_name='target')
     target_id = models.CharField(_('target id'), max_length=255, blank=True, null=True)
@@ -44,12 +52,13 @@ class Event(behaviors.Timestampable, models.Model):
             'actor': self.actor,
             'verb': self.verb,
             'action': self.action,
+            'preposition': self.preposition,
             'target': self.target,
             'timesince': self.timesince,
         }
         if self.target:
             if self.action:
-                return _('%(actor)s %(verb)s %(action)s on %(target)s %(timesince)s') % context
+                return _('%(actor)s %(verb)s %(action)s %(preposition)s %(target)s %(timesince)s') % context
             return _('%(actor)s %(verb)s %(target)s %(timesince)s') % context
         if self.action:
             return _('%(actor)s %(verb)s %(action)s %(timesince)s') % context
