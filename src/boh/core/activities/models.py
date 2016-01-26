@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
@@ -13,14 +12,7 @@ from . import managers, querysets
 
 
 class Event(behaviors.Timestampable, models.Model):
-    """
-    Describes an actor performing a verb on an optional target.
-
-    Format:
-        <actor> <verb> <time>
-        <actor> <verb> <action> <preposition> <target> <time>
-
-    """
+    """Describes an actor performing a verb on an optional target."""
 
     actor_type = models.ForeignKey(ContentType, related_name='actor')
     actor_id = models.CharField(_('actor id'), max_length=255)

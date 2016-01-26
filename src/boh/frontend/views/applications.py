@@ -19,6 +19,10 @@ def overview(request, application_id):
 
     # Experimental
     #activity_feed = Application.objects.activity_feed(application)
+    from boh.core.activities.models import Event
+
+    Event.objects.create_event(request.user, 'viewed', target=application, public=False)
+
     activity_feed = application.activity_feed()
 
     return render(request, 'frontend/applications/overview.html', {
