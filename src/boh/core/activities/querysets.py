@@ -27,5 +27,8 @@ class EventQuerySet(models.QuerySet):
             Q(actor_type=content_type, actor_id=obj.id) | Q(action_type=content_type, action_id=obj.id) | Q(target_type=content_type, target_id=obj.id)
         )
 
+
 class FollowQuerySet(models.QuerySet):
-    pass
+    def actor(self, obj, **kwargs):
+        """Returns follows by actor."""
+        return self.filter(actor_type=ContentType.objects.get_for_model(obj), actor_id=obj.id, **kwargs)

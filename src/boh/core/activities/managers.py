@@ -20,3 +20,9 @@ class EventManager(models.Manager):
 class FollowManager(models.Manager):
     def create_follow(self, user, actor):
         return self.create(user=user, actor_type=ContentType.objects.get_for_model(actor), actor_id=actor.id)
+
+    def is_following(self, user, obj):
+        """Returns a boolean value indicating if the user is following the actor object."""
+        if not user or user.is_anonymous():
+            return False
+        return self.get_queryset().actor(obj).filter(user=user).exists()

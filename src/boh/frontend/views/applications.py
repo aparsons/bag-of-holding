@@ -18,12 +18,14 @@ def overview(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
     # Experimental
-    #activity_feed = Application.objects.activity_feed(application)
     from boh.core.activities.models import Event
-
     Event.objects.create_event(request.user, 'viewed', target=application, public=False)
 
+    is_following = application.is_following(request.user)
+    print('following: ' + str(is_following))
+
     activity_feed = application.activity_feed()
+
 
     return render(request, 'frontend/applications/overview.html', {
         'application': application,

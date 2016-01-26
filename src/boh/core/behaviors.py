@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -9,6 +10,12 @@ class Observable(models.Model):
         """Returns all public events for the model instance."""
         from boh.core.activities.models import Event
         return Event.objects.any(self)
+
+    @cached_property
+    def is_following(self, user):
+        """Returns true if the user is following the model instance."""
+        from boh.core.activities.models import Follow
+        return Follow.objects.is_following(user, self)
 
     class Meta:
         abstract = True
