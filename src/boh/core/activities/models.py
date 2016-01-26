@@ -12,7 +12,7 @@ from boh.core import behaviors
 from . import managers, querysets
 
 
-class Action(behaviors.Timestampable, models.Model):
+class Event(behaviors.Timestampable, models.Model):
     """Describes an actor performing a verb on an optional target."""
 
     actor_type = models.ForeignKey(ContentType, related_name='actor')
@@ -32,12 +32,12 @@ class Action(behaviors.Timestampable, models.Model):
 
     public = models.BooleanField(_('public'), default=True)
 
-    objects = managers.ActionManager.from_queryset(querysets.ActionQuerySet)()
+    objects = managers.EventManager.from_queryset(querysets.EventQuerySet)()
 
     class Meta:
         ordering = ['-created']
-        verbose_name = _('Action')
-        verbose_name_plural = _('Actions')
+        verbose_name = _('Event')
+        verbose_name_plural = _('Events')
 
     def __str__(self):
         context = {

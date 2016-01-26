@@ -1,9 +1,12 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 
-class ActionManager(models.Manager):
+class EventManager(models.Manager):
     pass
 
 
 class FollowManager(models.Manager):
-    pass
+    def create_follow(self, user, actor):
+        return self.create(user=user, actor_type=ContentType.objects.get_for_model(actor), actor_id=actor.id)
+

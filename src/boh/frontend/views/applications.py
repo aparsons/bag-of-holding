@@ -17,8 +17,13 @@ def list(request):
 def overview(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
+    # Experimental
+    #activity_feed = Application.objects.activity_feed(application)
+    activity_feed = application.activity_feed()
+
     return render(request, 'frontend/applications/overview.html', {
-        'application': application
+        'application': application,
+        'activity_feed': activity_feed
     })
 
 

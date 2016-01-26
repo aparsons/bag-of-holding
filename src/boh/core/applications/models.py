@@ -40,7 +40,7 @@ class Technology(behaviors.Timestampable, models.Model):
         return self.name
 
 
-class Application(behaviors.Timestampable, models.Model):
+class Application(behaviors.Observable, behaviors.Timestampable, models.Model):
     """A program or piece of software."""
 
     name = models.CharField(_('name'), max_length=128, unique=True, help_text=_('The full unique name of the application.'))
