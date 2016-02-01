@@ -17,3 +17,9 @@ The following command will install the required bower dependencies.
 ```
 npm run bower-install
 ```
+
+#### Build assets
+The following command will run the gulp build and generate all of the files in the **static** directory.
+```
+npm run gulp
+```

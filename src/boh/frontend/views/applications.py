@@ -21,15 +21,16 @@ def overview(request, application_id):
     from boh.core.activities.models import Event
     Event.objects.create_event(request.user, 'viewed', target=application, public=False)
 
-    is_following = application.is_following(request.user)
-    print('following: ' + str(is_following))
+    #is_following = application.is_following(request.user)
+    #print('following: ' + str(is_following))
+    #print(application.is_following(user=request.user))
 
     activity_feed = application.activity_feed()
 
-
-    return render(request, 'frontend/applications/overview.html', {
+    return render(request, 'frontend/applications/detail/overview.html', {
         'application': application,
-        'activity_feed': activity_feed
+        'activity_feed': activity_feed,
+        'tab': 'overview'
     })
 
 
@@ -42,6 +43,7 @@ def engagements(request, application_id):
 def benchmarks(request, application_id):
     application = get_object_or_404(Application, pk=application_id)
 
-    return render(request, 'frontend/applications/benchmarks.html', {
-        'application': application
+    return render(request, 'frontend/applications/detail/benchmarks.html', {
+        'application': application,
+        'tab': 'benchmarks'
     })

@@ -2,7 +2,7 @@ var gulp = require('gulp');
 
 // Libraries
 var concat = require('gulp-concat');
-var minify = require('gulp-minify-css');
+var minify = require('gulp-cssnano');
 var rename = require('gulp-rename');
 var sass   = require('gulp-sass');
 var uglify = require('gulp-uglify');
@@ -53,9 +53,7 @@ gulp.task(tasks.styles, function() {
   })).pipe(rename('application.min.css'));
 
   if (options.minify) {
-    styles.pipe(minify({
-      keepSpecialComments: 0
-    }));
+    styles.pipe(minify());
   }
 
   styles.pipe(gulp.dest(paths.dist + '/styles'));

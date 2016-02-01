@@ -1,0 +1,39 @@
+{% extends "frontend/_authenticated.html" %}
+
+{% block page_title %}Applications | {{ application.name }}{% endblock %}
+
+{% block container %}
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-inline pull-right">
+        <li class="list-inline-item"><a class="btn btn-secondary" href="#" role="button"><span class="fa fa-eye" aria-hidden="true"></span> Follow</a></li>
+        <li class="list-inline-item"><a class="btn btn-secondary" href="#" role="button"><span class="fa fa-star" aria-hidden="true"></span> Star</a></li>
+      </ul>
+      <h3 class="m-b-2">{% if application.organization %}{{ application.organization.name }} / {% endif %}<strong><a href="{% url 'frontend:applications.overview' application.id %}">{{ application.name }}</a></strong></h3>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link{% if tab == 'overview' %} active{% endif %}" href="{% url 'frontend:applications.overview' application.id %}"><span class="fa fa-home" aria-hidden="true"></span> Overview</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if tab == 'benchmarks' %} active{% endif %}" href="{% url 'frontend:applications.benchmarks' application.id %}"><span class="fa fa-line-chart" aria-hidden="true"></span> Benchmarks</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><span class="fa fa-globe" aria-hidden="true"></span> Environments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><span class="fa fa-book" aria-hidden="true"></span> Documentation</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><span class="fa fa-cogs" aria-hidden="true"></span> Settings</a>
+    </li>
+  </ul>
+
+  {% block content %}
+  {% endblock %}
+{% endblock %}

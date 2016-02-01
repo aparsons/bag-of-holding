@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 
 {% block body %}
   <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
@@ -9,10 +9,10 @@
           <a class="nav-link" href="#"><i class="fa fa-home fa-fw"></i> Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'frontend:applications.list' %}">Applications</a>
+          <a class="nav-link" href="{% url 'frontend:applications.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> Applications</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Engagements</a>
+          <a class="nav-link" href="#"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">People</a>
@@ -35,6 +35,6 @@
 
 
   <div class="container">
-  {% block content %}{% endblock %}
+  {% block container %}{% endblock %}
   </div>
 {% endblock %}
