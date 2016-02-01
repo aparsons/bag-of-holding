@@ -1,5 +1,4 @@
-# sha256: 5m1Yv-7TpetE8q9tXxtqhdZWxBgOu6Y7aS5Y0p2ypxY
-Django==1.9
+Django==1.9.2
 
 # sha256: Pt5HDT0XujwHY436DRBFK8G25a0yYSemW6d-aq6xG-w
 pytz==2015.07
