@@ -1,0 +1,26 @@
+{% extends "frontend/_authenticated.html" %}
+
+{% block page_title %}Engagements{% endblock %}
+
+{% block container %}
+  <h2>Engagements</h2>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#"><i class="fa fa-th-list fa-fw"></i> List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><i class="fa fa-flag-checkered fa-fw"></i> New &amp; Open</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><i class="fa fa-calendar-check-o fa-fw"></i> Planner</a>
+    </li>
+  </ul>
+
+  <br>
+
+  {% block engagements_container %}{% endblock %}
+{% endblock %}

@@ -7,4 +7,6 @@ admin.site.register(models.Engagement)
 
 admin.site.register(models.ActivityType)
 
+admin.site.register(models.Worker)
+
 admin.site.register(models.Activity)

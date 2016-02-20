@@ -1,0 +1,23 @@
+{% extends "frontend/engagements/_base.html" %}
+
+{% block page_title %}Engagements{% endblock %}
+
+{% block engagements_container %}
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Start</th>
+        <th>End</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for engagement in engagements %}
+        <tr>
+          <td><a href="#">{{ engagement.start_date }}</a></td>
+          <td><a href="#">{{ engagement.end_date }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
