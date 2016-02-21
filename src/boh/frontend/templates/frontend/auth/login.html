@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+
+{% load widget_tweaks %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <h2>Please sign in</h2>
+        <form method="post" action="{% url 'frontend:login' %}">
+          {% csrf_token %}
+          <fieldset class="form-group">
+            <label class="sr-only" for="{{ form.username.id_for_label }}">Username</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-user fa-fw"></i></div>
+              {% render_field form.username class='form-control' placeholder='Username' %}
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <label class="sr-only" for="{{ form.password.id_for_label }}">Password</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-ellipsis-h fa-fw"></i></div>
+              {% render_field form.password class='form-control' placeholder='Password' %}
+            </div>
+          </fieldset>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Log in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

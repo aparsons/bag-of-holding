@@ -5,11 +5,16 @@ https://docs.djangoproject.com/en/1.9/topics/http/urls/
 
 from django.conf.urls import url
 
-from .views import home as home_views
 from .views import applications as applications_views
+from .views import auth as auth_views
 from .views import engagements as engagements_views
+from .views import home as home_views
 
 urlpatterns = [
+
+    # Authentication
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
 
     # Home
     url(r'^$', home_views.index, name='home'),
