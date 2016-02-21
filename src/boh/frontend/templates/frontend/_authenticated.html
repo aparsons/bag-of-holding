@@ -23,10 +23,10 @@
         <li class="nav-item dropdown pull-lg-right">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.get_full_name }}</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> My Profile</a>
-            <a class="dropdown-item" href="#"><i class="fa fa-list-alt"></i> Change Password</a>
+            <a class="dropdown-item" href="#"><i class="fa fa-user fa-fw"></i> My Profile</a>
+            <a class="dropdown-item" href="#"><i class="fa fa-key fa-fw"></i> Change Password</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'frontend:logout' %}"><i class="fa fa-list-alt"></i> Logout</a>
+            <a class="dropdown-item" href="{% url 'frontend:logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
           </div>
         </li>
       </ul>
