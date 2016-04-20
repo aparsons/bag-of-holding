@@ -16,5 +16,4 @@ INSTALLED_APPS = (
 
     'boh',
     'boh_api',
-    'pearson_requests'
 )

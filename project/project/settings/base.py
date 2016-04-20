@@ -30,10 +30,9 @@ INSTALLED_APPS = (
     'django_filters',
     'widget_tweaks',
     'debug_toolbar',
+
     'boh',
     'boh_api',
-
-    'pearson_dcl'
 )
 
 MIDDLEWARE_CLASSES = (
