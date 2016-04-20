@@ -1,4 +1,4 @@
-Copyright 2015 [CONTRIBUTORS.md](CONTRIBUTORS.md)
+Copyright 2016 [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Portions of this work are reproduced from work created and shared by 
-Denim Group and used according to the terms described in the 
-applicable license.  Pearson is not otherwise affiliated with the 
+Portions of this work are reproduced from work created and shared by
+Denim Group and used according to the terms described in the
+applicable license.  Pearson is not otherwise affiliated with the
 development of this work.

@@ -1,6 +1,6 @@
 {
   "name": "bag-of-holding",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The **Bag of Holding** is an application security utility to assist in the organization and prioritization of software security activities.",
   "repository": {
     "type": "git",
