@@ -1,8 +1,19 @@
 # Bag of Holding Releases
 
+## 0.0.5 - 4/20/2016
+
+Maintenance release to update dependencies and remove stagnant code. This release serves as preparation for upcoming changes.
+
+### What's New
+
+* Dependencies
+  * Numerous dependencies have been updated
+* Fixed Python 2 reports bug
+* Added simplistic ASVS scoring
+
 ## 0.0.4 - 07/24/2015
 
-Minor release with reporting application summmary and initial addition of ASVS
+Minor release with reporting application summary and initial addition of ASVS
 
 ## 0.0.3 - 06/26/2015
 
