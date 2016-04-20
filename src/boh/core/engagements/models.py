@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 from django.conf import settings
+=======
+from django.core.validators import RegexValidator
+>>>>>>> Stashed changes
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -20,11 +24,17 @@ class Engagement(behaviors.Timestampable, models.Model):
         verbose_name = _('Engagement')
         verbose_name_plural = _('Engagements')
 
+    def __str__(self):
+        return self.id
+
 
 class ActivityType(behaviors.Timestampable, models.Model):
     """The type of work to be performed during an activity."""
 
+    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message=_('Color must be entered in the 6 character hex format.'))
+
     name = models.CharField(_('name'), max_length=128, unique=True, help_text=_('A unique name for this activity type.'))
+    color = models.CharField(_('color'), max_length=6, validators=[color_regex], help_text=_('Specify a 6 character hexadecimal color value. (e.g., \'d94d59\')'))
 
     class Meta:
         ordering = ['name']

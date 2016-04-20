@@ -3,7 +3,13 @@ from django.contrib import admin
 from . import models
 
 
+admin.site.register(models.Environment)
+
+
 admin.site.register(models.Regulation)
+
+
+admin.site.register(models.Tag)
 
 
 admin.site.register(models.Technology)
