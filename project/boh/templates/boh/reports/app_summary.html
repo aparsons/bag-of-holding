@@ -8,7 +8,7 @@
 <div class="page-header">
   <h1>Application Summary Report <small>Application Security</small></h1>
 </div>
-<p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requestor.get_full_name }} &lt;{{ requestor.email }}&gt;</p>
+<p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requester.get_full_name }} &lt;{{ requester.email }}&gt;</p>
   {% for application in applications %}
     <h2>{{ application.name }}</h2>
 
