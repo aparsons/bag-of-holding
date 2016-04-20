@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 
 from . import views
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # Dashboard
     url(r'^$', views.dashboard_personal, name='dashboard.personal'),
@@ -92,4 +92,4 @@ urlpatterns = patterns('',
     url(r'^people/(?P<person_id>\d+)/$', views.person_detail, name='person.detail'),
     url(r'^people/(?P<person_id>\d+)/edit/$', views.person_edit, name='person.edit'),
     url(r'^people/(?P<person_id>\d+)/delete/$', views.person_delete, name='person.delete'),
-)
+]

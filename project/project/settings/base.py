@@ -83,7 +83,7 @@ USE_TZ = True
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
 URL_PREFIX = ''
 
-LOGIN_URL = os.path.join('/', URL_PREFIX, 'accounts/login')
+LOGIN_URL = os.path.join('/', URL_PREFIX, 'accounts/login/')
 LOGIN_REDIRECT_URL = os.path.join('/', URL_PREFIX)
 
 # Changing error to danger for bootstrap compatibility
