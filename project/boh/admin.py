@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 
 from . import models
@@ -59,15 +60,9 @@ class ActivityCommentInline(admin.StackedInline):
     extra = 0
 
 
-class ApplicationFileUploadInline(admin.StackedInline):
-    model = models.ApplicationFileUpload
-    extra = 0
-
-
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'color']
     search_fields = ['^name']
-
 admin.site.register(models.Tag, TagAdmin)
 
 
@@ -121,7 +116,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     ]
     list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date']
     list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
-    inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationFileUploadInline]
+    inlines = [EnvironmentInline, RelationInline, EngagementInline]
     search_fields = ['^name']
 
     def dcl_display(self, obj):
@@ -166,11 +161,11 @@ admin.site.register(models.Engagement, EngagementAdmin)
 
 class ActivityTypeAdmin(admin.ModelAdmin):
     list_display = ['name']
-
 admin.site.register(models.ActivityType, ActivityTypeAdmin)
 
 
 class ActivityAdmin(admin.ModelAdmin):
+    date_hierarchy = 'open_date'
     fieldsets = [
         (None, {'fields': ['engagement', 'activity_type', 'status', 'users']}),
         ('Advanced options', {
@@ -178,12 +173,31 @@ class ActivityAdmin(admin.ModelAdmin):
             'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['__str__', 'status', 'activity_type', 'open_date', 'close_date', 'duration']
-    list_filter = ['status']
+    list_display = ['id', 'status', 'activity_type', 'application_link', 'users_list', 'engagement_link', 'open_date', 'close_date', 'duration']
+    list_filter = ['status', 'open_date', 'close_date', 'activity_type', 'users', 'engagement__application']
     inlines = [ActivityCommentInline]
     readonly_fields = ['duration']
 
+    def application_link(self, obj):
+        application = obj.engagement.application
+        application_url = reverse('admin:boh_application_change', args=(application.id,))
+        return '<a href="%s">%s</a>' % (application_url, application.name)
+    application_link.allow_tags = True
+    application_link.short_description = 'Application'
+
+    def users_list(self, obj):
+        return ', '.join(user.get_username() for user in obj.users.all())
+    users_list.short_description = 'Users'
+
+    def engagement_link(self, obj):
+        engagement = obj.engagement
+        engagement_url = reverse('admin:boh_engagement_change', args=(engagement.id,))
+        return '<a href="%s">%s</a>' % (engagement_url, engagement.id)
+    engagement_link.allow_tags = True
+    engagement_link.short_description = 'Engagement'
+
 admin.site.register(models.Activity, ActivityAdmin)
+
 
 admin.site.register(models.ThreadFix)
 
