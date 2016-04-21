@@ -700,31 +700,3 @@ class ExternalRequest(TimeStampedModel, models.Model):
     # Created Engagement (blank)
 
     # Some sort of accept/decline/other status
-
-
-class FileUpload(TimeStampedModel, models.Model):
-    """Abstract file upload by a user."""
-
-    file = models.FileField()
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
-    class Meta:
-        abstract = True
-
-
-class ApplicationFileUpload(FileUpload):
-    """A file uploaded associated with an application."""
-
-    REPORT_FILE_TYPE = 'report'
-    DOCUMENTATION_FILE_TYPE = 'documentation'
-    FILE_TYPE_CHOICES = (
-        (REPORT_FILE_TYPE, 'Report'),
-        (DOCUMENTATION_FILE_TYPE, 'Documentation'),
-    )
-
-    # Draft boolean field
-
-    file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
-
-    application = models.ForeignKey(Application)
