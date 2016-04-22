@@ -24,7 +24,7 @@
     {% if form.errors %}<div class="alert alert-danger" role="alert">The username or password you entered is not valid.</div>{% endif %}
     <div id="login" class="panel panel-default">
       <div class="panel-body">
-        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        <form method="post" action="{% url 'login' %}">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ next }}" />
           <div class="form-group">
