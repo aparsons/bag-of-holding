@@ -23,18 +23,6 @@
             <h3 class="panel-title"><span class="fa fa-pie-chart" aria-hidden="true"></span> ThreadFix Metrics</h3>
           </div>
           <table class="table table-condensed">
-            <!--
-            <thead>
-              <tr>
-                <th class="col-md-2 text-center">Critical</th>
-                <th class="col-md-2 text-center">High</th>
-                <th class="col-md-2 text-center">Medium</th>
-                <th class="col-md-2 text-center">Low</th>
-                <th class="col-md-2 text-center">Informational</th>
-                <th class="col-md-2 text-center">Total</th>
-              </tr>
-            </thead>
-            -->
             <tbody>
               <tr>
                 <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{{ metrics.critical_count }}<span class="hidden-xs"><br><small>CRITICAL</small></span></td>
@@ -145,13 +133,13 @@
       </div>
       <div class="list-group">
         {% if application.asvs_level %}
+        <li class="list-group-item">ASVS Level {{ application.get_asvs_level_display }}</li>
         <li class="list-group-item">
-          ASVS Level {{ application.asvs_level }}</td>
+          {{ application.asvs_level_percent_achieved }}% Compliant to ASVS Level {{ application.get_asvs_level_target_display }}
         </li>
-        <li class="list-group-item">
-        {{ application.asvs_level_percent_achieved }}% Compliant to ASVS Level {{ application.asvs_level_target }}</td>
-        </li>
+        {% if application.asvs_doc_url %}
         <a href="{{ application.asvs_doc_url }}" target="_blank" class="list-group-item text-primary">ASVS Detailed Report <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        {% endif %}
         {% else %}
         <li class="list-group-item">
           Not Assessed

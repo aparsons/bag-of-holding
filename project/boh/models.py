@@ -337,8 +337,8 @@ class Application(TimeStampedModel, models.Model):
     # TODO Move to OWASP ASVS Benchmark
     asvs_level = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Assessed ASVS Level')
     asvs_level_percent_achieved = models.PositiveIntegerField(blank=True, null=True, help_text='Percent compliant to the targeted ASVS level.')
-    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
     asvs_level_target = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Targeted ASVS level for this application.')
+    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
 
     # Misc
 
