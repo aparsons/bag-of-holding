@@ -256,8 +256,6 @@ class RegulationAdmin(admin.ModelAdmin):
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = 'Reference'
-
-
 admin.site.register(models.Regulation, RegulationAdmin)
 
 

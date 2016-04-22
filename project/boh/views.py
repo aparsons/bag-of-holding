@@ -148,6 +148,10 @@ def dashboard_requests(request):
 @login_required
 @require_http_methods(['GET'])
 def dashboard_metrics(request):
+    import logging
+    dates = models.Engagement.objects.datetimes('open_date', 'year')
+    for date in dates:
+        logging.info(str(date.year))
 
     engagement_stats = models.Engagement.metrics.stats()
     activity_stats = models.ActivityType.metrics.stats()

@@ -16,4 +16,6 @@ INSTALLED_APPS = (
 
     'boh',
     'boh_api',
+
+    'debug_toolbar',
 )

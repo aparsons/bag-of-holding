@@ -23,8 +23,11 @@ class ActivityTypeManager(models.Manager):
 
 
 class ActivityTypeMetrics(models.Manager):
-    def stats(self):
+    def stats(self, year=None):
         """Returns counts of each activity and their average durations."""
+        if not year:
+            year = datetime.datetime.now().year
+
         from .models import Activity
         results = self.get_queryset()
         results = results.prefetch_related(Prefetch('activity_set', queryset=Activity.objects.all()))
