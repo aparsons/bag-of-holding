@@ -148,15 +148,17 @@ def dashboard_requests(request):
 @login_required
 @require_http_methods(['GET'])
 def dashboard_metrics(request):
-    import logging
-    dates = models.Engagement.objects.datetimes('open_date', 'year')
-    for date in dates:
-        logging.info(str(date.year))
+    year = None
 
-    engagement_stats = models.Engagement.metrics.stats()
-    activity_stats = models.ActivityType.metrics.stats()
+    year_form = forms.MetricsYearForm(request.GET)
+    if year_form.is_valid():
+        year = year_form.cleaned_data['year']
+
+    engagement_stats = models.Engagement.metrics.stats(year)
+    activity_stats = models.ActivityType.metrics.stats(year)
 
     return render(request, 'boh/dashboard/metrics.html', {
+        'year_form': year_form,
         'engagement_stats': engagement_stats,
         'activity_stats': activity_stats,
         'active_top': 'dashboard',

@@ -25,12 +25,14 @@ class ActivityTypeManager(models.Manager):
 class ActivityTypeMetrics(models.Manager):
     def stats(self, year=None):
         """Returns counts of each activity and their average durations."""
-        if not year:
-            year = datetime.datetime.now().year
-
         from .models import Activity
         results = self.get_queryset()
-        results = results.prefetch_related(Prefetch('activity_set', queryset=Activity.objects.all()))
+
+        activity_queryset = Activity.objects.all()
+        if year:
+            activity_queryset = activity_queryset.filter(open_date__year=year)
+
+        results = results.prefetch_related(Prefetch('activity_set', queryset=activity_queryset))
         results = results.annotate(
             pending_count=Sum(
                 Case(When(activity__status=Activity.PENDING_STATUS, then=1), output_field=IntegerField(), default=0)
@@ -58,14 +60,28 @@ class ActivityTypeQuerySet(models.QuerySet):
 
 
 class EngagementManager(models.Manager):
-    pass
+    def distinct_years(self):
+        """Returns a list of distinct years by open_date."""
+        results = self.get_queryset()
+        results = results.datetimes('open_date', 'year')
+
+        years_list = []
+
+        for result in results:
+            years_list.append(result.year)
+
+        return years_list
 
 
 class EngagementMetrics(models.Manager):
-    def stats(self):
+    def stats(self, year=None):
         """Returns counts for each Engagement status and the average duration."""
         from .models import Engagement
         results = self.get_queryset()
+
+        if year:
+            results = results.filter(open_date__year=year)
+
         results = results.aggregate(
             pending_count=Sum(
                 Case(When(status=Engagement.PENDING_STATUS, then=1), output_field=IntegerField(), default=0)
@@ -94,7 +110,17 @@ class EngagementQuerySet(models.QuerySet):
 
 
 class ActivityManager(models.Manager):
-    pass
+    def distinct_years(self):
+        """Returns a list of distinct years by open_date."""
+        results = self.get_queryset()
+        results = results.datetimes('open_date', 'year')
+
+        years_list = []
+
+        for result in results:
+            years_list.append(result.year)
+
+        return years_list
 
 
 class ActivityQuerySet(models.QuerySet):
