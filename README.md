@@ -1,6 +1,6 @@
 # Bag of Holding
 
-The **Bag of Holding** is an application security utility to assist in the organization and prioritization of software security activities.
+The **Bag of Holding** is an application to assist in the organization and prioritization of software security activities.
 
 Check out these talks which cover building your own AppSec pipeline:
 * [Matt Tesauro - Taking AppSec to 11: Pipelines, DevOps and making things better](https://www.youtube.com/watch?v=LfVhB3EiDDs)
