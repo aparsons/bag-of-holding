@@ -1,6 +1,9 @@
 from .local import *
 
 INSTALLED_APPS = (
+    'boh',
+    'boh_api',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -13,9 +16,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'django_filters',
     'widget_tweaks',
-
-    'boh',
-    'boh_api',
 
     'debug_toolbar',
 )
