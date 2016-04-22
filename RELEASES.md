@@ -1,5 +1,15 @@
 # Bag of Holding Releases
 
+## 0.0.6 - TBD
+
+TBD
+
+### What's New
+
+* ASVS Tracking for Applications
+* Metrics Filtering By Year
+* Various Bugfixes
+
 ## 0.0.5 - 4/20/2016
 
 Maintenance release to update dependencies and remove stagnant code. This release serves as preparation for upcoming changes.
