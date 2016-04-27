@@ -263,5 +263,3 @@ class ServiceLevelAgreementAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
 
 admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)
-
-admin.site.register(models.ExternalRequest)
