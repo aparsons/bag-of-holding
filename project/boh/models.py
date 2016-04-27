@@ -34,6 +34,35 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
 
+class CustomField(TimeStampedModel, models.Model):
+    key_regex = RegexValidator(regex=r'^[0-9a-z_]+$', message=_('Key must be lowercase with no spaces. Underscores may be used to seperate words.'))
+
+    name = models.CharField(max_length=64, verbose_name=_('custom field name'), help_text=_('A name for this custom field'))
+    description = models.TextField(blank=True, help_text=_('Information about the custom field\'s purpose.'))
+    key = models.CharField(max_length=64, unique=True, validators=[key_regex], help_text=_('A unique key for this field. (e.g., \'custom_id\')'))
+    validation_regex = models.CharField(max_length=255, blank=True, help_text=_('A regular expression to validate on save.'))
+    validation_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the validation expression to be shown to users.'))
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _('Custom Field')
+        verbose_name_plural = _('Custom Fields')
+
+    def __str__(self):
+        return self.name
+
+
+class CustomFieldValue(TimeStampedModel, models.Model):
+    custom_field = models.ForeignKey(CustomField, help_text=_('The custom field to save the value under.'))
+    value = models.CharField(max_length=255, help_text=_('Stored value of the custom field'))
+
+    class Meta:
+        ordering = ['custom_field', 'value']
+
+    def __str__(self):
+        return self.value
+
+
 class Person(models.Model):
     """Information about a person."""
 

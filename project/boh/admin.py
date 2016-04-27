@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
+from django.utils.translation import ugettext as _
 
 from . import models
 
@@ -61,9 +62,55 @@ class ActivityCommentInline(admin.StackedInline):
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['name', 'color']
-    search_fields = ['^name']
+    list_display = ['name', 'color', 'sample', 'truncated_description']
+    search_fields = ['name']
+
+    def truncated_description(self, obj):
+        from django.utils.text import Truncator
+        return Truncator(obj.description).chars(40, truncate=' ...')
+    truncated_description.short_description = _('description')
+
+    def sample(self, obj):
+        return '<span style="background-color:#' + obj.color + '">Example</span>'
+    sample.allow_tags = True
 admin.site.register(models.Tag, TagAdmin)
+
+
+class CustomFieldAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created_date'
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description'),
+        }),
+        (_('Identification'), {
+            'fields': ('key',),
+        }),
+        (_('Validation'), {
+            'fields': ('validation_regex', 'validation_description'),
+        }),
+        (_('Advanced options'), {
+            'classes': ('collapse',),
+            'fields': ('created_date', 'modified_date'),
+        }),
+    )
+    list_display = ['name', 'truncated_description', 'key', 'validation_regex', 'created_date', 'modified_date']
+    list_filter = ['created_date', 'modified_date']
+    readonly_fields = ['created_date', 'modified_date']
+    search_fields = ['name', 'key']
+
+    def truncated_description(self, obj):
+        from django.utils.text import Truncator
+        return Truncator(obj.description).chars(40, truncate=' ...')
+    truncated_description.short_description = _('description')
+admin.site.register(models.CustomField, CustomFieldAdmin)
+
+
+class CustomFieldValueAdmin(admin.ModelAdmin):
+    list_display = ['custom_field', 'value', 'created_date', 'modified_date']
+    list_filter = ['created_date', 'modified_date', 'custom_field__name']
+    readonly_fields = ['created_date', 'modified_date']
+    search_fields = ['custom_field', 'value']
+admin.site.register(models.CustomFieldValue, CustomFieldValueAdmin)
 
 
 admin.site.register(models.Organization)
