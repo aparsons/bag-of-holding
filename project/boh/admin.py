@@ -88,7 +88,7 @@ class CustomFieldAdmin(admin.ModelAdmin):
         (_('Validation'), {
             'fields': ('validation_regex', 'validation_description'),
         }),
-        (_('Advanced options'), {
+        (_('Metadata'), {
             'classes': ('collapse',),
             'fields': ('created_date', 'modified_date'),
         }),
@@ -105,12 +105,21 @@ class CustomFieldAdmin(admin.ModelAdmin):
 admin.site.register(models.CustomField, CustomFieldAdmin)
 
 
-class CustomFieldValueAdmin(admin.ModelAdmin):
-    list_display = ['custom_field', 'value', 'created_date', 'modified_date']
-    list_filter = ['created_date', 'modified_date', 'custom_field__name']
+class ApplicationCustomFieldValueAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('application', 'custom_field', 'value'),
+        }),
+        (_('Metadata'), {
+            'classes': ('collapse',),
+            'fields': ('created_date', 'modified_date'),
+        }),
+    )
+    list_display = ['id', 'application', 'custom_field', 'value', 'created_date', 'modified_date']
+    list_filter = ['created_date', 'modified_date', 'custom_field__name', 'application']
     readonly_fields = ['created_date', 'modified_date']
     search_fields = ['custom_field', 'value']
-admin.site.register(models.CustomFieldValue, CustomFieldValueAdmin)
+admin.site.register(models.ApplicationCustomFieldValue, ApplicationCustomFieldValueAdmin)
 
 
 admin.site.register(models.Organization)
@@ -120,7 +129,6 @@ class DataElementAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'weight']
     list_filter = ['category']
     search_fields = ['^name']
-
 admin.site.register(models.DataElement, DataElementAdmin)
 
 

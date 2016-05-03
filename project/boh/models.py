@@ -57,6 +57,7 @@ class CustomFieldValue(TimeStampedModel, models.Model):
     value = models.CharField(max_length=255, help_text=_('Stored value of the custom field'))
 
     class Meta:
+        abstract = True
         ordering = ['custom_field', 'value']
 
     def __str__(self):
@@ -405,6 +406,13 @@ class Application(TimeStampedModel, models.Model):
         """Returns true if the application was created in the last 7 days"""
         delta = self.created_date - timezone.now()
         return delta >= timedelta(days=-7)
+
+
+class ApplicationCustomFieldValue(CustomFieldValue):
+    application = models.ForeignKey(Application)
+
+    class Meta:
+        unique_together = ('application', 'custom_field', 'value')
 
 
 class ThreadFixMetrics(TimeStampedModel, models.Model):
