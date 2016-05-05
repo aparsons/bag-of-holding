@@ -1,10 +1,12 @@
 from datetime import date, timedelta
+import re
 import uuid
 
 import phonenumbers
 
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.utils.translation import ugettext as _
@@ -35,12 +37,18 @@ class Tag(models.Model):
 
 
 class CustomField(TimeStampedModel, models.Model):
+    def validate_regex(value):
+        try:
+            re.compile(value)
+        except re.error:
+            raise ValidationError(_('%(value)s is not a valid regular expression'), params={'value': value})
+
     key_regex = RegexValidator(regex=r'^[0-9a-z_]+$', message=_('Key must be lowercase with no spaces. Underscores may be used to seperate words.'))
 
     name = models.CharField(max_length=64, verbose_name=_('custom field name'), help_text=_('A name for this custom field'))
     description = models.TextField(blank=True, help_text=_('Information about the custom field\'s purpose.'))
     key = models.CharField(max_length=64, unique=True, validators=[key_regex], help_text=_('A unique key for this field. (e.g., \'custom_id\')'))
-    validation_regex = models.CharField(max_length=255, blank=True, help_text=_('A regular expression to validate on save.'))
+    validation_regex = models.CharField(max_length=255, blank=True, validators=[validate_regex], help_text=_('A regular expression to validate on save. (e.g. \'[0-9]{5}\' is a regex for a number with a length of 5)'))
     validation_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the validation expression to be shown to users.'))
 
     class Meta:
@@ -62,6 +70,10 @@ class CustomFieldValue(TimeStampedModel, models.Model):
 
     def __str__(self):
         return self.value
+
+    def clean(self):
+        if not re.match(self.custom_field.validation_regex, self.value):
+            raise ValidationError({'value': _('Value does not match custom field regex.')})
 
 
 class Person(models.Model):
@@ -408,7 +420,7 @@ class Application(TimeStampedModel, models.Model):
         return delta >= timedelta(days=-7)
 
 
-class ApplicationCustomFieldValue(CustomFieldValue):
+class ApplicationCustomFieldValue(CustomFieldValue): # TODO Change to M2M
     application = models.ForeignKey(Application)
 
     class Meta:

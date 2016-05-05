@@ -118,7 +118,7 @@ class ApplicationCustomFieldValueAdmin(admin.ModelAdmin):
     list_display = ['id', 'application', 'custom_field', 'value', 'created_date', 'modified_date']
     list_filter = ['created_date', 'modified_date', 'custom_field__name', 'application']
     readonly_fields = ['created_date', 'modified_date']
-    search_fields = ['custom_field', 'value']
+    search_fields = ['custom_field', 'value', 'key']
 admin.site.register(models.ApplicationCustomFieldValue, ApplicationCustomFieldValueAdmin)
 
 
