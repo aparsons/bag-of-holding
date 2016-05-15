@@ -8,16 +8,10 @@ This release brings several highly requested features. You will find that custom
 
 ### What's New
 
-* Metrics filtering by year
-* Custom fields
-* Application custom fields
-* Dependencies
-* Minor Bugfixes
-
-### What's New
-
 * ASVS Tracking for Applications
 * Metrics Filtering By Year
+* Custom fields for Applications
+* Updated Dependencies
 * Various Bugfixes
 
 ## 0.0.5 - 4/20/2016
