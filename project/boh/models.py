@@ -1,10 +1,11 @@
 from datetime import date, timedelta
-import uuid
+import re
 
 import phonenumbers
 
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.utils.translation import ugettext as _
@@ -32,6 +33,49 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.color = self.color.lower()  # Convert color to lowercase
         super(Tag, self).save(*args, **kwargs)
+
+
+class CustomField(TimeStampedModel, models.Model):
+    def validate_regex(value):
+        try:
+            re.compile(value)
+        except re.error:
+            raise ValidationError(_('%(value)s is not a valid regular expression'), params={'value': value})
+
+    key_regex = RegexValidator(regex=r'^[0-9a-z_]+$', message=_('Key must be lowercase with no spaces. Underscores may be used to seperate words.'))
+
+    name = models.CharField(max_length=64, verbose_name=_('custom field name'), help_text=_('A name for this custom field'))
+    description = models.TextField(blank=True, help_text=_('Information about the custom field\'s purpose.'))
+    key = models.CharField(max_length=64, unique=True, validators=[key_regex], help_text=_('A unique key for this field. (e.g., \'custom_id\')'))
+    validation_regex = models.CharField(max_length=255, blank=True, validators=[validate_regex], help_text=_('A regular expression to validate on save. (e.g. \'[0-9]{5}$\' is a regex for a number with a length of 5)'))
+    validation_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the validation expression to be shown to users.'))
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _('Custom Field')
+        verbose_name_plural = _('Custom Fields')
+
+    def __str__(self):
+        return self.name
+
+
+class CustomFieldValue(TimeStampedModel, models.Model):
+    custom_field = models.ForeignKey(CustomField)
+    value = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True
+        ordering = ['custom_field', 'value']
+
+    def __str__(self):
+        return self.value
+
+    def clean(self):
+        if not re.match(self.custom_field.validation_regex, self.value):
+            if self.custom_field.validation_description:
+                raise ValidationError({'value': self.custom_field.validation_description})
+            else:
+                raise ValidationError({'value': _('Value does not match custom field regex.')})
 
 
 class Person(models.Model):
@@ -337,8 +381,8 @@ class Application(TimeStampedModel, models.Model):
     # TODO Move to OWASP ASVS Benchmark
     asvs_level = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Assessed ASVS Level')
     asvs_level_percent_achieved = models.PositiveIntegerField(blank=True, null=True, help_text='Percent compliant to the targeted ASVS level.')
-    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
     asvs_level_target = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Targeted ASVS level for this application.')
+    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
 
     # Misc
 
@@ -346,7 +390,6 @@ class Application(TimeStampedModel, models.Model):
     source code repo
     bug tracking tool
     developer experience / familiarity
-    programming language/s
     id for whitehat + checkmarx (third-party ids)
     password policy
     """
@@ -354,6 +397,7 @@ class Application(TimeStampedModel, models.Model):
     organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
 
     objects = managers.ApplicationManager.from_queryset(managers.ApplicationQuerySet)()
 
@@ -376,6 +420,13 @@ class Application(TimeStampedModel, models.Model):
         """Returns true if the application was created in the last 7 days"""
         delta = self.created_date - timezone.now()
         return delta >= timedelta(days=-7)
+
+
+class ApplicationCustomFieldValue(CustomFieldValue):
+    application = models.ForeignKey(Application)
+
+    class Meta:
+        unique_together = ('application', 'custom_field', 'value')
 
 
 class ThreadFixMetrics(TimeStampedModel, models.Model):
@@ -683,48 +734,3 @@ class ActivityComment(Comment):
     """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)
-
-
-class ExternalRequest(TimeStampedModel, models.Model):
-    """An external request for engagement."""
-
-    token = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    requestor = models.ForeignKey(Person)
-    application = models.ForeignKey(Application, blank=True)
-    activities = models.ManyToManyField(ActivityType, limit_choices_to={'requestable': True})
-    # Application FK
-    # Person FK (Can be blank)
-    # Requested Activities (Multiple)
-    # Status Page UUID
-    # Created Engagement (blank)
-
-    # Some sort of accept/decline/other status
-
-
-class FileUpload(TimeStampedModel, models.Model):
-    """Abstract file upload by a user."""
-
-    file = models.FileField()
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
-    class Meta:
-        abstract = True
-
-
-class ApplicationFileUpload(FileUpload):
-    """A file uploaded associated with an application."""
-
-    REPORT_FILE_TYPE = 'report'
-    DOCUMENTATION_FILE_TYPE = 'documentation'
-    FILE_TYPE_CHOICES = (
-        (REPORT_FILE_TYPE, 'Report'),
-        (DOCUMENTATION_FILE_TYPE, 'Documentation'),
-    )
-
-    # Draft boolean field
-
-    file_type = models.CharField(max_length=13, choices=FILE_TYPE_CHOICES)
-
-    application = models.ForeignKey(Application)

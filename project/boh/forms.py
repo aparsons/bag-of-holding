@@ -19,6 +19,18 @@ class PageSizeForm(forms.Form):
 
 # Dashboard
 
+class MetricsYearForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(MetricsYearForm, self).__init__(*args, **kwargs)
+
+        engagement_years = models.Engagement.objects.distinct_years()
+        activity_years = models.Activity.objects.distinct_years()
+        years = engagement_years + list(set(activity_years) - set(engagement_years)) # Combine both lists
+        years.sort(reverse=True)
+        self.fields['year'] = forms.ChoiceField(choices=[('', 'All')] + [(year, year) for year in years], required=False)
+
+
 class EngagementCoverageReportForm(forms.Form):
     HTML_FORMAT = 'html'
     CSV_FORMAT = 'csv'
@@ -211,6 +223,7 @@ class ApplicationSettingsServiceLevelAgreementForm(forms.ModelForm):
         model = models.Application
         fields = ['service_level_agreements']
 
+
 class ApplicationSettingsASVSForm(forms.ModelForm):
     class Meta:
         model = models.Application
@@ -221,6 +234,7 @@ class ApplicationSettingsASVSForm(forms.ModelForm):
             'asvs_doc_url': 'ASVS Document',
             'asvs_level_target': 'Target ASVS Level'
         }
+
 
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:

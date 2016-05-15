@@ -7,7 +7,6 @@ urlpatterns = [
     # Dashboard
     url(r'^$', views.dashboard_personal, name='dashboard.personal'),
     url(r'^team/$', views.dashboard_team, name='dashboard.team'),
-    url(r'^external-requests/$', views.dashboard_requests, name='dashboard.requests'),
     url(r'^metrics/$', views.dashboard_metrics, name='dashboard.metrics'),
     url(r'^reports/$', views.dashboard_reports, name='dashboard.reports'),
     url(r'^reports/download/$', views.dashboard_reports_download, name='dashboard.reports.download'),
@@ -61,6 +60,7 @@ urlpatterns = [
     url(r'^applications/(?P<application_id>\d+)/settings/service-level-agreements/$', views.application_settings_service_level_agreements, name='application.settings.service-level-agreements'),
     url(r'^applications/(?P<application_id>\d+)/settings/owasp/$', views.application_settings_owasp_asvs, name='application.settings.owasp-asvs'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
+    url(r'^applications/(?P<application_id>\d+)/settings/custom-fields/$', views.application_settings_custom_fields, name='application.settings.custom-fields'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
 
     # Environment

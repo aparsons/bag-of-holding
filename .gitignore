@@ -6,6 +6,7 @@ project/*/migrations/*
 !project/boh/migrations/0003_v1_0_1.py
 !project/boh/migrations/0004_v1_0_2.py
 !project/boh/migrations/0005_v1_0_3.py
+!project/boh/migrations/0006_v0_0_6.py
 .idea
 
 project/project/settings/dev_aparsons.py

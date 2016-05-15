@@ -134,25 +134,21 @@ def dashboard_team(request):
         'active_tab': 'team'
     })
 
-@login_required
-@require_http_methods(['GET'])
-def dashboard_requests(request):
-    external_requests = models.ExternalRequest.objects.all()
-
-    return render(request, 'boh/dashboard/requests.html', {
-        'external_requests': external_requests,
-        'active_top': 'dashboard',
-        'active_tab': 'requests'
-    })
 
 @login_required
 @require_http_methods(['GET'])
 def dashboard_metrics(request):
+    year = None
 
-    engagement_stats = models.Engagement.metrics.stats()
-    activity_stats = models.ActivityType.metrics.stats()
+    year_form = forms.MetricsYearForm(request.GET)
+    if year_form.is_valid():
+        year = year_form.cleaned_data['year']
+
+    engagement_stats = models.Engagement.metrics.stats(year)
+    activity_stats = models.ActivityType.metrics.stats(year)
 
     return render(request, 'boh/dashboard/metrics.html', {
+        'year_form': year_form,
         'engagement_stats': engagement_stats,
         'activity_stats': activity_stats,
         'active_top': 'dashboard',
@@ -1111,6 +1107,38 @@ def application_settings_owasp_asvs(request, application_id):
         'active_side': 'owasp'
     })
 
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_settings_custom_fields(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+
+    ApplicationCustomFieldValueFormSet = \
+        inlineformset_factory(
+            models.Application,
+            models.ApplicationCustomFieldValue,
+            fields=('custom_field', 'value',),
+            extra=1,
+            widgets={}
+        )
+
+    formset = ApplicationCustomFieldValueFormSet(request.POST or None, instance=application)
+
+    if formset.is_valid():
+        formset.save()
+        messages.success(request, 'You successfully updated these custom fields.', extra_tags=random.choice(success_messages))
+        return redirect('boh:application.settings.custom-fields', application_id=application.id)
+
+    custom_fields = models.CustomField.objects.all()
+
+    return render(request, 'boh/application/settings/custom_fields.html', {
+        'application': application,
+        'custom_fields': custom_fields,
+        'formset': formset,
+        'active_top': 'applications',
+        'active_tab': 'settings',
+        'active_side': 'custom_fields'
+    })
 
 
 @login_required

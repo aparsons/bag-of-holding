@@ -14,6 +14,7 @@
         <a href="{% url 'boh:application.settings.service-level-agreements' application.id %}" class="list-group-item{% if active_side == 'agreements' %} active{% endif %}"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span> Service Level Agreements</a>
         <a href="{% url 'boh:application.settings.owasp-asvs' application.id %}" class="list-group-item{% if active_side == 'owasp' %} active{% endif %}"><span class="fa fa-bullseye fa-fw" aria-hidden="true"></span> OWASP ASVS</a>
         <a href="{% url 'boh:application.settings.services' application.id %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span> Services</a>
+        <a href="{% url 'boh:application.settings.custom-fields' application.id %}" class="list-group-item{% if active_side == 'custom_fields' %} active{% endif %}"><span class="fa fa-magic fa-fw" aria-hidden="true"></span> Custom Fields</a>
       </div>
     </div>
     <div class="panel panel-default">

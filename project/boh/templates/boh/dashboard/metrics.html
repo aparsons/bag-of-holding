@@ -1,10 +1,26 @@
 {% extends "boh/dashboard/base_dashboard.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}Metrics{% endblock %}
 
 {% block dashboard_content %}
 <div class="row">
   <div class="col-md-4">
+    <form action="{% url 'boh:dashboard.metrics' %}" method="get">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <label class="control-label" for="{{ year_form.year.id_for_label }}">{{ year_form.year.label }}:</label>
+                <div class="form-group">
+                    {{ year_form.year|add_class:"form-control"|attr:"placeholder:Name" }}
+                </div>
+                <button class="btn btn-default btn-block" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> Filter</span></button>
+            </div>
+        </div>
+    </form>
+  </div>
+
+  <div class="col-md-8">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
@@ -34,9 +50,7 @@
         </tbody>
       </table>
     </div>
-  </div>
 
-  <div class="col-md-8">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h3>

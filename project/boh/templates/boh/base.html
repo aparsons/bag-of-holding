@@ -66,7 +66,7 @@
                 <li><a href="{% url 'boh:user.profile' %}"><span class="fa fa-user" aria-hidden="true"></span> My Profile</a></li>
                 <li><a href="{% url 'boh:user.change_password' %}"><span class="fa fa-key" aria-hidden="true"></span> Change Password</a></li>
                 <li class="divider"></li>
-                <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</a></li>
+                <li><a href="{% url 'logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -97,7 +97,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 clearfix">
-          {% if user.is_authenticated %}<span class="text-muted pull-right">v0.0.5</span>{% endif %}
+          {% if user.is_authenticated %}<span class="text-muted pull-right">v0.0.6</span>{% endif %}
         </div>
       </div>
     </div>
