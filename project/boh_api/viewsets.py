@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from rest_framework import viewsets
 
 from boh import models
@@ -23,3 +25,23 @@ class TagViewSet(viewsets.ModelViewSet):
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = models.Person.objects.all()
     serializer_class = serializers.PersonSerializer
+
+
+class EngagementViewSet(viewsets.ModelViewSet):
+    queryset = models.Engagement.objects.all()
+    serializer_class = serializers.EngagementSerializer
+
+
+class ActivityViewSet(viewsets.ModelViewSet):
+    queryset = models.Activity.objects.all()
+    serializer_class = serializers.ActivitySerializer
+
+
+class ActivityTypeViewSet(viewsets.ModelViewSet):
+    queryset = models.ActivityType.objects.all()
+    serializer_class = serializers.ActivityTypeSerializer
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = get_user_model().objects.all()
+    serializer_class = serializers.UserSerializer
