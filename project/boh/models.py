@@ -47,7 +47,7 @@ class CustomField(TimeStampedModel, models.Model):
     name = models.CharField(max_length=64, verbose_name=_('custom field name'), help_text=_('A name for this custom field'))
     description = models.TextField(blank=True, help_text=_('Information about the custom field\'s purpose.'))
     key = models.CharField(max_length=64, unique=True, validators=[key_regex], help_text=_('A unique key for this field. (e.g., \'custom_id\')'))
-    validation_regex = models.CharField(max_length=255, blank=True, validators=[validate_regex], help_text=_('A regular expression to validate on save. (e.g. \'[0-9]{5}\' is a regex for a number with a length of 5)'))
+    validation_regex = models.CharField(max_length=255, blank=True, validators=[validate_regex], help_text=_('A regular expression to validate on save. (e.g. \'[0-9]{5}$\' is a regex for a number with a length of 5)'))
     validation_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the validation expression to be shown to users.'))
 
     class Meta:
@@ -61,7 +61,7 @@ class CustomField(TimeStampedModel, models.Model):
 
 class CustomFieldValue(TimeStampedModel, models.Model):
     custom_field = models.ForeignKey(CustomField)
-    value = models.CharField(max_length=255, help_text=_('Stored value of the custom field'))
+    value = models.CharField(max_length=255)
 
     class Meta:
         abstract = True

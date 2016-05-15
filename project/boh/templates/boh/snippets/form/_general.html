@@ -7,5 +7,5 @@
   <p class="help-block">{{ error }}</p>
   {% endfor %}
   {% endif %}
-  {% if control.help_text %}<p class="help-block">{{ control.help_text }}</p>{% endif %}
+  {% if control.help_text %}<p class="help-block{% if help_class %} {{ help_class }}{% endif %}">{{ control.help_text }}</p>{% endif %}
 </div>

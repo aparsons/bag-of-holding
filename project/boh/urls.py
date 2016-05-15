@@ -60,6 +60,7 @@ urlpatterns = [
     url(r'^applications/(?P<application_id>\d+)/settings/service-level-agreements/$', views.application_settings_service_level_agreements, name='application.settings.service-level-agreements'),
     url(r'^applications/(?P<application_id>\d+)/settings/owasp/$', views.application_settings_owasp_asvs, name='application.settings.owasp-asvs'),
     url(r'^applications/(?P<application_id>\d+)/settings/services/$', views.application_settings_services, name='application.settings.services'),
+    url(r'^applications/(?P<application_id>\d+)/settings/custom-fields/$', views.application_settings_custom_fields, name='application.settings.custom-fields'),
     url(r'^applications/(?P<application_id>\d+)/settings/danger/$', views.application_settings_danger, name='application.settings.danger'),
 
     # Environment

@@ -223,6 +223,7 @@ class ApplicationSettingsServiceLevelAgreementForm(forms.ModelForm):
         model = models.Application
         fields = ['service_level_agreements']
 
+
 class ApplicationSettingsASVSForm(forms.ModelForm):
     class Meta:
         model = models.Application
@@ -233,6 +234,7 @@ class ApplicationSettingsASVSForm(forms.ModelForm):
             'asvs_doc_url': 'ASVS Document',
             'asvs_level_target': 'Target ASVS Level'
         }
+
 
 class ApplicationSettingsThreadFixForm(forms.ModelForm):
     class Meta:
