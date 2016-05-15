@@ -1,8 +1,18 @@
 # Bag of Holding Releases
 
-## 0.0.6 - TBD
+## 0.0.6 - 5/15/2016
 
-TBD
+This release brings several highly requested features. You will find that custom fields can be defined and applied to applications. This functionality was developed so it could easily be applied to other models in the future. Another new piece of functionality is the filtering of metrics so yearly totals can be seen. Enjoy!
+
+*Take note of the new github repository location.*
+
+### What's New
+
+* Metrics filtering by year
+* Custom fields
+* Application custom fields
+* Dependencies
+* Minor Bugfixes
 
 ### What's New
 
