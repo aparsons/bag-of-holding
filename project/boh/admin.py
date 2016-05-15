@@ -21,6 +21,11 @@ class EnvironmentLocationInline(admin.StackedInline):
     extra = 0
 
 
+class ApplicationCustomFieldValueInline(admin.StackedInline):
+    model = models.ApplicationCustomFieldValue
+    extra = 0
+
+
 class RelationInline(admin.StackedInline):
     model = models.Relation
     fields = ['application', 'person', 'owner', 'emergency', 'notes']
@@ -118,7 +123,7 @@ class ApplicationCustomFieldValueAdmin(admin.ModelAdmin):
     list_display = ['id', 'application', 'custom_field', 'value', 'created_date', 'modified_date']
     list_filter = ['created_date', 'modified_date', 'custom_field__name', 'application']
     readonly_fields = ['created_date', 'modified_date']
-    search_fields = ['custom_field', 'value', 'key']
+    search_fields = ['custom_field__name', 'value', 'application__name', 'custom_field__key']
 admin.site.register(models.ApplicationCustomFieldValue, ApplicationCustomFieldValueAdmin)
 
 
@@ -171,7 +176,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     ]
     list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date']
     list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
-    inlines = [EnvironmentInline, RelationInline, EngagementInline]
+    inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationCustomFieldValueInline]
     search_fields = ['^name']
 
     def dcl_display(self, obj):

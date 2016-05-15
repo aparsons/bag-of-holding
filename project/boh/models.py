@@ -1,6 +1,5 @@
 from datetime import date, timedelta
 import re
-import uuid
 
 import phonenumbers
 
@@ -61,7 +60,7 @@ class CustomField(TimeStampedModel, models.Model):
 
 
 class CustomFieldValue(TimeStampedModel, models.Model):
-    custom_field = models.ForeignKey(CustomField, help_text=_('The custom field to save the value under.'))
+    custom_field = models.ForeignKey(CustomField)
     value = models.CharField(max_length=255, help_text=_('Stored value of the custom field'))
 
     class Meta:
@@ -73,7 +72,10 @@ class CustomFieldValue(TimeStampedModel, models.Model):
 
     def clean(self):
         if not re.match(self.custom_field.validation_regex, self.value):
-            raise ValidationError({'value': _('Value does not match custom field regex.')})
+            if self.custom_field.validation_description:
+                raise ValidationError({'value': self.custom_field.validation_description})
+            else:
+                raise ValidationError({'value': _('Value does not match custom field regex.')})
 
 
 class Person(models.Model):
@@ -388,7 +390,6 @@ class Application(TimeStampedModel, models.Model):
     source code repo
     bug tracking tool
     developer experience / familiarity
-    programming language/s
     id for whitehat + checkmarx (third-party ids)
     password policy
     """
@@ -396,6 +397,7 @@ class Application(TimeStampedModel, models.Model):
     organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
 
     objects = managers.ApplicationManager.from_queryset(managers.ApplicationQuerySet)()
 
@@ -420,7 +422,7 @@ class Application(TimeStampedModel, models.Model):
         return delta >= timedelta(days=-7)
 
 
-class ApplicationCustomFieldValue(CustomFieldValue): # TODO Change to M2M
+class ApplicationCustomFieldValue(CustomFieldValue):
     application = models.ForeignKey(Application)
 
     class Meta:
