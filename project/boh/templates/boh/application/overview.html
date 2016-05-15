@@ -89,6 +89,44 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-magic" aria-hidden="true"></span> Custom Fields ({{ application.custom_fields.count }})</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for custom_value in application.applicationcustomfieldvalue_set.all %}
+                <tr>
+                  <td>
+                    {% if custom_value.custom_field.description %}
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{ custom_value.custom_field.description }}">{{ custom_value.custom_field.name }}</span>
+                    {% else %}
+                    {{ custom_value.custom_field.name }}
+                    {% endif %}
+                  </td>
+                  <td>{{ custom_value }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="2"><small class="text-muted"><em>There are no custom field values.</em></small></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
