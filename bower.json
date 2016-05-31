@@ -1,6 +1,6 @@
 {
   "name": "bag-of-holding",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "private": true,
   "ignore": [
     "**/.*",
@@ -10,8 +10,8 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap-sass": "~3.3.5",
-    "fontawesome": "~4.4.0",
+    "bootstrap-sass": "~3.3.4",
+    "fontawesome": "~4.3.0",
     "modernizer": "~2.8.2",
     "bootstrap-datepicker": "~1.4.0",
     "bootstrap-markdown": "~2.8.0",

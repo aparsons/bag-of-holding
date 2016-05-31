@@ -1,0 +1,63 @@
+{% extends "boh/engagement/base_engagements.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{{ application.name }} | New Engagement{% endblock %}
+
+{% block css %}
+<link href="{% static 'boh/css/datepicker.min.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block engagement_breadcrumb %}
+<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li class="active">New Engagement</li>
+{% endblock engagement_breadcrumb %}
+
+{% block engagement_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:engagement.add' application.id %}" autocomplete="off">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Engagement</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="input-daterange">
+              <div class="col-md-6">
+                {% include "boh/snippets/form/_general.html" with control=form.start_date %}
+              </div>
+              <div class="col-md-6">
+                {% include "boh/snippets/form/_general.html" with control=form.end_date %}
+              </div>
+            </div>
+          </div>
+          {% include "boh/snippets/form/_markdown.html" with control=form.description %}
+          {% include "boh/snippets/form/_general.html" with control=form.requestor %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Create Engagement</button>
+          <a href="{% url 'boh:application.engagements' application.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how engagement work here.</p>
+    </div>
+  </div>
+</div>
+{% endblock engagement_content %}
+
+{% block js %}
+<script src="{% static 'boh/js/datepicker.min.js' %}"></script>
+<script>
+$('.input-daterange').datepicker({
+  format: "yyyy-mm-dd",
+  todayBtn: "linked",
+  todayHighlight: true
+});
+</script>
+{% endblock js %}

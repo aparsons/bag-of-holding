@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+<div class="form-group{% if control.errors %} has-error has-feedback{% endif %}{% if class %} {{ class }}{% endif %}">
+  <label class="control-label" for="{{ control.id_for_label }}">{% if label %}{{ label }}{% else %}{{ control.label }}{% endif %}{% if control.field.required and required != False %} <sup><span class="fa fa-exclamation-circle text-danger" data-toggle="tooltip" data-placement="right" title="Required"></span></sup>{% endif %}</label>
+  {{ control | add_class:"form-control" }}
+  {% if control.errors %}
+  {% for error in control.errors %}
+  <p class="help-block">{{ error }}</p>
+  {% endfor %}
+  {% endif %}
+  {% if control.help_text %}<p class="help-block{% if help_class %} {{ help_class }}{% endif %}">{{ control.help_text }}</p>{% endif %}
+</div>

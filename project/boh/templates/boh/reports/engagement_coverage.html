@@ -1,0 +1,39 @@
+{% extends "boh/reports/base.html" %}
+
+{% block title %}Engagement Coverage Report | {{ current_datetime|date:"SHORT_DATE_FORMAT" }}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Engagement Coverage <small>Application Security</small></h1>
+  </div>
+  <p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requester.get_full_name }} &lt;{{ requester.email }}&gt;</p>
+  {% for organization in organizations %}
+    <h2>{{ organization.name }}</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-3">Application Name</th>
+          <th class="col-md-1">Criticality</th>
+          <th class="col-md-2">Last Engagement</th>
+          <th class="col-md-2">Elapsed</th>
+          <th class="col-md-4">Activities</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for application in organization.application_set.all %}
+      {% with engagement=application.engagement_set.latest %}
+        <tr>
+          <td>{{ application.name }}</td>
+          <td>{{ application.get_business_criticality_display }}</td>
+          <td>{{ engagement.end_date }}</td>
+          <td>{{ engagement.end_date|timesince }}</td>
+          <td>
+          {% for activity in engagement.activity_set.all %}{% if not forloop.first %}, {% endif %}{{ activity.activity_type }}{% endfor %}
+          </td>
+        </tr>
+      {% endwith %}
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "boh/reports/base.html" %}
+{% load markdown_render %}
+
+{% block title %}Organization Summary Report | {{ current_datetime|date:"SHORT_DATE_FORMAT" }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>Application Summary Report <small>Application Security</small></h1>
+</div>
+<p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requester.get_full_name }} &lt;{{ requester.email }}&gt;</p>
+  {% for application in applications %}
+    <h2>{{ application.name }}</h2>
+
+    <h4>Application Description</h4>
+    {{ application.description|markdown_render }}
+
+    <div style="float:left; width:225px">
+    <h4>Data Classification Level</h4>
+     <table class="table table-condensed">
+         {% if application.override_dcl %}
+         <tbody>
+          {% if application.override_dcl = 1 %}
+          <tr>
+             <td class="col-sm-2 bg-vuln-low vuln-count text-center">DCL 1</td>
+           </tr>
+           <tr>
+             <td class="bg-muted vuln-count text-center">
+               <div style="font-weight: 200; font-size: 16px;">
+                   Public<br>
+                   Unclassified
+               </div>
+             </td>
+           </tr>
+             {% endif %}
+
+             {% if application.override_dcl = 2 %}
+             <tr>
+               <td class="col-sm-2 bg-vuln-medium vuln-count text-center">DCL 2</td>
+             </tr>
+             <tr>
+               <td class="bg-muted vuln-count text-center">
+                 <div style="font-weight: 200; font-size: 16px;">
+                     Internal Use<br>
+                     Proprietary
+                 </div>
+               </td>
+             </tr>
+             {% endif %}
+
+             {% if application.override_dcl = 3 %}
+             <tr>
+             <td class="col-sm-2 bg-vuln-high vuln-count text-center">DCL 3</td>
+             </tr>
+             <tr>
+               <td class="bg-muted vuln-count text-center">
+                 <div style="font-weight: 200; font-size: 16px;">
+                     Confidential<br>
+                     Company Confidential
+                 </div>
+               </td>
+             </tr>
+             {% endif %}
+
+             {% if application.override_dcl = 4 %}
+             <tr>
+              <td class="col-sm-2 bg-vuln-critical vuln-count text-center">DCL 4</td>
+             </tr>
+             <tr>
+               <td class="bg-muted vuln-count text-center">
+                 <div style="font-weight: 200; font-size: 16px;">
+                     Restricted<br>
+                     Highly Confidential
+                 </div>
+               </td>
+             </tr>
+             {% endif %}
+
+         </tbody>
+         {% else %}
+           Not Assessed
+         {% endif %}
+       </table>
+     </div>
+     <div style="width: 225px; float:left; padding-left: 25px;">
+      <h4>ASVS Level</h4>
+       <table class="table table-condensed">
+           {% if application.asvs_level %}
+           <tbody>
+             <tr>
+               {% if application.asvs_level = 0 %}
+               <td class="col-sm-2 bg-vuln-critical vuln-count text-center">ASVS Level 0</td>
+               {% endif %}
+
+               {% if application.asvs_level = 1 %}
+               <td class="col-sm-2 bg-vuln-high vuln-count text-center">ASVS Level 1</td>
+               {% endif %}
+
+               {% if application.asvs_level = 2 %}
+               <td class="col-sm-2 bg-vuln-medium vuln-count text-center">ASVS Level 2
+                  {{ application.asvs_level_percent_achieved }}% Compliant to<br> ASVS Level {{ application.asvs_level_target }}</td>
+                 </small>
+             </span>
+           </td>
+               {% endif %}
+
+               {% if application.asvs_level = 3 %}
+               <td class="col-sm-2 bg-vuln-low vuln-count text-center">ASVS Level 3</td>
+               {% endif %}
+             </tr>
+             <tr>
+               <td class="bg-muted vuln-count text-center">
+                 <div style="font-weight: 200; font-size: 16px;">
+                     {{ application.asvs_level_percent_achieved }}% Compliant to<br> ASVS Level {{ application.asvs_level_target }}
+                 </div>
+               </td>
+             </tr>
+           </tbody>
+           {% else %}
+             Not Assessed
+           {% endif %}
+         </table>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+      <h4>Application Security Vulnerabilities</h4>
+          <table class="table table-condensed">
+            <tbody>
+              {% with metrics=application.threadfixmetrics_set.latest %}
+              <tr>
+                <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{{ metrics.critical_count }}<span class="hidden-xs"><br><small>CRITICAL</small></span></td>
+                <td class="col-sm-2 bg-vuln-high vuln-count text-center">{{ metrics.high_count }}<span class="hidden-xs"><br><small>HIGH</small></span></td>
+                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{{ metrics.medium_count }}<span class="hidden-xs"><br><small>MEDIUM</small></span></td>
+                <td class="col-sm-2 bg-vuln-low vuln-count text-center">{{ metrics.low_count }}<span class="hidden-xs"><br><small>LOW</small></span></td>
+                <td class="col-sm-2 bg-vuln-info vuln-count text-center">{{ metrics.informational_count }}<span class="hidden-xs"><br><small>INFORMATIONAL</small></span></td>
+                <td class="col-sm-2 bg-muted vuln-count text-center">{{ metrics.total }}<span class="hidden-xs"><br><small>TOTAL</small></span></td>
+              </tr>
+              {% endwith %}
+            </tbody>
+          </table>
+          <h4>Engagements</h4>
+          <table class="table table-striped" style="width:400px">
+            <tbody>
+              {% with engagement=application.engagement_set.latest %}
+              <tr>
+                <td style="width:150px"><strong>Last Engagement {{ engagement.end_date }}</strong></td>
+                <td>
+                {% for activity in engagement.activity_set.all %}{% if not forloop.first %}, {% endif %}{{ activity.activity_type }}{% endfor %}
+                </td>
+              </tr>
+              {% endwith %}
+            </tbody>
+          </table>
+          <h4>Technologies</h4>
+          <table class="table table-striped" style="width:400px">
+            <tbody>
+              {% for technology in application.technologies.all %}
+              <tr>
+                <td style="width:150px"><strong>{{ technology.name }}</strong></td>
+                <td>{{ technology.get_category_display }}</td>
+                {% empty %}
+                <td><em>There are no specified technologies.</em></td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Regulations</h4>
+          <table class="table table-striped" style="width:400px">
+            <tbody>
+              {% for regulation in application.regulations.all %}
+              <tr>
+                <td style="width:150px"><strong>{{ regulation.acronym }}</strong></td>
+                <td>{{ regulation.name }}</td>
+                {% empty %}
+                <td><em>There are no specified regulations.</em></td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Data Elements</h4>
+          <table class="table table-striped" style="width:400px">
+            <tbody>
+              {% for data_element in application.data_elements.all %}
+              <tr>
+                <td style="width:150px"><strong>{{ data_element.name }}</strong></td>
+                <td>{{ data_element.category }}</td>
+                {% empty %}
+                <td><em>There are no specified data elements.</em></td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>People</h4>
+          <table class="table table-striped" style="width:400px">
+            <tbody>
+              {% for person in application.people.all %}
+              <tr>
+                <td style="width:150px"><strong>{{ person.first_name }} {{ person.last_name }}</strong></td>
+                <td>{{ person.job_title }}</td>
+                {% empty %}
+                <td><em>There are no specified data elements.</em></td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+  {% endfor %}
+{% endblock %}

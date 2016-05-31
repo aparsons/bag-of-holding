@@ -1,5 +1,34 @@
 # Bag of Holding Releases
 
+## 0.0.6 - 5/15/2016
+
+This release brings several highly requested features. You will find that custom fields can be defined and applied to applications. This functionality was developed so it could easily be applied to other models in the future. Another new piece of functionality is the filtering of metrics so yearly totals can be seen. Enjoy!
+
+*Take note of the new github repository location.*
+
+### What's New
+
+* ASVS Tracking for Applications
+* Metrics Filtering By Year
+* Custom fields for Applications
+* Updated Dependencies
+* Various Bugfixes
+
+## 0.0.5 - 4/20/2016
+
+Maintenance release to update dependencies and remove stagnant code. This release serves as preparation for upcoming changes.
+
+### What's New
+
+* Dependencies
+  * Numerous dependencies have been updated
+* Fixed Python 2 reports bug
+* Added simplistic ASVS scoring
+
+## 0.0.4 - 07/24/2015
+
+Minor release with reporting application summary and initial addition of ASVS
+
 ## 0.0.3 - 06/26/2015
 
 Our goal for the 0.0.3 release was to improve the metrics and reports. You will also find there is now an API available for use.

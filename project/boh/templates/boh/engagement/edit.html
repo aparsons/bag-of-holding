@@ -1,0 +1,69 @@
+{% extends "boh/engagement/base_engagements.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{{ application.name }} | {{ engagement.start_date }} - {{ engagement.end_date }} | Edit Engagement{% endblock %}
+
+{% block css %}
+<link href="{% static 'boh/css/datepicker.min.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block engagement_breadcrumb %}
+<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:engagement.detail' engagement.id %}">{{ engagement.start_date }} - {{ engagement.end_date }}</a></li>
+<li class="active">Edit Engagement</li>
+{% endblock engagement_breadcrumb %}
+
+{% block engagement_content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="post" action="{% url 'boh:engagement.edit' engagement.id %}">
+      {% csrf_token %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Engagement</h3>
+        </div>
+        <div class="panel-body">
+          {% include "boh/snippets/form/_general.html" with control=form.status %}
+          <div class="row">
+            <div class="input-daterange">
+              <div class="col-md-6">
+                {% include "boh/snippets/form/_general.html" with control=form.start_date %}
+              </div>
+              <div class="col-md-6">
+                {% include "boh/snippets/form/_general.html" with control=form.end_date %}
+              </div>
+            </div>
+          </div>
+          {% include "boh/snippets/form/_markdown.html" with control=form.description %}
+          {% include "boh/snippets/form/_general.html" with control=form.requestor %}
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-primary" type="submit">Update Engagement</button>
+          <a href="{% url 'boh:engagement.detail' engagement.id %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="well hidden-sm hidden-xs">
+      <p>Documentation about how engagement work here.</p>
+    </div>
+    <form method="post" action="{% url 'boh:engagement.delete' engagement.id %}">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this engagement?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Engagement</button>
+    </form>
+  </div>
+</div>
+{% endblock engagement_content %}
+
+{% block js %}
+<script src="{% static 'boh/js/datepicker.min.js' %}"></script>
+<script>
+$('.input-daterange').datepicker({
+  format: "yyyy-mm-dd",
+  todayBtn: "linked",
+  todayHighlight: true
+});
+</script>
+{% endblock js %}

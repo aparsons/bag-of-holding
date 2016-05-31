@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Report{% endblock %}</title>
+  <link href="/static/boh/css/application.min.css" rel="stylesheet">
+  <style>
+    {% include "boh/reports/base.css" %}
+    {% block css %}{% endblock %}
+  </style>
+</head>
+<body>
+  <div id="content" class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

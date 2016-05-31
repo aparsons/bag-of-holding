@@ -1,13 +1,15 @@
 # Excluding migrations until model is finalized
-src/*/migrations/*
-!src/*/migrations/__init__.py
-!src/boh/migrations/0001_initial.py
-!src/boh/migrations/0002_load_data.py
-!src/boh/migrations/0003_v1_0_1.py
-!src/boh/migrations/0004_v1_0_2.py
-!src/boh/migrations/0005_v1_0_3.py
-
+project/*/migrations/*
+!project/*/migrations/__init__.py
+!project/boh/migrations/0001_initial.py
+!project/boh/migrations/0002_load_data.py
+!project/boh/migrations/0003_v1_0_1.py
+!project/boh/migrations/0004_v1_0_2.py
+!project/boh/migrations/0005_v1_0_3.py
+!project/boh/migrations/0006_v0_0_6.py
 .idea
+
+project/project/settings/dev_aparsons.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -19,7 +21,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-py2env/
 py3env/
 build/
 develop-eggs/
@@ -74,6 +75,3 @@ node_modules
 .temp
 .sass-cache
 bower_components
-
-
-src/config/settings/dev_aparsons.py

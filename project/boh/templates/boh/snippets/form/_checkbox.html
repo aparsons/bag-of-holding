@@ -1,0 +1,11 @@
+{% if control.errors %}<div class="has-error">{% endif %}
+<div class="form-group{% if class %} {{ class }}{% endif %}">
+  <div class="checkbox">
+    <label>
+      {{ control }}
+      {% if label %}{{ label }}{% else %}{{ control.label }}{% endif %}{% if control.field.required %} <sup><span class="fa fa-exclamation-circle text-danger" data-toggle="tooltip" data-placement="right" title="Required"></span></sup>{% endif %}
+    </label>
+  </div>
+  {% if control.help_text %}<p class="help-block{% if help_class %} {{ help_class }}{% endif %}">{{ control.help_text }}</p>{% endif %}
+</div>
+{% if control.errors %}</div>{% endif %}
