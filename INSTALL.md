@@ -4,6 +4,11 @@ The following guide outlines how to setup your development environment to work w
 ## Debian Setup
 The following should work for Ubuntu, Xubuntu, or any other Debian-based Linux.
 
+Depending on your storage engine you may need to install additional packages to your operating system. Django has some documentation for that here: 
+- [PostgreSQL](https://docs.djangoproject.com/en/1.9/ref/databases/#postgresql-notes)
+- [MySQL](https://docs.djangoproject.com/en/1.9/ref/databases/#mysql-notes)
+- [Oracle](https://docs.djangoproject.com/en/1.9/ref/databases/#oracle-notes)
+
 **Install pip**
 
 ```sh
