@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 from . import models
 
@@ -8,10 +9,10 @@ from . import models
 
 class PageSizeForm(forms.Form):
     PAGE_SIZE_CHOICES = (
-        ('25', '25 per page'),
-        ('50', '50 per page'),
-        ('100', '100 per page'),
-        ('all', 'Everything')
+        ('25', _('25 per page')),
+        ('50', _('50 per page')),
+        ('100', _('100 per page')),
+        ('all', _('Everything'))
     )
 
     page_size = forms.ChoiceField(choices=PAGE_SIZE_CHOICES)
@@ -26,9 +27,16 @@ class MetricsYearForm(forms.Form):
 
         engagement_years = models.Engagement.objects.distinct_years()
         activity_years = models.Activity.objects.distinct_years()
-        years = engagement_years + list(set(activity_years) - set(engagement_years)) # Combine both lists
+        # Combine both lists
+        years = (
+            engagement_years +
+            list(set(activity_years) - set(engagement_years))
+        )
         years.sort(reverse=True)
-        self.fields['year'] = forms.ChoiceField(choices=[('', 'All')] + [(year, year) for year in years], required=False)
+        self.fields['year'] = forms.ChoiceField(
+                choices=[('', 'All')] + [(year, year) for year in years],
+                required=False
+        )
 
 
 class EngagementCoverageReportForm(forms.Form):
@@ -36,7 +44,7 @@ class EngagementCoverageReportForm(forms.Form):
     CSV_FORMAT = 'csv'
     FORMAT_CHOICES = (
         (HTML_FORMAT, 'HTML'),
-        #(CSV_FORMAT, 'CSV'),
+        # (CSV_FORMAT, 'CSV'),
     )
 
     organizations = forms.ModelMultipleChoiceField(
@@ -51,7 +59,7 @@ class ThreadFixSummaryReportForm(forms.Form):
     CSV_FORMAT = 'csv'
     FORMAT_CHOICES = (
         (HTML_FORMAT, 'HTML'),
-        #(CSV_FORMAT, 'CSV'),
+        # (CSV_FORMAT, 'CSV'),
     )
 
     organizations = forms.ModelMultipleChoiceField(
@@ -60,12 +68,13 @@ class ThreadFixSummaryReportForm(forms.Form):
     )
     format = forms.ChoiceField(choices=FORMAT_CHOICES)
 
+
 class AppSummaryReportForm(forms.Form):
     HTML_FORMAT = 'html'
     CSV_FORMAT = 'csv'
     FORMAT_CHOICES = (
         (HTML_FORMAT, 'HTML'),
-        #(CSV_FORMAT, 'CSV'),
+        # (CSV_FORMAT, 'CSV'),
     )
 
     applications = forms.ModelMultipleChoiceField(
@@ -125,8 +134,8 @@ class ThreadFixForm(forms.ModelForm):
         model = models.ThreadFix
         fields = ['name', 'host', 'api_key', 'verify_ssl']
         labels = {
-            'api_key': 'API key',
-            'verify_ssl': 'Verify SSL certificate'
+            'api_key': _('API key'),
+            'verify_ssl': _('Verify SSL certificate')
         }
         widgets = {
             'api_key': forms.PasswordInput(render_value=True)
@@ -134,11 +143,22 @@ class ThreadFixForm(forms.ModelForm):
 
 
 class ThreadFixApplicationImportForm(forms.Form):
-    team_name = forms.CharField(max_length=128, widget=forms.HiddenInput())
-    team_id = forms.IntegerField(min_value=0, max_value=2147483647, widget=forms.HiddenInput())
-    application_id = forms.IntegerField(min_value=0, max_value=2147483647, widget=forms.HiddenInput())
-    application_name = forms.CharField(max_length=128)
-    organization = forms.ModelChoiceField(queryset=models.Organization.objects.all(), required=False)
+    team_name = forms.CharField(
+        max_length=128,
+        widget=forms.HiddenInput())
+    team_id = forms.IntegerField(
+        min_value=0,
+        max_value=2147483647,
+        widget=forms.HiddenInput())
+    application_id = forms.IntegerField(
+        min_value=0,
+        max_value=2147483647,
+        widget=forms.HiddenInput())
+    application_name = forms.CharField(
+        max_length=128)
+    organization = forms.ModelChoiceField(
+        queryset=models.Organization.objects.all(),
+        required=False)
 
 
 class ThreadFixDeleteForm(forms.ModelForm):
@@ -176,7 +196,11 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
+        fields = [
+            'platform', 'lifecycle', 'origin', 'business_criticality',
+            'user_records', 'revenue', 'external_audience',
+            'internet_accessible'
+        ]
 
 
 class ApplicationSettingsTechnologiesForm(forms.ModelForm):
@@ -211,7 +235,7 @@ class ApplicationSettingsDCLOverrideForm(forms.ModelForm):
         model = models.Application
         fields = ['override_dcl', 'override_reason']
         labels = {
-            'override_dcl': 'Override data classification level'
+            'override_dcl': _('Override data classification level')
         }
         widgets = {
             'override_reason': forms.Textarea(attrs={'rows': 3})
@@ -227,12 +251,16 @@ class ApplicationSettingsServiceLevelAgreementForm(forms.ModelForm):
 class ApplicationSettingsASVSForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['asvs_level', 'asvs_level_percent_achieved', 'asvs_doc_url', 'asvs_level_target']
+        fields = [
+            'asvs_level', 'asvs_level_percent_achieved',
+            'asvs_doc_url', 'asvs_level_target'
+        ]
         labels = {
-            'asvs_level': 'ASVS Level',
-            'asvs_level_percent_achieved': 'Percent Achived Towards Targeted Level',
-            'asvs_doc_url': 'ASVS Document',
-            'asvs_level_target': 'Target ASVS Level'
+            'asvs_level': _('ASVS Level'),
+            'asvs_level_percent_achieved': _('Percent Achived Towards \
+                Targeted Level'),
+            'asvs_doc_url': _('ASVS Document'),
+            'asvs_level_target': _('Target ASVS Level')
         }
 
 
@@ -241,9 +269,9 @@ class ApplicationSettingsThreadFixForm(forms.ModelForm):
         model = models.Application
         fields = ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         labels = {
-            'threadfix': 'ThreadFix Service',
-            'threadfix_team_id': 'Team ID',
-            'threadfix_application_id': 'Application ID'
+            'threadfix': _('ThreadFix Service'),
+            'threadfix_team_id': _('Team ID'),
+            'threadfix_application_id': _('Application ID')
         }
 
 
@@ -304,8 +332,8 @@ class EngagementAddForm(forms.ModelForm):
         model = models.Engagement
         fields = ['start_date', 'end_date', 'description', 'requestor']
         labels = {
-            'start_date': 'Scheduled start date',
-            'end_date': 'Scheduled end date'
+            'start_date': _('Scheduled start date'),
+            'end_date': _('Scheduled end date')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5})
@@ -318,16 +346,21 @@ class EngagementAddForm(forms.ModelForm):
 
         if start_date and end_date:
             if end_date < start_date:
-                self.add_error('end_date', "End date cannot be before start date.")
+                self.add_error(
+                    'end_date',
+                    _("End date cannot be before start date.")
+                )
 
 
 class EngagementEditForm(forms.ModelForm):
     class Meta:
         model = models.Engagement
-        fields = ['status', 'start_date', 'end_date', 'description', 'requestor']
+        fields = [
+            'status', 'start_date', 'end_date', 'description', 'requestor'
+        ]
         labels = {
-            'start_date': 'Scheduled start date',
-            'end_date': 'Scheduled end date'
+            'start_date': _('Scheduled start date'),
+            'end_date': _('Scheduled end date')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5})
@@ -340,7 +373,10 @@ class EngagementEditForm(forms.ModelForm):
 
         if start_date and end_date:
             if end_date < start_date:
-                self.add_error('end_date', "End date cannot be before start date.")
+                self.add_error(
+                    'end_date',
+                    _("End date cannot be before start date.")
+                )
 
 
 class EngagementStatusForm(forms.ModelForm):
@@ -371,7 +407,7 @@ class ActivityAddForm(forms.ModelForm):
         model = models.Activity
         fields = ['activity_type', 'description', 'users']
         labels = {
-            'users': 'Assigned users'
+            'users': _('Assigned users')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3})
@@ -383,7 +419,7 @@ class ActivityEditForm(forms.ModelForm):
         model = models.Activity
         fields = ['status', 'activity_type', 'description', 'users']
         labels = {
-            'users': 'Assigned users'
+            'users': _('Assigned users')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3})
@@ -416,7 +452,10 @@ class ActivityDeleteForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = models.Person
-        fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile', 'job_title', 'role']
+        fields = [
+            'first_name', 'last_name', 'email',
+            'phone_work', 'phone_mobile', 'job_title', 'role'
+        ]
 
 
 class PersonDeleteForm(forms.ModelForm):
@@ -433,8 +472,8 @@ class PersonRelationForm(forms.ModelForm):
         model = models.Relation
         fields = ['person', 'owner', 'emergency', 'notes']
         labels = {
-            'owner': 'Application Owner',
-            'emergency': 'Emergency Contact'
+            'owner': _('Application Owner'),
+            'emergency': _('Emergency Contact')
         }
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 3})

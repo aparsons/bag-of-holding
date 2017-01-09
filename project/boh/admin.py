@@ -76,7 +76,9 @@ class TagAdmin(admin.ModelAdmin):
     truncated_description.short_description = _('description')
 
     def sample(self, obj):
-        return '<span style="background-color:#' + obj.color + '">Example</span>'
+        return (
+            '<span style="background-color:#' + obj.color + '">Example</span>'
+        )
     sample.allow_tags = True
 admin.site.register(models.Tag, TagAdmin)
 
@@ -98,7 +100,9 @@ class CustomFieldAdmin(admin.ModelAdmin):
             'fields': ('created_date', 'modified_date'),
         }),
     )
-    list_display = ['name', 'truncated_description', 'key', 'validation_regex', 'created_date', 'modified_date']
+    list_display = [
+        'name', 'truncated_description', 'key', 'validation_regex',
+        'created_date', 'modified_date']
     list_filter = ['created_date', 'modified_date']
     readonly_fields = ['created_date', 'modified_date']
     search_fields = ['name', 'key']
@@ -120,11 +124,18 @@ class ApplicationCustomFieldValueAdmin(admin.ModelAdmin):
             'fields': ('created_date', 'modified_date'),
         }),
     )
-    list_display = ['id', 'application', 'custom_field', 'value', 'created_date', 'modified_date']
-    list_filter = ['created_date', 'modified_date', 'custom_field__name', 'application']
+    list_display = [
+        'id', 'application', 'custom_field', 'value', 'created_date',
+        'modified_date']
+    list_filter = [
+        'created_date', 'modified_date', 'custom_field__name', 'application']
     readonly_fields = ['created_date', 'modified_date']
-    search_fields = ['custom_field__name', 'value', 'application__name', 'custom_field__key']
-admin.site.register(models.ApplicationCustomFieldValue, ApplicationCustomFieldValueAdmin)
+    search_fields = [
+        'custom_field__name', 'value', 'application__name',
+        'custom_field__key']
+admin.site.register(
+    models.ApplicationCustomFieldValue, ApplicationCustomFieldValueAdmin
+)
 
 
 admin.site.register(models.Organization)
@@ -143,7 +154,11 @@ class ApplicationAdmin(admin.ModelAdmin):
         (None, {'fields': ['organization', 'name', 'description']}),
         ('Metadata', {
             'classes': ['collapse'],
-            'fields': ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
+            'fields': [
+                'platform', 'lifecycle', 'origin', 'business_criticality',
+                'user_records', 'revenue', 'external_audience',
+                'internet_accessible'
+            ]
         }),
         ('Tags', {
             'classes': ['collapse'],
@@ -167,16 +182,30 @@ class ApplicationAdmin(admin.ModelAdmin):
         }),
         ('ThreadFix', {
             'classes': ['collapse'],
-            'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
+            'fields': [
+                'threadfix',
+                'threadfix_team_id',
+                'threadfix_application_id'
+            ]
         }),
         ('Advanced options', {
             'classes': ['collapse'],
             'fields': ['requestable', 'created_date', 'modified_date']
         }),
     ]
-    list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date']
-    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
-    inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationCustomFieldValueInline]
+    list_display = [
+        'name', 'business_criticality', 'platform', 'lifecycle',
+        'origin', 'user_records', 'revenue', 'external_audience',
+        'internet_accessible', 'dcl_display', 'created_date', 'modified_date'
+    ]
+    list_filter = [
+        'business_criticality', 'platform', 'lifecycle', 'origin',
+        'external_audience', 'internet_accessible', 'tags', 'requestable'
+    ]
+    inlines = [
+        EnvironmentInline, RelationInline, EngagementInline,
+        ApplicationCustomFieldValueInline
+    ]
     search_fields = ['^name']
 
     def dcl_display(self, obj):
@@ -188,15 +217,21 @@ admin.site.register(models.Application, ApplicationAdmin)
 
 
 class EnvironmentAdmin(admin.ModelAdmin):
-    fields = ['application', 'environment_type', 'description', 'testing_approved']
-    list_display = ['__str__', 'environment_type', 'application', 'testing_approved']
+    fields = [
+        'application', 'environment_type', 'description', 'testing_approved'
+    ]
+    list_display = [
+        '__str__', 'environment_type', 'application', 'testing_approved'
+    ]
     inlines = [EnvironmentLocationInline, EnvironmentCredentials]
 
 admin.site.register(models.Environment, EnvironmentAdmin)
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['last_name', 'first_name', 'email', 'phone_work', 'phone_mobile']
+    list_display = [
+        'last_name', 'first_name', 'email', 'phone_work', 'phone_mobile'
+    ]
     search_fields = ['^first_name', '^last_name', '^email']
     inlines = [RelationInline]
 
@@ -205,13 +240,18 @@ admin.site.register(models.Person, PersonAdmin)
 
 class EngagementAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['application', 'start_date', 'end_date', 'status']}),
+        (None, {'fields': [
+            'application', 'start_date', 'end_date', 'status'
+        ]}),
         ('Advanced options', {
             'classes': ['collapse'],
             'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['__str__', 'start_date', 'end_date', 'status', 'application', 'open_date', 'close_date', 'duration']
+    list_display = [
+        '__str__', 'start_date', 'end_date', 'status', 'application',
+        'open_date', 'close_date', 'duration'
+    ]
     list_filter = ['status']
     inlines = [ActivityInline, EngagementCommentInline]
     readonly_fields = ['duration']
@@ -233,14 +273,22 @@ class ActivityAdmin(admin.ModelAdmin):
             'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['id', 'status', 'activity_type', 'application_link', 'users_list', 'engagement_link', 'open_date', 'close_date', 'duration']
-    list_filter = ['status', 'open_date', 'close_date', 'activity_type', 'users', 'engagement__application']
+    list_display = [
+        'id', 'status', 'activity_type', 'application_link',
+        'users_list', 'engagement_link', 'open_date', 'close_date', 'duration'
+    ]
+    list_filter = [
+        'status', 'open_date', 'close_date', 'activity_type', 'users',
+        'engagement__application'
+    ]
     inlines = [ActivityCommentInline]
     readonly_fields = ['duration']
 
     def application_link(self, obj):
         application = obj.engagement.application
-        application_url = reverse('admin:boh_application_change', args=(application.id,))
+        application_url = reverse(
+            'admin:boh_application_change', args=(application.id,)
+        )
         return '<a href="%s">%s</a>' % (application_url, application.name)
     application_link.allow_tags = True
     application_link.short_description = 'Application'
@@ -251,7 +299,9 @@ class ActivityAdmin(admin.ModelAdmin):
 
     def engagement_link(self, obj):
         engagement = obj.engagement
-        engagement_url = reverse('admin:boh_engagement_change', args=(engagement.id,))
+        engagement_url = reverse(
+            'admin:boh_engagement_change', args=(engagement.id,)
+        )
         return '<a href="%s">%s</a>' % (engagement_url, engagement.id)
     engagement_link.allow_tags = True
     engagement_link.short_description = 'Engagement'
@@ -266,10 +316,16 @@ class ThreadFixMetricsAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['application']}),
         ('Metrics', {
-            'fields': ['critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count']
+            'fields': [
+                'critical_count', 'high_count', 'medium_count', 'low_count',
+                'informational_count'
+            ]
         })
     ]
-    list_display = ['application', 'critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count', 'created_date']
+    list_display = [
+        'application', 'critical_count', 'high_count', 'medium_count',
+        'low_count', 'informational_count', 'created_date'
+    ]
     list_filter = ['application']
     ordering = ['-created_date']
     readonly_fields = ['created_date']
@@ -283,7 +339,10 @@ admin.site.register(models.ThreadFixMetrics, ThreadFixMetricsAdmin)
 
 
 class TechnologyAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'category_display', 'name', 'description', 'reference_link']
+    list_display = [
+        '__str__', 'category_display', 'name', 'description',
+        'reference_link'
+    ]
     list_filter = ['category']
     search_fields = ['name']
 
@@ -293,7 +352,11 @@ class TechnologyAdmin(admin.ModelAdmin):
     category_display.short_description = 'Category'
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html(
+            '<a href="{}" rel="nofollow" target="_blank">{}</a>',
+            obj.reference,
+            obj.reference
+        )
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = 'Reference'
@@ -302,7 +365,10 @@ admin.site.register(models.Technology, TechnologyAdmin)
 
 
 class RegulationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'acronym', 'category_display', 'jurisdiction', 'reference_link']
+    list_display = [
+        'name', 'acronym', 'category_display', 'jurisdiction',
+        'reference_link'
+    ]
     list_filter = ['category', 'jurisdiction']
     search_fields = ['name', '^acronym']
 
@@ -312,7 +378,11 @@ class RegulationAdmin(admin.ModelAdmin):
     category_display.short_description = 'Category'
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html(
+            '<a href="{}" rel="nofollow" target="_blank">{}</a>',
+            obj.reference,
+            obj.reference
+        )
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = 'Reference'
