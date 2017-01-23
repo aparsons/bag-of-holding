@@ -8,7 +8,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from .behaviors import TimeStampedModel
 from . import helpers, managers
@@ -17,12 +17,12 @@ from . import helpers, managers
 class Tag(models.Model):
     """Associated with application for search and categorization."""
 
-    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message="Color must be entered in the 6 character hex format.")
+    color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message=_("Color must be entered in the 6 character hex format."))
 
-    name = models.CharField(max_length=64, unique=True, help_text='A unique name for this tag.')
-    color = models.CharField(max_length=6, validators=[color_regex], help_text='Specify a 6 character hex color value. (e.g., \'d94d59\')')
+    name = models.CharField(max_length=64, unique=True, help_text=_('A unique name for this tag.'))
+    color = models.CharField(max_length=6, validators=[color_regex], help_text=_('Specify a 6 character hex color value. (e.g., \'d94d59\')'))
 
-    description = models.CharField(max_length=64, blank=True, help_text='A short description of this tag\'s purpose to be shown in tooltips.')
+    description = models.CharField(max_length=64, blank=True, help_text=_('A short description of this tag\'s purpose to be shown in tooltips.'))
 
     class Meta:
         ordering = ['name']
@@ -81,7 +81,7 @@ class CustomFieldValue(TimeStampedModel, models.Model):
 class Person(models.Model):
     """Information about a person."""
 
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message=_("Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."))
 
     DEVELOPER_ROLE = 'developer'
     QUALITY_ASSURANCE_ROLE = 'qa'
@@ -90,12 +90,12 @@ class Person(models.Model):
     SECURITY_OFFICER_ROLE = 'security officer'
     SECURITY_CHAMPION_ROLE = 'security champion'
     ROLE_CHOICES = (
-        (DEVELOPER_ROLE, 'Developer'),
-        (QUALITY_ASSURANCE_ROLE, 'Quality Assurance'),
-        (OPERATIONS_ROLE, 'Operations'),
-        (MANAGER_ROLE, 'Manager'),
-        (SECURITY_OFFICER_ROLE, 'Security Officer'),
-        (SECURITY_CHAMPION_ROLE, 'Security Champion'),
+        (DEVELOPER_ROLE, _('Developer')),
+        (QUALITY_ASSURANCE_ROLE, _('Quality Assurance')),
+        (OPERATIONS_ROLE, _('Operations')),
+        (MANAGER_ROLE, _('Manager')),
+        (SECURITY_OFFICER_ROLE, _('Security Officer')),
+        (SECURITY_CHAMPION_ROLE, _('Security Champion')),
     )
 
     first_name = models.CharField(max_length=64)
@@ -125,8 +125,8 @@ class Person(models.Model):
 class Organization(models.Model):
     """Entities under which applications belong."""
 
-    name = models.CharField(max_length=32, unique=True, help_text='A unique name for the organization.')
-    description = models.TextField(blank=True, help_text='Information about the organization\'s purpose, history, and structure.')
+    name = models.CharField(max_length=32, unique=True, help_text=_('A unique name for the organization.'))
+    description = models.TextField(blank=True, help_text=_('Information about the organization\'s purpose, history, and structure.'))
 
     people = models.ManyToManyField(Person, blank=True)
 
@@ -148,13 +148,13 @@ class DataElement(models.Model):
     PCI_CATEGORY = 'pci'
     MEDICAL_CATEGORY = 'medical'
     CATEGORY_CHOICES = (
-        (GLOBAL_CATEGORY, 'Global'),
-        (PERSONAL_CATEGORY, 'Personal'),
-        (COMPANY_CATEGORY, 'Company'),
-        (STUDENT_CATEGORY, 'Student'),
-        (GOVERNMENT_CATEGORY, 'Government'),
-        (PCI_CATEGORY, 'Payment Card Industry'),
-        (MEDICAL_CATEGORY, 'Medical'),
+        (GLOBAL_CATEGORY, _('Global')),
+        (PERSONAL_CATEGORY, _('Personal')),
+        (COMPANY_CATEGORY, _('Company')),
+        (STUDENT_CATEGORY, _('Student')),
+        (GOVERNMENT_CATEGORY, _('Government')),
+        (PCI_CATEGORY, _('Payment Card Industry')),
+        (MEDICAL_CATEGORY, _('Medical')),
     )
 
     name = models.CharField(max_length=128, unique=True)
@@ -182,26 +182,26 @@ class Technology(models.Model):
     DENIAL_OF_SERVICE_CATEGORY = 'denial of service'
     FIREWALL_CATEGORY = 'firewall'
     CATEGORY_CHOICES = (
-        (PROGRAMMING_LANGUAGE_CATEGORY, 'Language'),
-        (OPERATING_SYSTEM_CATEGORY, 'Operating System'),
-        (DATA_STORE_CATEGORY, 'Data Store'),
-        (FRAMEWORK_CATEGORY, 'Framework'),
-        (THIRD_PARTY_COMPONENT, 'Third-Party Component'),
-        (APPLICATION_SERVER_CATEGORY, 'Application Server'),
-        (WEB_SERVER_CATEGORY, 'Web Server'),
-        (HOSTING_PROVIDER_CATEGORY, 'Hosting Provider'),
-        (DENIAL_OF_SERVICE_CATEGORY, 'DDoS Protection'),
-        (FIREWALL_CATEGORY, 'Firewall'),
+        (PROGRAMMING_LANGUAGE_CATEGORY, _('Language')),
+        (OPERATING_SYSTEM_CATEGORY, _('Operating System')),
+        (DATA_STORE_CATEGORY, _('Data Store')),
+        (FRAMEWORK_CATEGORY, _('Framework')),
+        (THIRD_PARTY_COMPONENT, _('Third-Party Component')),
+        (APPLICATION_SERVER_CATEGORY, _('Application Server')),
+        (WEB_SERVER_CATEGORY, _('Web Server')),
+        (HOSTING_PROVIDER_CATEGORY, _('Hosting Provider')),
+        (DENIAL_OF_SERVICE_CATEGORY, _('DDoS Protection')),
+        (FIREWALL_CATEGORY, _('Firewall')),
     )
 
-    name = models.CharField(max_length=64, help_text='The name of the technology.')
-    category = models.CharField(max_length=21, choices=CATEGORY_CHOICES, help_text='The type of technology.')
-    description = models.CharField(max_length=256, blank=True, help_text='Information about the technology.')
-    reference = models.URLField(blank=True, help_text='An external URL for more information.')
+    name = models.CharField(max_length=64, help_text=_('The name of the technology.'))
+    category = models.CharField(max_length=21, choices=CATEGORY_CHOICES, help_text=_('The type of technology.'))
+    description = models.CharField(max_length=256, blank=True, help_text=_('Information about the technology.'))
+    reference = models.URLField(blank=True, help_text=_('An external URL for more information.'))
 
     class Meta:
         ordering = ['category', 'name']
-        verbose_name_plural = 'Technologies'
+        verbose_name_plural = _('Technologies')
 
     def __str__(self):
         return self.get_category_display() + ' :: ' + self.name
@@ -215,19 +215,19 @@ class Regulation(models.Model):
     MEDICAL_CATEGORY = 'medical'
     OTHER_CATEGORY = 'other'
     CATEGORY_CHOICES = (
-        (PRIVACY_CATEGORY, 'Privacy'),
-        (FINANCE_CATEGORY, 'Finance'),
-        (EDUCATION_CATEGORY, 'Education'),
-        (MEDICAL_CATEGORY, 'Medical'),
-        (OTHER_CATEGORY, 'Other'),
+        (PRIVACY_CATEGORY, _('Privacy')),
+        (FINANCE_CATEGORY, _('Finance')),
+        (EDUCATION_CATEGORY, _('Education')),
+        (MEDICAL_CATEGORY, _('Medical')),
+        (OTHER_CATEGORY, _('Other')),
     )
 
-    name = models.CharField(max_length=128, help_text='The name of the legislation.')
-    acronym = models.CharField(max_length=20, unique=True, help_text='A shortened representation of the name.')
-    category = models.CharField(max_length=9, choices=CATEGORY_CHOICES, help_text='The subject of the regulation.')
-    jurisdiction = models.CharField(max_length=64, help_text='The territory over which the regulation applies.')
-    description = models.TextField(blank=True, help_text='Information about the regulation\'s purpose.')
-    reference = models.URLField(blank=True, help_text='An external URL for more information.')
+    name = models.CharField(max_length=128, help_text=_('The name of the legislation.'))
+    acronym = models.CharField(max_length=20, unique=True, help_text=_('A shortened representation of the name.'))
+    category = models.CharField(max_length=9, choices=CATEGORY_CHOICES, help_text=_('The subject of the regulation.'))
+    jurisdiction = models.CharField(max_length=64, help_text=_('The territory over which the regulation applies.'))
+    description = models.TextField(blank=True, help_text=_('Information about the regulation\'s purpose.'))
+    reference = models.URLField(blank=True, help_text=_('An external URL for more information.'))
 
     class Meta:
         ordering = ['jurisdiction', 'category', 'name']
@@ -238,8 +238,8 @@ class Regulation(models.Model):
 
 class ServiceLevelAgreement(models.Model):
     """Service Level Agreements to be applied to applications."""
-    name = models.CharField(max_length=64, help_text='The name of the service level agreement.')
-    description = models.CharField(max_length=256, blank=True, help_text='Information about this service level agreement\'s scope, quality, and responsibilities.')
+    name = models.CharField(max_length=64, help_text=_('The name of the service level agreement.'))
+    description = models.CharField(max_length=256, blank=True, help_text=_('Information about this service level agreement\'s scope, quality, and responsibilities.'))
 
     class Meta:
         ordering = ['name']
@@ -251,10 +251,10 @@ class ServiceLevelAgreement(models.Model):
 class ThreadFix(models.Model):
     """ThreadFix server connection information."""
 
-    name = models.CharField(max_length=32, unique=True, help_text='A unique name describing the ThreadFix service.')
-    host = models.URLField(help_text='The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)')
-    api_key = models.CharField(max_length=50, help_text='The API key can be generated on the ThreadFix API Key page.')  # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
-    verify_ssl = models.BooleanField(default=True, help_text='Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.')
+    name = models.CharField(max_length=32, unique=True, help_text=_('A unique name describing the ThreadFix service.'))
+    host = models.URLField(help_text=_('The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)'))
+    api_key = models.CharField(max_length=50, help_text=_('The API key can be generated on the ThreadFix API Key page.'))  # https://github.com/denimgroup/threadfix/blob/dev/threadfix-main/src/main/java/com/denimgroup/threadfix/service/APIKeyServiceImpl.java#L103
+    verify_ssl = models.BooleanField(default=True, help_text=_('Specify if API requests will verify the host\'s SSL certificate. If disabled, API requests could be intercepted by third-parties.'))
 
     class Meta:
         verbose_name = 'ThreadFix'
@@ -272,10 +272,10 @@ class Application(TimeStampedModel, models.Model):
     MOBILE_PLATFORM = 'mobile'
     WEB_SERVICE_PLATFORM = 'web service'
     PLATFORM_CHOICES = (
-        (WEB_PLATFORM, 'Web'),
-        (DESKTOP_PLATFORM, 'Desktop'),
-        (MOBILE_PLATFORM, 'Mobile'),
-        (WEB_SERVICE_PLATFORM, 'Web Service'),
+        (WEB_PLATFORM, _('Web')),
+        (DESKTOP_PLATFORM, _('Desktop')),
+        (MOBILE_PLATFORM, _('Mobile')),
+        (WEB_SERVICE_PLATFORM, _('Web Service')),
     )
 
     IDEA_LIFECYCLE = 'idea'
@@ -285,12 +285,12 @@ class Application(TimeStampedModel, models.Model):
     SUSTAIN_LIFECYCLE = 'sustain'
     RETIRE_LIFECYCLE = 'retire'
     LIFECYCLE_CHOICES = (
-        (IDEA_LIFECYCLE, 'Idea'),
-        (EXPLORE_LIFECYCLE, 'Explore'),
-        (VALIDATE_LIFECYCLE, 'Validate'),
-        (GROW_LIFECYCLE, 'Grow'),
-        (SUSTAIN_LIFECYCLE, 'Sustain'),
-        (RETIRE_LIFECYCLE, 'Retire'),
+        (IDEA_LIFECYCLE, _('Idea')),
+        (EXPLORE_LIFECYCLE, _('Explore')),
+        (VALIDATE_LIFECYCLE, _('Validate')),
+        (GROW_LIFECYCLE, _('Grow')),
+        (SUSTAIN_LIFECYCLE, _('Sustain')),
+        (RETIRE_LIFECYCLE, _('Retire')),
     )
 
     THIRD_PARTY_LIBRARY_ORIGIN = 'third party library'
@@ -300,12 +300,12 @@ class Application(TimeStampedModel, models.Model):
     OPEN_SOURCE_ORIGIN = 'open source'
     OUTSOURCED_ORIGIN = 'outsourced'
     ORIGIN_CHOICES = (
-        (THIRD_PARTY_LIBRARY_ORIGIN, 'Third Party Library'),
-        (PURCHASED_ORIGIN, 'Purchased'),
-        (CONTRACTOR_ORIGIN, 'Contractor Developed'),
-        (INTERNALLY_DEVELOPED_ORIGIN, 'Internally Developed'),
-        (OPEN_SOURCE_ORIGIN, 'Open Source'),
-        (OUTSOURCED_ORIGIN, 'Outsourced'),
+        (THIRD_PARTY_LIBRARY_ORIGIN, _('Third Party Library')),
+        (PURCHASED_ORIGIN, _('Purchased')),
+        (CONTRACTOR_ORIGIN, _('Contractor Developed')),
+        (INTERNALLY_DEVELOPED_ORIGIN, _('Internally Developed')),
+        (OPEN_SOURCE_ORIGIN, _('Open Source')),
+        (OUTSOURCED_ORIGIN, _('Outsourced')),
     )
 
     VERY_HIGH_CRITICALITY = 'very high'
@@ -315,12 +315,12 @@ class Application(TimeStampedModel, models.Model):
     VERY_LOW_CRITICALITY = 'very low'
     NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
-        (VERY_HIGH_CRITICALITY, 'Very High'),
-        (HIGH_CRITICALITY, 'High'),
-        (MEDIUM_CRITICALITY, 'Medium'),
-        (LOW_CRITICALITY, 'Low'),
-        (VERY_LOW_CRITICALITY, 'Very Low'),
-        (NONE_CRITICALITY, 'None'),
+        (VERY_HIGH_CRITICALITY, _('Very High')),
+        (HIGH_CRITICALITY, _('High')),
+        (MEDIUM_CRITICALITY, _('Medium')),
+        (LOW_CRITICALITY, _('Low')),
+        (VERY_LOW_CRITICALITY, _('Very Low')),
+        (NONE_CRITICALITY, _('None')),
     )
 
     DCL_1 = 1
@@ -328,7 +328,7 @@ class Application(TimeStampedModel, models.Model):
     DCL_3 = 3
     DCL_4 = 4
     DATA_CLASSIFICATION_CHOICES = (
-        (None, 'Not Specified'),
+        (None, _('Not Specified')),
         (DCL_1, 'DCL 1'),
         (DCL_2, 'DCL 2'),
         (DCL_3, 'DCL 3'),
@@ -340,7 +340,7 @@ class Application(TimeStampedModel, models.Model):
     ASVS_2 = 2
     ASVS_3 = 3
     ASVS_CHOICES = (
-        (None, 'Not Specified'),
+        (None, _('Not Specified')),
         (ASVS_0, '0'),
         (ASVS_1, '1'),
         (ASVS_2, '2'),
@@ -348,18 +348,18 @@ class Application(TimeStampedModel, models.Model):
     )
 
     # General
-    name = models.CharField(max_length=128, unique=True, help_text='A unique name for the application.')
-    description = models.TextField(blank=True, help_text='Information about the application\'s purpose, history, and design.')
+    name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for the application.'))
+    description = models.TextField(blank=True, help_text=_('Information about the application\'s purpose, history, and design.'))
 
     # Metadata
     business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
-    user_records = models.PositiveIntegerField(blank=True, null=True, help_text='Estimate the number of user records within the application.')
-    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text='Estimate the application\'s revenue in USD.')
-    external_audience = models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')
-    internet_accessible = models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')
+    user_records = models.PositiveIntegerField(blank=True, null=True, help_text=_('Estimate the number of user records within the application.'))
+    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text=_('Estimate the application\'s revenue in USD.'))
+    external_audience = models.BooleanField(default=False, help_text=_('Specify if the application is used by people outside the organization.'))
+    internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
     technologies = models.ManyToManyField(Technology, blank=True)
@@ -369,20 +369,20 @@ class Application(TimeStampedModel, models.Model):
     # Data Classification
     # TODO Move to Data Classification Benchmark
     data_elements = models.ManyToManyField(DataElement, blank=True)
-    override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text='Overrides the calculated data classification level.')
-    override_reason = models.TextField(blank=True, help_text='Specify why the calculated data classification level is being overridden.')
+    override_dcl = models.IntegerField(choices=DATA_CLASSIFICATION_CHOICES, blank=True, null=True, help_text=_('Overrides the calculated data classification level.'))
+    override_reason = models.TextField(blank=True, help_text=_('Specify why the calculated data classification level is being overridden.'))
 
     # ThreadFix
-    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text='The ThreadFix service to connect to this application.')
-    threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique team identifier used within ThreadFix.')
-    threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text='The unique application identifier used within ThreadFix.')
+    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text=_('The ThreadFix service to connect to this application.'))
+    threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique team identifier used within ThreadFix.'))
+    threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique application identifier used within ThreadFix.'))
 
     # OWASP
     # TODO Move to OWASP ASVS Benchmark
-    asvs_level = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Assessed ASVS Level')
-    asvs_level_percent_achieved = models.PositiveIntegerField(blank=True, null=True, help_text='Percent compliant to the targeted ASVS level.')
-    asvs_level_target = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text='Targeted ASVS level for this application.')
-    asvs_doc_url = models.URLField(blank=True, help_text='URL to the detailed ASVS assessment.')
+    asvs_level = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text=_('Assessed ASVS Level'))
+    asvs_level_percent_achieved = models.PositiveIntegerField(blank=True, null=True, help_text=_('Percent compliant to the targeted ASVS level.'))
+    asvs_level_target = models.IntegerField(choices=ASVS_CHOICES,blank=True, null=True, help_text=_('Targeted ASVS level for this application.'))
+    asvs_doc_url = models.URLField(blank=True, help_text=_('URL to the detailed ASVS assessment.'))
 
     # Misc
 
@@ -394,7 +394,7 @@ class Application(TimeStampedModel, models.Model):
     password policy
     """
 
-    organization = models.ForeignKey(Organization, help_text='The organization containing this application.')
+    organization = models.ForeignKey(Organization, help_text=_('The organization containing this application.'))
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
@@ -442,8 +442,8 @@ class ThreadFixMetrics(TimeStampedModel, models.Model):
 
     class Meta:
         get_latest_by = 'created_date'
-        verbose_name = 'ThreadFix metrics'
-        verbose_name_plural = 'ThreadFix metrics'
+        verbose_name = _('ThreadFix metrics')
+        verbose_name_plural = _('ThreadFix metrics')
 
     def total(self):
         return self.critical_count + self.high_count + self.medium_count + self.low_count + self.informational_count
@@ -452,11 +452,11 @@ class ThreadFixMetrics(TimeStampedModel, models.Model):
 class Relation(models.Model):
     """Associates a person with an application with a role."""
 
-    owner = models.BooleanField(default=False, help_text='Specify if this person is an application owner.')
-    emergency = models.BooleanField(default=False, help_text='Specify if this person is an emergency contact.')
-    notes = models.TextField(blank=True, help_text='Any notes about this person\'s connection to the application.')
+    owner = models.BooleanField(default=False, help_text=_('Specify if this person is an application owner.'))
+    emergency = models.BooleanField(default=False, help_text=_('Specify if this person is an emergency contact.'))
+    notes = models.TextField(blank=True, help_text=_('Any notes about this person\'s connection to the application.'))
 
-    person = models.ForeignKey(Person, help_text='The person associated with the application.')
+    person = models.ForeignKey(Person, help_text=_('The person associated with the application.'))
     application = models.ForeignKey(Application)
 
     class Meta:
@@ -476,17 +476,17 @@ class Environment(models.Model):
     CUSTOMER_ACCEPTANCE_ENVIRONMENT = 'cat'
     PRODUCTION_ENVIRONMENT = 'prod'
     ENVIRONMENT_CHOICES = (
-        (DEVELOPMENT_ENVIRONMENT, 'Development'),
-        (INTEGRATION_ENVIRONMENT, 'Integration'),
-        (QUALITY_ASSURANCE_ENVIRONMENT, 'Quality Assurance'),
-        (PRE_PRODUCTION_ENVIRONMENT, 'Pre-Production'),
-        (CUSTOMER_ACCEPTANCE_ENVIRONMENT, 'Customer Acceptance'),
-        (PRODUCTION_ENVIRONMENT, 'Production'),
+        (DEVELOPMENT_ENVIRONMENT, _('Development')),
+        (INTEGRATION_ENVIRONMENT, _('Integration')),
+        (QUALITY_ASSURANCE_ENVIRONMENT, _('Quality Assurance')),
+        (PRE_PRODUCTION_ENVIRONMENT, _('Pre-Production')),
+        (CUSTOMER_ACCEPTANCE_ENVIRONMENT, _('Customer Acceptance')),
+        (PRODUCTION_ENVIRONMENT, _('Production')),
     )
 
-    environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES, help_text='Specify the type of environment.')
-    description = models.TextField(blank=True, help_text='Information about the environment\'s purpose, physical location, hardware, and deployment.')
-    testing_approved = models.BooleanField(default=False, help_text='Specify if security testing has been approved for this environment.')
+    environment_type = models.CharField(max_length=4, choices=ENVIRONMENT_CHOICES, help_text=_('Specify the type of environment.'))
+    description = models.TextField(blank=True, help_text=_('Information about the environment\'s purpose, physical location, hardware, and deployment.'))
+    testing_approved = models.BooleanField(default=False, help_text=_('Specify if security testing has been approved for this environment.'))
 
     application = models.ForeignKey(Application)
 
@@ -500,8 +500,8 @@ class Environment(models.Model):
 class EnvironmentLocation(models.Model):
     """URL for a specific environment"""
 
-    location = models.URLField(help_text='A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)')
-    notes = models.TextField(blank=True, help_text='Information about the location\'s purpose, physical location, and deployment.')
+    location = models.URLField(help_text=_('A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)'))
+    notes = models.TextField(blank=True, help_text=_('Information about the location\'s purpose, physical location, and deployment.'))
 
     environment = models.ForeignKey(Environment)
 
@@ -514,8 +514,8 @@ class EnvironmentCredentials(TimeStampedModel, models.Model):
 
     username = models.CharField(max_length=128, blank=True)
     password = models.CharField(max_length=128, blank=True)
-    role_description = models.CharField(max_length=128, blank=True, help_text='A brief description of the user\'s role or permissions. (e.g., Guest, Admin)')
-    notes = models.TextField(blank=True, help_text='Additional information about these credentials.')
+    role_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the user\'s role or permissions. (e.g., Guest, Admin)'))
+    notes = models.TextField(blank=True, help_text=_('Additional information about these credentials.'))
 
     environment = models.ForeignKey(Environment)
 
@@ -531,21 +531,21 @@ class Engagement(TimeStampedModel, models.Model):
     OPEN_STATUS = 'open'
     CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
-        (PENDING_STATUS, 'Pending'),
-        (OPEN_STATUS, 'Open'),
-        (CLOSED_STATUS, 'Closed')
+        (PENDING_STATUS, _('Pending')),
+        (OPEN_STATUS, _('Open')),
+        (CLOSED_STATUS, _('Closed'))
     )
 
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default=PENDING_STATUS)
-    start_date = models.DateField(help_text='The date the engagement is scheduled to begin.')
-    end_date = models.DateField(help_text='The date the engagement is scheduled to complete.')
+    start_date = models.DateField(help_text=_('The date the engagement is scheduled to begin.'))
+    end_date = models.DateField(help_text=_('The date the engagement is scheduled to complete.'))
     description = models.TextField(blank=True)
 
-    open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
-    close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
+    open_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to open.'))
+    close_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to closed.'))
     duration = models.DurationField(blank=True, null=True)
 
-    requestor = models.ForeignKey(Person, blank=True, null=True, help_text='Specify who requested this engagement.')
+    requestor = models.ForeignKey(Person, blank=True, null=True, help_text=_('Specify who requested this engagement.'))
     application = models.ForeignKey(Application)
 
     objects = managers.EngagementManager.from_queryset(managers.EngagementQuerySet)()
@@ -642,7 +642,7 @@ class Activity(models.Model):
 
     class Meta:
         ordering = ['engagement__start_date']
-        verbose_name_plural = 'Activities'
+        verbose_name_plural = _('Activities')
 
     def __str__(self):
         return self.activity_type.name

@@ -94,6 +94,10 @@ MESSAGE_TAGS = {
 STATIC_URL = os.path.join('/', URL_PREFIX, 'static/')
 MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
 
+# Locale files
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale/')
+)
 
 # Django Rest Framework
 # http://www.django-rest-framework.org/api-guide/settings/
