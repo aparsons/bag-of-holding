@@ -1,0 +1,1084 @@
+# BAG OF HOLDING TRANSLATION TO PORTUGUESE BRAZIL.
+# Copyright (C) 2017
+# This file is distributed under the same license as the PACKAGE package.
+# THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-23 14:58-0200\n"
+"PO-Revision-Date: 2017-01-23 3:05+-3\n"
+"Last-Translator: THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boh/admin.py:76 boh/admin.py:109
+msgid "description"
+msgstr "descrição"
+
+#: boh/admin.py:79
+msgid "Example"
+msgstr "Exemplo"
+
+#: boh/admin.py:90
+msgid "Identification"
+msgstr "Identificação"
+
+#: boh/admin.py:93
+msgid "Validation"
+msgstr "Validação"
+
+#: boh/admin.py:96 boh/admin.py:118
+msgid "Metadata"
+msgstr "Metadado"
+
+#: boh/admin.py:151
+msgid "Tags"
+msgstr ""
+
+#: boh/admin.py:155 boh/models.py:204
+msgid "Technologies"
+msgstr "Tecnologias"
+
+#: boh/admin.py:159
+msgid "Regulations"
+msgstr "Reguladores"
+
+#: boh/admin.py:163
+msgid "Data Classification"
+msgstr "Classificação de Dados"
+
+#: boh/admin.py:167
+msgid "Service Level Agreements"
+msgstr "Acordo de Nível de Serviço"
+
+#: boh/admin.py:175 boh/admin.py:242
+msgid "Advanced options"
+msgstr "Opções avançadas"
+
+#: boh/admin.py:260
+msgid "Application"
+msgstr "Aplicação"
+
+#: boh/admin.py:264
+msgid "Users"
+msgstr "Usuários"
+
+#: boh/admin.py:271
+msgid "Engagement"
+msgstr "Agendamento"
+
+#: boh/admin.py:282
+msgid "Metrics"
+msgstr "Métricas"
+
+#: boh/admin.py:296 boh/admin.py:297
+msgid "ThreadFix Metrics"
+msgstr "Métricas ThreadFix"
+
+#: boh/admin.py:310
+msgid "Category"
+msgstr "Categoria"
+
+#: boh/admin.py:316 boh/admin.py:335
+msgid "Reference"
+msgstr "Referência"
+
+#: boh/forms.py:12
+msgid "25 per page"
+msgstr "25 por pág."
+
+#: boh/forms.py:13
+msgid "50 per page"
+msgstr "50 por pág."
+
+#: boh/forms.py:14
+msgid "100 per page"
+msgstr "100 por pág."
+
+#: boh/forms.py:15
+msgid "Everything"
+msgstr "Todos"
+
+#: boh/forms.py:129
+msgid "API key"
+msgstr "Chave API"
+
+#: boh/forms.py:130
+msgid "Verify SSL certificate"
+msgstr "Verificar certificado SSL"
+
+#: boh/forms.py:236
+msgid "ASVS Level"
+msgstr "Nível ASVS"
+
+#: boh/forms.py:237
+msgid "Percent Achived Towards Targeted Level"
+msgstr ""
+
+#: boh/forms.py:238
+msgid "ASVS Document"
+msgstr "Documento ASVS"
+
+#: boh/forms.py:239
+msgid "Target ASVS Level"
+msgstr "Futuro Nível ASVS"
+
+#: boh/forms.py:248
+msgid "ThreadFix Service"
+msgstr "Serviço ThreadFix"
+
+#: boh/forms.py:249
+msgid "Team ID"
+msgstr "ID do Time"
+
+#: boh/forms.py:250
+msgid "Application ID"
+msgstr "ID da Aplicação"
+
+#: boh/forms.py:325 boh/forms.py:347
+msgid "End date cannot be before start date."
+msgstr "Data final não pode ser anterior à data inicial"
+
+#: boh/forms.py:333
+msgid "Scheduled start date"
+msgstr "Data inicial agendada"
+
+#: boh/forms.py:334
+msgid "Scheduled end date"
+msgstr "Data final agendada"
+
+#: boh/forms.py:378 boh/forms.py:390
+msgid "Assigned users"
+msgstr "Usuários atribuídos"
+
+#: boh/forms.py:440
+msgid "Application Owner"
+msgstr "Dono da Aplicação"
+
+#: boh/forms.py:441
+msgid "Emergency Contact"
+msgstr "Contato de Emergência"
+
+#: boh/models.py:20
+msgid "Color must be entered in the 6 character hex format."
+msgstr "Cor deve ser preenchida no formato hexadecimal com 6 caractes."
+
+#: boh/models.py:22
+msgid "A unique name for this tag."
+msgstr "Um nome único para esta tag."
+
+#: boh/models.py:23
+msgid "Specify a 6 character hex color value. (e.g., 'd94d59')"
+msgstr "Especifique um valor de cor hexadecimal com 6 caracteres (ex: 'd94d59')"
+
+#: boh/models.py:25
+msgid "A short description of this tag's purpose to be shown in tooltips."
+msgstr "Uma pequena descrição do propóstio desta tag para ser exibido nos balões de dicas."
+
+#: boh/models.py:43
+#, python-format
+msgid "%(value)s is not a valid regular expression"
+msgstr "%(value)s não é uma expressão regular válida"
+
+#: boh/models.py:45
+msgid ""
+"Key must be lowercase with no spaces. Underscores may be used to seperate "
+"words."
+msgstr ""
+"Chave deve ser minúscula e sem espaços. Caracter sublinhado pode ser usado para separar"
+"palavras."
+
+#: boh/models.py:47
+msgid "custom field name"
+msgstr "nome de campo customizado"
+
+#: boh/models.py:47
+msgid "A name for this custom field"
+msgstr "Um nome para este campo customizado"
+
+#: boh/models.py:48
+msgid "Information about the custom field's purpose."
+msgstr "Informação sobre o propóstio do campo customizado."
+
+#: boh/models.py:49
+msgid "A unique key for this field. (e.g., 'custom_id')"
+msgstr "Uma chave única para este campo. (ex: 'custom_id')"
+
+#: boh/models.py:50
+#, python-brace-format
+msgid ""
+"A regular expression to validate on save. (e.g. '[0-9]{5}$' is a regex for a "
+"number with a length of 5)"
+msgstr ""
+"Uma expressão regular para validar durante a operação de salvar. (ex: '[0-9]{5}$' "
+"é uma expressão para um número com um tamanho de 5)"
+
+#: boh/models.py:51
+msgid "A brief description of the validation expression to be shown to users."
+msgstr "Uma breve descrição da expressão de validação para ser exibida aos usuários."
+
+#: boh/models.py:55
+msgid "Custom Field"
+msgstr "Campo customizado"
+
+#: boh/models.py:56
+msgid "Custom Fields"
+msgstr "Campos customizados"
+
+#: boh/models.py:78
+msgid "Value does not match custom field regex."
+msgstr "Valor não bate com a expressão do campo customizado."
+
+#: boh/models.py:84
+msgid ""
+"Phone number must be entered in the format: '+999999999'. Up to 15 digits "
+"allowed."
+msgstr ""
+"Número de telefone deve ser preenchido no formato '+9999999999'. Até 15 dígitos "
+"são autorizados"
+
+#: boh/models.py:93
+msgid "Developer"
+msgstr "Desenvolvedor"
+
+#: boh/models.py:94 boh/models.py:481
+msgid "Quality Assurance"
+msgstr "Analista de Qualidade"
+
+#: boh/models.py:95
+msgid "Operations"
+msgstr "Operações"
+
+#: boh/models.py:96
+msgid "Manager"
+msgstr "Gerente"
+
+#: boh/models.py:97
+msgid "Security Officer"
+msgstr "Chefe Segurança"
+
+#: boh/models.py:98
+msgid "Security Champion"
+msgstr "Security Champion"
+
+#: boh/models.py:128
+msgid "A unique name for the organization."
+msgstr "Um nome único para a organização."
+
+#: boh/models.py:129
+msgid "Information about the organization's purpose, history, and structure."
+msgstr "Informação sobre o propósito da organização, história, e estrutura."
+
+#: boh/models.py:151
+msgid "Global"
+msgstr "Geral"
+
+#: boh/models.py:152
+msgid "Personal"
+msgstr "Pessoal"
+
+#: boh/models.py:153
+msgid "Company"
+msgstr "Companhia"
+
+#: boh/models.py:154
+msgid "Student"
+msgstr "Estudante"
+
+#: boh/models.py:155
+msgid "Government"
+msgstr "Governo"
+
+#: boh/models.py:156
+msgid "Payment Card Industry"
+msgstr "Indústria de Cartões de Pagamentos"
+
+#: boh/models.py:157 boh/models.py:221
+msgid "Medical"
+msgstr "Medicinal"
+
+#: boh/models.py:185
+msgid "Language"
+msgstr "Linguagem"
+
+#: boh/models.py:186
+msgid "Operating System"
+msgstr "Sistema Operacional"
+
+#: boh/models.py:187
+msgid "Data Store"
+msgstr "Armazenamento de Dados"
+
+#: boh/models.py:188
+msgid "Framework"
+msgstr ""
+
+#: boh/models.py:189
+msgid "Third-Party Component"
+msgstr "Componente de Terceiros"
+
+#: boh/models.py:190
+msgid "Application Server"
+msgstr "Servidor de Aplicação"
+
+#: boh/models.py:191
+msgid "Web Server"
+msgstr "Servidor Web"
+
+#: boh/models.py:192
+msgid "Hosting Provider"
+msgstr "Provedor de Hospedagem"
+
+#: boh/models.py:193
+msgid "DDoS Protection"
+msgstr "Proteção DDoS"
+
+#: boh/models.py:194
+msgid "Firewall"
+msgstr ""
+
+#: boh/models.py:197
+msgid "The name of the technology."
+msgstr "O nome da tecnologia."
+
+#: boh/models.py:198
+msgid "The type of technology."
+msgstr "O tipo da tecnologia."
+
+#: boh/models.py:199
+msgid "Information about the technology."
+msgstr "Informação sobre a tecnologia."
+
+#: boh/models.py:200 boh/models.py:230
+msgid "An external URL for more information."
+msgstr "Uma URL externa sobre mais informações."
+
+#: boh/models.py:218
+msgid "Privacy"
+msgstr "Privado"
+
+#: boh/models.py:219
+msgid "Finance"
+msgstr "Financeiro"
+
+#: boh/models.py:220
+msgid "Education"
+msgstr "Educação"
+
+#: boh/models.py:222
+msgid "Other"
+msgstr "Outros"
+
+#: boh/models.py:225
+msgid "The name of the legislation."
+msgstr "O nome da legislação."
+
+#: boh/models.py:226
+msgid "A shortened representation of the name."
+msgstr "Uma representação curta do nome."
+
+#: boh/models.py:227
+msgid "The subject of the regulation."
+msgstr "O assunto da regulamentação."
+
+#: boh/models.py:228
+msgid "The territory over which the regulation applies."
+msgstr "O territória sobre onde a regulamentação se aplica."
+
+#: boh/models.py:229
+msgid "Information about the regulation's purpose."
+msgstr "Informação sobre o propósito da regulamentação."
+
+#: boh/models.py:241
+msgid "The name of the service level agreement."
+msgstr "O nome do nível de acordo de serviço."
+
+#: boh/models.py:242
+msgid ""
+"Information about this service level agreement's scope, quality, and "
+"responsibilities."
+msgstr ""
+"Informação sobre o escopo deste nível de acordo de serviço, qualidade e "
+"responsabilidades."
+
+#: boh/models.py:254
+msgid "A unique name describing the ThreadFix service."
+msgstr "Um nome único para descrever o serviço ThreadFix."
+
+#: boh/models.py:255
+msgid ""
+"The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)"
+msgstr ""
+"A URL para servidor ThreadFix. (ex: http://localhost:8080/threadfix/)"
+
+#: boh/models.py:256
+msgid "The API key can be generated on the ThreadFix API Key page."
+msgstr "A chave de API pode ser gerada na página de Chave de API ThreadFix."
+
+#: boh/models.py:257
+msgid ""
+"Specify if API requests will verify the host's SSL certificate. If disabled, "
+"API requests could be intercepted by third-parties."
+msgstr ""
+"Especificar se as requisições de API serão verificadas pelo certificado SSL da hospedagem. Se desabilitado, "
+"as requisições de API podem ser intercepitadas por terceiros."
+
+#: boh/models.py:275
+msgid "Web"
+msgstr ""
+
+#: boh/models.py:276
+msgid "Desktop"
+msgstr ""
+
+#: boh/models.py:277
+msgid "Mobile"
+msgstr ""
+
+#: boh/models.py:278
+msgid "Web Service"
+msgstr ""
+
+#: boh/models.py:288
+msgid "Idea"
+msgstr "Idealização"
+
+#: boh/models.py:289
+msgid "Explore"
+msgstr "Exploratório"
+
+#: boh/models.py:290
+msgid "Validate"
+msgstr "Validação"
+
+#: boh/models.py:291
+msgid "Grow"
+msgstr "Crescimento"
+
+#: boh/models.py:292
+msgid "Sustain"
+msgstr "Sustentação"
+
+#: boh/models.py:293
+msgid "Retire"
+msgstr "Aposentadoria"
+
+#: boh/models.py:303
+msgid "Third Party Library"
+msgstr "Bibloteca de Terceiros"
+
+#: boh/models.py:304
+msgid "Purchased"
+msgstr "Adquirido"
+
+#: boh/models.py:305
+msgid "Contractor Developed"
+msgstr "Desenvolvido por Contrante"
+
+#: boh/models.py:306
+msgid "Internally Developed"
+msgstr "Desenvolvido Internamente"
+
+#: boh/models.py:307
+msgid "Open Source"
+msgstr "Código Aberto"
+
+#: boh/models.py:308
+msgid "Outsourced"
+msgstr "Terceirizado"
+
+#: boh/models.py:318
+msgid "Very High"
+msgstr "Muito alto"
+
+#: boh/models.py:319
+msgid "High"
+msgstr "Alto"
+
+#: boh/models.py:320
+msgid "Medium"
+msgstr "Moderado"
+
+#: boh/models.py:321
+msgid "Low"
+msgstr "Baixo"
+
+#: boh/models.py:322
+msgid "Very Low"
+msgstr "Muito Baixo"
+
+#: boh/models.py:323
+msgid "None"
+msgstr "Nenhum"
+
+#: boh/models.py:331 boh/models.py:343
+msgid "Not Specified"
+msgstr "Não Especificado"
+
+#: boh/models.py:351
+msgid "A unique name for the application."
+msgstr "Um nome único para a aplicação."
+
+#: boh/models.py:352
+msgid "Information about the application's purpose, history, and design."
+msgstr "Informação sobre o propósito da aplicação, história e projeto."
+
+#: boh/models.py:359
+msgid "Estimate the number of user records within the application."
+msgstr "Estimar o número de cadastras de usuários na aplicação."
+
+#: boh/models.py:360
+msgid "Estimate the application's revenue in USD."
+msgstr "Estimar o valor em R$ da aplicação."
+
+#: boh/models.py:361
+msgid "Specify if the application is used by people outside the organization."
+msgstr "Especificar se a aplicação é usada por outras pessoas fora da Organização."
+
+#: boh/models.py:362
+msgid "Specify if the application is accessible from the public internet."
+msgstr "Especificar se a aplicação é acessível publicamente da Internet."
+
+#: boh/models.py:363
+msgid "Specify if activities can be externally requested for this application."
+msgstr "Especificar se atividades podem ser externamente requisitadas pela aplicação."
+
+#: boh/models.py:372
+msgid "Overrides the calculated data classification level."
+msgstr "Sobrescrever o nível de classificação de dados calculados."
+
+#: boh/models.py:373
+msgid ""
+"Specify why the calculated data classification level is being overridden."
+msgstr ""
+"Especificar o porque o nível da classificação de dados está sendo sobrescrito."
+
+#: boh/models.py:376
+msgid "The ThreadFix service to connect to this application."
+msgstr "O serviço ThreadFix para se conectar com esta aplicação."
+
+#: boh/models.py:377
+msgid "The unique team identifier used within ThreadFix."
+msgstr "O identificador único usado no ThreadFix."
+
+#: boh/models.py:378
+msgid "The unique application identifier used within ThreadFix."
+msgstr "O identificador de aplicação único usado com o ThreadFix."
+
+#: boh/models.py:382
+msgid "Assessed ASVS Level"
+msgstr "Nível ASVS Avaliado"
+
+#: boh/models.py:383
+msgid "Percent compliant to the targeted ASVS level."
+msgstr "Porcentagem de conformidade com o nível ASVS visado."
+
+#: boh/models.py:384
+msgid "Targeted ASVS level for this application."
+msgstr "Meta de nível ASVS para esta aplicação."
+
+#: boh/models.py:385
+msgid "URL to the detailed ASVS assessment."
+msgstr "URL para avaliação do ASVS detalhado."
+
+#: boh/models.py:397
+msgid "The organization containing this application."
+msgstr "A Organização contendo esta aplicação."
+
+#: boh/models.py:445 boh/models.py:446
+msgid "ThreadFix metrics"
+msgstr "Métricas ThreadFix"
+
+#: boh/models.py:455
+msgid "Specify if this person is an application owner."
+msgstr "Especificar se esta pessoa é um dono de aplicação."
+
+#: boh/models.py:456
+msgid "Specify if this person is an emergency contact."
+msgstr "Especificar se esta pessoa é um contato de emergência."
+
+#: boh/models.py:457
+msgid "Any notes about this person's connection to the application."
+msgstr "Qualquer nota sobre a atribuição desta pessoa com a aplicação."
+
+#: boh/models.py:459
+msgid "The person associated with the application."
+msgstr "A pessoa associada com a aplicação."
+
+#: boh/models.py:479
+msgid "Development"
+msgstr "Desenvolvimento"
+
+#: boh/models.py:480
+msgid "Integration"
+msgstr "Integração"
+
+#: boh/models.py:482
+msgid "Pre-Production"
+msgstr "Pré-Produção"
+
+#: boh/models.py:483
+msgid "Customer Acceptance"
+msgstr "Aceitação do Usuário"
+
+#: boh/models.py:484
+msgid "Production"
+msgstr "Produção"
+
+#: boh/models.py:487
+msgid "Specify the type of environment."
+msgstr "Especificar o tipo de ambiente."
+
+#: boh/models.py:488
+msgid ""
+"Information about the environment's purpose, physical location, hardware, "
+"and deployment."
+msgstr ""
+"Informação sobre o propósito do ambiente, localização física, hardware, "
+" e implantação."
+
+#: boh/models.py:489
+msgid "Specify if security testing has been approved for this environment."
+msgstr "Especificar se testes de segurança tem sido aprovados para este ambiente."
+
+#: boh/models.py:503
+msgid ""
+"A URL for the environment. (e.g., http://www.google.com/, https://www.owasp."
+"org/)"
+msgstr ""
+"Uma URL para o ambiente. (ex: http://www.google.com/, https://www.owasp."
+"org/)"
+
+#: boh/models.py:504
+msgid ""
+"Information about the location's purpose, physical location, and deployment."
+msgstr ""
+"Informação sobre o propósito da localização, localização física, e implantação."
+
+#: boh/models.py:517
+msgid ""
+"A brief description of the user's role or permissions. (e.g., Guest, Admin)"
+msgstr ""
+"Uma breve descrição dos papéis do usuário ou permissões. (ex: Convidado, Admin)"
+
+#: boh/models.py:518
+msgid "Additional information about these credentials."
+msgstr "Informação adicional sobre esta credencial."
+
+#: boh/models.py:534
+msgid "Pending"
+msgstr "Pendente"
+
+#: boh/models.py:535
+msgid "Open"
+msgstr "Aberto"
+
+#: boh/models.py:536
+msgid "Closed"
+msgstr "Fechado"
+
+#: boh/models.py:540
+msgid "The date the engagement is scheduled to begin."
+msgstr "A data que o agendamento está programado para começar."
+
+#: boh/models.py:541
+msgid "The date the engagement is scheduled to complete."
+msgstr "A data que o agendamento está programado para finalizar."
+
+#: boh/models.py:544
+msgid "The date and time when the status is changed to open."
+msgstr "A data e o horário quando a condição foi alterada para aberto."
+
+#: boh/models.py:545
+msgid "The date and time when the status is changed to closed."
+msgstr "A data e o horário quando a condiação foi alterada para fechado."
+
+#: boh/models.py:548
+msgid "Specify who requested this engagement."
+msgstr "Especificar quem requisitou este agendamento."
+
+#: boh/models.py:606
+msgid "A unique name for this activity type."
+msgstr "Um nome único para este tipo de atividade."
+
+#: boh/models.py:607
+msgid "Guidelines, procedures, and techniques for this activity type."
+msgstr "Manuais, procedimentos e técnicas para este tipo de atividade."
+
+#: boh/models.py:645
+msgid "Activities"
+msgstr "Atividades"
+
+#: boh/reports.py:30
+msgid "Subclasses must override generate()"
+msgstr "Subclasses devem sobrescrever generate()"
+
+#: boh/reports.py:43
+msgid "Engagement Coverage Report"
+msgstr "Relatório de Cobertura de Agendamento"
+
+#: boh/reports.py:65
+msgid "ThreadFix Summary Report"
+msgstr "Relatório Resumido ThreadFix"
+
+#: boh/reports.py:87
+msgid "Application Summary Report"
+msgstr "Relatório Resumido de Aplicações"
+
+#: boh/views.py:200
+msgid "There was a problem downloading the report."
+msgstr "Houve um problema enquanto a cópia do relatório era realizada."
+
+#: boh/views.py:240
+#, python-format
+msgid "You successfully added the \"%(tag_name)s\" application tag."
+msgstr "Você adicionou com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:243
+msgid "There was a problem creating this application tag."
+msgstr "Houve um problema ao criar a tag da aplicação."
+
+#: boh/views.py:263
+#, python-format
+msgid "You successfully updated the \"%(tag_name)s\" application tag."
+msgstr "Você atualizou com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:266
+msgid "There was a problem updating this application tag."
+msgstr "Houve um problema ao atualizar esta tag da aplicação."
+
+#: boh/views.py:286
+#, python-format
+msgid "You successfully deleted the \"%(tag_name)s\" application tag."
+msgstr "Você removeu com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:289
+msgid "There was a problem deleting this application tag."
+msgstr "Houve um problema ao remover esta tag da aplicação."
+
+#: boh/views.py:315
+#, python-format
+msgid "You successfully created the \"%(activity_type_name)s\" activity type."
+msgstr "Você criou com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:318
+msgid "There was a problem creating this activity type."
+msgstr "Houve um problema ao criar este tipo de atividade."
+
+#: boh/views.py:351
+#, python-format
+msgid "You successfully updated the \"%(activity_type_name)s\" activity type."
+msgstr "Você atualizou com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:354
+msgid "There was a problem updating this activity type."
+msgstr "Houve um problema ao atualizar este tipo de atividade."
+
+#: boh/views.py:374
+#, python-format
+msgid "You successfully deleted the \"%(activity_type_name)s\" activity type."
+msgstr "Você removeu com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:377
+msgid "There was a problem deleting this activity type."
+msgstr "Houve um problema ao remover este tipo de atividade."
+
+#: boh/views.py:403
+#, python-format
+msgid "You successfully created the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você criou com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:406
+msgid "There was a problem creating this ThreadFix service."
+msgstr "Houve um problema ao criar este serviço ThreadFix."
+
+#: boh/views.py:426
+#, python-format
+msgid "You successfully updated the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você atualizou com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:429
+msgid "There was a problem updating this ThreadFix service."
+msgstr "Houve um problema ao atualizar este serviço ThreadFix."
+
+#: boh/views.py:449
+#, python-format
+msgid ""
+"Everything appears to be working correctly for the \"%(threadfix_name)s\" "
+"ThreadFix service."
+msgstr ""
+"Tudo parece estar funcionando corretamente para o serviço ThreadFix "
+"\"%(threadfix_name)s\""
+
+#: boh/views.py:451
+#, python-format
+msgid ""
+"An error occurred when testing \"%(threadfix_name)s\". Error message: "
+"%(error)s"
+msgstr ""
+"Um erro ocorreu quando o \"%(threadfix_name)s\" era testado. Mensagem do erro: "
+"%(error)s"
+
+#: boh/views.py:487
+#, python-format
+msgid ""
+"An error occurred when importing from \"%(threadfix_name)s\". Error message: "
+"%(error)s"
+msgstr ""
+"Um erro ocorreu quando o \"%(threadfix_name)s\" era importado. Mensagem do erro: "
+"%(error)s"
+
+#: boh/views.py:513
+#, python-format
+msgid "No applications were imported from \"%(threadfix_name)s\"."
+msgstr "Nenhuma aplicação foi importada de \"%(threadfix_name)s\"."
+
+#: boh/views.py:515
+#, python-format
+msgid "An error occurred when saving the import from \"%(threadfix_name)s\"."
+msgstr "Um erro ocorreu enquanto a importação de \"%(threadfix_name)s\" era salva."
+
+#: boh/views.py:530
+#, python-format
+msgid "You successfully deleted the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você removeu com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:533
+msgid "There was a problem deleting this ThreadFix service."
+msgstr "Houve um problema ao remover este serviço ThreadFix."
+
+#: boh/views.py:559
+msgid "You successfully updated your profile."
+msgstr "Você atualizou seu perfil com sucesso."
+
+#: boh/views.py:561
+msgid "There was a problem updating your profile."
+msgstr "Houve um problema ao atualizar seu perfil."
+
+#: boh/views.py:579
+msgid "You successfully changed your password."
+msgstr "Você alterou com sucesso sua senha."
+
+#: boh/views.py:581
+msgid "There was a problem changing your password."
+msgstr "Houve um problema ao atualizar sua senha."
+
+#: boh/views.py:639
+msgid "You successfully updated this organization's general information."
+msgstr "Você atualizou com sucesso as informações gerais desta organização."
+
+#: boh/views.py:641
+msgid "There was a problem updating this organization's general information."
+msgstr "Houve um problema ao atualizar as informações gerais desta organização."
+
+#: boh/views.py:662
+msgid "You successfully updated this organization's associated people."
+msgstr "Você atualizou com sucesso as pessoas associadas à esta organização."
+
+#: boh/views.py:664
+msgid "There was a problem updating this organization's associated people."
+msgstr "Houve um problema ao atualizar as pessoas associadas à esta organização."
+
+#: boh/views.py:684
+#, python-format
+msgid "You successfully deleted the \"%(organization_name)s\" organization."
+msgstr "Você removeu com sucesso a organização \"%(organization_name)s\"."
+
+#: boh/views.py:703
+msgid "You successfully created this organization."
+msgstr "Você criou com sucesso esta organização."
+
+#: boh/views.py:843 boh/views.py:877
+#, python-format
+msgid "\"%(name)s\" is already related to this application."
+msgstr "\"%(name)s\" já está associado à esta aplicação."
+
+#: boh/views.py:845 boh/views.py:879
+#, python-format
+msgid "You successfully added \"%(name)s\" to this application."
+msgstr "Você adicionou com sucesso o \"%(name)s\" à esta aplicação."
+
+#: boh/views.py:849 boh/views.py:883
+msgid "There was a problem saving the relation to this application."
+msgstr "Houve um problema ao salvar a relação com esta aplicação."
+
+#: boh/views.py:905
+#, python-format
+msgid "You successfully disassociated \"%(name)s\" with this application."
+msgstr "Você disassociou com sucesso o \"%(name)s\" desta aplicação."
+
+#: boh/views.py:907
+#, python-format
+msgid "There was a problem disassociating \"%(name)s\" with this application."
+msgstr "Houver um problema ao disassociar o \"%(name)s\" desta aplicação."
+
+#: boh/views.py:919
+msgid "You successfully created this application."
+msgstr "Você criou com sucesso esta aplicação."
+
+#: boh/views.py:941
+msgid "You successfully updated this application's general information."
+msgstr "Você atualizou com sucesso as informações gerais desta aplicação."
+
+#: boh/views.py:946
+msgid "You successfully updated this application's organization."
+msgstr "Você atualizou com sucesso a organização desta aplicação."
+
+#: boh/views.py:972
+msgid "You successfully updated this application's metadata."
+msgstr "Você atualizou com sucesso os metadados desta aplicação."
+
+#: boh/views.py:974
+msgid "There was a problem updating this application's metadata."
+msgstr "Houve um problema ao atualizar os metadados desta aplicação."
+
+#: boh/views.py:979
+msgid "You successfully updated this application's technologies."
+msgstr "Você atualizou com sucesso as tecnologias desta aplicação."
+
+#: boh/views.py:981
+msgid "There was a problem updating this application's technologies."
+msgstr "Houve um problema ao atualizar as tecnologias desta aplicação."
+
+#: boh/views.py:986
+msgid "You successfully updated this application's regulations."
+msgstr "Você atualizou com sucesso as regulamentações desta aplicação."
+
+#: boh/views.py:988
+msgid "There was a problem updating this application's regulations."
+msgstr "Houve um problema ao atualizar as regulamentações desta aplicação."
+
+#: boh/views.py:993
+msgid "You successfully updated this application's tags."
+msgstr "Você atualizou com sucesso as tags desta aplicação."
+
+#: boh/views.py:995
+msgid "There was a problem updating this application's tags."
+msgstr "Houve um problema ao atualizar as tags desta aplicação."
+
+#: boh/views.py:1020
+msgid "You successfully updated this application's data elements."
+msgstr "Você atualizou com sucesso os elementos de dados desta aplicação."
+
+#: boh/views.py:1045
+msgid "You successfully updated this application's service level agreements."
+msgstr "Você atualizou com sucesso os acordos de nível de serviço desta aplicação."
+
+#: boh/views.py:1047
+msgid ""
+"There was a problem updating this application's service level agreements."
+msgstr ""
+"Houve um problema ao atualizar os acordos de nível de serviço desta aplicação."
+
+#: boh/views.py:1067
+msgid "This application's data classification override has been updated."
+msgstr "Esta sobrescrição de classificação de dados foi atualizada."
+
+#: boh/views.py:1083
+msgid "You successfully updated this application's ThreadFix information."
+msgstr "Você atualizou com sucesso as informações do ThreadFix da aplicação."
+
+#: boh/views.py:1104
+msgid "You successfully updated this application's ASVS information."
+msgstr "Você atualizou com sucesso a informação ASVS da aplicação."
+
+#: boh/views.py:1133
+msgid "You successfully updated these custom fields."
+msgstr "Você atualizou com sucesso estes campos customizados."
+
+#: boh/views.py:1157
+#, python-format
+msgid "You successfully deleted the \"%(application_name)s\" application."
+msgstr "Você removeu com sucesso a aplicação \"%(application_name)s\"."
+
+#: boh/views.py:1182
+msgid "You successfully created this environment."
+msgstr "Você criou com sucesso este ambiente."
+
+#: boh/views.py:1202
+msgid "You successfully updated this environment."
+msgstr "Você atualizou com sucesso este ambiente."
+
+#: boh/views.py:1235
+msgid "You successfully updated these locations."
+msgstr "Você atualizou com sucesso estas localizações."
+
+#: boh/views.py:1268
+msgid "You successfully updated these credentials."
+msgstr "Você atualizou com sucesso estas credenciais."
+
+#: boh/views.py:1291
+#, python-format
+msgid "You successfully deleted the \"%(env_type)s\" environment."
+msgstr "Você removeu com sucesso o ambiente \"%(env_type)s\"."
+
+#: boh/views.py:1343
+msgid "You successfully created this engagement."
+msgstr "Você criou com sucesso este agendamento."
+
+#: boh/views.py:1363
+msgid "You successfully updated this engagement."
+msgstr "Você atualizou com sucesso este agendamento."
+
+#: boh/views.py:1385
+#, python-format
+msgid ""
+"You successfully updated this engagement's status to \"%(eng_status)s\"."
+msgstr ""
+"Você atualizou com sucesso a condição do agendamento para \"%(eng_status)s\"."
+
+#: boh/views.py:1399
+msgid "You successfully deleted the engagement."
+msgstr "Você removeu com sucesso este agendamento."
+
+#: boh/views.py:1417
+msgid "You successfully added a comment to this engagement."
+msgstr "Você adicionou com sucesso um comentário à este agendamento."
+
+#: boh/views.py:1456
+msgid "You successfully added this activity."
+msgstr "Você adicionou com sucesso esta atividade."
+
+#: boh/views.py:1477
+msgid "You successfully updated this activity."
+msgstr "Você atualizou com sucesso esta atividade."
+
+#: boh/views.py:1499
+#, python-format
+msgid ""
+"You successfully updated this activity's status to \"%(activity_status)s\"."
+msgstr ""
+"Você atualizou com sucesso a condição da atividade para \"%(activity_status)s\"."
+
+#: boh/views.py:1513
+msgid "You successfully deleted the activity."
+msgstr "Você removeu com sucesso esta atividade."
+
+#: boh/views.py:1531
+msgid "You successfully added a comment to this activity."
+msgstr "Você adicionou com sucesso um comentário à esta atividade."
+
+#: boh/views.py:1565
+msgid "You successfully created this person."
+msgstr "Você criou com sucesso esta pessoa."
+
+#: boh/views.py:1596
+#, python-format
+msgid "You successfully updated \"%(name)s\"."
+msgstr "Você atualizou com sucesso \"%(name)s\"."
+
+#: boh/views.py:1599
+#, python-format
+msgid "There was a problem updating \"%(name)s\"."
+msgstr "Houve um problema ao atualizar \"%(name)s\"."
+
+#: boh/views.py:1618
+#, python-format
+msgid "You successfully deleted \"%(name)s\"."
+msgstr "Você removeu com sucesso \"%(name)s\"."
