@@ -96,7 +96,7 @@ MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
 
 # Locale files
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale/')
+    os.path.join(BASE_DIR, 'locale/'),
 )
 
 # Django Rest Framework
