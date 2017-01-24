@@ -1,6 +1,8 @@
 {% extends "boh/dashboard/base_dashboard.html" %}
 
-{% block title %}Reports{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Reports' %}{% endblock %}
 
 {% block dashboard_content %}
 <div class="row">
@@ -9,10 +11,10 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Engagement Coverage Report</h3>
+          <h3 class="panel-title">{% trans 'Engagement Coverage Report' %}</h3>
         </div>
         <div class="panel-body">
-          <p>This report details the activities performed for each application's last engagement.</p>
+          <p>{% trans 'This report details the activities performed for each application's last engagement.' %}</p>
           <div class="row">
             <div class="col-md-6">
               {% include "boh/snippets/form/_general.html" with control=ec_report_form.organizations %}
@@ -23,7 +25,7 @@
           </div>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> Download Report</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> {% trans 'Download Report' %}</button>
         </div>
       </div>
     </form>
@@ -33,10 +35,10 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">ThreadFix Summary Report</h3>
+          <h3 class="panel-title">{% trans 'ThreadFix Summary Report' %}</h3>
         </div>
         <div class="panel-body">
-          <p>This report shows the ThreadFix vulnerability counts for each application.</p>
+          <p>{% trans 'This report shows the ThreadFix vulnerability counts for each application.' %}</p>
           <div class="row">
             <div class="col-md-6">
               {% include "boh/snippets/form/_general.html" with control=tf_report_form.organizations %}
@@ -47,7 +49,7 @@
           </div>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> Download Report</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> {% trans 'Download Report' %}</button>
         </div>
       </div>
     </form>
@@ -59,10 +61,10 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Application Summary Report</h3>
+          <h3 class="panel-title">{% trans 'Application Summary Report' %}</h3>
         </div>
         <div class="panel-body">
-          <p>This report details all vulnerability and application meta data.</p>
+          <p>{% trans 'This report details all vulnerability and application meta data.' %}</p>
           <div class="row">
             <div class="col-md-6">
               {% include "boh/snippets/form/_general.html" with control=as_report_form.applications %}
@@ -73,7 +75,7 @@
           </div>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> Download Report</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-download" aria-hidden="true"></span> {% trans 'Download Report' %}</button>
         </div>
       </div>
     </form>

@@ -1,11 +1,13 @@
 {% extends "boh/application/base_applications.html" %}
 
-{% block title %}{{ application.name }} | People{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'People' %}{% endblock %}
 
 {% block application_content %}
 <div class="row">
   <div class="col-md-8">
-    <a href="{% url 'boh:application.people.add' application.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Related Person</span></a>
+    <a href="{% url 'boh:application.people.add' application.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'New Related Person' %}</span></a>
 
     <hr>
 
@@ -26,8 +28,8 @@
               <a href="{% url 'boh:application.people.edit' application.id relation.id %}" class="btn btn-default btn-xs pull-right" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit"><span class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Edit</span></a>
             </div>
           </div>
-          {% if relation.owner %}<span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Application Owner"><span class="fa fa-gavel fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Owner</span></span>{% endif %}
-          {% if relation.emergency %}<span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="Emergency Contact"><span class="fa fa-life-ring fa-fw" aria-hidden="true"></span><span class="hidden-xs"> Emergency</span></span>{% endif %}
+          {% if relation.owner %}<span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Application Owner' %}"><span class="fa fa-gavel fa-fw" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Owner' %}</span></span>{% endif %}
+          {% if relation.emergency %}<span class="label label-danger" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Emergency Contact' %}"><span class="fa fa-life-ring fa-fw" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Emergency' %}</span></span>{% endif %}
           {% if relation.notes %}{% if relation.owner or relation.emergency %}<br>{% endif %}<small class="text-muted">{{ relation.notes }}</small>{% endif %}
         </li>
         {% endfor %}
@@ -37,7 +39,7 @@
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how people work here.</p>
+      <p>{% trans 'Documentation about how people work here.' %}</p>
     </div>
   </div>
 </div>

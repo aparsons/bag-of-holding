@@ -80,3 +80,22 @@ python manage.py createsuperuser
 ```sh
 python manage.py runserver
 ```
+
+## Translations
+
+Configure your language in settings file. The base directory to translations file is project/locale.
+
+**Generate a new translation file**
+
+```sh
+django-admin.py makemessages -l <YOUR_LANGUAGE>
+``` 
+
+After the file has been generated, edit the po file at project/locale/<YOUR_LANGUAGE>/LC_MESSAGES/django.po and 
+translate all messages to your language if it still doesn't exist.
+
+**Tells django to compile the translated files**
+
+```sh
+django-admin.py compilemessages
+```

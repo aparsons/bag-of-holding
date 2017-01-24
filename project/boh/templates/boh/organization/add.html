@@ -1,6 +1,8 @@
 {% extends "boh/base.html" %}
 
-{% block title %}Add Organization{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Add Organization' %}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -9,15 +11,15 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Add Organization</h3>
+          <h3 class="panel-title">{% trans 'Add Organization' %}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=form.name %}
           {% include "boh/snippets/form/_markdown.html" with control=form.description %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Add Organization</button>
-          <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button">Cancel</a>
+          <button class="btn btn-primary" type="submit">{% trans 'Add Organization' %}</button>
+          <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button">{% trans 'Cancel' %}</a>
         </div>
       </div>
     </form>

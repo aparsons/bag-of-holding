@@ -1,13 +1,15 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}{{ application.name }} | Settings | OWASP ASVS Level{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'Settings' %} | {% trans 'OWASP ASVS Level' %}{% endblock %}
 
 {% block settings_content %}
 <form method="post" action="{% url 'boh:application.settings.owasp-asvs' application.id %}">
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">OWASP ASVS</h3>
+      <h3 class="panel-title">{% trans 'OWASP ASVS' %}</h3>
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=asvs_form.asvs_level %}
@@ -16,7 +18,7 @@
       {% include "boh/snippets/form/_general.html" with control=asvs_form.asvs_level_target %}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-primary" name="submit-asvs" type="submit">Update ASVS</button>
+      <button class="btn btn-primary" name="submit-asvs" type="submit">{% trans 'Update ASVS' %}</button>
     </div>
   </div>
 </form>

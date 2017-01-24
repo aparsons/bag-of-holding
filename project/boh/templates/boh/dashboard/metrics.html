@@ -1,8 +1,9 @@
 {% extends "boh/dashboard/base_dashboard.html" %}
 
+{% load i18n %}
 {% load widget_tweaks %}
 
-{% block title %}Metrics{% endblock %}
+{% block title %}{% trans 'Metrics' %}{% endblock %}
 
 {% block dashboard_content %}
 <div class="row">
@@ -14,7 +15,7 @@
                 <div class="form-group">
                     {{ year_form.year|add_class:"form-control"|attr:"placeholder:Name" }}
                 </div>
-                <button class="btn btn-default btn-block" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> Filter</span></button>
+                <button class="btn btn-default btn-block" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Filter' %}</span></button>
             </div>
         </div>
     </form>
@@ -23,28 +24,28 @@
   <div class="col-md-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-calendar" aria-hidden="true"></span> Engagements</h3>
+        <h3 class="panel-title"><span class="fa fa-calendar" aria-hidden="true"></span> {% trans 'Engagements' %}</h3>
       </div>
       <table class="table table-striped">
         <tbody>
           <tr>
-            <td>Pending</td>
+            <td>{% trans 'Pending' %}</td>
             <td>{{ engagement_stats.pending_count }}</td>
           </tr>
           <tr>
-            <td>Open</td>
+            <td>{% trans 'Open' %}</td>
             <td>{{ engagement_stats.open_count }}</td>
           </tr>
           <tr>
-            <td>Closed</td>
+            <td>{% trans 'Closed' %}</td>
             <td>{{ engagement_stats.closed_count }}</td>
           </tr>
           <tr>
-            <td>Total</td>
+            <td>{% trans 'Total' %}</td>
             <td>{{ engagement_stats.total_count }}</td>
           </tr>
           <tr>
-            <td>Average Length</td>
+            <td>{% trans 'Average Length' %}</td>
             <td>{{ engagement_stats.average_duration }}</td>
           </tr>
         </tbody>
@@ -53,17 +54,17 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h3>
+        <h3 class="panel-title"><span class="fa fa-clock-o" aria-hidden="true"></span> {% trans 'Activities' %}</h3>
       </div>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="col-md-5">Activity</th>
-            <th class="col-md-1">Pending</th>
-            <th class="col-md-1">Open</th>
-            <th class="col-md-1">Closed</th>
-            <th class="col-md-1">Total</th>
-            <th class="col-md-3">Average Duration</th>
+            <th class="col-md-5">{% trans 'Activity' %}</th>
+            <th class="col-md-1">{% trans 'Pending' %}</th>
+            <th class="col-md-1">{% trans 'Open' %}</th>
+            <th class="col-md-1">{% trans 'Closed' %}</th>
+            <th class="col-md-1">{% trans 'Total' %}</th>
+            <th class="col-md-3">{% trans 'Average Duration' %}</th>
           </tr>
         </thead>
         <tbody>

@@ -1,13 +1,15 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}{{ application.name }} | Settings | Metadata{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'Settings' %} | {% trans 'Metadata' %}{% endblock %}
 
 {% block settings_content %}
 <form method="post" action="{% url 'boh:application.settings.metadata' application.id %}">
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Metadata</h3>
+      <h3 class="panel-title">{% trans 'Metadata' %}</h3>
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=metadata_form.business_criticality %}
@@ -20,7 +22,7 @@
       {% include "boh/snippets/form/_checkbox.html" with control=metadata_form.internet_accessible %}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-primary" name="submit-metadata" type="submit">Update Metadata</button>
+      <button class="btn btn-primary" name="submit-metadata" type="submit">{% trans 'Update Metadata' %}</button>
     </div>
   </div>
 </form>
@@ -29,13 +31,13 @@
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Technologies</h3>
+      <h3 class="panel-title">{% trans 'Technologies' %}</h3>
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=technologies_form.technologies %}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-primary" name="submit-technologies" type="submit">Update Technologies</button>
+      <button class="btn btn-primary" name="submit-technologies" type="submit">{% trans 'Update Technologies' %}</button>
     </div>
   </div>
 </form>
@@ -44,13 +46,13 @@
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Regulations</h3>
+      <h3 class="panel-title">{% trans 'Regulations' %}</h3>
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=regulations_form.regulations %}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-primary" name="submit-regulations" type="submit">Update Regulations</button>
+      <button class="btn btn-primary" name="submit-regulations" type="submit">{% trans 'Update Regulations' %}</button>
     </div>
   </div>
 </form>
@@ -59,13 +61,13 @@
   {% csrf_token %}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Tags</h3>
+      <h3 class="panel-title">{% trans 'Tags' %}</h3>
     </div>
     <div class="panel-body">
       {% include "boh/snippets/form/_general.html" with control=tags_form.tags %}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-primary" name="submit-tags" type="submit">Update Tags</button>
+      <button class="btn btn-primary" name="submit-tags" type="submit">{% trans 'Update Tags' %}</button>
     </div>
   </div>
 </form>

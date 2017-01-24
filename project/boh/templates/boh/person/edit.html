@@ -1,6 +1,8 @@
 {% extends "boh/person/base_person.html" %}
 
-{% block title %}{{ person.first_name }} {{ person.last_name }} | Edit{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ person.first_name }} {{ person.last_name }} | {% trans 'Edit' %}{% endblock %}
 
 {% block person_content %}
 <div class="row">
@@ -9,7 +11,7 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Edit {{ person.first_name }} {{ person.last_name }}</h3>
+          <h3 class="panel-title">{% trans 'Edit' %} {{ person.first_name }} {{ person.last_name }}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=form.first_name %}
@@ -21,8 +23,8 @@
           {% include "boh/snippets/form/_general.html" with control=form.role %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Person</button>
-          <a href="{% url 'boh:person.detail' person.id %}" class="btn btn-default" role="button">Cancel</a>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Person' %}</button>
+          <a href="{% url 'boh:person.detail' person.id %}" class="btn btn-default" role="button">{% trans 'Cancel' %}</a>
         </div>
       </div>
     </form>
@@ -30,7 +32,7 @@
   <div class="col-md-4">
     <form method="post" action="{% url 'boh:person.delete' person.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this person?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Person</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('{% trans 'Are you sure want to delete this person?' %}');"><span class="fa fa-trash-o" aria-hidden="true"></span> {% trans 'Delete Person' %}</button>
     </form>
   </div>
 </div>

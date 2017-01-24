@@ -1,11 +1,13 @@
 {% extends "boh/organization/base_organizations.html" %}
 
-{% block title %}{{ organization.name }} | People{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ organization.name }} | {% trans 'People' %}{% endblock %}
 
 {% block organization_content %}
 <div class="row">
   <div class="col-md-8">
-    <p class="text-muted">Select a role to view associated people:</p>
+    <p class="text-muted">{% trans 'Select a role to view associated people' %}:</p>
     {% regroup organization.people.all|dictsort:"get_role_display" by get_role_display as person_list_by_role %}
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -20,9 +22,9 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th class="col-md-4">Name</th>
-                <th class="col-md-4">Title</th>
-                <th class="col-md-4">Email</th>
+                <th class="col-md-4">{% trans 'Name' %}</th>
+                <th class="col-md-4">{% trans 'Title' %}</th>
+                <th class="col-md-4">{% trans 'Email' %}</th>
               </tr>
             </thead>
             <tbody>
@@ -43,7 +45,7 @@
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how people work here.</p>
+      <p>{% trans 'Documentation about how people work here.' %}</p>
     </div>
   </div>
 </div>

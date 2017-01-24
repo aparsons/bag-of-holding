@@ -1,8 +1,9 @@
 {% extends "boh/management/base_management.html" %}
 
+{% load i18n %}
 {% load widget_tweaks %}
 
-{% block title %}Manage Settings | Services | Import {{ threadfix.name }}{% endblock %}
+{% block title %}{% trans 'Manage Settings' %} | {% trans 'Services' %} | {% trans 'Import' %} {{ threadfix.name }}{% endblock %}
 
 {% block manage_content %}
 <form method="post" action="{% url 'boh:management.services.threadfix.import' threadfix.id %}">
@@ -10,15 +11,15 @@
   {{ import_formset.management_form }}
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Import from {{ threadfix.name }}</h3>
+      <h3 class="panel-title">{% trans 'Import from' %} {{ threadfix.name }}</h3>
     </div>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Team</th>
-            <th>Application Name</th>
-            <th>Target Organization</th>
+            <th>{% trans 'Team' %}</th>
+            <th>{% trans 'Application Name' %}</th>
+            <th>{% trans 'Target Organization' %}</th>
           </tr>
         </thead>
         <tbody>
@@ -36,7 +37,7 @@
         </tbody>
       </table>
     </div>
-    <div class="panel-footer"><button class="btn btn-primary" type="submit">Import Applications</button></div>
+    <div class="panel-footer"><button class="btn btn-primary" type="submit">{% trans 'Import Applications' %}</button></div>
   </div>
 </form>
 {% endblock manage_content %}

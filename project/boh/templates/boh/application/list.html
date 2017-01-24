@@ -1,19 +1,20 @@
 {% extends "boh/base.html" %}
 
+{% load i18n %}
 {% load humanize %}
 {% load icon_filters %}
 {% load widget_tweaks %}
 
-{% block title %}Applications{% endblock %}
+{% block title %}{% trans 'Applications' %}{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-12">
     <div class="margin-bottom clearfix">
       {% if user.is_staff %}
-      <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="Add Organization"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> Add Organization</span></a>
+      <a href="{% url 'boh:organization.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Add Organization' %}"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Add Organization' %}</span></a>
       {% endif %}
-      <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="Add Application"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> Add Application</span></a>
+      <a href="{% url 'boh:application.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Add Application' %}"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Add Application' %}</span></a>
 
       <div class="pull-right">
         <span class="text-muted"><b>{{ applications.start_index }}</b> - <b>{{ applications.end_index }}</b> of <b>{{ applications.paginator.count }}</b></span>
@@ -50,10 +51,10 @@
             <div class="col-sm-12 col-md-5 col-lg-4">
               <div class="btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">
-                  <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> Filter</span></button>
+                  <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Filter' %}</span></button>
                 </div>
-                <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span><span class="hidden-xs"> Clear</span></a>
-                <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs"> Advanced</span></a>
+                <a href="{% url 'boh:application.list' %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Clear' %}</span></a>
+                <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Advanced' %}</span></a>
               </div>
             </div>
           </div>
@@ -138,17 +139,17 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th class="col-xs-3">Name</th>
-              <th class="col-xs-2">Organization</th>
-              <th class="col-xs-1 text-center">Criticality</th>
-              <th class="col-xs-2">Metadata</th>
-              <th class="col-xs-4">Tags</th>
+              <th class="col-xs-3">{% trans 'Name' %}</th>
+              <th class="col-xs-2">{% trans 'Organization' %}</th>
+              <th class="col-xs-1 text-center">{% trans 'Criticality' %}</th>
+              <th class="col-xs-2">{% trans 'Metadata' %}</th>
+              <th class="col-xs-4">{% trans 'Tags' %}</th>
             </tr>
           </thead>
           <tbody>
             {% for application in applications %}
             <tr>
-              <td><strong><a href="{% url 'boh:application.overview' application.id %}">{{ application.name }}</a></strong>{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="Created {{ application.created_date|naturaltime }}">New!</sup>{% endif %}</td>
+              <td><strong><a href="{% url 'boh:application.overview' application.id %}">{{ application.name }}</a></strong>{% if application.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Created' %} {{ application.created_date|naturaltime }}">{% trans 'New' %}!</sup>{% endif %}</td>
               <td><a href="{% url 'boh:organization.overview' application.organization.id %}">{{ application.organization.name }}</a></td>
               <td class="text-center">{{ application.business_criticality|business_criticality_icon }}</td>
               <td>
@@ -179,7 +180,7 @@
       <ul class="pagination no-margin-top">
         {% if applications.has_previous %}
         <li>
-          <a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.previous_page_number }}&page_size={{ page_size }}" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+          <a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.previous_page_number }}&page_size={{ page_size }}" aria-label="{% trans 'Previous' %}"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
         </li>
         {% else %}
         <li class="disabled">
@@ -189,14 +190,14 @@
 
         {% for num in applications.paginator.page_range %}
         {% ifequal num applications.number %}
-        <li class="active hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}<span class="sr-only">(current)</span></a></li>
+        <li class="active hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}<span class="sr-only">({% trans 'current' %})</span></a></li>
         {% else %}
         <li class="hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}</a></li>
         {% endifequal %}
         {% endfor %}
 
         {% if applications.has_next %}
-        <li><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.next_page_number }}&page_size={{ page_size }}" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
+        <li><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ applications.next_page_number }}&page_size={{ page_size }}" aria-label="{% trans 'Next' %}"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
         {% else %}
         <li class="disabled">
           <a href="#" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
