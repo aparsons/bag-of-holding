@@ -1607,7 +1607,7 @@ msgid "You have no pending activities."
 msgstr "Você não tem atividades pendentes."
 
 #: boh/templates/boh/dashboard/reports.html:17
-"This report details the activities performed for each application's last "
+msgid "This report details the activities performed for each application's last "
 "engagement."
 msgstr "Este relatório detalha as atividades executadas por último de acordo "
 "com cada aplicação."
