@@ -82,7 +82,7 @@ USE_TZ = True
 
 LANGUAGES = (
     ('en', 'English'),
-    ('pt-br', 'Português'),
+    ('pt-br', 'Portuguese'),
 )
 
 # Locale files

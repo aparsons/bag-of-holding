@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v0.0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-23 19:20-0200\n"
+"POT-Creation-Date: 2017-02-02 12:21+0000\n"
 "PO-Revision-Date: 2017-01-23 3:05+-3\n"
 "Last-Translator: THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -121,6 +121,14 @@ msgstr "100 por pág."
 
 #: boh/forms.py:15
 msgid "Everything"
+msgstr "Todos"
+
+#: boh/forms.py:32
+msgid "Year"
+msgstr "Ano"
+
+#: boh/forms.py:32
+msgid "All"
 msgstr "Todos"
 
 #: boh/forms.py:129
@@ -1047,16 +1055,17 @@ msgid ""
 "If a pending engagement is yellow it is within the scheduled dates and needs "
 "to be opened and worked on."
 msgstr ""
-"Se um agendamento pendente está amarelo é porque a data programada está em atraso "
-"e precisa ser aberta e executada"
+"Se um agendamento pendente está amarelo é porque a data programada está em "
+"atraso e precisa ser aberta e executada"
 
 #: boh/templates/boh/application/engagements.html:56
 msgid ""
 "If a pending or open engagement is red it past its scheduled end date and "
 "needs to be completed and closed."
 msgstr ""
-"Se um agendamento pendente ou aberto está em vermelho é porque a data programada "
-"para o fechamento não foi respeitada e precisa ser finalizada e fechada."
+"Se um agendamento pendente ou aberto está em vermelho é porque a data "
+"programada para o fechamento não foi respeitada e precisa ser finalizada e "
+"fechada."
 
 #: boh/templates/boh/application/environments.html:9
 #: boh/templates/boh/environment/add.html:4
@@ -1408,7 +1417,8 @@ msgstr "Remover Aplicação"
 msgid ""
 "Once you delete an application, there is no going back. Please be certain."
 msgstr ""
-"Uma vez que uma aplicação é removida, não existe retorno. Por favor, esteja ciente."
+"Uma vez que uma aplicação é removida, não existe retorno. Por favor, esteja "
+"ciente."
 
 #: boh/templates/boh/application/settings/danger.html:16
 msgid "Are you sure want to delete this application?"
@@ -1492,9 +1502,10 @@ msgid ""
 "helps organizations aggregate vulnerability data, generate virtual patches, "
 "and interact with software defect tracking systems."
 msgstr ""
-"ThreadFix é um software de agregação de vulnerabilidades e um sistema de gerenciamento que "
-"ajuda as organizações à agregarem dados de vulnerabilidades, gerar correções virtuais, "
-"e interagir com sistemas de rastreamento de defeitos de software."
+"ThreadFix é um software de agregação de vulnerabilidades e um sistema de "
+"gerenciamento que ajuda as organizações à agregarem dados de "
+"vulnerabilidades, gerar correções virtuais, e interagir com sistemas de "
+"rastreamento de defeitos de software."
 
 #: boh/templates/boh/application/settings/services.html:21
 msgid "Update ThreadFix"
@@ -1596,8 +1607,10 @@ msgid "You have no pending activities."
 msgstr "Você não tem atividades pendentes."
 
 #: boh/templates/boh/dashboard/reports.html:17
-msgid "This report details the activities performed for each application"
-msgstr "Este relatório detalha as atividades executadas por cada aplicação"
+"This report details the activities performed for each application's last "
+"engagement."
+msgstr "Este relatório detalha as atividades executadas por último de acordo "
+"com cada aplicação."
 
 #: boh/templates/boh/dashboard/reports.html:28
 #: boh/templates/boh/dashboard/reports.html:52
@@ -1609,11 +1622,16 @@ msgstr "Baixar Relatório"
 msgid ""
 "This report shows the ThreadFix vulnerability counts for each application."
 msgstr ""
-"Este relatório mostra a contagem de vulnerabilidades do ThreadFix para cada aplicação."
+"Este relatório mostra a contagem de vulnerabilidades do ThreadFix para cada "
+"aplicação."
 
 #: boh/templates/boh/dashboard/reports.html:67
 msgid "This report details all vulnerability and application meta data."
 msgstr "Este relatório detalha todas vulnerabilidades e dados de aplicações."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:10
+msgid "Activities by User"
+msgstr "Atividades por Usuário"
 
 #: boh/templates/boh/dashboard/team_dashboard.html:11
 msgid "Find open and pending activities for each user."
@@ -1629,7 +1647,7 @@ msgstr "Uma lista de agendamentos pendentes e abertos."
 
 #: boh/templates/boh/dashboard/team_dashboard.html:85
 msgid "Unassigned Activities"
-msgstr "Atividades Sem Atribuíção"
+msgstr "Atividades Sem Atribuição"
 
 #: boh/templates/boh/dashboard/team_dashboard.html:86
 msgid "These activities need to have users assigned to them."
@@ -1638,6 +1656,10 @@ msgstr "Estas atividades precisam de usuários atribuídos para elas."
 #: boh/templates/boh/dashboard/team_dashboard.html:91
 msgid "There are no unassigned activities."
 msgstr "Não existem atividades sem atribuição."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:96
+msgid "Empty Engagements"
+msgstr "Agendamentos Vazios"
 
 #: boh/templates/boh/dashboard/team_dashboard.html:97
 msgid "These engagements have no activities within them."
@@ -1696,16 +1718,16 @@ msgid ""
 "If a pending activity is yellow it is within the scheduled dates and needs "
 "to be opened and worked on."
 msgstr ""
-"Se uma atividade pendente estiver em amarelo é porque a data programada precisa "
-"ser aberta e trabalhada."
+"Se uma atividade pendente estiver em amarelo é porque a data programada "
+"precisa ser aberta e trabalhada."
 
 #: boh/templates/boh/engagement/detail.html:128
 msgid ""
 "If a pending or open activity is red it past its scheduled end date and "
 "needs to be completed and closed."
 msgstr ""
-"Se uma atividade aberta ou pendente estiver em vermelho é porque a data programada está atrasada e "
-"precisa ser finalizada e fechada."
+"Se uma atividade aberta ou pendente estiver em vermelho é porque a data "
+"programada está atrasada e precisa ser finalizada e fechada."
 
 #: boh/templates/boh/engagement/edit.html:43
 msgid "Update Engagement"
@@ -1788,10 +1810,11 @@ msgid ""
 "each activity of that type, making it a great place to include standard "
 "operating procedures, links, or anything else common amongst activities."
 msgstr ""
-"Tipos de Atividades define quais atividades são e podem conter documentação para "
-"quando esta atividade precisaria ser executada. A documentação ficará visível em "
-"cada atividade daquele tipo, fazendo com esta seja um ótimo local para incluir procedimentos "
-"operacionais padronizados, links, ou qualquer coisa comum entre as atividades."
+"Tipos de Atividades define quais atividades são e podem conter documentação "
+"para quando esta atividade precisaria ser executada. A documentação ficará "
+"visível em cada atividade daquele tipo, fazendo com esta seja um ótimo local "
+"para incluir procedimentos operacionais padronizados, links, ou qualquer "
+"coisa comum entre as atividades."
 
 #: boh/templates/boh/management/activity_types/activity_types.html:15
 msgid "There are no activity types."
@@ -1922,8 +1945,8 @@ msgid ""
 "Here you will find all the options for configuring and customizing Bag of "
 "Holding."
 msgstr ""
-"Aqui você encontrará todas as opções para configuração e customização do Bag of "
-"Holding."
+"Aqui você encontrará todas as opções para configuração e customização do Bag "
+"of Holding."
 
 #: boh/templates/boh/management/overview.html:56
 msgid ""
@@ -1942,8 +1965,8 @@ msgid ""
 "This is a web-based interface, limited to trusted site administrators, that "
 "enables the adding, editing and deletion of site content."
 msgstr ""
-"Esta é uma tela baseada na web, limitada a confiar em administradores do site, que "
-"habilitam a adicionar, editar e remover o conteúdo do site,"
+"Esta é uma tela baseada na web, limitada a confiar em administradores do "
+"site, que habilitam a adicionar, editar e remover o conteúdo do site,"
 
 #: boh/templates/boh/management/services.html:10
 msgid "ThreadFix Services"
@@ -1957,9 +1980,10 @@ msgid ""
 "interact with software defect tracking systems."
 msgstr ""
 "<a href=\"http://www.threadfix.org/download/\" target=\"_blank\">ThreadFix</"
-"a> é um software de agregração de vulonerabilidades e sistema de gerenciamento que auxilia "
-"as organizações a agregar dados de vulnerabilidades, gerar correções virtuais, e "
-"interagir com sistemas de rastreamento de defeitos."
+"a> é um software de agregração de vulonerabilidades e sistema de "
+"gerenciamento que auxilia as organizações a agregar dados de "
+"vulnerabilidades, gerar correções virtuais, e interagir com sistemas de "
+"rastreamento de defeitos."
 
 #: boh/templates/boh/management/services.html:15
 msgid "There are no ThreadFix services."
@@ -2041,8 +2065,8 @@ msgid ""
 "The following application imports failed. Check to make sure the names are "
 "not already taken."
 msgstr ""
-"As seguintes importações de aplicações falharam. Tenha certeza de que os nomes ainda "
-"não foram feitos."
+"As seguintes importações de aplicações falharam. Tenha certeza de que os "
+"nomes ainda não foram feitos."
 
 #: boh/templates/boh/management/users.html:13
 msgid "Nothing here yet"
@@ -2085,7 +2109,8 @@ msgstr "Remover Organização"
 msgid ""
 "Once you delete an organization, there is no going back. Please be certain."
 msgstr ""
-"Uma vez removida uma organização, não existe retorno. Por favor esteja ciente."
+"Uma vez removida uma organização, não existe retorno. Por favor esteja "
+"ciente."
 
 #: boh/templates/boh/organization/settings/danger.html:16
 msgid "Are you sure want to delete this organization?"
@@ -2291,9 +2316,9 @@ msgid ""
 "assist in the organization and prioritization of software security "
 "activities."
 msgstr ""
-"O <strong>Bag Of Holding</strong> é um utilitário para segurança de aplicações que "
-"auxilia nas atividades da priorização de segurança de software na "
-"organização."
+"O <strong>Bag Of Holding</strong> é um utilitário para segurança de "
+"aplicações que auxilia nas atividades da priorização de segurança de "
+"software na organização."
 
 #: boh/templates/registration/login.html:25
 msgid "The username or password you entered is not valid."
@@ -2424,7 +2449,8 @@ msgstr "Nenhuma aplicação foi importada de \"%(threadfix_name)s\"."
 #: boh/views.py:515
 #, python-format
 msgid "An error occurred when saving the import from \"%(threadfix_name)s\"."
-msgstr "Um erro ocorreu enquanto a importação de \"%(threadfix_name)s\" era salva."
+msgstr ""
+"Um erro ocorreu enquanto a importação de \"%(threadfix_name)s\" era salva."
 
 #: boh/views.py:530
 #, python-format

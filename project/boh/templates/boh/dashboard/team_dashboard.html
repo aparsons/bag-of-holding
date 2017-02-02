@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-md-6">
 
-    <h3>Activities by User</h3>
+    <h3>{% trans 'Activities by User' %}</h3>
     <p class="text-muted">{% trans 'Find open and pending activities for each user.' %}</p>
     <div class="panel-group" id="user-accordion" role="tablist" aria-multiselectable="true">
       {% for user in activities_by_user%}
@@ -93,7 +93,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <h3>Empty Engagements ({{ empty_engagements|length }})</h3>
+    <h3>{% trans 'Empty Engagements' %} ({{ empty_engagements|length }})</h3>
     <p class="text-muted">{% trans 'These engagements have no activities within them.' %}</p>
     <div class="list-group">
       {% for engagement in empty_engagements %}

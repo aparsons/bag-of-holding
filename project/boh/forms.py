@@ -29,7 +29,7 @@ class MetricsYearForm(forms.Form):
         activity_years = models.Activity.objects.distinct_years()
         years = engagement_years + list(set(activity_years) - set(engagement_years)) # Combine both lists
         years.sort(reverse=True)
-        self.fields['year'] = forms.ChoiceField(choices=[('', 'All')] + [(year, year) for year in years], required=False)
+        self.fields['year'] = forms.ChoiceField(label=_('Year'), choices=[('', _('All'))] + [(year, year) for year in years], required=False)
 
 
 class EngagementCoverageReportForm(forms.Form):
