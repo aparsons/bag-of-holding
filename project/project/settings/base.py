@@ -55,6 +55,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -79,6 +80,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('pt-br', 'Português'),
+)
+
+# Locale files
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale/'),
+)
+
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
 URL_PREFIX = ''
 
@@ -94,11 +105,6 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = os.path.join('/', URL_PREFIX, 'static/')
 MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
-
-# Locale files
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale/'),
-)
 
 # Django Rest Framework
 # http://www.django-rest-framework.org/api-guide/settings/
