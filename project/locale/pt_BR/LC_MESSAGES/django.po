@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v0.0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-02 12:21+0000\n"
+"POT-Creation-Date: 2017-02-02 22:50+0000\n"
 "PO-Revision-Date: 2017-01-23 3:05+-3\n"
 "Last-Translator: THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -944,7 +944,7 @@ msgstr "Documentação sobre aplicações."
 #: boh/templates/boh/person/list.html:5
 #: boh/templates/boh/reports/app_summary.html:199
 msgid "People"
-msgstr ""
+msgstr "Pessoas"
 
 #: boh/templates/boh/application/add_relation.html:4
 #: boh/templates/boh/application/edit_relation.html:4
@@ -1607,10 +1607,12 @@ msgid "You have no pending activities."
 msgstr "Você não tem atividades pendentes."
 
 #: boh/templates/boh/dashboard/reports.html:17
-msgid "This report details the activities performed for each application's last "
+msgid ""
+"This report details the activities performed for each application's last "
 "engagement."
-msgstr "Este relatório detalha as atividades executadas por último de acordo "
-"com cada aplicação."
+msgstr ""
+"Este relatório detalha as atividades executadas por último de acordo com "
+"cada aplicação."
 
 #: boh/templates/boh/dashboard/reports.html:28
 #: boh/templates/boh/dashboard/reports.html:52

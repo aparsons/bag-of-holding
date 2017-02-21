@@ -87,7 +87,7 @@ LANGUAGES = (
 
 # Locale files
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale/'),
+    os.path.join(os.path.dirname(BASE_DIR), 'locale/'),
 )
 
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
