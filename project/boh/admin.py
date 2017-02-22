@@ -141,7 +141,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ['created_date', 'modified_date']
     fieldsets = [
         (None, {'fields': ['organization', 'name', 'description']}),
-        ('Metadata', {
+        (_('Metadata'), {
             'classes': ['collapse'],
             'fields': [
                         'platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue',
@@ -168,7 +168,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             'classes': ['collapse'],
             'fields': ['service_level_agreements']
         }),
-        ('ThreadFix', {
+        (_('ThreadFix'), {
             'classes': ['collapse'],
             'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         }),
