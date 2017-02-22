@@ -1,6 +1,8 @@
 {% extends "boh/organization/base_organizations.html" %}
 
-{% block title %}{{ organization.name }} | Applications{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ organization.name }} | {% trans 'Applications' %}{% endblock %}
 
 {% block organization_content %}
 <div class="row">
@@ -19,13 +21,13 @@
         {% endif %}
       </a>
       {% empty %}
-      <li class="list-group-item"><small><em class="text-muted">There are no applications.</em></small></li>
+      <li class="list-group-item"><small><em class="text-muted">{% trans 'There are no applications.' %}</em></small></li>
       {% endfor %}
     </ul>
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how applications work here.</p>
+      <p>{% trans 'Documentation about how applications work here.' %}</p>
     </div>
   </div>
 </div>

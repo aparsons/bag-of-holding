@@ -1,5 +1,6 @@
 {% extends "boh/organization/base_organizations.html" %}
 
+{% load i18n %}
 {% load markdown_render %}
 
 {% block title %}{{ organization.name }}{% endblock %}
@@ -7,7 +8,7 @@
 {% block organization_content %}
 <div class="row">
   <div class="col-md-12">
-    {% if organization.description %}{{ organization.description|markdown_render }}{% else %}<small><em class="text-muted">There is no description for this organization.</em></small>{% endif %}
+    {% if organization.description %}{{ organization.description|markdown_render }}{% else %}<small><em class="text-muted">{% trans 'There is no description for this organization.' %}</em></small>{% endif %}
   </div>
 </div>
 

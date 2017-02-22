@@ -15,7 +15,17 @@ def data_sensitivity_value(data_elements):
         vector[data_element.category] += data_element.weight
 
     # DSV = Global * (Personal + Student + Government) + PCI + Medical + Company
-    dsv = vector[DataElement.GLOBAL_CATEGORY] * (vector[DataElement.PERSONAL_CATEGORY] + vector[DataElement.STUDENT_CATEGORY] + vector[DataElement.GOVERNMENT_CATEGORY]) + vector[DataElement.PCI_CATEGORY] + vector[DataElement.MEDICAL_CATEGORY] + vector[DataElement.COMPANY_CATEGORY]
+    dsv = (
+        vector[DataElement.GLOBAL_CATEGORY] *
+        (
+            vector[DataElement.PERSONAL_CATEGORY] +
+            vector[DataElement.STUDENT_CATEGORY] +
+            vector[DataElement.GOVERNMENT_CATEGORY]
+        ) +
+        vector[DataElement.PCI_CATEGORY] +
+        vector[DataElement.MEDICAL_CATEGORY] +
+        vector[DataElement.COMPANY_CATEGORY]
+    )
 
     return dsv
 

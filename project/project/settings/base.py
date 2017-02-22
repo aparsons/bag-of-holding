@@ -36,6 +36,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -54,6 +55,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -78,6 +80,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('pt-br', 'Portuguese'),
+)
+
+# Locale files
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(BASE_DIR), 'locale/'),
+)
+
 # Used for appending a site-wide prefix to all URLs. Example: 'boh/'
 URL_PREFIX = ''
 
@@ -93,7 +105,6 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = os.path.join('/', URL_PREFIX, 'static/')
 MEDIA_URL = os.path.join('/', URL_PREFIX, 'media/')
-
 
 # Django Rest Framework
 # http://www.django-rest-framework.org/api-guide/settings/

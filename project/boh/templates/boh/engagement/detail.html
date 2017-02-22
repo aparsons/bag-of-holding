@@ -1,12 +1,13 @@
 {% extends "boh/engagement/base_engagements.html" %}
 
+{% load i18n %}
 {% load humanize %}
 {% load markdown_render %}
 
 {% block title %}{{ application.name }} | {{ engagement.start_date }} - {{ engagement.end_date }}{% endblock %}
 
 {% block engagement_breadcrumb %}
-<li><a href="{% url 'boh:application.engagements' engagement.application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:application.engagements' engagement.application.id %}">{% trans 'Engagements' %}</a></li>
 <li class="active">{{ engagement.start_date }} - {{ engagement.end_date }}</li>
 {% endblock engagement_breadcrumb %}
 
@@ -19,45 +20,45 @@
 
     <hr>
 
-    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> Activities</h2>
-    <p class="text-muted">Activities are units of work performed over the engagement duration.</p>
-    <p><a href="{% url 'boh:activity.add' engagement.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> New Activity</span></a></p>
+    <h3 class="no-margin-top"><span class="fa fa-clock-o" aria-hidden="true"></span> {% trans 'Activities' %}</h2>
+    <p class="text-muted">{% trans 'Activities are units of work performed over the engagement duration.' %}</p>
+    <p><a href="{% url 'boh:activity.add' engagement.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'New Activity' %}</span></a></p>
 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">Activities that have not yet started</small></h3>
+        <h3 class="panel-title"><span class="fa fa-info-circle" aria-hidden="true"></span> Pending <small class="hidden-xs">{% trans 'Activities that have not yet started' %}</small></h3>
       </div>
       <div class="list-group">
         {% for activity in pending_activities %}
         {% include "boh/snippets/engagement/_activity.html" with activity=activity %}
         {% empty %}
-        <li class="list-group-item"><small><em class="text-muted">There are no pending activities.</em></small></li>
+        <li class="list-group-item"><small><em class="text-muted">{% trans 'There are no pending activities.' %}</em></small></li>
         {% endfor %}
       </div>
     </div>
 
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> Open <small class="hidden-xs">Activities that are in progress</small></h3>
+        <h3 class="panel-title"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {% trans 'Open' %} <small class="hidden-xs">{% trans 'Activities that are in progress' %}</small></h3>
       </div>
       <div class="list-group">
         {% for activity in open_activities %}
         {% include "boh/snippets/engagement/_activity.html" with activity=activity %}
         {% empty %}
-        <li class="list-group-item"><small><em class="text-muted">There are no open activities.</em></small></li>
+        <li class="list-group-item"><small><em class="text-muted">{% trans 'There are no open activities.' %}</em></small></li>
         {% endfor %}
       </div>
     </div>
 
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> Closed <small class="hidden-xs">Activities that have been completed</small></h3>
+        <h3 class="panel-title"><span class="fa fa-check-circle" aria-hidden="true"></span> {% trans 'Closed' %} <small class="hidden-xs">{% trans 'Activities that have been completed' %}</small></h3>
       </div>
       <div class="list-group">
         {% for activity in closed_activities %}
         {% include "boh/snippets/engagement/_activity.html" with activity=activity %}
         {% empty %}
-        <li class="list-group-item"><small><em class="text-muted">There are no closed activities.</em></small></li>
+        <li class="list-group-item"><small><em class="text-muted">{% trans 'There are no closed activities.' %}</em></small></li>
         {% endfor %}
       </div>
     </div>
@@ -65,12 +66,12 @@
     <hr>
 
     <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
-    <p class="text-muted">Leave comments about this engagement.</p>
+    <p class="text-muted">{% trans 'Leave comments about this engagement.' %}</p>
 
     {% for comment in engagement.engagementcomment_set.all %}
     <div id="comment-{{ comment.id }}" class="panel panel-default">
       <div class="panel-heading">
-        <span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.get_full_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> commented {{ comment.modified_date|naturaltime }}</span></span>
+        <span class="text-muted"><strong>{% if comment.user.first_name and comment.user.last_name %}{{ comment.user.get_full_name }}{% else %}{{ user }}{% endif %}</strong><span class="hidden-xs"> {% trans 'commented' %} {{ comment.modified_date|naturaltime }}</span></span>
       </div>
       <div class="panel-body">
         {{ comment.message|markdown_render }}
@@ -80,13 +81,13 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Leave a comment</h3>
+        <h3 class="panel-title">{% trans 'Leave a comment' %}</h3>
       </div>
       <div class="panel-body">
         <form method="post" action="{% url 'boh:engagement.comment.add' engagement.id %}">
           {% csrf_token %}
           {% include "boh/snippets/form/_markdown.html" with control=form.message %}
-          <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> Comment</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> {% trans 'Comment' %}</button>
         </form>
       </div>
     </div>
@@ -103,28 +104,28 @@
           {% csrf_token %}
           <div class="clearfix">
             {% include "boh/snippets/form/_general.html" with control=status_form.status required=False %}
-            <button class="btn btn-default pull-right" type="submit">Change Status</button>
+            <button class="btn btn-default pull-right" type="submit">{% trans 'Change Status' %}</button>
           </div>
         </form>
       </div>
       {% if engagement.open_date or engagement.close_date %}
       <ul class="list-group">
         {% if engagement.open_date %}
-        <li class="list-group-item"><strong>Opened:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.open_date }}">{{ engagement.open_date|naturaltime }}</span></li>
+        <li class="list-group-item"><strong>{% trans 'Opened' %}:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.open_date }}">{{ engagement.open_date|naturaltime }}</span></li>
         {% endif %}
         {% if engagement.close_date %}
-        <li class="list-group-item"><strong>Closed:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.close_date }}">{{ engagement.close_date|naturaltime }}</span></li>
+        <li class="list-group-item"><strong>{% trans 'Closed' %}:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ engagement.close_date }}">{{ engagement.close_date|naturaltime }}</span></li>
         {% endif %}
       </ul>
       {% endif %}
     </div>
 
-    <p><a href="{% url 'boh:engagement.edit' engagement.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Engagement</a></p>
+    <p><a href="{% url 'boh:engagement.edit' engagement.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> {% trans 'Edit Engagement' %}</a></p>
 
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation:</p>
-      <p>If a pending activity is yellow it is within the scheduled dates and needs to be opened and worked on.</p>
-      <p>If a pending or open activity is red it past its scheduled end date and needs to be completed and closed.</p>
+      <p>{% trans 'Documentation' %}:</p>
+      <p>{% trans 'If a pending activity is yellow it is within the scheduled dates and needs to be opened and worked on.' %}</p>
+      <p>{% trans 'If a pending or open activity is red it past its scheduled end date and needs to be completed and closed.' %}</p>
     </div>
   </div>
 </div>

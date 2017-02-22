@@ -1,10 +1,12 @@
 {% extends "boh/management/base_management.html" %}
 
-{% block title %}Manage Settings | Overview{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Manage Settings' %} | {% trans 'Overview' %}{% endblock %}
 
 {% block manage_content %}
-<h2 class="no-margin-top">Manage Settings Overview</h2>
-<p>Here you will find all the options for configuring and customizing Bag of Holding.</p>
+<h2 class="no-margin-top">{% trans 'Manage Settings Overview' %}</h2>
+<p>{% trans 'Here you will find all the options for configuring and customizing Bag of Holding.' %}</p>
 
 <hr>
 
@@ -18,8 +20,8 @@
     </a>
   </div>
   <div class="media-body">
-    <h3 class="media-heading">Application Tags</h3>
-    Application tags allow for the abstract categorization and grouping of applications. Create tags to fit your goals, priorities, or anything else.
+    <h3 class="media-heading">{% trans 'Application Tags' %}</h3>
+    {% trans 'Application tags allow for the abstract categorization and grouping of applications. Create tags to fit your goals, priorities, or anything else.' %}
   </div>
 </div>
 
@@ -34,8 +36,8 @@
     </a>
   </div>
   <div class="media-body">
-    <h3 class="media-heading">Activity Types</h3>
-    Activity types define what activities are and can contain documention for how that activity should be performed. The documentation will be visible on each activity of that type, making it a great place to include standard operating procedures, links, or anything else common amongst activities.
+    <h3 class="media-heading">{% trans 'Activity Types' %}</h3>
+    {% trans 'Activity types define what activities are and can contain documention for how that activity should be performed. The documentation will be visible on each activity of that type, making it a great place to include standard operating procedures, links, or anything else common amongst activities.' %}
   </div>
 </div>
 
@@ -50,8 +52,8 @@
     </a>
   </div>
   <div class="media-body">
-    <h3 class="media-heading">Third Party Services</h3>
-    Bag of Holding is able to connect to outside services to push or pull information. You can configure these services here.<br>
+    <h3 class="media-heading">{% trans 'Third Party Services' %}</h3>
+    {% trans 'Bag of Holding is able to connect to outside services to push or pull information. You can configure these services here.' %}<br>
   </div>
 </div>
 
@@ -66,8 +68,8 @@
     </a>
   </div>
   <div class="media-body">
-    <h3 class="media-heading">Django Admin</h3>
-    This is a web-based interface, limited to trusted site administrators, that enables the adding, editing and deletion of site content.
+    <h3 class="media-heading">{% trans 'Django Admin' %}</h3>
+    {% trans 'This is a web-based interface, limited to trusted site administrators, that enables the adding, editing and deletion of site content.' %}
   </div>
 </div>
 {% endblock manage_content %}

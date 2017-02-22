@@ -1,25 +1,27 @@
 {% extends "boh/reports/base.html" %}
 
-{% block title %}ThreadFix Summary Report | {{ current_datetime|date:"SHORT_DATE_FORMAT" }}{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'ThreadFix Summary Report' %} | {{ current_datetime|date:"SHORT_DATE_FORMAT" }}{% endblock %}
 
 {% block content %}
   <div class="page-header">
-    <h1>ThreadFix Summary <small>Application Security</small></h1>
+    <h1>{% trans 'ThreadFix Summary' %} <small>{% trans 'Application Security' %}</small></h1>
   </div>
-  <p>Created {{ current_datetime|date:"l, F d, Y" }} by {{ requester.get_full_name }} &lt;{{ requester.email }}&gt;</p>
+  <p>{% trans 'Created' %} {{ current_datetime|date:"l, F d, Y" }} {% trans 'by' %} {{ requester.get_full_name }} &lt;{{ requester.email }}&gt;</p>
   {% for organization in organizations %}
     <h2>{{ organization.name }}</h2>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="col-md-5">Application Name</th>
-          <th class="col-md-1 bg-vuln-critical white">Critical</th>
-          <th class="col-md-1 bg-vuln-high white">High</th>
-          <th class="col-md-1 bg-vuln-medium white">Medium</th>
-          <th class="col-md-1 bg-vuln-low white">Low</th>
-          <th class="col-md-1 bg-vuln-info white">Info</th>
-          <th class="col-md-1 bg-muted white">Total</th>
-          <th class="col-md-1">Updated</th>
+          <th class="col-md-5">{% trans 'Application Name' %}</th>
+          <th class="col-md-1 bg-vuln-critical white">{% trans 'Critical' %}</th>
+          <th class="col-md-1 bg-vuln-high white">{% trans 'High' %}</th>
+          <th class="col-md-1 bg-vuln-medium white">{% trans 'Medium' %}</th>
+          <th class="col-md-1 bg-vuln-low white">{% trans 'Low' %}</th>
+          <th class="col-md-1 bg-vuln-info white">{% trans 'Info' %}</th>
+          <th class="col-md-1 bg-muted white">{% trans 'Total' %}</th>
+          <th class="col-md-1">{% trans 'Updated' %}</th>
         </tr>
       </thead>
       <tbody>

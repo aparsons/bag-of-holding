@@ -1,0 +1,2699 @@
+# BAG OF HOLDING TRANSLATION TO BRAZILIAN PORTUGUESE.
+# Copyright (C) 2017
+# This file is distributed under the same license as the Bag Of Holding package.
+# THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: v0.0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-02 22:50+0000\n"
+"PO-Revision-Date: 2017-01-23 3:05+-3\n"
+"Last-Translator: THIAGO RIBEIRO <RIBEIRO.IT@GMAIL.COM>\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boh/admin.py:76 boh/admin.py:109
+msgid "description"
+msgstr "descrição"
+
+#: boh/admin.py:79
+msgid "Example"
+msgstr "Exemplo"
+
+#: boh/admin.py:90
+msgid "Identification"
+msgstr "Identificação"
+
+#: boh/admin.py:93
+msgid "Validation"
+msgstr "Validação"
+
+#: boh/admin.py:96 boh/admin.py:118
+#: boh/templates/boh/application/list.html:145
+#: boh/templates/boh/application/overview.html:135
+#: boh/templates/boh/application/settings/base_settings.html:14
+#: boh/templates/boh/application/settings/metadata.html:5
+#: boh/templates/boh/application/settings/metadata.html:12
+msgid "Metadata"
+msgstr "Metadado"
+
+#: boh/admin.py:151 boh/templates/boh/application/list.html:146
+#: boh/templates/boh/application/overview.html:203
+#: boh/templates/boh/application/settings/metadata.html:64
+msgid "Tags"
+msgstr ""
+
+#: boh/admin.py:155 boh/models.py:204
+#: boh/templates/boh/application/overview.html:66
+#: boh/templates/boh/application/settings/metadata.html:34
+#: boh/templates/boh/reports/app_summary.html:157
+msgid "Technologies"
+msgstr "Tecnologias"
+
+#: boh/admin.py:159 boh/templates/boh/application/overview.html:80
+#: boh/templates/boh/application/settings/metadata.html:49
+#: boh/templates/boh/reports/app_summary.html:171
+msgid "Regulations"
+msgstr "Reguladores"
+
+#: boh/admin.py:163
+msgid "Data Classification"
+msgstr "Classificação de Dados"
+
+#: boh/admin.py:167 boh/templates/boh/application/overview.html:49
+#: boh/templates/boh/application/settings/base_settings.html:16
+#: boh/templates/boh/application/settings/service_level_agreements.html:5
+#: boh/templates/boh/application/settings/service_level_agreements.html:12
+msgid "Service Level Agreements"
+msgstr "Acordo de Nível de Serviço"
+
+#: boh/admin.py:175 boh/admin.py:242
+msgid "Advanced options"
+msgstr "Opções avançadas"
+
+#: boh/admin.py:260
+msgid "Application"
+msgstr "Aplicação"
+
+#: boh/admin.py:264 boh/templates/boh/management/base_management.html:22
+#: boh/templates/boh/management/users.html:5
+#: boh/templates/boh/management/users.html:10
+msgid "Users"
+msgstr "Usuários"
+
+#: boh/admin.py:271
+msgid "Engagement"
+msgstr "Agendamento"
+
+#: boh/admin.py:282 boh/templates/boh/dashboard/base_dashboard.html:12
+#: boh/templates/boh/dashboard/metrics.html:6
+msgid "Metrics"
+msgstr "Métricas"
+
+#: boh/admin.py:296 boh/admin.py:297
+#: boh/templates/boh/application/overview.html:24
+msgid "ThreadFix Metrics"
+msgstr "Métricas ThreadFix"
+
+#: boh/admin.py:310
+msgid "Category"
+msgstr "Categoria"
+
+#: boh/admin.py:316 boh/admin.py:335
+msgid "Reference"
+msgstr "Referência"
+
+#: boh/forms.py:12
+msgid "25 per page"
+msgstr "25 por pág."
+
+#: boh/forms.py:13
+msgid "50 per page"
+msgstr "50 por pág."
+
+#: boh/forms.py:14
+msgid "100 per page"
+msgstr "100 por pág."
+
+#: boh/forms.py:15
+msgid "Everything"
+msgstr "Todos"
+
+#: boh/forms.py:32
+msgid "Year"
+msgstr "Ano"
+
+#: boh/forms.py:32
+msgid "All"
+msgstr "Todos"
+
+#: boh/forms.py:129
+msgid "API key"
+msgstr "Chave API"
+
+#: boh/forms.py:130
+msgid "Verify SSL certificate"
+msgstr "Verificar certificado SSL"
+
+#: boh/forms.py:236 boh/templates/boh/application/overview.html:175
+#: boh/templates/boh/reports/app_summary.html:88
+#: boh/templates/boh/reports/app_summary.html:94
+#: boh/templates/boh/reports/app_summary.html:98
+#: boh/templates/boh/reports/app_summary.html:102
+#: boh/templates/boh/reports/app_summary.html:103
+#: boh/templates/boh/reports/app_summary.html:110
+#: boh/templates/boh/reports/app_summary.html:116
+msgid "ASVS Level"
+msgstr "Nível ASVS"
+
+#: boh/forms.py:237
+msgid "Percent Achived Towards Targeted Level"
+msgstr ""
+
+#: boh/forms.py:238
+msgid "ASVS Document"
+msgstr "Documento ASVS"
+
+#: boh/forms.py:239
+msgid "Target ASVS Level"
+msgstr "Futuro Nível ASVS"
+
+#: boh/forms.py:248 boh/templates/boh/management/threadfix/edit.html:20
+msgid "ThreadFix Service"
+msgstr "Serviço ThreadFix"
+
+#: boh/forms.py:249
+msgid "Team ID"
+msgstr "ID do Time"
+
+#: boh/forms.py:250
+msgid "Application ID"
+msgstr "ID da Aplicação"
+
+#: boh/forms.py:325 boh/forms.py:347
+msgid "End date cannot be before start date."
+msgstr "Data final não pode ser anterior à data inicial"
+
+#: boh/forms.py:333
+msgid "Scheduled start date"
+msgstr "Data inicial agendada"
+
+#: boh/forms.py:334
+msgid "Scheduled end date"
+msgstr "Data final agendada"
+
+#: boh/forms.py:378 boh/forms.py:390
+msgid "Assigned users"
+msgstr "Usuários atribuídos"
+
+#: boh/forms.py:440 boh/templates/boh/application/people.html:31
+msgid "Application Owner"
+msgstr "Dono da Aplicação"
+
+#: boh/forms.py:441 boh/templates/boh/application/people.html:32
+msgid "Emergency Contact"
+msgstr "Contato de Emergência"
+
+#: boh/models.py:20
+msgid "Color must be entered in the 6 character hex format."
+msgstr "Cor deve ser preenchida no formato hexadecimal com 6 caractes."
+
+#: boh/models.py:22
+msgid "A unique name for this tag."
+msgstr "Um nome único para esta tag."
+
+#: boh/models.py:23
+msgid "Specify a 6 character hex color value. (e.g., 'd94d59')"
+msgstr ""
+"Especifique um valor de cor hexadecimal com 6 caracteres (ex: 'd94d59')"
+
+#: boh/models.py:25
+msgid "A short description of this tag's purpose to be shown in tooltips."
+msgstr ""
+"Uma pequena descrição do propóstio desta tag para ser exibido nos balões de "
+"dicas."
+
+#: boh/models.py:43
+#, python-format
+msgid "%(value)s is not a valid regular expression"
+msgstr "%(value)s não é uma expressão regular válida"
+
+#: boh/models.py:45
+msgid ""
+"Key must be lowercase with no spaces. Underscores may be used to seperate "
+"words."
+msgstr ""
+"Chave deve ser minúscula e sem espaços. Caracter sublinhado pode ser usado "
+"para separarpalavras."
+
+#: boh/models.py:47
+msgid "custom field name"
+msgstr "nome de campo customizado"
+
+#: boh/models.py:47
+msgid "A name for this custom field"
+msgstr "Um nome para este campo customizado"
+
+#: boh/models.py:48
+msgid "Information about the custom field's purpose."
+msgstr "Informação sobre o propóstio do campo customizado."
+
+#: boh/models.py:49
+msgid "A unique key for this field. (e.g., 'custom_id')"
+msgstr "Uma chave única para este campo. (ex: 'custom_id')"
+
+#: boh/models.py:50
+#, python-brace-format
+msgid ""
+"A regular expression to validate on save. (e.g. '[0-9]{5}$' is a regex for a "
+"number with a length of 5)"
+msgstr ""
+"Uma expressão regular para validar durante a operação de salvar. (ex: '[0-9]"
+"{5}$' é uma expressão para um número com um tamanho de 5)"
+
+#: boh/models.py:51
+msgid "A brief description of the validation expression to be shown to users."
+msgstr ""
+"Uma breve descrição da expressão de validação para ser exibida aos usuários."
+
+#: boh/models.py:55
+#: boh/templates/boh/application/settings/custom_fields.html:25
+msgid "Custom Field"
+msgstr "Campo customizado"
+
+#: boh/models.py:56 boh/templates/boh/application/overview.html:97
+#: boh/templates/boh/application/settings/base_settings.html:19
+#: boh/templates/boh/application/settings/custom_fields.html:5
+msgid "Custom Fields"
+msgstr "Campos customizados"
+
+#: boh/models.py:78
+msgid "Value does not match custom field regex."
+msgstr "Valor não bate com a expressão do campo customizado."
+
+#: boh/models.py:84
+msgid ""
+"Phone number must be entered in the format: '+999999999'. Up to 15 digits "
+"allowed."
+msgstr ""
+"Número de telefone deve ser preenchido no formato '+9999999999'. Até 15 "
+"dígitos são autorizados"
+
+#: boh/models.py:93
+msgid "Developer"
+msgstr "Desenvolvedor"
+
+#: boh/models.py:94 boh/models.py:481
+msgid "Quality Assurance"
+msgstr "Analista de Qualidade"
+
+#: boh/models.py:95
+msgid "Operations"
+msgstr "Operações"
+
+#: boh/models.py:96
+msgid "Manager"
+msgstr "Gerente"
+
+#: boh/models.py:97
+msgid "Security Officer"
+msgstr "Chefe Segurança"
+
+#: boh/models.py:98
+msgid "Security Champion"
+msgstr "Security Champion"
+
+#: boh/models.py:128
+msgid "A unique name for the organization."
+msgstr "Um nome único para a organização."
+
+#: boh/models.py:129
+msgid "Information about the organization's purpose, history, and structure."
+msgstr "Informação sobre o propósito da organização, história, e estrutura."
+
+#: boh/models.py:151
+msgid "Global"
+msgstr "Geral"
+
+#: boh/models.py:152
+msgid "Personal"
+msgstr "Pessoal"
+
+#: boh/models.py:153
+msgid "Company"
+msgstr "Companhia"
+
+#: boh/models.py:154
+msgid "Student"
+msgstr "Estudante"
+
+#: boh/models.py:155
+msgid "Government"
+msgstr "Governo"
+
+#: boh/models.py:156
+msgid "Payment Card Industry"
+msgstr "Indústria de Cartões de Pagamentos"
+
+#: boh/models.py:157 boh/models.py:221
+msgid "Medical"
+msgstr "Medicinal"
+
+#: boh/models.py:185
+msgid "Language"
+msgstr "Linguagem"
+
+#: boh/models.py:186
+msgid "Operating System"
+msgstr "Sistema Operacional"
+
+#: boh/models.py:187
+msgid "Data Store"
+msgstr "Armazenamento de Dados"
+
+#: boh/models.py:188
+msgid "Framework"
+msgstr ""
+
+#: boh/models.py:189
+msgid "Third-Party Component"
+msgstr "Componente de Terceiros"
+
+#: boh/models.py:190
+msgid "Application Server"
+msgstr "Servidor de Aplicação"
+
+#: boh/models.py:191
+msgid "Web Server"
+msgstr "Servidor Web"
+
+#: boh/models.py:192
+msgid "Hosting Provider"
+msgstr "Provedor de Hospedagem"
+
+#: boh/models.py:193
+msgid "DDoS Protection"
+msgstr "Proteção DDoS"
+
+#: boh/models.py:194
+msgid "Firewall"
+msgstr ""
+
+#: boh/models.py:197
+msgid "The name of the technology."
+msgstr "O nome da tecnologia."
+
+#: boh/models.py:198
+msgid "The type of technology."
+msgstr "O tipo da tecnologia."
+
+#: boh/models.py:199
+msgid "Information about the technology."
+msgstr "Informação sobre a tecnologia."
+
+#: boh/models.py:200 boh/models.py:230
+msgid "An external URL for more information."
+msgstr "Uma URL externa sobre mais informações."
+
+#: boh/models.py:218
+msgid "Privacy"
+msgstr "Privado"
+
+#: boh/models.py:219
+msgid "Finance"
+msgstr "Financeiro"
+
+#: boh/models.py:220
+msgid "Education"
+msgstr "Educação"
+
+#: boh/models.py:222
+msgid "Other"
+msgstr "Outros"
+
+#: boh/models.py:225
+msgid "The name of the legislation."
+msgstr "O nome da legislação."
+
+#: boh/models.py:226
+msgid "A shortened representation of the name."
+msgstr "Uma representação curta do nome."
+
+#: boh/models.py:227
+msgid "The subject of the regulation."
+msgstr "O assunto da regulamentação."
+
+#: boh/models.py:228
+msgid "The territory over which the regulation applies."
+msgstr "O territória sobre onde a regulamentação se aplica."
+
+#: boh/models.py:229
+msgid "Information about the regulation's purpose."
+msgstr "Informação sobre o propósito da regulamentação."
+
+#: boh/models.py:241
+msgid "The name of the service level agreement."
+msgstr "O nome do nível de acordo de serviço."
+
+#: boh/models.py:242
+msgid ""
+"Information about this service level agreement's scope, quality, and "
+"responsibilities."
+msgstr ""
+"Informação sobre o escopo deste nível de acordo de serviço, qualidade e "
+"responsabilidades."
+
+#: boh/models.py:254
+msgid "A unique name describing the ThreadFix service."
+msgstr "Um nome único para descrever o serviço ThreadFix."
+
+#: boh/models.py:255
+msgid ""
+"The URL for the ThreadFix server. (e.g., http://localhost:8080/threadfix/)"
+msgstr "A URL para servidor ThreadFix. (ex: http://localhost:8080/threadfix/)"
+
+#: boh/models.py:256
+msgid "The API key can be generated on the ThreadFix API Key page."
+msgstr "A chave de API pode ser gerada na página de Chave de API ThreadFix."
+
+#: boh/models.py:257
+msgid ""
+"Specify if API requests will verify the host's SSL certificate. If disabled, "
+"API requests could be intercepted by third-parties."
+msgstr ""
+"Especificar se as requisições de API serão verificadas pelo certificado SSL "
+"da hospedagem. Se desabilitado, as requisições de API podem ser "
+"intercepitadas por terceiros."
+
+#: boh/models.py:275
+msgid "Web"
+msgstr ""
+
+#: boh/models.py:276
+msgid "Desktop"
+msgstr ""
+
+#: boh/models.py:277 boh/templates/boh/person/detail.html:22
+msgid "Mobile"
+msgstr "Móvel"
+
+#: boh/models.py:278
+msgid "Web Service"
+msgstr ""
+
+#: boh/models.py:288
+msgid "Idea"
+msgstr "Idealização"
+
+#: boh/models.py:289
+msgid "Explore"
+msgstr "Exploratório"
+
+#: boh/models.py:290
+msgid "Validate"
+msgstr "Validação"
+
+#: boh/models.py:291
+msgid "Grow"
+msgstr "Crescimento"
+
+#: boh/models.py:292
+msgid "Sustain"
+msgstr "Sustentação"
+
+#: boh/models.py:293
+msgid "Retire"
+msgstr "Aposentadoria"
+
+#: boh/models.py:303
+msgid "Third Party Library"
+msgstr "Bibloteca de Terceiros"
+
+#: boh/models.py:304
+msgid "Purchased"
+msgstr "Adquirido"
+
+#: boh/models.py:305
+msgid "Contractor Developed"
+msgstr "Desenvolvido por Contrante"
+
+#: boh/models.py:306
+msgid "Internally Developed"
+msgstr "Desenvolvido Internamente"
+
+#: boh/models.py:307
+msgid "Open Source"
+msgstr "Código Aberto"
+
+#: boh/models.py:308
+msgid "Outsourced"
+msgstr "Terceirizado"
+
+#: boh/models.py:318
+msgid "Very High"
+msgstr "Muito alto"
+
+#: boh/models.py:319 boh/templates/boh/reports/threadfix_summary.html:19
+msgid "High"
+msgstr "Alto"
+
+#: boh/models.py:320 boh/templates/boh/reports/threadfix_summary.html:20
+msgid "Medium"
+msgstr "Moderado"
+
+#: boh/models.py:321 boh/templates/boh/reports/threadfix_summary.html:21
+msgid "Low"
+msgstr "Baixo"
+
+#: boh/models.py:322
+msgid "Very Low"
+msgstr "Muito Baixo"
+
+#: boh/models.py:323
+msgid "None"
+msgstr "Nenhum"
+
+#: boh/models.py:331 boh/models.py:343
+msgid "Not Specified"
+msgstr "Não Especificado"
+
+#: boh/models.py:351
+msgid "A unique name for the application."
+msgstr "Um nome único para a aplicação."
+
+#: boh/models.py:352
+msgid "Information about the application's purpose, history, and design."
+msgstr "Informação sobre o propósito da aplicação, história e projeto."
+
+#: boh/models.py:359
+msgid "Estimate the number of user records within the application."
+msgstr "Estimar o número de cadastras de usuários na aplicação."
+
+#: boh/models.py:360
+msgid "Estimate the application's revenue in USD."
+msgstr "Estimar o valor em R$ da aplicação."
+
+#: boh/models.py:361
+msgid "Specify if the application is used by people outside the organization."
+msgstr ""
+"Especificar se a aplicação é usada por outras pessoas fora da Organização."
+
+#: boh/models.py:362
+msgid "Specify if the application is accessible from the public internet."
+msgstr "Especificar se a aplicação é acessível publicamente da Internet."
+
+#: boh/models.py:363
+msgid "Specify if activities can be externally requested for this application."
+msgstr ""
+"Especificar se atividades podem ser externamente requisitadas pela aplicação."
+
+#: boh/models.py:372
+msgid "Overrides the calculated data classification level."
+msgstr "Sobrescrever o nível de classificação de dados calculados."
+
+#: boh/models.py:373
+msgid ""
+"Specify why the calculated data classification level is being overridden."
+msgstr ""
+"Especificar o porque o nível da classificação de dados está sendo "
+"sobrescrito."
+
+#: boh/models.py:376
+msgid "The ThreadFix service to connect to this application."
+msgstr "O serviço ThreadFix para se conectar com esta aplicação."
+
+#: boh/models.py:377
+msgid "The unique team identifier used within ThreadFix."
+msgstr "O identificador único usado no ThreadFix."
+
+#: boh/models.py:378
+msgid "The unique application identifier used within ThreadFix."
+msgstr "O identificador de aplicação único usado com o ThreadFix."
+
+#: boh/models.py:382
+msgid "Assessed ASVS Level"
+msgstr "Nível ASVS Avaliado"
+
+#: boh/models.py:383
+msgid "Percent compliant to the targeted ASVS level."
+msgstr "Porcentagem de conformidade com o nível ASVS visado."
+
+#: boh/models.py:384
+msgid "Targeted ASVS level for this application."
+msgstr "Meta de nível ASVS para esta aplicação."
+
+#: boh/models.py:385
+msgid "URL to the detailed ASVS assessment."
+msgstr "URL para avaliação do ASVS detalhado."
+
+#: boh/models.py:397
+msgid "The organization containing this application."
+msgstr "A Organização contendo esta aplicação."
+
+#: boh/models.py:445 boh/models.py:446
+msgid "ThreadFix metrics"
+msgstr "Métricas ThreadFix"
+
+#: boh/models.py:455
+msgid "Specify if this person is an application owner."
+msgstr "Especificar se esta pessoa é um dono de aplicação."
+
+#: boh/models.py:456
+msgid "Specify if this person is an emergency contact."
+msgstr "Especificar se esta pessoa é um contato de emergência."
+
+#: boh/models.py:457
+msgid "Any notes about this person's connection to the application."
+msgstr "Qualquer nota sobre a atribuição desta pessoa com a aplicação."
+
+#: boh/models.py:459
+msgid "The person associated with the application."
+msgstr "A pessoa associada com a aplicação."
+
+#: boh/models.py:479
+msgid "Development"
+msgstr "Desenvolvimento"
+
+#: boh/models.py:480
+msgid "Integration"
+msgstr "Integração"
+
+#: boh/models.py:482
+msgid "Pre-Production"
+msgstr "Pré-Produção"
+
+#: boh/models.py:483
+msgid "Customer Acceptance"
+msgstr "Aceitação do Usuário"
+
+#: boh/models.py:484
+msgid "Production"
+msgstr "Produção"
+
+#: boh/models.py:487
+msgid "Specify the type of environment."
+msgstr "Especificar o tipo de ambiente."
+
+#: boh/models.py:488
+msgid ""
+"Information about the environment's purpose, physical location, hardware, "
+"and deployment."
+msgstr ""
+"Informação sobre o propósito do ambiente, localização física, hardware,  e "
+"implantação."
+
+#: boh/models.py:489
+msgid "Specify if security testing has been approved for this environment."
+msgstr ""
+"Especificar se testes de segurança tem sido aprovados para este ambiente."
+
+#: boh/models.py:503
+msgid ""
+"A URL for the environment. (e.g., http://www.google.com/, https://www.owasp."
+"org/)"
+msgstr ""
+"Uma URL para o ambiente. (ex: http://www.google.com/, https://www.owasp.org/)"
+
+#: boh/models.py:504
+msgid ""
+"Information about the location's purpose, physical location, and deployment."
+msgstr ""
+"Informação sobre o propósito da localização, localização física, e "
+"implantação."
+
+#: boh/models.py:517
+msgid ""
+"A brief description of the user's role or permissions. (e.g., Guest, Admin)"
+msgstr ""
+"Uma breve descrição dos papéis do usuário ou permissões. (ex: Convidado, "
+"Admin)"
+
+#: boh/models.py:518
+msgid "Additional information about these credentials."
+msgstr "Informação adicional sobre esta credencial."
+
+#: boh/models.py:534 boh/templates/boh/application/engagements.html:15
+#: boh/templates/boh/dashboard/metrics.html:32
+#: boh/templates/boh/dashboard/metrics.html:63
+#: boh/templates/boh/dashboard/team_dashboard.html:67
+msgid "Pending"
+msgstr "Pendente"
+
+#: boh/models.py:535 boh/templates/boh/application/engagements.html:28
+#: boh/templates/boh/dashboard/metrics.html:36
+#: boh/templates/boh/dashboard/metrics.html:64
+#: boh/templates/boh/dashboard/team_dashboard.html:51
+#: boh/templates/boh/engagement/detail.html:42
+msgid "Open"
+msgstr "Aberto"
+
+#: boh/models.py:536 boh/templates/boh/activity/detail.html:87
+#: boh/templates/boh/application/engagements.html:41
+#: boh/templates/boh/dashboard/metrics.html:40
+#: boh/templates/boh/dashboard/metrics.html:65
+#: boh/templates/boh/engagement/detail.html:55
+#: boh/templates/boh/engagement/detail.html:117
+msgid "Closed"
+msgstr "Fechado"
+
+#: boh/models.py:540
+msgid "The date the engagement is scheduled to begin."
+msgstr "A data que o agendamento está programado para começar."
+
+#: boh/models.py:541
+msgid "The date the engagement is scheduled to complete."
+msgstr "A data que o agendamento está programado para finalizar."
+
+#: boh/models.py:544
+msgid "The date and time when the status is changed to open."
+msgstr "A data e o horário quando a condição foi alterada para aberto."
+
+#: boh/models.py:545
+msgid "The date and time when the status is changed to closed."
+msgstr "A data e o horário quando a condiação foi alterada para fechado."
+
+#: boh/models.py:548
+msgid "Specify who requested this engagement."
+msgstr "Especificar quem requisitou este agendamento."
+
+#: boh/models.py:606
+msgid "A unique name for this activity type."
+msgstr "Um nome único para este tipo de atividade."
+
+#: boh/models.py:607
+msgid "Guidelines, procedures, and techniques for this activity type."
+msgstr "Manuais, procedimentos e técnicas para este tipo de atividade."
+
+#: boh/models.py:645 boh/templates/boh/dashboard/metrics.html:57
+#: boh/templates/boh/engagement/detail.html:23
+#: boh/templates/boh/management/activity_types/activity_types.html:25
+#: boh/templates/boh/reports/engagement_coverage.html:21
+msgid "Activities"
+msgstr "Atividades"
+
+#: boh/reports.py:30
+msgid "Subclasses must override generate()"
+msgstr "Subclasses devem sobrescrever generate()"
+
+#: boh/reports.py:43 boh/templates/boh/dashboard/reports.html:14
+#: boh/templates/boh/reports/engagement_coverage.html:5
+msgid "Engagement Coverage Report"
+msgstr "Relatório de Cobertura de Agendamento"
+
+#: boh/reports.py:65 boh/templates/boh/dashboard/reports.html:38
+#: boh/templates/boh/reports/threadfix_summary.html:5
+msgid "ThreadFix Summary Report"
+msgstr "Relatório Resumido ThreadFix"
+
+#: boh/reports.py:87 boh/templates/boh/dashboard/reports.html:64
+#: boh/templates/boh/reports/app_summary.html:11
+msgid "Application Summary Report"
+msgstr "Relatório Resumido de Aplicações"
+
+#: boh/templates/boh/activity/add.html:4 boh/templates/boh/activity/add.html:9
+#: boh/templates/boh/activity/add.html:19
+#: boh/templates/boh/engagement/detail.html:25
+msgid "New Activity"
+msgstr "Nova Atividade"
+
+#: boh/templates/boh/activity/add.html:7
+#: boh/templates/boh/activity/detail.html:10
+#: boh/templates/boh/activity/edit.html:7
+#: boh/templates/boh/application/base_applications.html:10
+#: boh/templates/boh/application/engagements.html:4
+#: boh/templates/boh/dashboard/metrics.html:27
+#: boh/templates/boh/dashboard/team_dashboard.html:43
+#: boh/templates/boh/engagement/add.html:13
+#: boh/templates/boh/engagement/detail.html:10
+#: boh/templates/boh/engagement/edit.html:13
+#: boh/templates/boh/reports/app_summary.html:144
+msgid "Engagements"
+msgstr "Agendamentos"
+
+#: boh/templates/boh/activity/add.html:27
+msgid "Create Activity"
+msgstr "Criar Atividade"
+
+#: boh/templates/boh/activity/add.html:28
+#: boh/templates/boh/activity/edit.html:30
+#: boh/templates/boh/application/add.html:22
+#: boh/templates/boh/application/add_relation.html:23
+#: boh/templates/boh/application/edit_relation.html:23
+#: boh/templates/boh/engagement/add.html:42
+#: boh/templates/boh/engagement/edit.html:44
+#: boh/templates/boh/environment/add.html:22
+#: boh/templates/boh/management/activity_types/add.html:20
+#: boh/templates/boh/management/activity_types/edit.html:20
+#: boh/templates/boh/management/application_tags/add.html:28
+#: boh/templates/boh/management/application_tags/edit.html:28
+#: boh/templates/boh/management/threadfix/add.html:22
+#: boh/templates/boh/management/threadfix/edit.html:21
+#: boh/templates/boh/organization/add.html:22
+#: boh/templates/boh/person/add.html:27 boh/templates/boh/person/edit.html:27
+#: boh/templates/boh/user/change_password.html:21
+#: boh/templates/boh/user/profile.html:23
+#: boh/templates/registration/password_change_form.html:23
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: boh/templates/boh/activity/add.html:35
+#: boh/templates/boh/activity/detail.html:96
+#: boh/templates/boh/activity/edit.html:37
+msgid "Documentation about how activity work here."
+msgstr "Documentação sobre atividade."
+
+#: boh/templates/boh/activity/detail.html:23
+msgid "Assigned Users"
+msgstr "Usuários atribuídos"
+
+#: boh/templates/boh/activity/detail.html:24
+msgid "Users designated to complete this activity."
+msgstr "Usuários designados à completar esta atividade."
+
+#: boh/templates/boh/activity/detail.html:29
+#: boh/templates/boh/snippets/engagement/_activity.html:13
+msgid "No users have been assigned to this activity"
+msgstr "Nenhum usuário atribuído a esta atividade"
+
+#: boh/templates/boh/activity/detail.html:35
+#: boh/templates/boh/application/engagements.html:54
+#: boh/templates/boh/engagement/detail.html:126
+#: boh/templates/boh/management/activity_types/activity_types.html:24
+#: boh/templates/boh/management/activity_types/documentation.html:6
+#: boh/templates/boh/management/activity_types/documentation.html:9
+msgid "Documentation"
+msgstr "Documentação"
+
+#: boh/templates/boh/activity/detail.html:41
+msgid "Comments"
+msgstr "Comentários"
+
+#: boh/templates/boh/activity/detail.html:42
+msgid "Leave comments about this activity."
+msgstr "Deixe algum comentário sobre esta atividade."
+
+#: boh/templates/boh/activity/detail.html:56
+#: boh/templates/boh/engagement/detail.html:84
+msgid "Leave a comment"
+msgstr "Deixar um comentário"
+
+#: boh/templates/boh/activity/detail.html:62
+#: boh/templates/boh/engagement/detail.html:90
+msgid "Comment"
+msgstr "Comentário"
+
+#: boh/templates/boh/activity/detail.html:77
+#: boh/templates/boh/engagement/detail.html:107
+msgid "Change Status"
+msgstr "Alterar condição"
+
+#: boh/templates/boh/activity/detail.html:84
+#: boh/templates/boh/engagement/detail.html:114
+msgid "Opened"
+msgstr "Aberto"
+
+#: boh/templates/boh/activity/detail.html:93
+#: boh/templates/boh/activity/edit.html:4
+#: boh/templates/boh/activity/edit.html:10
+#: boh/templates/boh/activity/edit.html:20
+msgid "Edit Activity"
+msgstr "Editar Atividade"
+
+#: boh/templates/boh/activity/edit.html:29
+msgid "Update Activity"
+msgstr "Atualizar Atividade"
+
+#: boh/templates/boh/activity/edit.html:41
+msgid "Are you sure want to delete this activity?"
+msgstr "Você tem certeza de que deseja remover esta atividade?"
+
+#: boh/templates/boh/activity/edit.html:41
+msgid "Delete Activity"
+msgstr "Remover Atividade"
+
+#: boh/templates/boh/application/add.html:4
+#: boh/templates/boh/application/list.html:17
+msgid "Add Application"
+msgstr "Adicionar Aplicação"
+
+#: boh/templates/boh/application/add.html:13
+msgid "New Application"
+msgstr "Nova Aplicação"
+
+#: boh/templates/boh/application/add.html:21
+msgid "Create Application"
+msgstr "Criar Aplicação"
+
+#: boh/templates/boh/application/add.html:29
+#: boh/templates/boh/organization/applications.html:30
+msgid "Documentation about how applications work here."
+msgstr "Documentação sobre aplicações."
+
+#: boh/templates/boh/application/add_relation.html:4
+#: boh/templates/boh/application/base_applications.html:12
+#: boh/templates/boh/application/edit_relation.html:4
+#: boh/templates/boh/application/people.html:5 boh/templates/boh/base.html:57
+#: boh/templates/boh/organization/base_organizations.html:12
+#: boh/templates/boh/organization/people.html:5
+#: boh/templates/boh/organization/settings/base_settings.html:14
+#: boh/templates/boh/organization/settings/people.html:5
+#: boh/templates/boh/person/list.html:5
+#: boh/templates/boh/reports/app_summary.html:199
+msgid "People"
+msgstr "Pessoas"
+
+#: boh/templates/boh/application/add_relation.html:4
+#: boh/templates/boh/application/edit_relation.html:4
+#: boh/templates/boh/person/add.html:5 boh/templates/boh/person/add.html:14
+#: boh/templates/boh/person/add.html:26 boh/templates/boh/person/list.html:19
+msgid "Add Person"
+msgstr "Adicionar Pessoa"
+
+#: boh/templates/boh/application/add_relation.html:13
+#: boh/templates/boh/application/people.html:10
+msgid "New Related Person"
+msgstr "Nova Pessoa Relacionada"
+
+#: boh/templates/boh/application/add_relation.html:22
+msgid "Create Related Person"
+msgstr "Criar Nova Pessoa Relacionada"
+
+#: boh/templates/boh/application/add_relation.html:30
+#: boh/templates/boh/application/edit_relation.html:30
+msgid "Documentation about how relations work here."
+msgstr "Documentação sobre relações."
+
+#: boh/templates/boh/application/base_applications.html:9
+#: boh/templates/boh/management/base_management.html:15
+#: boh/templates/boh/management/overview.html:5
+#: boh/templates/boh/organization/base_organizations.html:10
+msgid "Overview"
+msgstr "Visão Geral"
+
+#: boh/templates/boh/application/base_applications.html:11
+#: boh/templates/boh/application/environments.html:4
+#: boh/templates/boh/application/overview.html:7
+#: boh/templates/boh/environment/edit/base_edit.html:11
+msgid "Environments"
+msgstr "Ambientes"
+
+#: boh/templates/boh/application/base_applications.html:13
+#: boh/templates/boh/application/settings/custom_fields.html:5
+#: boh/templates/boh/application/settings/danger.html:5
+#: boh/templates/boh/application/settings/data_elements.html:5
+#: boh/templates/boh/application/settings/general.html:5
+#: boh/templates/boh/application/settings/metadata.html:5
+#: boh/templates/boh/application/settings/owasp_asvs.html:5
+#: boh/templates/boh/application/settings/service_level_agreements.html:5
+#: boh/templates/boh/application/settings/services.html:5
+#: boh/templates/boh/organization/base_organizations.html:13
+#: boh/templates/boh/organization/settings/danger.html:5
+#: boh/templates/boh/organization/settings/general.html:5
+#: boh/templates/boh/organization/settings/people.html:5
+msgid "Settings"
+msgstr "Configurações"
+
+#: boh/templates/boh/application/edit_relation.html:13
+#: boh/templates/boh/person/detail.html:35
+msgid "Edit Person"
+msgstr "Editar Pessoa"
+
+#: boh/templates/boh/application/edit_relation.html:22
+#: boh/templates/boh/person/edit.html:26
+msgid "Update Person"
+msgstr "Atualizar Pessoa"
+
+#: boh/templates/boh/application/edit_relation.html:34
+msgid "Are you sure want to remove this related person?"
+msgstr "Você tem certeza que deseja remover esta pessoa relacionada?"
+
+#: boh/templates/boh/application/edit_relation.html:34
+msgid "Remove Related Person"
+msgstr "Remover Pessoa Relacionada"
+
+#: boh/templates/boh/application/engagements.html:9
+#: boh/templates/boh/engagement/add.html:6
+#: boh/templates/boh/engagement/add.html:14
+#: boh/templates/boh/engagement/add.html:24
+msgid "New Engagement"
+msgstr "Novo Agendamento"
+
+#: boh/templates/boh/application/engagements.html:15
+#: boh/templates/boh/dashboard/team_dashboard.html:68
+msgid "Engagements that have not yet started"
+msgstr "Agendamentos que ainda não iniciaram"
+
+#: boh/templates/boh/application/engagements.html:21
+#: boh/templates/boh/dashboard/team_dashboard.html:75
+msgid "There are no pending engagements."
+msgstr "Não existem agendamentos pendentes."
+
+#: boh/templates/boh/application/engagements.html:28
+#: boh/templates/boh/dashboard/team_dashboard.html:52
+msgid "Engagements that are in progress"
+msgstr "Agendamentos que estão em progresso"
+
+#: boh/templates/boh/application/engagements.html:34
+#: boh/templates/boh/dashboard/team_dashboard.html:59
+msgid "There are no open engagements."
+msgstr "Não existem agendamentos abertos."
+
+#: boh/templates/boh/application/engagements.html:41
+msgid "Engagements that have been completed"
+msgstr "Agendamentos que estão completados"
+
+#: boh/templates/boh/application/engagements.html:47
+msgid "There are no closed engagements."
+msgstr "Não existem agendamentos finalizados."
+
+#: boh/templates/boh/application/engagements.html:55
+msgid ""
+"If a pending engagement is yellow it is within the scheduled dates and needs "
+"to be opened and worked on."
+msgstr ""
+"Se um agendamento pendente está amarelo é porque a data programada está em "
+"atraso e precisa ser aberta e executada"
+
+#: boh/templates/boh/application/engagements.html:56
+msgid ""
+"If a pending or open engagement is red it past its scheduled end date and "
+"needs to be completed and closed."
+msgstr ""
+"Se um agendamento pendente ou aberto está em vermelho é porque a data "
+"programada para o fechamento não foi respeitada e precisa ser finalizada e "
+"fechada."
+
+#: boh/templates/boh/application/environments.html:9
+#: boh/templates/boh/environment/add.html:4
+#: boh/templates/boh/environment/add.html:13
+msgid "New Environment"
+msgstr "Novo Ambiente"
+
+#: boh/templates/boh/application/environments.html:17
+#: boh/templates/boh/environment/edit/base_edit.html:5
+#: boh/templates/boh/environment/edit/base_edit.html:12
+msgid "Environment"
+msgstr "Ambiente"
+
+#: boh/templates/boh/application/environments.html:17
+msgid "Approved for Security Testing"
+msgstr "Aprovado para Testes de Segurança"
+
+#: boh/templates/boh/application/environments.html:17
+msgid "Not Approved for Security Testing"
+msgstr "Não aprovado para Testes de Segurança"
+
+#: boh/templates/boh/application/environments.html:31
+#, python-format
+msgid ""
+"There are no locations for this "
+"%(environment.get_environment_type_display|lower)s environment."
+msgstr ""
+"Não existem localizações para o ambiente "
+"%(environment.get_environment_type_display|lower)s."
+
+#: boh/templates/boh/application/environments.html:39
+msgid "Usernames"
+msgstr "Usuários"
+
+#: boh/templates/boh/application/environments.html:40
+msgid "Passwords"
+msgstr "Senhas"
+
+#: boh/templates/boh/application/environments.html:40
+msgid "[Toggle]"
+msgstr "[Alternar]"
+
+#: boh/templates/boh/application/environments.html:41
+msgid "Roles"
+msgstr "Papéis"
+
+#: boh/templates/boh/application/environments.html:42
+msgid "Notes"
+msgstr "Anotações"
+
+#: boh/templates/boh/application/environments.html:49
+msgid "Hidden"
+msgstr ""
+
+#: boh/templates/boh/application/environments.html:51
+msgid "View Notes"
+msgstr "Vew Anotações"
+
+#: boh/templates/boh/application/environments.html:64
+#: boh/templates/boh/environment/edit/base_edit.html:5
+#: boh/templates/boh/environment/edit/base_edit.html:22
+msgid "Edit Environment"
+msgstr "Editar Ambiente"
+
+#: boh/templates/boh/application/environments.html:69
+msgid "There are no environments."
+msgstr "Não existem ambientes."
+
+#: boh/templates/boh/application/environments.html:75
+msgid "Documentation about how environments work here."
+msgstr "Documentação sobre ambientes."
+
+#: boh/templates/boh/application/list.html:8 boh/templates/boh/base.html:56
+#: boh/templates/boh/organization/applications.html:5
+#: boh/templates/boh/organization/base_organizations.html:11
+#: boh/templates/boh/person/detail.html:50
+msgid "Applications"
+msgstr "Aplicações"
+
+#: boh/templates/boh/application/list.html:15
+#: boh/templates/boh/organization/add.html:5
+#: boh/templates/boh/organization/add.html:14
+#: boh/templates/boh/organization/add.html:21
+msgid "Add Organization"
+msgstr "Adicionar Organização"
+
+#: boh/templates/boh/application/list.html:54
+#: boh/templates/boh/dashboard/metrics.html:18
+msgid "Filter"
+msgstr "Filtrar"
+
+#: boh/templates/boh/application/list.html:56
+msgid "Clear"
+msgstr "Limpar"
+
+#: boh/templates/boh/application/list.html:57
+msgid "Advanced"
+msgstr "Avançado"
+
+#: boh/templates/boh/application/list.html:142
+#: boh/templates/boh/application/overview.html:103
+#: boh/templates/boh/management/activity_types/activity_types.html:23
+#: boh/templates/boh/management/application_tags/application_tags.html:23
+#: boh/templates/boh/management/services.html:23
+#: boh/templates/boh/organization/people.html:25
+#: boh/templates/boh/person/list.html:31
+msgid "Name"
+msgstr "Nome"
+
+#: boh/templates/boh/application/list.html:143
+msgid "Organization"
+msgstr "Organização"
+
+#: boh/templates/boh/application/list.html:144
+#: boh/templates/boh/reports/engagement_coverage.html:18
+msgid "Criticality"
+msgstr "Criticidade"
+
+#: boh/templates/boh/application/list.html:152
+#: boh/templates/boh/application/overview.html:215
+#: boh/templates/boh/reports/app_summary.html:13
+#: boh/templates/boh/reports/engagement_coverage.html:11
+#: boh/templates/boh/reports/threadfix_summary.html:11
+msgid "Created"
+msgstr "Criado"
+
+#: boh/templates/boh/application/list.html:152
+msgid "New"
+msgstr "Novo"
+
+#: boh/templates/boh/application/list.html:183
+msgid "Previous"
+msgstr "Anterior"
+
+#: boh/templates/boh/application/list.html:193
+msgid "current"
+msgstr "atual"
+
+#: boh/templates/boh/application/list.html:200
+msgid "Next"
+msgstr "Próximo"
+
+#: boh/templates/boh/application/overview.html:14
+msgid "There is no description."
+msgstr "Não existe descrição."
+
+#: boh/templates/boh/application/overview.html:29
+#: boh/templates/boh/reports/app_summary.html:134
+msgid "CRITICAL"
+msgstr "CRÍTICO"
+
+#: boh/templates/boh/application/overview.html:30
+#: boh/templates/boh/reports/app_summary.html:135
+msgid "HIGH"
+msgstr "ALTO"
+
+#: boh/templates/boh/application/overview.html:31
+#: boh/templates/boh/reports/app_summary.html:136
+msgid "MEDIUM"
+msgstr "MODERADO"
+
+#: boh/templates/boh/application/overview.html:32
+#: boh/templates/boh/reports/app_summary.html:137
+msgid "LOW"
+msgstr "BAIXO"
+
+#: boh/templates/boh/application/overview.html:33
+#: boh/templates/boh/reports/app_summary.html:138
+msgid "INFORMATIONAL"
+msgstr ""
+
+#: boh/templates/boh/application/overview.html:34
+#: boh/templates/boh/reports/app_summary.html:139
+msgid "TOTAL"
+msgstr "TOTAL"
+
+#: boh/templates/boh/application/overview.html:55
+msgid "There are no service level agreements."
+msgstr "Não existem acordos de níveis de serviço."
+
+#: boh/templates/boh/application/overview.html:72
+msgid "There are no technologies."
+msgstr "Não existem tecnologias."
+
+#: boh/templates/boh/application/overview.html:86
+msgid "There are no regulations."
+msgstr "Não existem regulamentações."
+
+#: boh/templates/boh/application/overview.html:104
+msgid "Value"
+msgstr "Valor"
+
+#: boh/templates/boh/application/overview.html:121
+msgid "There are no custom field values."
+msgstr "Não existem campos customizados."
+
+#: boh/templates/boh/application/overview.html:141
+msgid "Business Criticality"
+msgstr "Criticidade do Negócio"
+
+#: boh/templates/boh/application/overview.html:145
+msgid "Platform"
+msgstr "Plataforma"
+
+#: boh/templates/boh/application/overview.html:149
+msgid "Lifecycle"
+msgstr "Ciclo de Vida"
+
+#: boh/templates/boh/application/overview.html:153
+msgid "Origin"
+msgstr "Origem"
+
+#: boh/templates/boh/application/overview.html:157
+msgid "User Records"
+msgstr "Número de Usuários"
+
+#: boh/templates/boh/application/overview.html:161
+msgid "Revenue (USD)"
+msgstr "Valor (R$)"
+
+#: boh/templates/boh/application/overview.html:177
+msgid "Compliant to ASVS Level"
+msgstr "Conformidade com Nível ASVS"
+
+#: boh/templates/boh/application/overview.html:180
+msgid "ASVS Detailed Report"
+msgstr "Relatório Detalhado ASVS"
+
+#: boh/templates/boh/application/overview.html:184
+#: boh/templates/boh/reports/app_summary.html:83
+#: boh/templates/boh/reports/app_summary.html:122
+msgid "Not Assessed"
+msgstr "Não Avaliado"
+
+#: boh/templates/boh/application/overview.html:192
+msgid "Resources"
+msgstr "Recursos"
+
+#: boh/templates/boh/application/overview.html:209
+msgid "There are no tags."
+msgstr "Não existem tags."
+
+#: boh/templates/boh/application/overview.html:216
+msgid "Last modified"
+msgstr "Última modificação"
+
+#: boh/templates/boh/application/people.html:31
+#: boh/templates/boh/person/detail.html:62
+msgid "Owner"
+msgstr "Dono"
+
+#: boh/templates/boh/application/people.html:32
+#: boh/templates/boh/person/detail.html:63
+msgid "Emergency"
+msgstr "Emergência"
+
+#: boh/templates/boh/application/people.html:42
+#: boh/templates/boh/organization/people.html:48
+msgid "Documentation about how people work here."
+msgstr "Documentação sobre pessoas."
+
+#: boh/templates/boh/application/settings/base_settings.html:10
+msgid "Application Settings"
+msgstr "Configurações da Aplicação"
+
+#: boh/templates/boh/application/settings/base_settings.html:13
+#: boh/templates/boh/application/settings/general.html:5
+#: boh/templates/boh/environment/edit/base_edit.html:25
+#: boh/templates/boh/organization/settings/base_settings.html:13
+#: boh/templates/boh/organization/settings/general.html:5
+msgid "General"
+msgstr "Geral"
+
+#: boh/templates/boh/application/settings/base_settings.html:15
+#: boh/templates/boh/application/settings/data_elements.html:5
+#: boh/templates/boh/application/settings/data_elements.html:14
+#: boh/templates/boh/management/base_management.html:19
+#: boh/templates/boh/reports/app_summary.html:185
+msgid "Data Elements"
+msgstr "Elementos de Dados"
+
+#: boh/templates/boh/application/settings/base_settings.html:17
+#: boh/templates/boh/application/settings/owasp_asvs.html:12
+msgid "OWASP ASVS"
+msgstr "OWASP ASVS"
+
+#: boh/templates/boh/application/settings/base_settings.html:18
+#: boh/templates/boh/application/settings/services.html:5
+#: boh/templates/boh/management/services.html:5
+#: boh/templates/boh/management/threadfix/add.html:5
+#: boh/templates/boh/management/threadfix/edit.html:4
+#: boh/templates/boh/management/threadfix/import.html:6
+#: boh/templates/boh/management/threadfix/import_done.html:5
+msgid "Services"
+msgstr "Serviços"
+
+#: boh/templates/boh/application/settings/base_settings.html:24
+#: boh/templates/boh/application/settings/danger.html:5
+#: boh/templates/boh/environment/edit/base_edit.html:32
+#: boh/templates/boh/organization/settings/base_settings.html:19
+#: boh/templates/boh/organization/settings/danger.html:5
+msgid "Danger Zone"
+msgstr "Zona de Perigo"
+
+#: boh/templates/boh/application/settings/custom_fields.html:21
+msgid "Delete"
+msgstr "Remover"
+
+#: boh/templates/boh/application/settings/custom_fields.html:25
+#: boh/templates/boh/environment/edit/credentials.html:21
+#: boh/templates/boh/environment/edit/locations.html:21
+#: boh/templates/boh/management/activity_types/add.html:5
+#: boh/templates/boh/management/application_tags/add.html:5
+msgid "Add"
+msgstr "Adicionar"
+
+#: boh/templates/boh/application/settings/custom_fields.html:25
+#: boh/templates/boh/environment/edit/credentials.html:21
+#: boh/templates/boh/environment/edit/locations.html:21
+#: boh/templates/boh/management/activity_types/activity_types.html:35
+#: boh/templates/boh/management/activity_types/edit.html:5
+#: boh/templates/boh/management/application_tags/application_tags.html:37
+#: boh/templates/boh/management/application_tags/edit.html:5
+#: boh/templates/boh/management/services.html:35
+#: boh/templates/boh/management/threadfix/edit.html:4
+#: boh/templates/boh/person/detail.html:59
+#: boh/templates/boh/person/edit.html:5 boh/templates/boh/person/edit.html:14
+msgid "Edit"
+msgstr "Editar"
+
+#: boh/templates/boh/application/settings/custom_fields.html:36
+msgid "Update Custom Fields"
+msgstr "Atualizar Campos Customizados"
+
+#: boh/templates/boh/application/settings/custom_fields.html:44
+msgid "Available Custom Fields"
+msgstr "Campos Customizados Disponíveis"
+
+#: boh/templates/boh/application/settings/custom_fields.html:53
+msgid "There are no custom fields."
+msgstr "Não existem campos customizados."
+
+#: boh/templates/boh/application/settings/danger.html:10
+#: boh/templates/boh/application/settings/danger.html:16
+msgid "Delete Application"
+msgstr "Remover Aplicação"
+
+#: boh/templates/boh/application/settings/danger.html:15
+msgid ""
+"Once you delete an application, there is no going back. Please be certain."
+msgstr ""
+"Uma vez que uma aplicação é removida, não existe retorno. Por favor, esteja "
+"ciente."
+
+#: boh/templates/boh/application/settings/danger.html:16
+msgid "Are you sure want to delete this application?"
+msgstr "Você deseja remover esta aplicação?"
+
+#: boh/templates/boh/application/settings/data_elements.html:20
+msgid "Update Data Elements"
+msgstr "Atualizar Elementos de Dados"
+
+#: boh/templates/boh/application/settings/data_elements.html:30
+msgid "Override"
+msgstr "Sobrescrever"
+
+#: boh/templates/boh/application/settings/data_elements.html:37
+msgid "Update Override"
+msgstr "Atualizar sobrescrita"
+
+#: boh/templates/boh/application/settings/general.html:12
+#: boh/templates/boh/environment/edit/general.html:10
+#: boh/templates/boh/organization/settings/general.html:12
+msgid "General Information"
+msgstr "Informações Gerais"
+
+#: boh/templates/boh/application/settings/general.html:19
+#: boh/templates/boh/environment/edit/general.html:18
+#: boh/templates/boh/organization/settings/general.html:19
+msgid "Update General Information"
+msgstr "Atualizar Informações Gerais"
+
+#: boh/templates/boh/application/settings/general.html:28
+msgid "Change Organization"
+msgstr "Alterar Organização"
+
+#: boh/templates/boh/application/settings/general.html:34
+msgid "Update Organization"
+msgstr "Atualizar Organização"
+
+#: boh/templates/boh/application/settings/general.html:41
+msgid "Features"
+msgstr "Funcionalidades"
+
+#: boh/templates/boh/application/settings/general.html:44
+msgid "Nothing here yet."
+msgstr "Nada aqui ainda."
+
+#: boh/templates/boh/application/settings/metadata.html:25
+msgid "Update Metadata"
+msgstr "Atualizar Metadado"
+
+#: boh/templates/boh/application/settings/metadata.html:40
+msgid "Update Technologies"
+msgstr "Atualizar Tecnologias"
+
+#: boh/templates/boh/application/settings/metadata.html:55
+msgid "Update Regulations"
+msgstr "Atualizar Regulamentações"
+
+#: boh/templates/boh/application/settings/metadata.html:70
+msgid "Update Tags"
+msgstr "Atualizar Tags"
+
+#: boh/templates/boh/application/settings/owasp_asvs.html:5
+msgid "OWASP ASVS Level"
+msgstr "Nível OWASP ASVS"
+
+#: boh/templates/boh/application/settings/owasp_asvs.html:21
+msgid "Update ASVS"
+msgstr "Atualizar ASVS"
+
+#: boh/templates/boh/application/settings/service_level_agreements.html:18
+msgid "Update Service Level Agreements"
+msgstr "Atualizar Acordos de Nível de Serviço"
+
+#: boh/templates/boh/application/settings/services.html:12
+msgid "ThreadFix"
+msgstr "ThreadFix"
+
+#: boh/templates/boh/application/settings/services.html:15
+msgid ""
+"ThreadFix is a software vulnerability aggregation and management system that "
+"helps organizations aggregate vulnerability data, generate virtual patches, "
+"and interact with software defect tracking systems."
+msgstr ""
+"ThreadFix é um software de agregação de vulnerabilidades e um sistema de "
+"gerenciamento que ajuda as organizações à agregarem dados de "
+"vulnerabilidades, gerar correções virtuais, e interagir com sistemas de "
+"rastreamento de defeitos de software."
+
+#: boh/templates/boh/application/settings/services.html:21
+msgid "Update ThreadFix"
+msgstr "Atualizar ThreadFix"
+
+#: boh/templates/boh/base.html:44
+msgid "Toggle navigation"
+msgstr "Alternar navegação"
+
+#: boh/templates/boh/base.html:55
+msgid "Dashboard"
+msgstr "Painel"
+
+#: boh/templates/boh/base.html:62
+msgid "Manage"
+msgstr "Gerenciar"
+
+#: boh/templates/boh/base.html:67 boh/templates/boh/user/base_user.html:13
+#: boh/templates/boh/user/profile.html:12
+msgid "My Profile"
+msgstr "Meu Perfil"
+
+#: boh/templates/boh/base.html:68 boh/templates/boh/user/base_user.html:14
+#: boh/templates/boh/user/change_password.html:5
+#: boh/templates/boh/user/change_password.html:12
+#: boh/templates/boh/user/change_password.html:20
+#: boh/templates/registration/password_change_done.html:5
+#: boh/templates/registration/password_change_form.html:5
+#: boh/templates/registration/password_change_form.html:14
+#: boh/templates/registration/password_change_form.html:22
+msgid "Change Password"
+msgstr "Alterar Senha"
+
+#: boh/templates/boh/base.html:70 boh/templates/registration/logged_out.html:5
+msgid "Logout"
+msgstr "Desconectar"
+
+#: boh/templates/boh/dashboard/base_dashboard.html:8
+msgid "Dashboards"
+msgstr "Painéis"
+
+#: boh/templates/boh/dashboard/base_dashboard.html:10
+#: boh/templates/boh/dashboard/my_dashboard.html:6
+msgid "My Dashboard"
+msgstr "Meu Painel"
+
+#: boh/templates/boh/dashboard/base_dashboard.html:11
+#: boh/templates/boh/dashboard/team_dashboard.html:4
+msgid "Team Dashboard"
+msgstr "Painel do Time"
+
+#: boh/templates/boh/dashboard/base_dashboard.html:13
+#: boh/templates/boh/dashboard/reports.html:5
+msgid "Reports"
+msgstr "Relatórios"
+
+#: boh/templates/boh/dashboard/metrics.html:44
+#: boh/templates/boh/dashboard/metrics.html:66
+#: boh/templates/boh/reports/threadfix_summary.html:23
+msgid "Total"
+msgstr "Total"
+
+#: boh/templates/boh/dashboard/metrics.html:48
+msgid "Average Length"
+msgstr "Comprimento Médio"
+
+#: boh/templates/boh/dashboard/metrics.html:62
+msgid "Activity"
+msgstr "Atividade"
+
+#: boh/templates/boh/dashboard/metrics.html:67
+msgid "Average Duration"
+msgstr "Duração média"
+
+#: boh/templates/boh/dashboard/my_dashboard.html:13
+msgid "My Open Activities"
+msgstr "Minhas Atividades Abertas"
+
+#: boh/templates/boh/dashboard/my_dashboard.html:13
+#: boh/templates/boh/engagement/detail.html:42
+msgid "Activities that are in progress"
+msgstr "Atividades que estão em progresso"
+
+#: boh/templates/boh/dashboard/my_dashboard.html:19
+msgid "You have no open activities."
+msgstr "Você não tem atividades abertas."
+
+#: boh/templates/boh/dashboard/my_dashboard.html:28
+msgid "My Pending Activities"
+msgstr "Minhas Atividades Pendentes"
+
+#: boh/templates/boh/dashboard/my_dashboard.html:28
+#: boh/templates/boh/engagement/detail.html:29
+msgid "Activities that have not yet started"
+msgstr "Atividades que não foram iniciadas ainda"
+
+#: boh/templates/boh/dashboard/my_dashboard.html:34
+msgid "You have no pending activities."
+msgstr "Você não tem atividades pendentes."
+
+#: boh/templates/boh/dashboard/reports.html:17
+msgid ""
+"This report details the activities performed for each application's last "
+"engagement."
+msgstr ""
+"Este relatório detalha as atividades executadas por último de acordo com "
+"cada aplicação."
+
+#: boh/templates/boh/dashboard/reports.html:28
+#: boh/templates/boh/dashboard/reports.html:52
+#: boh/templates/boh/dashboard/reports.html:78
+msgid "Download Report"
+msgstr "Baixar Relatório"
+
+#: boh/templates/boh/dashboard/reports.html:41
+msgid ""
+"This report shows the ThreadFix vulnerability counts for each application."
+msgstr ""
+"Este relatório mostra a contagem de vulnerabilidades do ThreadFix para cada "
+"aplicação."
+
+#: boh/templates/boh/dashboard/reports.html:67
+msgid "This report details all vulnerability and application meta data."
+msgstr "Este relatório detalha todas vulnerabilidades e dados de aplicações."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:10
+msgid "Activities by User"
+msgstr "Atividades por Usuário"
+
+#: boh/templates/boh/dashboard/team_dashboard.html:11
+msgid "Find open and pending activities for each user."
+msgstr "Localizar atividades abertas e pendentes por usuário."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:32
+msgid "has no open or pending activities."
+msgstr "não existem atividades abertas ou pendentes."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:44
+msgid "A list of open and pending engagements."
+msgstr "Uma lista de agendamentos pendentes e abertos."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:85
+msgid "Unassigned Activities"
+msgstr "Atividades Sem Atribuição"
+
+#: boh/templates/boh/dashboard/team_dashboard.html:86
+msgid "These activities need to have users assigned to them."
+msgstr "Estas atividades precisam de usuários atribuídos para elas."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:91
+msgid "There are no unassigned activities."
+msgstr "Não existem atividades sem atribuição."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:96
+msgid "Empty Engagements"
+msgstr "Agendamentos Vazios"
+
+#: boh/templates/boh/dashboard/team_dashboard.html:97
+msgid "These engagements have no activities within them."
+msgstr "Estes agendamentos não tem atividades."
+
+#: boh/templates/boh/dashboard/team_dashboard.html:102
+msgid "There are no empty engagements."
+msgstr "Não existem agendamentos vazios."
+
+#: boh/templates/boh/engagement/add.html:41
+msgid "Create Engagement"
+msgstr "Criar Agendamento"
+
+#: boh/templates/boh/engagement/add.html:49
+#: boh/templates/boh/engagement/edit.html:51
+msgid "Documentation about how engagement work here."
+msgstr "Documentação sobre agendamento."
+
+#: boh/templates/boh/engagement/detail.html:24
+msgid "Activities are units of work performed over the engagement duration."
+msgstr "Atividades são unidades de trabalho executadas durante um agendamento."
+
+#: boh/templates/boh/engagement/detail.html:35
+msgid "There are no pending activities."
+msgstr "Não existem atividades pendentes."
+
+#: boh/templates/boh/engagement/detail.html:48
+msgid "There are no open activities."
+msgstr "Não existem atividades abertas."
+
+#: boh/templates/boh/engagement/detail.html:55
+msgid "Activities that have been completed"
+msgstr "Atividades que foram finalizadas."
+
+#: boh/templates/boh/engagement/detail.html:61
+msgid "There are no closed activities."
+msgstr "Não existem atividades finalizadas."
+
+#: boh/templates/boh/engagement/detail.html:69
+msgid "Leave comments about this engagement."
+msgstr "Deixe comentários sobre este agendamento."
+
+#: boh/templates/boh/engagement/detail.html:74
+msgid "commented"
+msgstr "comentado"
+
+#: boh/templates/boh/engagement/detail.html:123
+#: boh/templates/boh/engagement/edit.html:6
+#: boh/templates/boh/engagement/edit.html:15
+#: boh/templates/boh/engagement/edit.html:25
+msgid "Edit Engagement"
+msgstr "Editar Agendamento"
+
+#: boh/templates/boh/engagement/detail.html:127
+msgid ""
+"If a pending activity is yellow it is within the scheduled dates and needs "
+"to be opened and worked on."
+msgstr ""
+"Se uma atividade pendente estiver em amarelo é porque a data programada "
+"precisa ser aberta e trabalhada."
+
+#: boh/templates/boh/engagement/detail.html:128
+msgid ""
+"If a pending or open activity is red it past its scheduled end date and "
+"needs to be completed and closed."
+msgstr ""
+"Se uma atividade aberta ou pendente estiver em vermelho é porque a data "
+"programada está atrasada e precisa ser finalizada e fechada."
+
+#: boh/templates/boh/engagement/edit.html:43
+msgid "Update Engagement"
+msgstr "Atualizar Agendamento"
+
+#: boh/templates/boh/engagement/edit.html:55
+msgid "Are you sure want to delete this engagement?"
+msgstr "Você tem certeza de que deseja remover este agendamento?"
+
+#: boh/templates/boh/engagement/edit.html:55
+msgid "Delete Engagement"
+msgstr "Remover Agendamento"
+
+#: boh/templates/boh/environment/add.html:21
+msgid "Create Environment"
+msgstr "Criar Ambiente"
+
+#: boh/templates/boh/environment/add.html:29
+msgid "Documentation about how environment work here."
+msgstr "Documentação sobre ambiente."
+
+#: boh/templates/boh/environment/edit/base_edit.html:26
+msgid "Locations"
+msgstr "Locais"
+
+#: boh/templates/boh/environment/edit/base_edit.html:27
+#: boh/templates/boh/environment/edit/credentials.html:21
+msgid "Credentials"
+msgstr "Credenciais"
+
+#: boh/templates/boh/environment/edit/credentials.html:17
+msgid "Delete Credentials"
+msgstr "Remover Credenciais"
+
+#: boh/templates/boh/environment/edit/credentials.html:34
+msgid "Update Environment Credentials"
+msgstr "Atualizar Credenciais de Ambientes"
+
+#: boh/templates/boh/environment/edit/locations.html:17
+msgid "Delete Location"
+msgstr "Apagar Locais"
+
+#: boh/templates/boh/environment/edit/locations.html:32
+msgid "Update Environment Locations"
+msgstr "Atualizar Locais dos Ambientes"
+
+#: boh/templates/boh/management/activity_types/activity_types.html:5
+#: boh/templates/boh/management/activity_types/add.html:5
+#: boh/templates/boh/management/activity_types/documentation.html:6
+#: boh/templates/boh/management/activity_types/edit.html:5
+#: boh/templates/boh/management/application_tags/add.html:5
+#: boh/templates/boh/management/application_tags/application_tags.html:5
+#: boh/templates/boh/management/application_tags/edit.html:5
+#: boh/templates/boh/management/base_management.html:12
+#: boh/templates/boh/management/overview.html:5
+#: boh/templates/boh/management/services.html:5
+#: boh/templates/boh/management/threadfix/add.html:5
+#: boh/templates/boh/management/threadfix/edit.html:4
+#: boh/templates/boh/management/threadfix/import.html:6
+#: boh/templates/boh/management/threadfix/import_done.html:5
+#: boh/templates/boh/management/users.html:5
+msgid "Manage Settings"
+msgstr "Gerenciar Configurações"
+
+#: boh/templates/boh/management/activity_types/activity_types.html:5
+#: boh/templates/boh/management/activity_types/activity_types.html:10
+#: boh/templates/boh/management/activity_types/add.html:5
+#: boh/templates/boh/management/activity_types/documentation.html:6
+#: boh/templates/boh/management/activity_types/edit.html:5
+#: boh/templates/boh/management/base_management.html:18
+#: boh/templates/boh/management/overview.html:39
+msgid "Activity Types"
+msgstr "Tipos de Atividades"
+
+#: boh/templates/boh/management/activity_types/activity_types.html:13
+#: boh/templates/boh/management/overview.html:40
+msgid ""
+"Activity types define what activities are and can contain documention for "
+"how that activity should be performed. The documentation will be visible on "
+"each activity of that type, making it a great place to include standard "
+"operating procedures, links, or anything else common amongst activities."
+msgstr ""
+"Tipos de Atividades define quais atividades são e podem conter documentação "
+"para quando esta atividade precisaria ser executada. A documentação ficará "
+"visível em cada atividade daquele tipo, fazendo com esta seja um ótimo local "
+"para incluir procedimentos operacionais padronizados, links, ou qualquer "
+"coisa comum entre as atividades."
+
+#: boh/templates/boh/management/activity_types/activity_types.html:15
+msgid "There are no activity types."
+msgstr "Não existem tipos de atividade."
+
+#: boh/templates/boh/management/activity_types/activity_types.html:26
+#: boh/templates/boh/management/application_tags/application_tags.html:27
+#: boh/templates/boh/management/services.html:26
+msgid "Actions"
+msgstr "Ações"
+
+#: boh/templates/boh/management/activity_types/activity_types.html:33
+msgid "View"
+msgstr "Visualizar"
+
+#: boh/templates/boh/management/activity_types/activity_types.html:43
+msgid "New Activity Type"
+msgstr "Novo Tipo de Atividade"
+
+#: boh/templates/boh/management/activity_types/add.html:12
+#: boh/templates/boh/management/activity_types/add.html:19
+msgid "Add Activity Type"
+msgstr "Adicionar Tipo de Atividade"
+
+#: boh/templates/boh/management/activity_types/edit.html:12
+msgid "Edit Activity Type"
+msgstr "Editar Tipo de Atividade"
+
+#: boh/templates/boh/management/activity_types/edit.html:19
+msgid "Update Activity Type"
+msgstr "Atualizar Tipo de Atividade"
+
+#: boh/templates/boh/management/activity_types/edit.html:27
+msgid "Are you sure want to delete this activity type?"
+msgstr "Você tem certeza de que deseja remover este tipo de atividade?"
+
+#: boh/templates/boh/management/activity_types/edit.html:27
+msgid "Delete Activity Type"
+msgstr "Remover Tipo de Atividade"
+
+#: boh/templates/boh/management/application_tags/add.html:5
+#: boh/templates/boh/management/application_tags/application_tags.html:5
+#: boh/templates/boh/management/application_tags/application_tags.html:10
+#: boh/templates/boh/management/application_tags/edit.html:5
+#: boh/templates/boh/management/base_management.html:17
+#: boh/templates/boh/management/overview.html:23
+msgid "Application Tags"
+msgstr "Tags de Aplicação"
+
+#: boh/templates/boh/management/application_tags/add.html:12
+#: boh/templates/boh/management/application_tags/add.html:27
+msgid "Add Application Tag"
+msgstr "Adicionar Tag de Aplicação"
+
+#: boh/templates/boh/management/application_tags/application_tags.html:13
+#: boh/templates/boh/management/overview.html:24
+msgid ""
+"Application tags allow for the abstract categorization and grouping of "
+"applications. Create tags to fit your goals, priorities, or anything else."
+msgstr ""
+"Tags de aplicação habilitam para uma categorização abstrata e agrupamento de "
+"aplicações. Crie tags para fixar suas metas, prioridades, ou qualquer coisa."
+
+#: boh/templates/boh/management/application_tags/application_tags.html:15
+msgid "There are no application tags."
+msgstr "Não existem tags de aplicações."
+
+#: boh/templates/boh/management/application_tags/application_tags.html:24
+msgid "Description"
+msgstr "Descrição"
+
+#: boh/templates/boh/management/application_tags/application_tags.html:25
+msgid "Color"
+msgstr "Cor"
+
+#: boh/templates/boh/management/application_tags/application_tags.html:26
+msgid "Tagged"
+msgstr "Etiquetado"
+
+#: boh/templates/boh/management/application_tags/application_tags.html:45
+msgid "New Application Tag"
+msgstr "Nova Tag de Aplicação"
+
+#: boh/templates/boh/management/application_tags/edit.html:12
+msgid "Edit Application Tag"
+msgstr "Editar Tag de Aplicação"
+
+#: boh/templates/boh/management/application_tags/edit.html:27
+msgid "Update Application Tag"
+msgstr "Atualizar Tag de Aplicação"
+
+#: boh/templates/boh/management/application_tags/edit.html:35
+msgid "Are you sure want to delete this application tag?"
+msgstr "Você tem certeza de que deseja remover esta tag de aplicação?"
+
+#: boh/templates/boh/management/application_tags/edit.html:35
+msgid "Delete Application Tag"
+msgstr "Remover Tag de Aplicação"
+
+#: boh/templates/boh/management/base_management.html:5
+msgid "Management Settings"
+msgstr "Gerenciamento de Configurações"
+
+#: boh/templates/boh/management/base_management.html:16
+#: boh/templates/boh/person/detail.html:39
+msgid "Organizations"
+msgstr "Organizações"
+
+#: boh/templates/boh/management/base_management.html:20
+msgid "Service Levels"
+msgstr "Níveis de Serviço"
+
+#: boh/templates/boh/management/base_management.html:21
+#: boh/templates/boh/management/overview.html:55
+msgid "Third Party Services"
+msgstr "Serviços de Terceiros"
+
+#: boh/templates/boh/management/base_management.html:27
+msgid "Django Site Admin"
+msgstr ""
+
+#: boh/templates/boh/management/overview.html:8
+msgid "Manage Settings Overview"
+msgstr "Gerenciar Configurações de Visão Geral"
+
+#: boh/templates/boh/management/overview.html:9
+msgid ""
+"Here you will find all the options for configuring and customizing Bag of "
+"Holding."
+msgstr ""
+"Aqui você encontrará todas as opções para configuração e customização do Bag "
+"of Holding."
+
+#: boh/templates/boh/management/overview.html:56
+msgid ""
+"Bag of Holding is able to connect to outside services to push or pull "
+"information. You can configure these services here."
+msgstr ""
+"Bag of Holding está apto a se conectar com serviços para enviar ou baixar "
+"informações. Você pode configurar estes serviços aqui."
+
+#: boh/templates/boh/management/overview.html:71
+msgid "Django Admin"
+msgstr ""
+
+#: boh/templates/boh/management/overview.html:72
+msgid ""
+"This is a web-based interface, limited to trusted site administrators, that "
+"enables the adding, editing and deletion of site content."
+msgstr ""
+"Esta é uma tela baseada na web, limitada a confiar em administradores do "
+"site, que habilitam a adicionar, editar e remover o conteúdo do site,"
+
+#: boh/templates/boh/management/services.html:10
+msgid "ThreadFix Services"
+msgstr "Serviços ThreadFix"
+
+#: boh/templates/boh/management/services.html:13
+msgid ""
+"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\">ThreadFix</"
+"a> is a software vulnerability aggregation and management system that helps "
+"organizations aggregate vulnerability data, generate virtual patches, and "
+"interact with software defect tracking systems."
+msgstr ""
+"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\">ThreadFix</"
+"a> é um software de agregração de vulonerabilidades e sistema de "
+"gerenciamento que auxilia as organizações a agregar dados de "
+"vulnerabilidades, gerar correções virtuais, e interagir com sistemas de "
+"rastreamento de defeitos."
+
+#: boh/templates/boh/management/services.html:15
+msgid "There are no ThreadFix services."
+msgstr "Não existem serviços ThreadFix."
+
+#: boh/templates/boh/management/services.html:24
+msgid "Host"
+msgstr "Hospedagem"
+
+#: boh/templates/boh/management/services.html:25
+msgid "Verify SSL"
+msgstr "Verificar SSL"
+
+#: boh/templates/boh/management/services.html:36
+msgid "Test"
+msgstr "Testar"
+
+#: boh/templates/boh/management/services.html:37
+#: boh/templates/boh/management/threadfix/import.html:6
+#: boh/templates/boh/management/threadfix/import_done.html:5
+msgid "Import"
+msgstr "Importar"
+
+#: boh/templates/boh/management/services.html:44
+#: boh/templates/boh/management/threadfix/add.html:5
+#: boh/templates/boh/management/threadfix/add.html:12
+#: boh/templates/boh/management/threadfix/add.html:21
+msgid "Add ThreadFix Service"
+msgstr "Adicionar Serviço ThreadFix"
+
+#: boh/templates/boh/management/threadfix/edit.html:11
+msgid "Edit ThreadFix Service"
+msgstr "Editar Serviço ThreadFix"
+
+#: boh/templates/boh/management/threadfix/edit.html:20
+msgid "Update"
+msgstr "Atualizar"
+
+#: boh/templates/boh/management/threadfix/edit.html:27
+msgid "Are you sure want to delete this ThreadFix service?"
+msgstr "Você tem certeza que deseja remover este serviço ThreadFix?"
+
+#: boh/templates/boh/management/threadfix/edit.html:27
+msgid "Delete ThreadFix Service"
+msgstr "Remover Serviço ThreadFix"
+
+#: boh/templates/boh/management/threadfix/import.html:14
+msgid "Import from"
+msgstr "Importar de"
+
+#: boh/templates/boh/management/threadfix/import.html:20
+msgid "Team"
+msgstr "Time"
+
+#: boh/templates/boh/management/threadfix/import.html:21
+#: boh/templates/boh/reports/engagement_coverage.html:17
+#: boh/templates/boh/reports/threadfix_summary.html:17
+msgid "Application Name"
+msgstr "Nome da Aplicação"
+
+#: boh/templates/boh/management/threadfix/import.html:22
+msgid "Target Organization"
+msgstr "Organização Alvo"
+
+#: boh/templates/boh/management/threadfix/import.html:40
+msgid "Import Applications"
+msgstr "Importar Aplicações"
+
+#: boh/templates/boh/management/threadfix/import_done.html:11
+msgid "Successfully Imported Applications"
+msgstr "Você importou com sucesso as aplicações."
+
+#: boh/templates/boh/management/threadfix/import_done.html:23
+msgid "Application Import Failures"
+msgstr "Falhas de Aplicações Importadas"
+
+#: boh/templates/boh/management/threadfix/import_done.html:26
+msgid ""
+"The following application imports failed. Check to make sure the names are "
+"not already taken."
+msgstr ""
+"As seguintes importações de aplicações falharam. Tenha certeza de que os "
+"nomes ainda não foram feitos."
+
+#: boh/templates/boh/management/users.html:13
+msgid "Nothing here yet"
+msgstr "Nada aqui ainda"
+
+#: boh/templates/boh/organization/applications.html:24
+msgid "There are no applications."
+msgstr "Não existem aplicações."
+
+#: boh/templates/boh/organization/overview.html:11
+msgid "There is no description for this organization."
+msgstr "Não existe descrição para esta organização."
+
+#: boh/templates/boh/organization/people.html:10
+msgid "Select a role to view associated people"
+msgstr "Selecione um papel para ver as pessoas associadas."
+
+#: boh/templates/boh/organization/people.html:26
+#: boh/templates/boh/person/detail.html:26
+#: boh/templates/boh/person/list.html:32
+msgid "Title"
+msgstr "Título"
+
+#: boh/templates/boh/organization/people.html:27
+#: boh/templates/boh/person/detail.html:14
+#: boh/templates/boh/person/list.html:33
+msgid "Email"
+msgstr "Email"
+
+#: boh/templates/boh/organization/settings/base_settings.html:10
+msgid "Organization Settings"
+msgstr "Configurações de Organizações"
+
+#: boh/templates/boh/organization/settings/danger.html:10
+#: boh/templates/boh/organization/settings/danger.html:16
+msgid "Delete Organization"
+msgstr "Remover Organização"
+
+#: boh/templates/boh/organization/settings/danger.html:15
+msgid ""
+"Once you delete an organization, there is no going back. Please be certain."
+msgstr ""
+"Uma vez removida uma organização, não existe retorno. Por favor esteja "
+"ciente."
+
+#: boh/templates/boh/organization/settings/danger.html:16
+msgid "Are you sure want to delete this organization?"
+msgstr "Você tem certeza de que deseja remover esta organização?"
+
+#: boh/templates/boh/organization/settings/people.html:12
+msgid "Related People"
+msgstr "Pessoas Relacionadas"
+
+#: boh/templates/boh/organization/settings/people.html:18
+msgid "Update Related People"
+msgstr "Atualizar Pessoas Relacionadas"
+
+#: boh/templates/boh/person/detail.html:18
+#: boh/templates/boh/person/detail.html:22
+msgid "Phone"
+msgstr "Telefone"
+
+#: boh/templates/boh/person/detail.html:18
+msgid "Work"
+msgstr "Trabalho"
+
+#: boh/templates/boh/person/detail.html:26
+msgid "Job"
+msgstr "Trabalho"
+
+#: boh/templates/boh/person/detail.html:30
+#: boh/templates/boh/person/list.html:34
+msgid "Role"
+msgstr "Papel"
+
+#: boh/templates/boh/person/detail.html:46
+msgid "is not associated with any organizations."
+msgstr "não está associada com qualquer organização."
+
+#: boh/templates/boh/person/detail.html:67
+msgid "is not associated with any applications."
+msgstr "não está associada com qualquer aplicação."
+
+#: boh/templates/boh/person/detail.html:76
+msgid "has not requested any engagements."
+msgstr "não requisitou qualquer agendamento."
+
+#: boh/templates/boh/person/edit.html:35
+msgid "Are you sure want to delete this person?"
+msgstr "Você tem certeza de que deseja remover esta pessoa"
+
+#: boh/templates/boh/person/edit.html:35
+msgid "Delete Person"
+msgstr "Remover Pessoa"
+
+#: boh/templates/boh/reports/app_summary.html:6
+msgid "Organization Summary Report"
+msgstr "Relatório Resumido da Organização"
+
+#: boh/templates/boh/reports/app_summary.html:11
+#: boh/templates/boh/reports/engagement_coverage.html:9
+#: boh/templates/boh/reports/threadfix_summary.html:9
+msgid "Application Security"
+msgstr "Segurança de Aplicação"
+
+#: boh/templates/boh/reports/app_summary.html:13
+#: boh/templates/boh/reports/engagement_coverage.html:11
+#: boh/templates/boh/reports/threadfix_summary.html:11
+msgid "by"
+msgstr "por"
+
+#: boh/templates/boh/reports/app_summary.html:17
+msgid "Application Description"
+msgstr "Descrição da Aplicação"
+
+#: boh/templates/boh/reports/app_summary.html:21
+msgid "Data Classification Level"
+msgstr "Nível de Classificação de Dados"
+
+#: boh/templates/boh/reports/app_summary.html:32
+msgid "Public"
+msgstr "Público"
+
+#: boh/templates/boh/reports/app_summary.html:33
+msgid "Unclassified"
+msgstr "Sem classificação"
+
+#: boh/templates/boh/reports/app_summary.html:46
+msgid "Internal Use"
+msgstr "Uso interno"
+
+#: boh/templates/boh/reports/app_summary.html:47
+msgid "Proprietary"
+msgstr "Proprietário"
+
+#: boh/templates/boh/reports/app_summary.html:60
+msgid "Confidential"
+msgstr "Confidencial"
+
+#: boh/templates/boh/reports/app_summary.html:61
+msgid "Company Confidential"
+msgstr "Confidencial da Companhia"
+
+#: boh/templates/boh/reports/app_summary.html:74
+msgid "Restricted"
+msgstr "Restrito"
+
+#: boh/templates/boh/reports/app_summary.html:75
+msgid "Highly Confidential"
+msgstr "Altamente Confidencial"
+
+#: boh/templates/boh/reports/app_summary.html:103
+#: boh/templates/boh/reports/app_summary.html:116
+msgid "Compliant to"
+msgstr "Compatível para"
+
+#: boh/templates/boh/reports/app_summary.html:129
+msgid "Application Security Vulnerabilities"
+msgstr "Vulnerabilidades de Segurança de Aplicações"
+
+#: boh/templates/boh/reports/app_summary.html:149
+#: boh/templates/boh/reports/engagement_coverage.html:19
+msgid "Last Engagement"
+msgstr "Último Agendamento"
+
+#: boh/templates/boh/reports/app_summary.html:165
+msgid "There are no specified technologies."
+msgstr "Não existem tecnologias especificadas."
+
+#: boh/templates/boh/reports/app_summary.html:179
+msgid "There are no specified regulations."
+msgstr "Não existem regulamentações especificadas."
+
+#: boh/templates/boh/reports/app_summary.html:193
+#: boh/templates/boh/reports/app_summary.html:207
+msgid "There are no specified data elements."
+msgstr "Não existem elementos de dados especificados."
+
+#: boh/templates/boh/reports/engagement_coverage.html:9
+msgid "Engagement Coverage"
+msgstr "Cobertura de Agendamento"
+
+#: boh/templates/boh/reports/engagement_coverage.html:20
+msgid "Elapsed"
+msgstr "Decorrido"
+
+#: boh/templates/boh/reports/threadfix_summary.html:9
+msgid "ThreadFix Summary"
+msgstr "Resumo ThreadFix"
+
+#: boh/templates/boh/reports/threadfix_summary.html:18
+msgid "Critical"
+msgstr "Crítico"
+
+#: boh/templates/boh/reports/threadfix_summary.html:22
+msgid "Info"
+msgstr "Info"
+
+#: boh/templates/boh/reports/threadfix_summary.html:24
+msgid "Updated"
+msgstr "Atualizado"
+
+#: boh/templates/boh/snippets/application/_engagement.html:21
+#: boh/templates/boh/snippets/dashboard/_engagement.html:21
+msgid "No activities for this engagement"
+msgstr "Nenhuma atividade para este agendamento"
+
+#: boh/templates/boh/snippets/form/_checkbox.html:7
+msgid "Required"
+msgstr "Requerido"
+
+#: boh/templates/boh/snippets/management/tags/selectable_colors.html:2
+msgid "Click to apply presets"
+msgstr "Clique para aplicar predefinições"
+
+#: boh/templates/boh/user/base_user.html:10
+msgid "Account Settings"
+msgstr "Configurações de Conta"
+
+#: boh/templates/boh/user/profile.html:5
+msgid "User Profile"
+msgstr "Perfil do Usuário"
+
+#: boh/templates/boh/user/profile.html:22
+msgid "Update Profile"
+msgstr "Atualizar Perfil"
+
+#: boh/templates/registration/logged_out.html:11
+msgid "Thanks for using the"
+msgstr "Obrigado por usar o"
+
+#: boh/templates/registration/logged_out.html:18
+msgid "You have successfully logged out."
+msgstr "Você se desconectou com sucesso."
+
+#: boh/templates/registration/logged_out.html:21
+msgid "Return to Log in"
+msgstr "Retornar à tela de entrada"
+
+#: boh/templates/registration/login.html:13
+msgid "Welcome to the"
+msgstr "Bem-vindo ao"
+
+#: boh/templates/registration/login.html:21
+msgid ""
+"The <strong>Bag of Holding</strong> is an application security utility to "
+"assist in the organization and prioritization of software security "
+"activities."
+msgstr ""
+"O <strong>Bag Of Holding</strong> é um utilitário para segurança de "
+"aplicações que auxilia nas atividades da priorização de segurança de "
+"software na organização."
+
+#: boh/templates/registration/login.html:25
+msgid "The username or password you entered is not valid."
+msgstr "O usuário ou senha que você entrou não é válido."
+
+#: boh/templates/registration/login.html:45
+msgid "Log in"
+msgstr "Entrar"
+
+#: boh/templates/registration/password_change_done.html:11
+msgid "Well done!"
+msgstr "Bem feito!"
+
+#: boh/templates/registration/password_change_done.html:13
+msgid "You have successfully changed your password."
+msgstr "Você alterou com sucesso sua senha."
+
+#: boh/views.py:200
+msgid "There was a problem downloading the report."
+msgstr "Houve um problema enquanto a cópia do relatório era realizada."
+
+#: boh/views.py:240
+#, python-format
+msgid "You successfully added the \"%(tag_name)s\" application tag."
+msgstr "Você adicionou com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:243
+msgid "There was a problem creating this application tag."
+msgstr "Houve um problema ao criar a tag da aplicação."
+
+#: boh/views.py:263
+#, python-format
+msgid "You successfully updated the \"%(tag_name)s\" application tag."
+msgstr "Você atualizou com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:266
+msgid "There was a problem updating this application tag."
+msgstr "Houve um problema ao atualizar esta tag da aplicação."
+
+#: boh/views.py:286
+#, python-format
+msgid "You successfully deleted the \"%(tag_name)s\" application tag."
+msgstr "Você removeu com sucesso a tag da aplicação \"%(tag_name)s\"."
+
+#: boh/views.py:289
+msgid "There was a problem deleting this application tag."
+msgstr "Houve um problema ao remover esta tag da aplicação."
+
+#: boh/views.py:315
+#, python-format
+msgid "You successfully created the \"%(activity_type_name)s\" activity type."
+msgstr "Você criou com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:318
+msgid "There was a problem creating this activity type."
+msgstr "Houve um problema ao criar este tipo de atividade."
+
+#: boh/views.py:351
+#, python-format
+msgid "You successfully updated the \"%(activity_type_name)s\" activity type."
+msgstr ""
+"Você atualizou com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:354
+msgid "There was a problem updating this activity type."
+msgstr "Houve um problema ao atualizar este tipo de atividade."
+
+#: boh/views.py:374
+#, python-format
+msgid "You successfully deleted the \"%(activity_type_name)s\" activity type."
+msgstr ""
+"Você removeu com sucesso o tipo de atividade \"%(activity_type_name)s\"."
+
+#: boh/views.py:377
+msgid "There was a problem deleting this activity type."
+msgstr "Houve um problema ao remover este tipo de atividade."
+
+#: boh/views.py:403
+#, python-format
+msgid "You successfully created the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você criou com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:406
+msgid "There was a problem creating this ThreadFix service."
+msgstr "Houve um problema ao criar este serviço ThreadFix."
+
+#: boh/views.py:426
+#, python-format
+msgid "You successfully updated the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você atualizou com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:429
+msgid "There was a problem updating this ThreadFix service."
+msgstr "Houve um problema ao atualizar este serviço ThreadFix."
+
+#: boh/views.py:449
+#, python-format
+msgid ""
+"Everything appears to be working correctly for the \"%(threadfix_name)s\" "
+"ThreadFix service."
+msgstr ""
+"Tudo parece estar funcionando corretamente para o serviço ThreadFix "
+"\"%(threadfix_name)s\""
+
+#: boh/views.py:451
+#, python-format
+msgid ""
+"An error occurred when testing \"%(threadfix_name)s\". Error message: "
+"%(error)s"
+msgstr ""
+"Um erro ocorreu quando o \"%(threadfix_name)s\" era testado. Mensagem do "
+"erro: %(error)s"
+
+#: boh/views.py:487
+#, python-format
+msgid ""
+"An error occurred when importing from \"%(threadfix_name)s\". Error message: "
+"%(error)s"
+msgstr ""
+"Um erro ocorreu quando o \"%(threadfix_name)s\" era importado. Mensagem do "
+"erro: %(error)s"
+
+#: boh/views.py:513
+#, python-format
+msgid "No applications were imported from \"%(threadfix_name)s\"."
+msgstr "Nenhuma aplicação foi importada de \"%(threadfix_name)s\"."
+
+#: boh/views.py:515
+#, python-format
+msgid "An error occurred when saving the import from \"%(threadfix_name)s\"."
+msgstr ""
+"Um erro ocorreu enquanto a importação de \"%(threadfix_name)s\" era salva."
+
+#: boh/views.py:530
+#, python-format
+msgid "You successfully deleted the \"%(threadfix_name)s\" ThreadFix service."
+msgstr "Você removeu com sucesso o serviço ThreadFix \"%(threadfix_name)s\"."
+
+#: boh/views.py:533
+msgid "There was a problem deleting this ThreadFix service."
+msgstr "Houve um problema ao remover este serviço ThreadFix."
+
+#: boh/views.py:559
+msgid "You successfully updated your profile."
+msgstr "Você atualizou seu perfil com sucesso."
+
+#: boh/views.py:561
+msgid "There was a problem updating your profile."
+msgstr "Houve um problema ao atualizar seu perfil."
+
+#: boh/views.py:579
+msgid "You successfully changed your password."
+msgstr "Você alterou com sucesso sua senha."
+
+#: boh/views.py:581
+msgid "There was a problem changing your password."
+msgstr "Houve um problema ao atualizar sua senha."
+
+#: boh/views.py:639
+msgid "You successfully updated this organization's general information."
+msgstr "Você atualizou com sucesso as informações gerais desta organização."
+
+#: boh/views.py:641
+msgid "There was a problem updating this organization's general information."
+msgstr ""
+"Houve um problema ao atualizar as informações gerais desta organização."
+
+#: boh/views.py:662
+msgid "You successfully updated this organization's associated people."
+msgstr "Você atualizou com sucesso as pessoas associadas à esta organização."
+
+#: boh/views.py:664
+msgid "There was a problem updating this organization's associated people."
+msgstr ""
+"Houve um problema ao atualizar as pessoas associadas à esta organização."
+
+#: boh/views.py:684
+#, python-format
+msgid "You successfully deleted the \"%(organization_name)s\" organization."
+msgstr "Você removeu com sucesso a organização \"%(organization_name)s\"."
+
+#: boh/views.py:703
+msgid "You successfully created this organization."
+msgstr "Você criou com sucesso esta organização."
+
+#: boh/views.py:843 boh/views.py:877
+#, python-format
+msgid "\"%(name)s\" is already related to this application."
+msgstr "\"%(name)s\" já está associado à esta aplicação."
+
+#: boh/views.py:845 boh/views.py:879
+#, python-format
+msgid "You successfully added \"%(name)s\" to this application."
+msgstr "Você adicionou com sucesso o \"%(name)s\" à esta aplicação."
+
+#: boh/views.py:849 boh/views.py:883
+msgid "There was a problem saving the relation to this application."
+msgstr "Houve um problema ao salvar a relação com esta aplicação."
+
+#: boh/views.py:905
+#, python-format
+msgid "You successfully disassociated \"%(name)s\" with this application."
+msgstr "Você disassociou com sucesso o \"%(name)s\" desta aplicação."
+
+#: boh/views.py:907
+#, python-format
+msgid "There was a problem disassociating \"%(name)s\" with this application."
+msgstr "Houver um problema ao disassociar o \"%(name)s\" desta aplicação."
+
+#: boh/views.py:919
+msgid "You successfully created this application."
+msgstr "Você criou com sucesso esta aplicação."
+
+#: boh/views.py:941
+msgid "You successfully updated this application's general information."
+msgstr "Você atualizou com sucesso as informações gerais desta aplicação."
+
+#: boh/views.py:946
+msgid "You successfully updated this application's organization."
+msgstr "Você atualizou com sucesso a organização desta aplicação."
+
+#: boh/views.py:972
+msgid "You successfully updated this application's metadata."
+msgstr "Você atualizou com sucesso os metadados desta aplicação."
+
+#: boh/views.py:974
+msgid "There was a problem updating this application's metadata."
+msgstr "Houve um problema ao atualizar os metadados desta aplicação."
+
+#: boh/views.py:979
+msgid "You successfully updated this application's technologies."
+msgstr "Você atualizou com sucesso as tecnologias desta aplicação."
+
+#: boh/views.py:981
+msgid "There was a problem updating this application's technologies."
+msgstr "Houve um problema ao atualizar as tecnologias desta aplicação."
+
+#: boh/views.py:986
+msgid "You successfully updated this application's regulations."
+msgstr "Você atualizou com sucesso as regulamentações desta aplicação."
+
+#: boh/views.py:988
+msgid "There was a problem updating this application's regulations."
+msgstr "Houve um problema ao atualizar as regulamentações desta aplicação."
+
+#: boh/views.py:993
+msgid "You successfully updated this application's tags."
+msgstr "Você atualizou com sucesso as tags desta aplicação."
+
+#: boh/views.py:995
+msgid "There was a problem updating this application's tags."
+msgstr "Houve um problema ao atualizar as tags desta aplicação."
+
+#: boh/views.py:1020
+msgid "You successfully updated this application's data elements."
+msgstr "Você atualizou com sucesso os elementos de dados desta aplicação."
+
+#: boh/views.py:1045
+msgid "You successfully updated this application's service level agreements."
+msgstr ""
+"Você atualizou com sucesso os acordos de nível de serviço desta aplicação."
+
+#: boh/views.py:1047
+msgid ""
+"There was a problem updating this application's service level agreements."
+msgstr ""
+"Houve um problema ao atualizar os acordos de nível de serviço desta "
+"aplicação."
+
+#: boh/views.py:1067
+msgid "This application's data classification override has been updated."
+msgstr "Esta sobrescrição de classificação de dados foi atualizada."
+
+#: boh/views.py:1083
+msgid "You successfully updated this application's ThreadFix information."
+msgstr "Você atualizou com sucesso as informações do ThreadFix da aplicação."
+
+#: boh/views.py:1104
+msgid "You successfully updated this application's ASVS information."
+msgstr "Você atualizou com sucesso a informação ASVS da aplicação."
+
+#: boh/views.py:1133
+msgid "You successfully updated these custom fields."
+msgstr "Você atualizou com sucesso estes campos customizados."
+
+#: boh/views.py:1157
+#, python-format
+msgid "You successfully deleted the \"%(application_name)s\" application."
+msgstr "Você removeu com sucesso a aplicação \"%(application_name)s\"."
+
+#: boh/views.py:1182
+msgid "You successfully created this environment."
+msgstr "Você criou com sucesso este ambiente."
+
+#: boh/views.py:1202
+msgid "You successfully updated this environment."
+msgstr "Você atualizou com sucesso este ambiente."
+
+#: boh/views.py:1235
+msgid "You successfully updated these locations."
+msgstr "Você atualizou com sucesso estas localizações."
+
+#: boh/views.py:1268
+msgid "You successfully updated these credentials."
+msgstr "Você atualizou com sucesso estas credenciais."
+
+#: boh/views.py:1291
+#, python-format
+msgid "You successfully deleted the \"%(env_type)s\" environment."
+msgstr "Você removeu com sucesso o ambiente \"%(env_type)s\"."
+
+#: boh/views.py:1343
+msgid "You successfully created this engagement."
+msgstr "Você criou com sucesso este agendamento."
+
+#: boh/views.py:1363
+msgid "You successfully updated this engagement."
+msgstr "Você atualizou com sucesso este agendamento."
+
+#: boh/views.py:1385
+#, python-format
+msgid ""
+"You successfully updated this engagement's status to \"%(eng_status)s\"."
+msgstr ""
+"Você atualizou com sucesso a condição do agendamento para \"%(eng_status)s\"."
+
+#: boh/views.py:1399
+msgid "You successfully deleted the engagement."
+msgstr "Você removeu com sucesso este agendamento."
+
+#: boh/views.py:1417
+msgid "You successfully added a comment to this engagement."
+msgstr "Você adicionou com sucesso um comentário à este agendamento."
+
+#: boh/views.py:1456
+msgid "You successfully added this activity."
+msgstr "Você adicionou com sucesso esta atividade."
+
+#: boh/views.py:1477
+msgid "You successfully updated this activity."
+msgstr "Você atualizou com sucesso esta atividade."
+
+#: boh/views.py:1499
+#, python-format
+msgid ""
+"You successfully updated this activity's status to \"%(activity_status)s\"."
+msgstr ""
+"Você atualizou com sucesso a condição da atividade para \"%(activity_status)s"
+"\"."
+
+#: boh/views.py:1513
+msgid "You successfully deleted the activity."
+msgstr "Você removeu com sucesso esta atividade."
+
+#: boh/views.py:1531
+msgid "You successfully added a comment to this activity."
+msgstr "Você adicionou com sucesso um comentário à esta atividade."
+
+#: boh/views.py:1565
+msgid "You successfully created this person."
+msgstr "Você criou com sucesso esta pessoa."
+
+#: boh/views.py:1596
+#, python-format
+msgid "You successfully updated \"%(name)s\"."
+msgstr "Você atualizou com sucesso \"%(name)s\"."
+
+#: boh/views.py:1599
+#, python-format
+msgid "There was a problem updating \"%(name)s\"."
+msgstr "Houve um problema ao atualizar \"%(name)s\"."
+
+#: boh/views.py:1618
+#, python-format
+msgid "You successfully deleted \"%(name)s\"."
+msgstr "Você removeu com sucesso \"%(name)s\"."

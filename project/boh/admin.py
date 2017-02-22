@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from . import models
 
@@ -76,7 +76,7 @@ class TagAdmin(admin.ModelAdmin):
     truncated_description.short_description = _('description')
 
     def sample(self, obj):
-        return '<span style="background-color:#' + obj.color + '">Example</span>'
+        return '<span style="background-color:#' + obj.color + '">' + _('Example') + '</span>'
     sample.allow_tags = True
 admin.site.register(models.Tag, TagAdmin)
 
@@ -141,41 +141,50 @@ class ApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ['created_date', 'modified_date']
     fieldsets = [
         (None, {'fields': ['organization', 'name', 'description']}),
-        ('Metadata', {
+        (_('Metadata'), {
             'classes': ['collapse'],
-            'fields': ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
+            'fields': [
+                        'platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue',
+                        'external_audience', 'internet_accessible'
+            ]
         }),
-        ('Tags', {
+        (_('Tags'), {
             'classes': ['collapse'],
             'fields': ['tags']
         }),
-        ('Technologies', {
+        (_('Technologies'), {
             'classes': ['collapse'],
             'fields': ['technologies']
         }),
-        ('Regulations', {
+        (_('Regulations'), {
             'classes': ['collapse'],
             'fields': ['regulations']
         }),
-        ('Data Classification', {
+        (_('Data Classification'), {
             'classes': ['collapse'],
             'fields': ['data_elements']
         }),
-        ('Service Level Agreements', {
+        (_('Service Level Agreements'), {
             'classes': ['collapse'],
             'fields': ['service_level_agreements']
         }),
-        ('ThreadFix', {
+        (_('ThreadFix'), {
             'classes': ['collapse'],
             'fields': ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         }),
-        ('Advanced options', {
+        (_('Advanced options'), {
             'classes': ['collapse'],
             'fields': ['requestable', 'created_date', 'modified_date']
         }),
     ]
-    list_display = ['name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date']
-    list_filter = ['business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience', 'internet_accessible', 'tags', 'requestable']
+    list_display = [
+        'name', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue',
+        'external_audience', 'internet_accessible', 'dcl_display', 'created_date', 'modified_date'
+    ]
+    list_filter = [
+        'business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience',
+        'internet_accessible', 'tags', 'requestable'
+    ]
     inlines = [EnvironmentInline, RelationInline, EngagementInline, ApplicationCustomFieldValueInline]
     search_fields = ['^name']
 
@@ -211,7 +220,9 @@ class EngagementAdmin(admin.ModelAdmin):
             'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['__str__', 'start_date', 'end_date', 'status', 'application', 'open_date', 'close_date', 'duration']
+    list_display = [
+        '__str__', 'start_date', 'end_date', 'status', 'application', 'open_date', 'close_date', 'duration'
+    ]
     list_filter = ['status']
     inlines = [ActivityInline, EngagementCommentInline]
     readonly_fields = ['duration']
@@ -228,12 +239,15 @@ class ActivityAdmin(admin.ModelAdmin):
     date_hierarchy = 'open_date'
     fieldsets = [
         (None, {'fields': ['engagement', 'activity_type', 'status', 'users']}),
-        ('Advanced options', {
+        (_('Advanced options'), {
             'classes': ['collapse'],
             'fields': ['open_date', 'close_date', 'duration']
         }),
     ]
-    list_display = ['id', 'status', 'activity_type', 'application_link', 'users_list', 'engagement_link', 'open_date', 'close_date', 'duration']
+    list_display = [
+        'id', 'status', 'activity_type', 'application_link', 'users_list', 'engagement_link', 'open_date',
+        'close_date', 'duration'
+    ]
     list_filter = ['status', 'open_date', 'close_date', 'activity_type', 'users', 'engagement__application']
     inlines = [ActivityCommentInline]
     readonly_fields = ['duration']
@@ -243,18 +257,18 @@ class ActivityAdmin(admin.ModelAdmin):
         application_url = reverse('admin:boh_application_change', args=(application.id,))
         return '<a href="%s">%s</a>' % (application_url, application.name)
     application_link.allow_tags = True
-    application_link.short_description = 'Application'
+    application_link.short_description = _('Application')
 
     def users_list(self, obj):
         return ', '.join(user.get_username() for user in obj.users.all())
-    users_list.short_description = 'Users'
+    users_list.short_description = _('Users')
 
     def engagement_link(self, obj):
         engagement = obj.engagement
         engagement_url = reverse('admin:boh_engagement_change', args=(engagement.id,))
         return '<a href="%s">%s</a>' % (engagement_url, engagement.id)
     engagement_link.allow_tags = True
-    engagement_link.short_description = 'Engagement'
+    engagement_link.short_description = _('Engagement')
 
 admin.site.register(models.Activity, ActivityAdmin)
 
@@ -265,19 +279,22 @@ admin.site.register(models.ThreadFix)
 class ThreadFixMetricsAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['application']}),
-        ('Metrics', {
+        (_('Metrics'), {
             'fields': ['critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count']
         })
     ]
-    list_display = ['application', 'critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count', 'created_date']
+    list_display = [
+        'application', 'critical_count', 'high_count', 'medium_count', 'low_count', 'informational_count',
+        'created_date'
+    ]
     list_filter = ['application']
     ordering = ['-created_date']
     readonly_fields = ['created_date']
     search_fields = ['^application__name']
 
     class Meta:
-        verbose_name = 'ThreadFix Metrics'
-        verbose_name_plural = 'ThreadFix Metrics'
+        verbose_name = _('ThreadFix Metrics')
+        verbose_name_plural = _('ThreadFix Metrics')
 
 admin.site.register(models.ThreadFixMetrics, ThreadFixMetricsAdmin)
 
@@ -290,13 +307,13 @@ class TechnologyAdmin(admin.ModelAdmin):
     def category_display(self, obj):
         return obj.get_category_display()
     category_display.admin_order_field = 'category'
-    category_display.short_description = 'Category'
+    category_display.short_description = _('Category')
 
     def reference_link(self, obj):
         return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
-    reference_link.short_description = 'Reference'
+    reference_link.short_description = _('Reference')
 
 admin.site.register(models.Technology, TechnologyAdmin)
 
@@ -315,7 +332,7 @@ class RegulationAdmin(admin.ModelAdmin):
         return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
-    reference_link.short_description = 'Reference'
+    reference_link.short_description = _('Reference')
 admin.site.register(models.Regulation, RegulationAdmin)
 
 

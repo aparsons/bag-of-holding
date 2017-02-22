@@ -1,6 +1,7 @@
 {% extends "boh/application/base_applications.html" %}
+{% load i18n %}
 
-{% block title %}{{ application.name }} | People | Add Person{% endblock %}
+{% block title %}{{ application.name }} | {% trans 'People' %} | {% trans 'Add Person' %}{% endblock %}
 
 {% block application_content %}
 <div class="row">
@@ -9,7 +10,7 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Edit Person</h3>
+          <h3 class="panel-title">{% trans 'Edit Person' %}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=relation_form.person %}
@@ -18,19 +19,19 @@
           {% include "boh/snippets/form/_general.html" with control=relation_form.notes %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Person</button>
-          <a href="{% url 'boh:application.people' application.id %}" class="btn btn-default" role="button">Cancel</a>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Person' %}</button>
+          <a href="{% url 'boh:application.people' application.id %}" class="btn btn-default" role="button">{% trans 'Cancel' %}</a>
         </div>
       </div>
     </form>
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how relations work here.</p>
+      <p>{% trans 'Documentation about how relations work here.' %}</p>
     </div>
     <form method="post" action="{% url 'boh:application.people.delete' application.id relation.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to remove this related person?');"><span class="fa fa-times" aria-hidden="true"></span> Remove Related Person</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('{% trans 'Are you sure want to remove this related person?' %}');"><span class="fa fa-times" aria-hidden="true"></span> {% trans 'Remove Related Person' %}</button>
     </form>
   </div>
 </div>

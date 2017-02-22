@@ -1,4 +1,5 @@
 {% load boh_humanize %}
+{% load i18n %}
 <a href="{% url 'boh:engagement.detail' engagement.id %}" class="list-group-item{% if engagement.is_past_due %} list-group-item-danger{% elif engagement.is_ready_for_work %} list-group-item-warning{% endif %}">
 
   {% if engagement.comment_count %}
@@ -17,7 +18,7 @@
     {% for activity in engagement.activity_set.all %}
     {% include "boh/snippets/common/_activity_label.html" with activity=activity %}
     {% empty %}
-    <span class="label label-danger"><span class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></span> No activities for this engagement</span>
+    <span class="label label-danger"><span class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></span> {% trans 'No activities for this engagement' %}</span>
     {% endfor %}
   </p>
 </a>

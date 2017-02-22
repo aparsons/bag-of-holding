@@ -1,22 +1,24 @@
 {% extends "boh/base.html" %}
 
-{% block title %}Logout{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Logout' %}{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-12">
     <div class="page-header">
-      <h1 class="text-primary"><span class="hidden-xs">Thanks for using the </span><strong>Bag of Holding</strong><span class="hidden-xs">.</span></h1>
+      <h1 class="text-primary"><span class="hidden-xs">{% trans 'Thanks for using the' %} </span><strong>Bag of Holding</strong><span class="hidden-xs">.</span></h1>
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-7">
-    <p class="lead text-muted">You have successfully logged out.</p>
+    <p class="lead text-muted">{% trans 'You have successfully logged out.' %}</p>
   </div>
   <div class="col-md-5">
-    <a href="{% url 'login' %}" class="btn btn-primary btn-lg btn-block" role="button">Return to Log in</a>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg btn-block" role="button">{% trans 'Return to Log in' %}</a>
   </div>
 </div>
 {% endblock %}

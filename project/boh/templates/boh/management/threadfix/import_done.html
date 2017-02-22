@@ -1,12 +1,14 @@
 {% extends "boh/management/base_management.html" %}
 
-{% block title %}Manage Settings | Services | Import {{ threadfix.name }}{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'Manage Settings' %} | {% trans 'Services' %} | {% trans 'Import' %} {{ threadfix.name }}{% endblock %}
 
 {% block manage_content %}
 {% if imported_applications %}
 <div class="panel panel-success">
   <div class="panel-heading">
-    <h3 class="panel-title">Successfully Imported Applications</h3>
+    <h3 class="panel-title">{% trans 'Successfully Imported Applications' %}</h3>
   </div>
   <ul class="list-group">
     {% for application in imported_applications %}
@@ -18,10 +20,10 @@
 {% if failed_applications %}
 <div class="panel panel-danger">
   <div class="panel-heading">
-    <h3 class="panel-title">Application Import Failures</h3>
+    <h3 class="panel-title">{% trans 'Application Import Failures' %}</h3>
   </div>
   <div class="panel-body">
-    The following application imports failed. Check to make sure the names are not already taken.
+    {% trans 'The following application imports failed. Check to make sure the names are not already taken.' %}
   </div>
   <ul class="list-group">
     {% for application in failed_applications %}

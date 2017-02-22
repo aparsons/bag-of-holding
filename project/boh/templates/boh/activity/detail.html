@@ -1,12 +1,13 @@
 {% extends "boh/activity/base_activities.html" %}
 
+{% load i18n %}
 {% load humanize %}
 {% load markdown_render %}
 
 {% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }}{% endblock %}
 
 {% block engagement_breadcrumb %}
-<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:application.engagements' application.id %}">{% trans 'Engagements' %}</a></li>
 <li><a href="{% url 'boh:engagement.detail' activity.engagement.id %}">{{ activity.engagement.start_date }} - {{ activity.engagement.end_date }}</a></li>
 <li class="active">{{ activity.activity_type.name }}</li>
 {% endblock engagement_breadcrumb %}
@@ -19,26 +20,26 @@
 
     <hr>
 
-    <h3><span class="fa fa-users" aria-hidden="true"></span> Assigned Users</h3>
-    <p class="text-muted">Users designated to complete this activity.</p>
+    <h3><span class="fa fa-users" aria-hidden="true"></span> {% trans 'Assigned Users' %}</h3>
+    <p class="text-muted">{% trans 'Users designated to complete this activity.' %}</p>
     <ul class="list-group">
       {% for user in activity.users.all %}
       <li class="list-group-item">{% if user.first_name and user.last_name %}{{ user.get_full_name }}{% else %}{{ user }}{% endif %}</li>
       {% empty %}
-      <li class="list-group-item list-group-item-danger">No users have been assigned to this activity</li>
+      <li class="list-group-item list-group-item-danger">{% trans 'No users have been assigned to this activity' %}</li>
       {% endfor %}
     </ul>
 
     {% if activity.activity_type.documentation %}
     <hr>
-    <h3><span class="fa fa-file-text-o" aria-hidden="true"></span> Documentation</h3>
+    <h3><span class="fa fa-file-text-o" aria-hidden="true"></span> {% trans 'Documentation' %}</h3>
     <p>{{ activity.activity_type.documentation|markdown_render }}</p>
     {% endif %}
 
     <hr>
 
-    <h3><span class="fa fa-comments" aria-hidden="true"></span> Comments</h3>
-    <p class="text-muted">Leave comments about this activity.</p>
+    <h3><span class="fa fa-comments" aria-hidden="true"></span> {% trans 'Comments' %}</h3>
+    <p class="text-muted">{% trans 'Leave comments about this activity.' %}</p>
     {% for comment in activity.activitycomment_set.all %}
     <div id="comment-{{ comment.id }}" class="panel panel-default">
       <div class="panel-heading">
@@ -52,13 +53,13 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Leave a comment</h3>
+        <h3 class="panel-title">{% trans 'Leave a comment' %}</h3>
       </div>
       <div class="panel-body">
         <form method="post" action="{% url 'boh:activity.comment.add' activity.id %}">
           {% csrf_token %}
           {% include "boh/snippets/form/_markdown.html" with control=form.message %}
-          <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> Comment</button>
+          <button class="btn btn-success" type="submit"><span class="fa fa-comment" aria-hidden="true"></span> {% trans 'Comment' %}</button>
         </form>
       </div>
     </div>
@@ -73,26 +74,26 @@
           {% csrf_token %}
           <div class="clearfix">
             {% include "boh/snippets/form/_general.html" with control=status_form.status required=False %}
-            <button class="btn btn-default pull-right" type="submit">Change Status</button>
+            <button class="btn btn-default pull-right" type="submit">{% trans 'Change Status' %}</button>
           </div>
         </form>
       </div>
       {% if activity.open_date or activity.close_date %}
       <ul class="list-group">
         {% if activity.open_date %}
-        <li class="list-group-item"><strong>Opened:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.open_date }}">{{ activity.open_date|naturaltime }}</span></li>
+        <li class="list-group-item"><strong>{% trans 'Opened' %}:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.open_date }}">{{ activity.open_date|naturaltime }}</span></li>
         {% endif %}
         {% if activity.close_date %}
-        <li class="list-group-item"><strong>Closed:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.close_date }}">{{ activity.close_date|naturaltime }}</span></li>
+        <li class="list-group-item"><strong>{% trans 'Closed' %}:</strong> <span data-toggle="tooltip" data-placement="bottom" title="{{ activity.close_date }}">{{ activity.close_date|naturaltime }}</span></li>
         {% endif %}
       </ul>
       {% endif %}
     </div>
 
-    <p><a href="{% url 'boh:activity.edit' activity.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> Edit Activity</a></p>
+    <p><a href="{% url 'boh:activity.edit' activity.id %}" class="btn btn-default" role="button"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> {% trans 'Edit Activity' %}</a></p>
 
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how activity work here.</p>
+      <p>{% trans 'Documentation about how activity work here.' %}</p>
     </div>
   </div>
 </div>

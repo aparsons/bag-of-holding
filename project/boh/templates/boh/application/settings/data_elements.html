@@ -1,6 +1,8 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}{{ application.name }} | Settings | Data Elements{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'Settings' %} | {% trans 'Data Elements' %}{% endblock %}
 
 {% block settings_content %}
 <div class="row">
@@ -9,13 +11,13 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Data Elements</h3>
+          <h3 class="panel-title">{% trans 'Data Elements' %}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=data_elements_form.data_elements %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Data Elements</button>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Data Elements' %}</button>
         </div>
       </div>
     </form>
@@ -25,14 +27,14 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Override</h3>
+          <h3 class="panel-title">{% trans 'Override' %}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=dcl_override_form.override_dcl %}
           {% include "boh/snippets/form/_general.html" with control=dcl_override_form.override_reason %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Override</button>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Override' %}</button>
         </div>
       </div>
     </form>

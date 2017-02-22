@@ -1,6 +1,8 @@
 {% extends "boh/application/settings/base_settings.html" %}
 
-{% block title %}{{ application.name }} | Settings | Custom Fields{% endblock %}
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'Settings' %} | {% trans 'Custom Fields' %}{% endblock %}
 
 {% block settings_content %}
 <div class="row">
@@ -16,11 +18,11 @@
               {% if not forloop.last and formset.can_delete %}
               <div class="checkbox no-margin-top no-margin-bottom pull-right">
                 <label>
-                  {{ form.DELETE }} Delete
+                  {{ form.DELETE }} {% trans 'Delete' %}
                 </label>
               </div>
               {% endif %}
-              <h4 class="panel-title pull-left"{% if not forloop.last %} style="padding-top: 2px;"{% endif %}>{% if forloop.last %}Add{% else %}Edit{% endif %} Custom Field</h4>
+              <h4 class="panel-title pull-left"{% if not forloop.last %} style="padding-top: 2px;"{% endif %}>{% if forloop.last %}{% trans 'Add' %}{% else %}{% trans 'Edit' %}{% endif %} {% trans 'Custom Field' %}</h4>
             </div>
             <div class="panel-body">
               {{ form.id }}
@@ -31,7 +33,7 @@
         {% endfor %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Custom Fields</button>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Custom Fields' %}</button>
         </div>
       </div>
     </form>
@@ -39,7 +41,7 @@
   <div class="col-md-5">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h4 class="panel-title">Available Custom Fields</h4>
+        <h4 class="panel-title">{% trans 'Available Custom Fields' %}</h4>
       </div>
       <ul class="list-group">
         {% for custom_field in custom_fields %}
@@ -48,7 +50,7 @@
           <p class="list-group-item-text"><small>{{ custom_field.description }}</small></p>
         </li>
         {% empty %}
-        <li class="list-group-item"><small class="text-muted"><em>There are no custom fields.</em></small></li>
+        <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no custom fields.' %}</em></small></li>
         {% endfor %}
       </ul>
     </div>

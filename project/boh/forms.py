@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from . import models
 
@@ -8,10 +9,10 @@ from . import models
 
 class PageSizeForm(forms.Form):
     PAGE_SIZE_CHOICES = (
-        ('25', '25 per page'),
-        ('50', '50 per page'),
-        ('100', '100 per page'),
-        ('all', 'Everything')
+        ('25', _('25 per page')),
+        ('50', _('50 per page')),
+        ('100', _('100 per page')),
+        ('all', _('Everything'))
     )
 
     page_size = forms.ChoiceField(choices=PAGE_SIZE_CHOICES)
@@ -28,7 +29,7 @@ class MetricsYearForm(forms.Form):
         activity_years = models.Activity.objects.distinct_years()
         years = engagement_years + list(set(activity_years) - set(engagement_years)) # Combine both lists
         years.sort(reverse=True)
-        self.fields['year'] = forms.ChoiceField(choices=[('', 'All')] + [(year, year) for year in years], required=False)
+        self.fields['year'] = forms.ChoiceField(label=_('Year'), choices=[('', _('All'))] + [(year, year) for year in years], required=False)
 
 
 class EngagementCoverageReportForm(forms.Form):
@@ -125,8 +126,8 @@ class ThreadFixForm(forms.ModelForm):
         model = models.ThreadFix
         fields = ['name', 'host', 'api_key', 'verify_ssl']
         labels = {
-            'api_key': 'API key',
-            'verify_ssl': 'Verify SSL certificate'
+            'api_key': _('API key'),
+            'verify_ssl': _('Verify SSL certificate')
         }
         widgets = {
             'api_key': forms.PasswordInput(render_value=True)
@@ -176,7 +177,10 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience', 'internet_accessible']
+        fields = [
+            'platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience',
+            'internet_accessible'
+        ]
 
 
 class ApplicationSettingsTechnologiesForm(forms.ModelForm):
@@ -229,10 +233,10 @@ class ApplicationSettingsASVSForm(forms.ModelForm):
         model = models.Application
         fields = ['asvs_level', 'asvs_level_percent_achieved', 'asvs_doc_url', 'asvs_level_target']
         labels = {
-            'asvs_level': 'ASVS Level',
-            'asvs_level_percent_achieved': 'Percent Achived Towards Targeted Level',
-            'asvs_doc_url': 'ASVS Document',
-            'asvs_level_target': 'Target ASVS Level'
+            'asvs_level': _('ASVS Level'),
+            'asvs_level_percent_achieved': _('Percent Achived Towards Targeted Level'),
+            'asvs_doc_url': _('ASVS Document'),
+            'asvs_level_target': _('Target ASVS Level')
         }
 
 
@@ -241,9 +245,9 @@ class ApplicationSettingsThreadFixForm(forms.ModelForm):
         model = models.Application
         fields = ['threadfix', 'threadfix_team_id', 'threadfix_application_id']
         labels = {
-            'threadfix': 'ThreadFix Service',
-            'threadfix_team_id': 'Team ID',
-            'threadfix_application_id': 'Application ID'
+            'threadfix': _('ThreadFix Service'),
+            'threadfix_team_id': _('Team ID'),
+            'threadfix_application_id': _('Application ID')
         }
 
 
@@ -318,7 +322,7 @@ class EngagementAddForm(forms.ModelForm):
 
         if start_date and end_date:
             if end_date < start_date:
-                self.add_error('end_date', "End date cannot be before start date.")
+                self.add_error('end_date', _("End date cannot be before start date."))
 
 
 class EngagementEditForm(forms.ModelForm):
@@ -326,8 +330,8 @@ class EngagementEditForm(forms.ModelForm):
         model = models.Engagement
         fields = ['status', 'start_date', 'end_date', 'description', 'requestor']
         labels = {
-            'start_date': 'Scheduled start date',
-            'end_date': 'Scheduled end date'
+            'start_date': _('Scheduled start date'),
+            'end_date': _('Scheduled end date')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5})
@@ -340,7 +344,7 @@ class EngagementEditForm(forms.ModelForm):
 
         if start_date and end_date:
             if end_date < start_date:
-                self.add_error('end_date', "End date cannot be before start date.")
+                self.add_error('end_date', _("End date cannot be before start date."))
 
 
 class EngagementStatusForm(forms.ModelForm):
@@ -371,7 +375,7 @@ class ActivityAddForm(forms.ModelForm):
         model = models.Activity
         fields = ['activity_type', 'description', 'users']
         labels = {
-            'users': 'Assigned users'
+            'users': _('Assigned users')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3})
@@ -383,7 +387,7 @@ class ActivityEditForm(forms.ModelForm):
         model = models.Activity
         fields = ['status', 'activity_type', 'description', 'users']
         labels = {
-            'users': 'Assigned users'
+            'users': _('Assigned users')
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3})
@@ -433,8 +437,8 @@ class PersonRelationForm(forms.ModelForm):
         model = models.Relation
         fields = ['person', 'owner', 'emergency', 'notes']
         labels = {
-            'owner': 'Application Owner',
-            'emergency': 'Emergency Contact'
+            'owner': _('Application Owner'),
+            'emergency': _('Emergency Contact')
         }
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 3})

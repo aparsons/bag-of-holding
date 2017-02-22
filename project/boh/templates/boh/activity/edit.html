@@ -1,12 +1,13 @@
 {% extends "boh/activity/base_activities.html" %}
+{% load i18n %}
 
-{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }} | Edit Activity{% endblock %}
+{% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }} | {% trans 'Edit Activity' %}{% endblock %}
 
 {% block engagement_breadcrumb %}
-<li><a href="{% url 'boh:application.engagements' application.id %}">Engagements</a></li>
+<li><a href="{% url 'boh:application.engagements' application.id %}">{% trans 'Engagements' %}</a></li>
 <li><a href="{% url 'boh:engagement.detail' activity.engagement.id %}">{{ activity.engagement.start_date }} - {{ activity.engagement.end_date }}</a></li>
 <li><a href="{% url 'boh:activity.detail' activity.id %}">{{ activity.activity_type.name }}</a></li>
-<li class="active">Edit Activity</li>
+<li class="active">{% trans 'Edit Activity' %}</li>
 {% endblock engagement_breadcrumb %}
 
 {% block activity_content %}
@@ -16,7 +17,7 @@
       {% csrf_token %}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Edit Activity</h3>
+          <h3 class="panel-title">{% trans 'Edit Activity' %}</h3>
         </div>
         <div class="panel-body">
           {% include "boh/snippets/form/_general.html" with control=form.status %}
@@ -25,19 +26,19 @@
           {% include "boh/snippets/form/_general.html" with control=form.users %}
         </div>
         <div class="panel-footer">
-          <button class="btn btn-primary" type="submit">Update Activity</button>
-          <a href="{% url 'boh:activity.detail' activity.id %}" class="btn btn-default" role="button">Cancel</a>
+          <button class="btn btn-primary" type="submit">{% trans 'Update Activity' %}</button>
+          <a href="{% url 'boh:activity.detail' activity.id %}" class="btn btn-default" role="button">{% trans 'Cancel' %}</a>
         </div>
       </div>
     </form>
   </div>
   <div class="col-md-4">
     <div class="well hidden-sm hidden-xs">
-      <p>Documentation about how activity work here.</p>
+      <p>{% trans 'Documentation about how activity work here.' %}</p>
     </div>
     <form method="post" action="{% url 'boh:activity.delete' activity.id %}">
       {% csrf_token %}
-      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure want to delete this activity?');"><span class="fa fa-trash-o" aria-hidden="true"></span> Delete Activity</button>
+      <button class="btn btn-danger" type="submit" onclick="return confirm('{% trans 'Are you sure want to delete this activity?' %}');"><span class="fa fa-trash-o" aria-hidden="true"></span> {% trans 'Delete Activity' %}</button>
     </form>
   </div>
 </div>

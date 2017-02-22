@@ -1,15 +1,17 @@
 {% extends "boh/base.html" %}
 
+{% load i18n %}
+
 {% block content %}
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-3">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="fa fa-cogs" aria-hidden="true"></span> Account Settings</h3>
+        <h3 class="panel-title"><span class="fa fa-cogs" aria-hidden="true"></span> {% trans 'Account Settings' %}</h3>
       </div>
       <div class="list-group">
-        <a href="{% url 'boh:user.profile' %}" class="list-group-item{% if active_side == 'profile' %} active{% endif %}"><span class="fa fa-user" aria-hidden="true"></span> My Profile</a>
-        <a href="{% url 'boh:user.change_password' %}" class="list-group-item{% if active_side == 'change_password' %} active{% endif %}"><span class="fa fa-key" aria-hidden="true"></span> Change Password</a>
+        <a href="{% url 'boh:user.profile' %}" class="list-group-item{% if active_side == 'profile' %} active{% endif %}"><span class="fa fa-user" aria-hidden="true"></span> {% trans 'My Profile' %}</a>
+        <a href="{% url 'boh:user.change_password' %}" class="list-group-item{% if active_side == 'change_password' %} active{% endif %}"><span class="fa fa-key" aria-hidden="true"></span> {% trans 'Change Password' %}</a>
       </div>
     </div>
   </div>

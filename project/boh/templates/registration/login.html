@@ -1,5 +1,6 @@
 {% extends "boh/base.html" %}
 
+{% load i18n %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
@@ -9,7 +10,7 @@
 <div class="row">
   <div class="col-md-12">
     <div id="title" class="page-header">
-      <h1 class="text-primary"><span class="hidden-xs">Welcome to the </span><strong>Bag of Holding</strong><span class="hidden-xs">.</span></h1>
+      <h1 class="text-primary"><span class="hidden-xs">{% trans 'Welcome to the' %} </span><strong>Bag of Holding</strong><span class="hidden-xs">.</span></h1>
     </div>
   </div>
 </div>
@@ -17,11 +18,11 @@
 <div class="row">
   <div class="col-md-7">
     <div id="about" class="jumbotron hidden-xs" style="background-image:url({% static 'boh/img/bag_white.png' %}); background-position: left center; background-repeat: no-repeat; background-size: 180px 180px;}">
-      <p class="lead text-muted">The <strong>Bag of Holding</strong> is an application security utility to assist in the organization and prioritization of software security activities.</p>
+      <p class="lead text-muted">{% trans 'The <strong>Bag of Holding</strong> is an application security utility to assist in the organization and prioritization of software security activities.' %}</p>
     </div>
   </div>
   <div class="col-md-5">
-    {% if form.errors %}<div class="alert alert-danger" role="alert">The username or password you entered is not valid.</div>{% endif %}
+    {% if form.errors %}<div class="alert alert-danger" role="alert">{% trans 'The username or password you entered is not valid.' %}</div>{% endif %}
     <div id="login" class="panel panel-default">
       <div class="panel-body">
         <form method="post" action="{% url 'login' %}">
@@ -41,7 +42,7 @@
               {{ form.password | add_class:"form-control" | add_class:"input-lg" | attr:"placeholder:Password" }}
             </div>
           </div>
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Log in</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans 'Log in' %}</button>
         </form>
       </div>
     </div>

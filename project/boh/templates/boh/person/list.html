@@ -1,6 +1,8 @@
 {% extends "boh/base.html" %}
 
-{% block title %}People{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans 'People' %}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -14,7 +16,7 @@
         </div>
       </nav>
     </div>
-    <a href="{% url 'boh:person.add' %}" class="btn btn-success" role="button"><i class="fa fa-plus"></i> Add Person</a>
+    <a href="{% url 'boh:person.add' %}" class="btn btn-success" role="button"><i class="fa fa-plus"></i> {% trans 'Add Person' %}</a>
   </div>
 </div>
 
@@ -26,10 +28,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="col-md-3">Name</th>
-            <th class="col-md-4">Title</th>
-            <th class="col-md-3">Email</th>
-            <th class="col-md-2">Role</th>
+            <th class="col-md-3">{% trans 'Name' %}</th>
+            <th class="col-md-4">{% trans 'Title' %}</th>
+            <th class="col-md-3">{% trans 'Email' %}</th>
+            <th class="col-md-2">{% trans 'Role' %}</th>
           </tr>
         </thead>
         <tbody>
