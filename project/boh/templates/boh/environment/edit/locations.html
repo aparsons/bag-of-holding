@@ -18,7 +18,7 @@
             </label>
           </div>
           {% endif %}
-          <h4 class="panel-title pull-left"{% if not forloop.last %} style="padding-top: 2px;"{% endif %}>{% if forloop.last %}{% trans 'Add' %}{% else %}{% trans 'Edit' %}{% endif %} {% '1Location' %}</h4>
+          <h4 class="panel-title pull-left"{% if not forloop.last %} style="padding-top: 2px;"{% endif %}>{% if forloop.last %}{% trans 'Add' %}{% else %}{% trans 'Edit' %}{% endif %} {% trans 'Location' %}</h4>
         </div>
         <div class="panel-body">
           {{ form.id }}
