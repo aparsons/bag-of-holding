@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk --update add python3
+RUN apk --update add python3 && apk add bash
 
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /bag-of-holding
