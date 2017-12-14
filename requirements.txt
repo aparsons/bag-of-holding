@@ -1,3 +1,3 @@
 -r requirements/local.txt
 -r requirements/test.txt
--r requirements/production.txt
+-r requirements/prod.txt
