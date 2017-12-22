@@ -126,7 +126,26 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-magic" aria-hidden="true"></span> {% trans 'Data Elements' %} ({{ application.data_elements.count }})</h3>
+          </div>
+          <div class="table-responsive">
+            <div class="panel-body">
+              {% for data_element in application.data_elements.all %}
+              {% include "boh/snippets/common/data_element_label.html" with data_element=data_element %}
+              {% empty %}
+              <small class="text-muted"><em>{% trans 'There are no data elements.' %}</em></small>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+
 
   </div>
   <div class="col-md-4">

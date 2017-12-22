@@ -528,11 +528,13 @@ class Engagement(TimeStampedModel, models.Model):
     """Container for activities performed for an application over a duration."""
 
     PENDING_STATUS = 'pending'
+    ONGOING_STATUS = 'ongoing'
     OPEN_STATUS = 'open'
     CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
         (PENDING_STATUS, _('Pending')),
         (OPEN_STATUS, _('Open')),
+        (ONGOING_STATUS, _('Ongoing')),
         (CLOSED_STATUS, _('Closed'))
     )
 
@@ -540,6 +542,7 @@ class Engagement(TimeStampedModel, models.Model):
     start_date = models.DateField(help_text=_('The date the engagement is scheduled to begin.'))
     end_date = models.DateField(help_text=_('The date the engagement is scheduled to complete.'))
     description = models.TextField(blank=True)
+    version = models.CharField(max_length=128,blank=True,null=True,)
 
     open_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to open.'))
     close_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to closed.'))
