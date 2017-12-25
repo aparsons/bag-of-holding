@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                 ('origin', models.CharField(choices=[(None, 'Not Specified'), ('third party library', 'Third Party Library'), ('purchased', 'Purchased'), ('contractor', 'Contractor'), ('internal', 'Internally Developed'), ('open source', 'Open Source'), ('outsourced', 'Outsourced')], blank=True, null=True, max_length=19)),
                 ('business_criticality', models.CharField(choices=[(None, 'Not Specified'), ('very high', 'Very High'), ('high', 'High'), ('medium', 'Medium'), ('low', 'Low'), ('very low', 'Very Low'), ('none', 'None')], blank=True, null=True, max_length=9)),
                 ('user_records', models.PositiveIntegerField(blank=True, help_text='Estimate the number of user records within the application.', null=True)),
-                ('revenue', models.DecimalField(decimal_places=2, blank=True, help_text="Estimate the application's revenue in USD.", max_digits=15, null=True)),
+                ('revenue', models.DecimalField(decimal_places=2, blank=True, help_text="Estimate the application's revenue in JPY.", max_digits=15, null=True)),
                 ('external_audience', models.BooleanField(default=False, help_text='Specify if the application is used by people outside the organization.')),
                 ('internet_accessible', models.BooleanField(default=False, help_text='Specify if the application is accessible from the public internet.')),
                 ('override_dcl', models.IntegerField(choices=[(None, 'Not Specified'), (1, 'DCL 1'), (2, 'DCL 2'), (3, 'DCL 3'), (4, 'DCL 4')], blank=True, help_text='Overrides the calculated data classification level.', null=True)),

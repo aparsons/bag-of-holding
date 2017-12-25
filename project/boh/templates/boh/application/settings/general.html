@@ -36,12 +36,19 @@
   </div>
 </form>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">{% trans 'Features' %}</h3>
+<form method="post" action="{% url 'boh:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{% trans 'Features' %}</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_markdown.html" with control=features_form.authentication %}
+      {% include "boh/snippets/form/_markdown.html" with control=features_form.authorization %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-features" type="submit">{% trans 'Update Features' %}</button>
+    </div>
   </div>
-  <div class="panel-body">
-    <span class="text-muted">{% trans 'Nothing here yet.' %}</span>
-  </div>
-</div>
+</form>
 {% endblock settings_content %}

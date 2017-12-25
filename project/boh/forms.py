@@ -162,7 +162,7 @@ class ApplicationAddForm(forms.ModelForm):
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'authentication','authorization']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 8})
         }
@@ -174,13 +174,25 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
         fields = ['organization']
 
 
+class ApplicationSettingsFeaturesForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['authentication', 'authorization']
+
+
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = models.Application
         fields = [
-            'platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience',
+            'platform', 'lifecycle', 'origin', 'business_criticality', 'risk_category', 'user_records', 'revenue', 'external_audience',
             'internet_accessible'
         ]
+
+
+class ApplicationSettingsRepositoriesForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['repositories']
 
 
 class ApplicationSettingsTechnologiesForm(forms.ModelForm):

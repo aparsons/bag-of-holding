@@ -13,6 +13,24 @@
       <div class="panel-body">
         {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'There is no description.' %}</em></small></p>{% endif %}
       </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> {% trans 'Authentication & Authorization' %}</h3>
+          </div>
+          <div class="panel-body">
+            <h4>{% trans 'Authentication' %}</h4>
+            {% if application.authentication %}{{ application.authentication|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'No authentication schemes are implemented.' %}</em></small></p>{% endif %}
+          </div>
+          <div class="panel-body">
+            <h4>{% trans 'Authorization' %}</h4>
+            {% if application.authorization %}{{ application.authorization|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'No authorization schemes are implemented.' %}</em></small></p>{% endif %}
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -176,6 +194,14 @@
               <td>{{ application.get_business_criticality_display }}</td>
             </tr>
             <tr>
+              <td><strong>{% trans 'Data Clasification Level' %}</strong></td>
+              <td>{{ application.data_classification_level_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>{% trans 'Risk Category' %}</strong></td>
+              <td>{{ application.risk_category }}</td>
+            </tr>
+            <tr>
               <td><strong>{% trans 'Platform' %}</strong></td>
               <td>{{ application.get_platform_display }}</td>
             </tr>
@@ -192,7 +218,7 @@
               <td>{{ application.user_records|intcomma }}</td>
             </tr>
             <tr>
-              <td><strong>{% trans 'Revenue (USD)' %}</strong></td>
+              <td><strong>{% trans 'Revenue (JPY)' %}</strong></td>
               <td>{% if application.revenue < 1000000 %}{{ application.revenue|intcomma }}{% else %}{{ application.revenue|intword }}{% endif %}</td>
             </tr>
           </tbody>

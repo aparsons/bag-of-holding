@@ -142,22 +142,22 @@ class ApplicationTests(TestCase):
     def test_data_classification_level_1(self):
         # First Name, Gender
         self.assertEqual(5.0, self.app_1.data_sensitivity_value())
-        self.assertEqual(models.Application.DCL_1, self.app_1.data_classification_level())
+        self.assertEqual(models.Application.PRIVATE_DATA_CLASSIFICATION, self.app_1.data_classification_level())
 
     def test_data_classification_level_2(self):
         # First Name, Last Name, Gender
         self.assertEqual(55.0, self.app_2.data_sensitivity_value())
-        self.assertEqual(models.Application.DCL_2, self.app_2.data_classification_level())
+        self.assertEqual(models.Application.CONFIDENTIAL_DATA_CLASSIFICATION, self.app_2.data_classification_level())
 
     def test_data_classification_level_3(self):
         # Age, Education
         self.assertEqual(115.0, self.app_3.data_sensitivity_value())
-        self.assertEqual(models.Application.DCL_3, self.app_3.data_classification_level())
+        self.assertEqual(models.Application.SENSITIVE_DATA_CLASSIFICATION, self.app_3.data_classification_level())
 
     def test_data_classification_level_4(self):
         # First Name, Last Name, Education
         self.assertEqual(1122.0, self.app_4.data_sensitivity_value())
-        self.assertEqual(models.Application.DCL_4, self.app_4.data_classification_level())
+        self.assertEqual(models.Application.HIGHLY_SENSITIVE_DATA_CLASSIFICATION, self.app_4.data_classification_level())
 
     def test_is_new(self):
         self.assertEqual(True, self.app_1.is_new())

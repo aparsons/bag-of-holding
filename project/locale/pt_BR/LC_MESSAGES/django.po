@@ -574,7 +574,7 @@ msgid "Estimate the number of user records within the application."
 msgstr "Estimar o número de cadastras de usuários na aplicação."
 
 #: boh/models.py:360
-msgid "Estimate the application's revenue in USD."
+msgid "Estimate the application's revenue in JPY."
 msgstr "Estimar o valor em R$ da aplicação."
 
 #: boh/models.py:361
@@ -1283,7 +1283,7 @@ msgid "User Records"
 msgstr "Número de Usuários"
 
 #: boh/templates/boh/application/overview.html:161
-msgid "Revenue (USD)"
+msgid "Revenue (JPY)"
 msgstr "Valor (R$)"
 
 #: boh/templates/boh/application/overview.html:177

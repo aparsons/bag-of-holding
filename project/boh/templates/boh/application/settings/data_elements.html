@@ -41,10 +41,10 @@
 
   </div>
   <div class="col-md-2">
-    {% if application.override_dcl %}
-    {% include "boh/snippets/application/_dcl.html" with dcl=application.override_dcl footer='Override' only %}
+    {% if application.override_dcl >= 0 %}
+    {% include "boh/snippets/application/_dcl.html" with dcl=application.override_dcl dcl_display=application.data_classification_level_display footer='Override' only %}
     {% endif %}
-    {% include "boh/snippets/application/_dcl.html" with dcl=dcl footer=dsv %}
+    {% include "boh/snippets/application/_dcl.html" with dcl=application.default_data_classification_level dcl_display=application.default_data_classification_level_display footer=dsv %}
   </div>
 </div>
 

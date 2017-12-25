@@ -88,19 +88,23 @@ class Person(models.Model):
     OPERATIONS_ROLE = 'operations'
     MANAGER_ROLE = 'manager'
     SECURITY_OFFICER_ROLE = 'security officer'
+    TECHNICAL_LEAD_ROLE = 'technical lead'
+    PRODUCER_ROLE = 'producer'
     SECURITY_CHAMPION_ROLE = 'security champion'
     ROLE_CHOICES = (
+        (PRODUCER_ROLE, _('Producer')),
+        (TECHNICAL_LEAD_ROLE, _('Technical Lead')),
         (DEVELOPER_ROLE, _('Developer')),
         (QUALITY_ASSURANCE_ROLE, _('Quality Assurance')),
         (OPERATIONS_ROLE, _('Operations')),
         (MANAGER_ROLE, _('Manager')),
         (SECURITY_OFFICER_ROLE, _('Security Officer')),
-        (SECURITY_CHAMPION_ROLE, _('Security Champion')),
     )
 
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     email = models.EmailField(max_length=128, unique=True)
+    slack_id = models.CharField(max_length=128, blank=True)
     role = models.CharField(max_length=17, choices=ROLE_CHOICES)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
@@ -143,7 +147,6 @@ class DataElement(models.Model):
     GLOBAL_CATEGORY = 'global'
     PERSONAL_CATEGORY = 'personal'
     COMPANY_CATEGORY = 'company'
-    STUDENT_CATEGORY = 'student'
     GOVERNMENT_CATEGORY = 'government'
     PCI_CATEGORY = 'pci'
     MEDICAL_CATEGORY = 'medical'
@@ -151,7 +154,6 @@ class DataElement(models.Model):
         (GLOBAL_CATEGORY, _('Global')),
         (PERSONAL_CATEGORY, _('Personal')),
         (COMPANY_CATEGORY, _('Company')),
-        (STUDENT_CATEGORY, _('Student')),
         (GOVERNMENT_CATEGORY, _('Government')),
         (PCI_CATEGORY, _('Payment Card Industry')),
         (MEDICAL_CATEGORY, _('Medical')),
@@ -264,6 +266,33 @@ class ThreadFix(models.Model):
         return self.name + ' - ' + self.host
 
 
+class Repository(models.Model):
+    CVS_VCS = 'CVS'
+    SVN_VCS = 'SVN'
+    GIT_VCS = 'Git'
+    HG_VCS = 'Mercurial'
+    BZR_VCS = 'Bazaar'
+    TFS_VCS = 'TFS'
+    ARCH_VCS = 'Arch'
+    PERFORCE_VCS = 'Perforce'
+    FOSSIL_VCS = 'Fossil'
+    VCS_CHOICES = (
+        (None, _('Not Specified')),
+        (CVS_VCS, _('CVS')),
+        (SVN_VCS, _('SVN')),
+        (GIT_VCS, _('Git')),
+        (HG_VCS, _('Mercurial')),
+        (BZR_VCS, _('GNU Bazaar')),
+        (TFS_VCS, _('TFS')),
+        (ARCH_VCS, _('Arch')),
+        (PERFORCE_VCS, _('Perforce')),
+        (FOSSIL_VCS, _('Fossil')),
+    )
+
+    vcs_type = models.CharField(max_length=10, choices=VCS_CHOICES, help_text=_('Specify the type of version control system.'), )
+    repo_location = models.TextField( max_length=512, help_text=_('Specify the location of the repository'))
+
+
 class Application(TimeStampedModel, models.Model):
     """Contains information about a software application."""
 
@@ -271,9 +300,11 @@ class Application(TimeStampedModel, models.Model):
     DESKTOP_PLATFORM = 'desktop'
     MOBILE_PLATFORM = 'mobile'
     WEB_SERVICE_PLATFORM = 'web service'
+    COMMAND_LINE_PLATFORM = 'command line'
     PLATFORM_CHOICES = (
         (WEB_PLATFORM, _('Web')),
         (DESKTOP_PLATFORM, _('Desktop')),
+        (COMMAND_LINE_PLATFORM, _('Command Line')),
         (MOBILE_PLATFORM, _('Mobile')),
         (WEB_SERVICE_PLATFORM, _('Web Service')),
     )
@@ -308,31 +339,43 @@ class Application(TimeStampedModel, models.Model):
         (OUTSOURCED_ORIGIN, _('Outsourced')),
     )
 
-    VERY_HIGH_CRITICALITY = 'very high'
-    HIGH_CRITICALITY = 'high'
-    MEDIUM_CRITICALITY = 'medium'
-    LOW_CRITICALITY = 'low'
-    VERY_LOW_CRITICALITY = 'very low'
+    CRITICAL_APPLICATION = 'Critical'
+    IMPORTANT_APPLICATION = 'Important'
+    STRATEGIC_APPLICATION = 'Strategic'
+    INTERNAL_SUPPORTING_APPLICATION = 'Internal Support'
+    GENERAL_SUPPORT_APPLICATION = 'General Support'
     NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
-        (VERY_HIGH_CRITICALITY, _('Very High')),
-        (HIGH_CRITICALITY, _('High')),
-        (MEDIUM_CRITICALITY, _('Medium')),
-        (LOW_CRITICALITY, _('Low')),
-        (VERY_LOW_CRITICALITY, _('Very Low')),
+        (CRITICAL_APPLICATION, _('Critical Application')),
+        (IMPORTANT_APPLICATION, _('Important Application')),
+        (STRATEGIC_APPLICATION, _('Strategic Application')),
+        (INTERNAL_SUPPORTING_APPLICATION, _('Internal Support Application')),
+        (GENERAL_SUPPORT_APPLICATION, _('General Support Application')),
         (NONE_CRITICALITY, _('None')),
     )
 
-    DCL_1 = 1
-    DCL_2 = 2
-    DCL_3 = 3
-    DCL_4 = 4
+    HIGH_RISK = 'High Risk'
+    MEDIUM_RISK = 'Medium Risk'
+    LOW_RISK = 'Low Risk'
+    RISK_CATEGORY_CHOICES = (
+        (None, _('Not Specified')),
+        (LOW_RISK, _('Low Risk')),
+        (MEDIUM_RISK, _('Medium Risk')),
+        (HIGH_RISK, _('High Risk')),
+    )
+
+    HIGHLY_SENSITIVE_DATA_CLASSIFICATION = 4
+    SENSITIVE_DATA_CLASSIFICATION = 3
+    CONFIDENTIAL_DATA_CLASSIFICATION = 2
+    PRIVATE_DATA_CLASSIFICATION = 1
+    PUBLIC_DATA_CLASSIFICATION = 0
     DATA_CLASSIFICATION_CHOICES = (
         (None, _('Not Specified')),
-        (DCL_1, 'DCL 1'),
-        (DCL_2, 'DCL 2'),
-        (DCL_3, 'DCL 3'),
-        (DCL_4, 'DCL 4'),
+        (PUBLIC_DATA_CLASSIFICATION, 'Public'),
+        (PRIVATE_DATA_CLASSIFICATION, 'Private'),
+        (CONFIDENTIAL_DATA_CLASSIFICATION, 'Confidential'),
+        (SENSITIVE_DATA_CLASSIFICATION, 'Sensitive'),
+        (HIGHLY_SENSITIVE_DATA_CLASSIFICATION, 'Highly Sensitive'),
     )
 
     ASVS_0 = 0
@@ -352,19 +395,26 @@ class Application(TimeStampedModel, models.Model):
     description = models.TextField(blank=True, help_text=_('Information about the application\'s purpose, history, and design.'))
 
     # Metadata
-    business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    business_criticality = models.CharField(max_length=30, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    authentication = models.TextField(blank=True, help_text=_('Does application implement any kind of authentication? If yes, provide additional details.'))
+    authorization = models.TextField(blank=True, help_text=_('Does application implement any kind of authorization? If yes, provide additional details.'))
+    plugins = models.TextField(blank=True, help_text=_('Is this application developed as a plug-in or extension for other application? If yes, please provide additional details on what all applications it will be working with.'))
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
     user_records = models.PositiveIntegerField(blank=True, null=True, help_text=_('Estimate the number of user records within the application.'))
-    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text=_('Estimate the application\'s revenue in USD.'))
+    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text=_('Estimate the application\'s revenue in JPY.'))
     external_audience = models.BooleanField(default=False, help_text=_('Specify if the application is used by people outside the organization.'))
     internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
+    repositories = models.ManyToManyField(Repository, blank=True)
+    dependencies = models.ManyToManyField('self', blank=True)
     technologies = models.ManyToManyField(Technology, blank=True)
     regulations = models.ManyToManyField(Regulation, blank=True)
     service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True)
+    risk_category = models.CharField(max_length=20, choices=RISK_CATEGORY_CHOICES, blank=True, null=True)
+
 
     # Data Classification
     # TODO Move to Data Classification Benchmark
@@ -385,20 +435,10 @@ class Application(TimeStampedModel, models.Model):
     asvs_doc_url = models.URLField(blank=True, help_text=_('URL to the detailed ASVS assessment.'))
 
     # Misc
-
-    """
-    source code repo
-    bug tracking tool
-    developer experience / familiarity
-    id for whitehat + checkmarx (third-party ids)
-    password policy
-    """
-
     organization = models.ForeignKey(Organization, help_text=_('The organization containing this application.'))
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
-
     objects = managers.ApplicationManager.from_queryset(managers.ApplicationQuerySet)()
 
     class Meta:
@@ -410,7 +450,20 @@ class Application(TimeStampedModel, models.Model):
 
     def data_classification_level(self):
         """Returns the data classification level of the selected data elements."""
+        if self.override_dcl is not None:
+            return self.override_dcl
+        else:
+            return helpers.data_classification_level(self.data_sensitivity_value())
+
+    def default_data_classification_level(self):
+        """Returns the data classification level of the selected data elements."""
         return helpers.data_classification_level(self.data_sensitivity_value())
+
+    def data_classification_level_display(self):
+        return helpers.data_classification_level_display(self.data_classification_level())
+
+    def default_data_classification_level_display(self):
+        return helpers.data_classification_level_display(self.default_data_classification_level())
 
     def data_sensitivity_value(self):
         """Returns the calculated data sensitivity value of the selected data elements."""
@@ -454,8 +507,9 @@ class Relation(models.Model):
 
     owner = models.BooleanField(default=False, help_text=_('Specify if this person is an application owner.'))
     emergency = models.BooleanField(default=False, help_text=_('Specify if this person is an emergency contact.'))
+    security_champion = models.BooleanField(default=False, help_text=_('Specify if this person is a security champion.'))
+    technical_lead = models.BooleanField(default=False, help_text=_('Specify if this person is a technical lead.'))
     notes = models.TextField(blank=True, help_text=_('Any notes about this person\'s connection to the application.'))
-
     person = models.ForeignKey(Person, help_text=_('The person associated with the application.'))
     application = models.ForeignKey(Application)
 
@@ -617,12 +671,16 @@ class ActivityType(TimeStampedModel, models.Model):
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
-    PENDING_STATUS = 'pending'
     OPEN_STATUS = 'open'
-    CLOSED_STATUS = 'closed'
+    PENDING_STATUS = 'pending'
+    ONGOING_STATUS = 'ongoing'
+    CANCELLED_STATUS = 'cancelled'
+    CLOSED_STATUS = 'Closed'
     STATUS_CHOICES = (
-        (PENDING_STATUS, 'Pending'),
         (OPEN_STATUS, 'Open'),
+        (PENDING_STATUS, 'Pending'),
+        (ONGOING_STATUS, 'Ongoing'),
+        (CANCELLED_STATUS, 'Cancelled'),
         (CLOSED_STATUS, 'Closed')
     )
 
@@ -702,7 +760,6 @@ class Activity(models.Model):
         """If the activity is not closed by the parent engagement's end date."""
         return (self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS) \
                and date.today() > self.engagement.end_date
-
 
 
 class Comment(TimeStampedModel, models.Model):

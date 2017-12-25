@@ -932,6 +932,8 @@ def application_settings_general(request, application_id):
 
     general_form = forms.ApplicationSettingsGeneralForm(instance=application)
     organization_form = forms.ApplicationSettingsOrganizationForm(instance=application)
+    features_form = forms.ApplicationSettingsFeaturesForm(instance=application)
+
 
     if request.method == 'POST':
         if 'submit-general' in request.POST:
@@ -944,11 +946,17 @@ def application_settings_general(request, application_id):
             if organization_form.is_valid():
                 organization_form.save()
                 messages.success(request, _('You successfully updated this application\'s organization.'), extra_tags=random.choice(success_messages))
+        elif 'submit-features' in request.POST:
+            features_form = forms.ApplicationSettingsFeaturesForm(request.POST, instance=application)
+            if features_form.is_valid():
+                features_form.save()
+                messages.success(request, _('You successfully updated this application\'s features.'), extra_tags=random.choice(success_messages))
 
     return render(request, 'boh/application/settings/general.html', {
         'application': application,
         'general_form': general_form,
         'organization_form': organization_form,
+        'features_form' : features_form,
         'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'
