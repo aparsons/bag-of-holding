@@ -310,7 +310,7 @@ class TechnologyAdmin(admin.ModelAdmin):
     category_display.short_description = _('Category')
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html('<a href="{}" rel="nofollow noopener noreferrer" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = _('Reference')
@@ -329,7 +329,7 @@ class RegulationAdmin(admin.ModelAdmin):
     category_display.short_description = 'Category'
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html('<a href="{}" rel="nofollow noopener noreferrer" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = _('Reference')

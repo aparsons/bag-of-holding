@@ -14,7 +14,22 @@
         {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'There is no description.' %}</em></small></p>{% endif %}
       </div>
     </div>
-
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> {% trans 'Repositories' %}</h3>
+          </div>
+          <ul class="list-group">
+            {% for agreement in application.service_level_agreements.all %}
+              <li class="list-group-item">{{ agreement.name }} <small class="text-muted">{{ agreement.description }}</small></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no service level agreements.' %}</em></small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
     {% with metrics=application.threadfixmetrics_set.latest %}
     {% if metrics %}
     <div class="row">
@@ -196,7 +211,7 @@
           {{ application.asvs_level_percent_achieved }}% {% trans 'Compliant to ASVS Level' %} {{ application.get_asvs_level_target_display }}
         </li>
         {% if application.asvs_doc_url %}
-        <a href="{{ application.asvs_doc_url }}" target="_blank" class="list-group-item text-primary">{% trans 'ASVS Detailed Report' %} <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        <a href="{{ application.asvs_doc_url }}" target="_blank" rel="noopener noreferrer" class="list-group-item text-primary">{% trans 'ASVS Detailed Report' %} <span class="fa fa-external-link" aria-hidden="true"></span></a>
         {% endif %}
         {% else %}
         <li class="list-group-item">
@@ -212,7 +227,7 @@
       </div>
       <div class="list-group">
         {% if application.threadfix %}
-        <a href="{{ application.threadfix.host }}" target="_blank" class="list-group-item text-primary">ThreadFix ({{ application.threadfix.name }}) <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        <a href="{{ application.threadfix.host }}" target="_blank" rel="noopener noreferrer" class="list-group-item text-primary">ThreadFix ({{ application.threadfix.name }}) <span class="fa fa-external-link" aria-hidden="true"></span></a>
         {% endif %}
       </div>
     </div>
