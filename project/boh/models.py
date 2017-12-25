@@ -590,17 +590,12 @@ class Engagement(TimeStampedModel, models.Model):
 
     def is_ready_for_work(self):
         """If the engagement is pending on or after the start date."""
-        if self.status == Engagement.PENDING_STATUS:
-            if date.today() >= self.start_date:
-                return True
-        return False
+        return self.status == Engagement.PENDING_STATUS and date.today() >= self.start_date
 
     def is_past_due(self):
         """If the engagement is not closed by the end date."""
-        if self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS:
-            if date.today() > self.end_date:
-                return True
-        return False
+        return (self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS) \
+            and date.today() > self.end_date
 
 
 class ActivityType(TimeStampedModel, models.Model):
@@ -700,17 +695,14 @@ class Activity(models.Model):
 
     def is_ready_for_work(self):
         """If the activity is pending on or after the parent engagement's start date."""
-        if self.status == Activity.PENDING_STATUS:
-            if date.today() >= self.engagement.start_date:
-                return True
-        return False
+        return self.status == Activity.PENDING_STATUS \
+            and date.today() >= self.engagement.start_date
 
     def is_past_due(self):
         """If the activity is not closed by the parent engagement's end date."""
-        if self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS:
-            if date.today() > self.engagement.end_date:
-                return True
-        return False
+        return (self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS) \
+               and date.today() > self.engagement.end_date
+
 
 
 class Comment(TimeStampedModel, models.Model):

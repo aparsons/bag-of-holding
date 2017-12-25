@@ -77,3 +77,9 @@ node_modules
 bower_components
 package-lock.json
 bag-of-holding.iml
+
+# Sample Data
+project/mercari_data.json
+
+#Mac
+*.DS_Store
