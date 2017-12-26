@@ -929,11 +929,11 @@ def application_add(request):
 @require_http_methods(['GET', 'POST'])
 def application_settings_general(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
-
     general_form = forms.ApplicationSettingsGeneralForm(instance=application)
+    repository_form = forms.ApplicationSettingsRepositoryForm(instance=application)
     organization_form = forms.ApplicationSettingsOrganizationForm(instance=application)
     features_form = forms.ApplicationSettingsFeaturesForm(instance=application)
-
+    dependencies_form = forms.ApplicationSettingsDependenciesForm(instance=application)
 
     if request.method == 'POST':
         if 'submit-general' in request.POST:
@@ -941,22 +941,44 @@ def application_settings_general(request, application_id):
             if general_form.is_valid():
                 general_form.save()
                 messages.success(request, _('You successfully updated this application\'s general information.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s general information.'), extra_tags=random.choice(error_messages))
+        elif 'submit-repository' in request.POST:
+            repository_form = forms.ApplicationSettingsRepositoryForm(request.POST, instance=application)
+            if repository_form.is_valid():
+                repository_form.save()
+                messages.success(request, _('You successfully updated this application\'s repository.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s repository.'), extra_tags=random.choice(error_messages))
         elif 'submit-organization' in request.POST:
             organization_form = forms.ApplicationSettingsOrganizationForm(request.POST, instance=application)
             if organization_form.is_valid():
                 organization_form.save()
                 messages.success(request, _('You successfully updated this application\'s organization.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s organization.'), extra_tags=random.choice(error_messages))
         elif 'submit-features' in request.POST:
             features_form = forms.ApplicationSettingsFeaturesForm(request.POST, instance=application)
             if features_form.is_valid():
                 features_form.save()
                 messages.success(request, _('You successfully updated this application\'s features.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s features.'), extra_tags=random.choice(error_messages))
+        elif 'submit-dependencies' in request.POST:
+            dependencies_form = forms.ApplicationSettingsDependenciesForm(request.POST, instance=application)
+            if dependencies_form.is_valid():
+                dependencies_form.save()
+                messages.success(request, _('You successfully updated this application\'s dependencies.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s dependencies.'), extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/application/settings/general.html', {
         'application': application,
         'general_form': general_form,
+        'repository_form': repository_form,
         'organization_form': organization_form,
-        'features_form' : features_form,
+        'features_form': features_form,
+        'dependencies_form': dependencies_form,
         'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'
@@ -967,7 +989,6 @@ def application_settings_general(request, application_id):
 @require_http_methods(['GET', 'POST'])
 def application_settings_metadata(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
-
     metadata_form = forms.ApplicationSettingsMetadataForm(instance=application)
     technologies_form = forms.ApplicationSettingsTechnologiesForm(instance=application)
     regulations_form = forms.ApplicationSettingsRegulationsForm(instance=application)

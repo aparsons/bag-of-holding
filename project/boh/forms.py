@@ -174,10 +174,22 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
         fields = ['organization']
 
 
+class ApplicationSettingsRepositoryForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['repository']
+
+
 class ApplicationSettingsFeaturesForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['authentication', 'authorization']
+        fields = ['authentication', 'authorization', 'plugins']
+
+
+class ApplicationSettingsDependenciesForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['dependencies']
 
 
 class ApplicationSettingsMetadataForm(forms.ModelForm):
@@ -187,12 +199,6 @@ class ApplicationSettingsMetadataForm(forms.ModelForm):
             'platform', 'lifecycle', 'origin', 'business_criticality', 'risk_category', 'user_records', 'revenue', 'external_audience',
             'internet_accessible'
         ]
-
-
-class ApplicationSettingsRepositoriesForm(forms.ModelForm):
-    class Meta:
-        model = models.Application
-        fields = ['repositories']
 
 
 class ApplicationSettingsTechnologiesForm(forms.ModelForm):
@@ -332,8 +338,7 @@ class EngagementAddForm(forms.ModelForm):
         start_date = cleaned.get('start_date')
         end_date = cleaned.get('end_date')
 
-        if start_date and end_date:
-            if end_date < start_date:
+        if start_date and end_date and end_date < start_date:
                 self.add_error('end_date', _("End date cannot be before start date."))
 
 
@@ -354,8 +359,7 @@ class EngagementEditForm(forms.ModelForm):
         start_date = cleaned.get('start_date')
         end_date = cleaned.get('end_date')
 
-        if start_date and end_date:
-            if end_date < start_date:
+        if start_date and end_date and end_date < start_date:
                 self.add_error('end_date', _("End date cannot be before start date."))
 
 

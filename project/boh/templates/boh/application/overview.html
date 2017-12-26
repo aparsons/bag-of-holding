@@ -19,7 +19,7 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> {% trans 'Authentication & Authorization' %}</h3>
+            <h3 class="panel-title"><span class="fa fa-lock" aria-hidden="true"></span> {% trans 'Features' %}</h3>
           </div>
           <div class="panel-body">
             <h4>{% trans 'Authentication' %}</h4>
@@ -29,6 +29,10 @@
             <h4>{% trans 'Authorization' %}</h4>
             {% if application.authorization %}{{ application.authorization|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'No authorization schemes are implemented.' %}</em></small></p>{% endif %}
           </div>
+          <div class="panel-body">
+            <h4>{% trans 'Plugins' %}</h4>
+            {% if application.plugins %}{{ application.plugins|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'This application is not developed as a plug-in or extension for other application.' %}</em></small></p>{% endif %}
+          </div>
         </div>
       </div>
     </div>
@@ -36,18 +40,36 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><span class="fa fa-umbrella" aria-hidden="true"></span> {% trans 'Repositories' %}</h3>
+            <h3 class="panel-title"><span class="fa fa-save" aria-hidden="true"></span> {% trans 'Repository' %}</h3>
           </div>
           <ul class="list-group">
-            {% for agreement in application.service_level_agreements.all %}
-              <li class="list-group-item">{{ agreement.name }} <small class="text-muted">{{ agreement.description }}</small></li>
+            {% if application.repository %}
+              <li class="list-group-item">{{ agreement.name }} <a target="_blank" rel="nofollow noopener noreferrer" href="{{ application.repository }}">{{ application.repository }}</a></li>
+            {% else %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'The code repository is not specified.' %}</em></small></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% if application.dependencies %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-exchange" aria-hidden="true"></span> {% trans 'Dependencies' %}</h3>
+          </div>
+          <ul class="list-group">
+            {% for dependency in application.dependencies.all %}
+              <li class="list-group-item"><span class="badge">{{ dependency.platform }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ dependency.description }}"><a href="{% url 'boh:application.overview' dependency.id %}">{{ dependency.name }}</a></span></li>
             {% empty %}
-              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no service level agreements.' %}</em></small></li>
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no dependencies.' %}</em></small></li>
             {% endfor %}
           </ul>
         </div>
       </div>
     </div>
+    {% endif %}
     {% with metrics=application.threadfixmetrics_set.latest %}
     {% if metrics %}
     <div class="row">
@@ -96,14 +118,28 @@
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-magic" aria-hidden="true"></span> {% trans 'Data Elements' %} ({{ application.data_elements.count }})</h3>
+          </div>
+          <ul class="list-group">
+            {% for data_element in application.data_elements.all %}
+              <li class="list-group-item"><span class="badge">{{ data_element.category }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ data_element.description }}">{{ data_element.name }}</span></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no data elements.' %}</em></small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
             <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> {% trans 'Technologies' %} ({{ application.technologies.count }})</h3>
           </div>
           <ul class="list-group">
-          {% for technology in application.technologies.all %}
-            <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
-          {% empty %}
-            <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no technologies.' %}</em></small></li>
-          {% endfor %}
+            {% for technology in application.technologies.all %}
+              <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no technologies.' %}</em></small></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -121,9 +157,6 @@
           </ul>
         </div>
       </div>
-    </div>
-
-    <div class="row">
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -156,23 +189,6 @@
                 {% endfor %}
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><span class="fa fa-magic" aria-hidden="true"></span> {% trans 'Data Elements' %} ({{ application.data_elements.count }})</h3>
-          </div>
-          <div class="table-responsive">
-            <div class="panel-body">
-              {% for data_element in application.data_elements.all %}
-              {% include "boh/snippets/common/data_element_label.html" with data_element=data_element %}
-              {% empty %}
-              <small class="text-muted"><em>{% trans 'There are no data elements.' %}</em></small>
-              {% endfor %}
-            </div>
           </div>
         </div>
       </div>

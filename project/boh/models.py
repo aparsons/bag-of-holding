@@ -266,33 +266,6 @@ class ThreadFix(models.Model):
         return self.name + ' - ' + self.host
 
 
-class Repository(models.Model):
-    CVS_VCS = 'CVS'
-    SVN_VCS = 'SVN'
-    GIT_VCS = 'Git'
-    HG_VCS = 'Mercurial'
-    BZR_VCS = 'Bazaar'
-    TFS_VCS = 'TFS'
-    ARCH_VCS = 'Arch'
-    PERFORCE_VCS = 'Perforce'
-    FOSSIL_VCS = 'Fossil'
-    VCS_CHOICES = (
-        (None, _('Not Specified')),
-        (CVS_VCS, _('CVS')),
-        (SVN_VCS, _('SVN')),
-        (GIT_VCS, _('Git')),
-        (HG_VCS, _('Mercurial')),
-        (BZR_VCS, _('GNU Bazaar')),
-        (TFS_VCS, _('TFS')),
-        (ARCH_VCS, _('Arch')),
-        (PERFORCE_VCS, _('Perforce')),
-        (FOSSIL_VCS, _('Fossil')),
-    )
-
-    vcs_type = models.CharField(max_length=10, choices=VCS_CHOICES, help_text=_('Specify the type of version control system.'), )
-    repo_location = models.TextField( max_length=512, help_text=_('Specify the location of the repository'))
-
-
 class Application(TimeStampedModel, models.Model):
     """Contains information about a software application."""
 
@@ -408,7 +381,7 @@ class Application(TimeStampedModel, models.Model):
     internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
-    repositories = models.ManyToManyField(Repository, blank=True)
+    repository = models.URLField(max_length=512, blank=True, help_text=_('Specify the URL of the source code repository'))
     dependencies = models.ManyToManyField('self', blank=True)
     technologies = models.ManyToManyField(Technology, blank=True)
     regulations = models.ManyToManyField(Regulation, blank=True)
@@ -747,6 +720,12 @@ class Activity(models.Model):
 
     def is_open(self):
         return self.status == Activity.OPEN_STATUS
+
+    def is_ongoing(self):
+        return self.status == Activity.ONGOING_STATUS
+
+    def is_cancelled(selfs):
+        return self.status == Activity.CANCELLED_STATUS
 
     def is_closed(self):
         return self.status == Activity.CLOSED_STATUS
