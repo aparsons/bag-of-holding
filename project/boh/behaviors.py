@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import timedelta
+from django.utils import timezone
 
 
 class TimeStampedModel(models.Model):
@@ -9,3 +11,8 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+    def is_new(self):
+        """Returns true if the application was created in the last 7 days"""
+        delta = self.created_date - timezone.now()
+        return delta >= timedelta(days=-7)

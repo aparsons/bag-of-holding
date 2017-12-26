@@ -1,7 +1,10 @@
 from datetime import date, timedelta
-import re
 
+import os
 import phonenumbers
+import random
+import re
+import string
 
 from django.conf import settings
 from django.db import models
@@ -9,10 +12,28 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from django.utils.timezone import now as timezone_now
 
 from .behaviors import TimeStampedModel
 from . import helpers, managers
 
+
+def create_random_string(length=30):
+    if length <= 0:
+        length = 30
+
+    symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    return ''.join([random.choice(symbols) for x in range(length)])
+
+
+def upload_to(instance, filename):
+    now = timezone_now()
+    filename_base, filename_ext = os.path.splitext(filename)
+    return 'uploads/{}_{}{}'.format(
+        now.strftime("%Y/%m/%d/%Y%m%d%H%M%S"),
+        create_random_string(),
+        filename_ext.lower()
+    )
 
 class Tag(models.Model):
     """Associated with application for search and categorization."""
@@ -266,6 +287,17 @@ class ThreadFix(models.Model):
         return self.name + ' - ' + self.host
 
 
+class Attachment(models.Model):
+    file_name = models.CharField(max_length=255)
+    attachment = models.FileField(upload_to=upload_to)
+
+
+class VulnerabilityClassification(models.Model):
+    cwe_id = models.CharField(unique=True, blank=False, max_length=10, help_text='Specify the Common Weakness Enumeration ID')
+    name = models.CharField(max_length=256, blank=False, help_text='Specify the name of the vulnerability classification')
+    url = models.URLField(blank=False, help_text='Specify the URL to the CWE definition page')
+
+
 class Application(TimeStampedModel, models.Model):
     """Contains information about a software application."""
 
@@ -381,7 +413,7 @@ class Application(TimeStampedModel, models.Model):
     internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
-    repository = models.URLField(max_length=512, blank=True, help_text=_('Specify the URL of the source code repository'))
+    repository = models.URLField(blank=True, help_text=_('Specify the URL of the source code repository'))
     dependencies = models.ManyToManyField('self', blank=True)
     technologies = models.ManyToManyField(Technology, blank=True)
     regulations = models.ManyToManyField(Regulation, blank=True)
@@ -441,11 +473,6 @@ class Application(TimeStampedModel, models.Model):
     def data_sensitivity_value(self):
         """Returns the calculated data sensitivity value of the selected data elements."""
         return helpers.data_sensitivity_value(self.data_elements.all())
-
-    def is_new(self):
-        """Returns true if the application was created in the last 7 days"""
-        delta = self.created_date - timezone.now()
-        return delta >= timedelta(days=-7)
 
 
 class ApplicationCustomFieldValue(CustomFieldValue):
@@ -724,7 +751,7 @@ class Activity(models.Model):
     def is_ongoing(self):
         return self.status == Activity.ONGOING_STATUS
 
-    def is_cancelled(selfs):
+    def is_cancelled(self):
         return self.status == Activity.CANCELLED_STATUS
 
     def is_closed(self):
@@ -765,3 +792,87 @@ class ActivityComment(Comment):
     """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)
+
+
+
+class Vulnerability(TimeStampedModel, models.Model):
+    INFORMATIONAL_SEVERITY = 0
+    LOW_SEVERITY = 1
+    MEDIUM_SEVERITY = 2
+    HIGH_SEVERITY = 3
+    CRITICAL_SEVERITY = 4
+    SEVERITY_CHOICES = (
+        (INFORMATIONAL_SEVERITY, _('Informational')),
+        (LOW_SEVERITY, _('Low')),
+        (MEDIUM_SEVERITY, _('Medium')),
+        (HIGH_SEVERITY, _('High')),
+        (CRITICAL_SEVERITY, _('Critical')),
+    )
+
+    OPEN_STATUS = 'Open'
+    REOPENED_STATUS = 'Re-Opened'
+    FIXING_STATUS = 'Fixing'
+    FIXED_STATUS = 'Fixed'
+    PENDING_STATUS = 'Pending'
+    RISK_ACCEPTED_STATUS = 'Risk-Accepted'
+    MITIGATED_STATUS = 'Mitigated'
+    INVALID_STATUS = 'Invalid'
+    STATUS_CHOICES = (
+        (OPEN_STATUS, _('Open')),
+        (REOPENED_STATUS, _('Re-Opened')),
+        (FIXING_STATUS, _('Fixing')),
+        (PENDING_STATUS, _('Pending')),
+        (MITIGATED_STATUS, _('Mitigated')),
+        (RISK_ACCEPTED_STATUS, _('Risk-Accepted')),
+        (FIXED_STATUS, _('Fixed')),
+        (INVALID_STATUS, _('Invalid')),
+    )
+
+    MANUAL_DETECTION_METHOD = 'Manual'
+    AUTOMATED_DETECTION_METHOD = 'Automated'
+    OTHER_DETECTION_METHOD = 'Other'
+    DETECTION_METHOD_CHOICES = (
+        (MANUAL_DETECTION_METHOD, _('Manual')),
+        (AUTOMATED_DETECTION_METHOD, _('Automated')),
+        (OTHER_DETECTION_METHOD, _('Other')),
+    )
+
+    # General
+    name = models.CharField(blank=False, max_length=256, help_text=_('Specify the name of the vulnerability.'))
+    description = models.TextField(blank=False, help_text=_('Specify the detailed description of the issue explaining the vulnerability, including the impact to the user(s) or system.'))
+    solution = models.TextField(blank=False, help_text=_('Specify the solution to fix the vulnerability.'))
+    affected_app = models.ForeignKey(Application, blank=False, help_text=_('Specify the application that is affected with this vulenerability.'))
+    affected_version = models.CharField(max_length=256, blank=True, help_text=_('Specify the version of the affected application.'))
+    environment = models.TextField(blank=True, help_text=_('Specify the environment used during the test, including device, OS, network conection type, target hosts, etc.'))
+    severity = models.IntegerField(choices=SEVERITY_CHOICES, blank=False, null=False, default=MEDIUM_SEVERITY)
+    pre_conditions = models.TextField(blank=True, help_text=_('If any, specify the pre-conditions to exploit this vulnerablity.'))
+    reproduction_steps = models.TextField(blank=True, help_text=_('Specify the steps to reproduce.'))
+    attack_vector = models.TextField(blank=True,  help_text=_('Specify the sample attack vectors, such as a test HTTP Request with attack payloads together with its response.)'))
+    reporter = models.ForeignKey(Person, help_text=_('Specify a person who reported this vulnerability'))
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=OPEN_STATUS)
+    fixed_at = models.DateField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
+    vulnerability_classifications = models.ManyToManyField(VulnerabilityClassification, blank=True)
+    activity = models.ForeignKey(Activity, null=True, blank=True)
+    detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD)
+
+    class Meta:
+        ordering = ['-created_date', '-severity']
+        verbose_name_plural = 'Vulnerabilities'
+
+    def is_editable(self):
+        return self.status != Vulnerability.INVALID_STATUS and self.status != Vulnerability.FIXED_STATUS
+
+    def save(self, *args, **kwargs):
+        """Automatically sets the open and closed dates when the status changes."""
+        if self.pk is not None:
+            vulnerability = Vulnerability.objects.get(pk=self.pk)
+            now = timezone.now()
+            if vulnerability.status != self.status \
+                and self.status == Vulnerability.FIXED_STATUS:
+                    self.fixed_at = now
+        else:
+            self.status = Vulnerability.OPEN_STATUS
+
+        super(Vulnerability, self).save(*args, **kwargs)

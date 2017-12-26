@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^applications/(?P<application_id>\d+)/people/add/$', views.application_people_add, name='application.people.add'),
     url(r'^applications/(?P<application_id>\d+)/people/(?P<relation_id>\d+)/edit/$', views.application_people_edit, name='application.people.edit'),
     url(r'^applications/(?P<application_id>\d+)/people/(?P<relation_id>\d+)/delete/$', views.application_people_delete, name='application.people.delete'),
+    url(r'^applications/(?P<application_id>\d+)/vulnerabilities/$', views.application_vulnerabilities, name='application.vulnerabilities'),
     url(r'^applications/(?P<application_id>\d+)/settings/$', views.application_settings_general, name='application.settings.general'),
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
     url(r'^applications/(?P<application_id>\d+)/settings/data-elements/$', views.application_settings_data_elements, name='application.settings.data-elements'),
@@ -92,4 +93,11 @@ urlpatterns = [
     url(r'^people/(?P<person_id>\d+)/$', views.person_detail, name='person.detail'),
     url(r'^people/(?P<person_id>\d+)/edit/$', views.person_edit, name='person.edit'),
     url(r'^people/(?P<person_id>\d+)/delete/$', views.person_delete, name='person.delete'),
+
+    # Vulnerabilities
+    url(r'^vulnerabilities/$', views.vulnerability_list, name='vulnerability.list'),
+    url(r'^vulnerabilities/add/$', views.vulnerability_add, name='vulnerability.add'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/$', views.vulnerability_detail, name='vulnerability.detail'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/edit/$', views.vulnerability_edit, name='vulnerability.edit'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/delete/$', views.vulnerability_delete, name='vulnerability.delete'),
 ]

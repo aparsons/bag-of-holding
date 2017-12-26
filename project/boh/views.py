@@ -10,7 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.db.models import Avg, Count, Prefetch, Q
+from django.db.models import Count, Prefetch, Q
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.utils import timezone
@@ -821,6 +821,19 @@ def application_people(request, application_id):
         'application': application,
         'active_top': 'applications',
         'active_tab': 'people'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_vulnerabilities(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+
+    return render(request, 'boh/application/vulnerabilities.html', {
+        'application': application,
+        'vulnerabilities': application.vulnerability_set,
+        'active_top': 'applications',
+        'active_tab': 'vulnerabilities'
     })
 
 
@@ -1648,3 +1661,93 @@ def person_delete(request, person_id):
         return redirect('boh:person.list')
     else:
         return redirect('boh:person.detail', person.id)
+
+
+# Vulnerability
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_list(request):
+    paginator = Paginator(models.Vulnerability.objects.all(), 50)
+
+    page = request.GET.get('page')
+    try:
+        vulnerabilities = paginator.page(page)
+    except PageNotAnInteger:
+        vulnerabilities = paginator.page(1)
+    except EmptyPage:
+        vulnerabilities = paginator.page(paginator.num_pages)
+
+    return render(request, 'boh/vulnerability/list.html', {
+        'vulnerabilities': vulnerabilities,
+        'active_top': 'vulnerabilities'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_add(request):
+    form = forms.VulnerabilityAddForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('You successfully created this vulnerability.'), extra_tags=random.choice(success_messages))
+            return redirect('boh:vulnerability.list')
+        else:
+            print(("Error:%s" % form.errors))
+            messages.error(request, _('There was a problem creating this vulnerability.'), extra_tags=random.choice(error_messages))
+
+
+    return render(request, 'boh/vulnerability/add.html', {
+        'form': form,
+        'active_top': 'vulnerabilities'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_detail(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+
+    return render(request, 'boh/vulnerability/detail.html', {
+        'vulnerability': vulnerability,
+        'active_top': 'vulnerabilities'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_edit(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    form = forms.VulnerabilityEditForm(request.POST or None, instance=vulnerability)
+    if vulnerability.is_editable():
+        if request.method == 'POST':
+            if form.is_valid():
+                vulnerability = form.save()
+                messages.success(request, _('You successfully updated the vulnerabililty.'), extra_tags=random.choice(success_messages))
+                return redirect('boh:vulnerability.detail', vulnerability.id)
+            else:
+                messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
+
+        return render(request, 'boh/vulnerability/edit.html', {
+            'vulnerability': vulnerability,
+            'form': form,
+            'active_top': 'vulnerabilities'
+        })
+    else:
+        return redirect('boh:vulnerability.detail', vulnerability.id)
+
+@login_required
+@require_http_methods(['POST'])
+def vulnerability_delete(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    name = vulnerability.name
+
+    form = forms.VulnerabilityDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        vulnerability.delete()
+        messages.success(request, _('You successfully deleted "%(name)s".') % {'name': name}, extra_tags=random.choice(success_messages))
+        return redirect('boh:vulnerability.list')
+    else:
+        return redirect('boh:vulnerability.detail', vulnerability.id)

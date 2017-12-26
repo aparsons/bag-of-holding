@@ -493,3 +493,24 @@ class ActivityTypeDeleteForm(forms.ModelForm):
     class Meta:
         model = models.ActivityType
         fields = []
+
+
+# Vulnerabilty
+class VulnerabilityAddForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
+                  'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline',
+                  'vulnerability_classifications', 'detection_method']
+
+class VulnerabilityEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
+              'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline', 'status',
+              'vulnerability_classifications', 'detection_method']
+
+class VulnerabilityDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = []

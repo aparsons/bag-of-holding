@@ -1,0 +1,40 @@
+{% extends "boh/application/base_applications.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ application.name }} | {% trans 'Vulnerabilities' %}{% endblock %}
+
+{% block application_content %}
+<div class="row">
+  <div class="col-md-8">
+    <a href="{% url 'boh:vulnerability.add' %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
+    <hr>
+    {% if application.vulnerability_set.count > 0 %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="col-md-3">{% trans 'Vulnerability' %}</th>
+        <th class="col-md-1">{% trans 'Status' %}</th>
+        <th class="col-md-2">{% trans 'Severity' %}</th>
+        <th class="col-md-2">{% trans 'Created' %}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for vulnerability in application.vulnerability_set.all %}
+        <tr>
+          <td><a href="" target="_blank">{{ vulnerability.name }}</a></td>
+          <td>{{ vulnerability.get_status_display }}</td>
+          <td>{{ vulnerability.get_severity_display }}</td>
+          <td>{{ vulnerability.created_date }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <div class="panel-body">
+        <p>{% trans 'No vulnerabilities found.' %}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock application_content %}
