@@ -1694,7 +1694,6 @@ def vulnerability_add(request):
             messages.success(request, _('You successfully created this vulnerability.'), extra_tags=random.choice(success_messages))
             return redirect('boh:vulnerability.list')
         else:
-            print(("Error:%s" % form.errors))
             messages.error(request, _('There was a problem creating this vulnerability.'), extra_tags=random.choice(error_messages))
 
 
@@ -1732,10 +1731,34 @@ def vulnerability_edit(request, vulnerability_id):
         return render(request, 'boh/vulnerability/edit.html', {
             'vulnerability': vulnerability,
             'form': form,
-            'active_top': 'vulnerabilities'
+            'active_top': 'vulnerabilities',
+            'reopen': False
         })
     else:
         return redirect('boh:vulnerability.detail', vulnerability.id)
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_reopen(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    vulnerability.status = models.Vulnerability.REOPENED_STATUS
+    form = forms.VulnerabilityEditForm(request.POST or None, instance=vulnerability)
+    form.fields['status'].disabled = True
+    if request.method == 'POST':
+        if form.is_valid():
+            vulnerability = form.save()
+            messages.success(request, _('You successfully updated the vulnerabililty.'), extra_tags=random.choice(success_messages))
+            return redirect('boh:vulnerability.detail', vulnerability.id)
+        else:
+            print(("Error:%s" % form.errors))
+            messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/vulnerability/edit.html', {
+        'vulnerability': vulnerability,
+        'form': form,
+        'active_top': 'vulnerabilities',
+        'reopen': True
+    })
 
 @login_required
 @require_http_methods(['POST'])

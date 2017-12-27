@@ -794,7 +794,6 @@ class ActivityComment(Comment):
     activity = models.ForeignKey(Activity)
 
 
-
 class Vulnerability(TimeStampedModel, models.Model):
     INFORMATIONAL_SEVERITY = 0
     LOW_SEVERITY = 1
@@ -841,28 +840,31 @@ class Vulnerability(TimeStampedModel, models.Model):
     name = models.CharField(blank=False, max_length=256, help_text=_('Specify the name of the vulnerability.'))
     description = models.TextField(blank=False, help_text=_('Specify the detailed description of the issue explaining the vulnerability, including the impact to the user(s) or system.'))
     solution = models.TextField(blank=False, help_text=_('Specify the solution to fix the vulnerability.'))
-    affected_app = models.ForeignKey(Application, blank=False, help_text=_('Specify the application that is affected with this vulenerability.'))
-    affected_version = models.CharField(max_length=256, blank=True, help_text=_('Specify the version of the affected application.'))
+    affected_app = models.ForeignKey(Application, blank=False, help_text=_('Specify the application that is affected by this vulenerability.'), verbose_name=_('Affected Application'))
+    affected_version = models.CharField(max_length=256, blank=True, help_text=_('Specify the version of the application that is affected by this vulenerability.') , verbose_name=_('Affected Version(s)'))
     environment = models.TextField(blank=True, help_text=_('Specify the environment used during the test, including device, OS, network conection type, target hosts, etc.'))
     severity = models.IntegerField(choices=SEVERITY_CHOICES, blank=False, null=False, default=MEDIUM_SEVERITY)
-    pre_conditions = models.TextField(blank=True, help_text=_('If any, specify the pre-conditions to exploit this vulnerablity.'))
-    reproduction_steps = models.TextField(blank=True, help_text=_('Specify the steps to reproduce.'))
-    attack_vector = models.TextField(blank=True,  help_text=_('Specify the sample attack vectors, such as a test HTTP Request with attack payloads together with its response.)'))
+    pre_conditions = models.TextField(blank=True, help_text=_('If any, specify the pre-conditions to exploit this vulnerablity.'), verbose_name=_('Pre-condition(s)'))
+    reproduction_steps = models.TextField(blank=True, help_text=_('Specify the steps to reproduce.'), verbose_name=_('Steps to Reproduce'))
+    attack_vector = models.TextField(blank=True,  help_text=_('Specify the attack vectors, including affected pages/screens, input parameters, a test HTTP Request with attack payloads together with its response, etc.)'),  verbose_name=_('Attack Vector(s)'))
     reporter = models.ForeignKey(Person, help_text=_('Specify a person who reported this vulnerability'))
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=OPEN_STATUS)
-    fixed_at = models.DateField(blank=True, null=True)
+    fixed_at = models.DateTimeField(blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
     attachments = models.ManyToManyField(Attachment, blank=True)
-    vulnerability_classifications = models.ManyToManyField(VulnerabilityClassification, blank=True)
+    vulnerability_classes = models.ManyToManyField(VulnerabilityClassification, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
     activity = models.ForeignKey(Activity, null=True, blank=True)
-    detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD)
+    detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD,  verbose_name=_('Detection Method'))
 
     class Meta:
-        ordering = ['-created_date', '-severity']
+        ordering = ['-severity', 'status', '-created_date']
         verbose_name_plural = 'Vulnerabilities'
 
     def is_editable(self):
         return self.status != Vulnerability.INVALID_STATUS and self.status != Vulnerability.FIXED_STATUS
+
+    def is_fixed(self):
+        return self.status == Vulnerability.FIXED_STATUS
 
     def save(self, *args, **kwargs):
         """Automatically sets the open and closed dates when the status changes."""

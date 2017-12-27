@@ -1,7 +1,7 @@
 {% extends "boh/application/base_applications.html" %}
 
 {% load i18n %}
-
+{% load humanize %}
 {% block title %}{{ application.name }} | {% trans 'Vulnerabilities' %}{% endblock %}
 
 {% block application_content %}
@@ -22,7 +22,7 @@
       <tbody>
       {% for vulnerability in application.vulnerability_set.all %}
         <tr>
-          <td><a href="" target="_blank">{{ vulnerability.name }}</a></td>
+          <td><strong><a href="{% url 'boh:vulnerability.detail' vulnerability.id %}">{{ vulnerability.name }}</a></strong>{% if vulnerability.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Created' %} {{ vulnerability.created_date|naturaltime }}">{% trans 'New' %}!</sup>{% endif %}</td>
           <td>{{ vulnerability.get_status_display }}</td>
           <td>{{ vulnerability.get_severity_display }}</td>
           <td>{{ vulnerability.created_date }}</td>

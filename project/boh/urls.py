@@ -99,5 +99,6 @@ urlpatterns = [
     url(r'^vulnerabilities/add/$', views.vulnerability_add, name='vulnerability.add'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/$', views.vulnerability_detail, name='vulnerability.detail'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/edit/$', views.vulnerability_edit, name='vulnerability.edit'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/reopen/$', views.vulnerability_reopen, name='vulnerability.reopen'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/delete/$', views.vulnerability_delete, name='vulnerability.delete'),
 ]
