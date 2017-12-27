@@ -2,39 +2,165 @@
 
 {% load i18n %}
 {% load humanize %}
+{% load icon_filters %}
+{% load widget_tweaks %}
 {% block title %}{{ application.name }} | {% trans 'Vulnerabilities' %}{% endblock %}
 
 {% block application_content %}
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <a href="{% url 'boh:vulnerability.add' %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
     <hr>
+  </div>
+</div>
+<div class="row">
     {% if application.vulnerability_set.count > 0 %}
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th class="col-md-3">{% trans 'Vulnerability' %}</th>
-        <th class="col-md-1">{% trans 'Status' %}</th>
-        <th class="col-md-2">{% trans 'Severity' %}</th>
-        <th class="col-md-2">{% trans 'Created' %}</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for vulnerability in application.vulnerability_set.all %}
-        <tr>
-          <td><strong><a href="{% url 'boh:vulnerability.detail' vulnerability.id %}">{{ vulnerability.name }}</a></strong>{% if vulnerability.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Created' %} {{ vulnerability.created_date|naturaltime }}">{% trans 'New' %}!</sup>{% endif %}</td>
-          <td>{{ vulnerability.get_status_display }}</td>
-          <td>{{ vulnerability.get_severity_display }}</td>
-          <td>{{ vulnerability.created_date }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+      <div class="col-md-12">
+        <div class="margin-bottom clearfix">
+          <a href="{% url 'boh:vulnerability.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Report a Vulnerability' %}"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
+          <div class="pull-right">
+            <span class="text-muted"><b>{{ vulnerabilities.start_index }}</b> - <b>{{ vulnerabilities.end_index }}</b> of <b>{{ vulnerabilities.paginator.count }}</b></span>
+            <div class="btn-group" role="group" aria-label="...">
+              <a class="btn btn-default{% if not vulnerabilities.has_previous %} disabled{% endif %}" href="{% if vulnerabilities.has_previous %}?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ vulnerabilities.previous_page_number }}&page_size={{ page_size }}{% endif %}" role="button"><span class="fa fa-chevron-left" aria-hidden="true"></span></a>
+              <a class="btn btn-default{% if not vulnerabilities.has_next %} disabled{% endif %}" href="{% if vulnerabilities.has_next %}?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ vulnerabilities.next_page_number }}&page_size={{ page_size }}{% endif %}" role="button"><span class="fa fa-chevron-right" aria-hidden="true"></span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <form action="{% url 'boh:application.vulnerabilities' application.id %}" method="get">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-2 col-lg-6">
+                  <div class="form-group no-margin-bottom-md no-margin-bottom-lg">
+                    {{ form.name|add_class:"form-control"|attr:"placeholder:Name" }}
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-default" type="submit"><span class="fa fa-filter" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Filter' %}</span></button>
+                    </div>
+                    <a href="{% url 'boh:application.vulnerabilities' application.id  %}" class="btn btn-default" role="button"><span class="fa fa-eraser" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Clear' %}</span></a>
+                    <a class="btn btn-default" data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" role="button"><span class="fa fa-cogs" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Advanced' %}</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="collapse{% if show_advanced %}.in{% endif %} well" id="advanced">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.reporter.id_for_label }}">{{ form.reporter.label }}:</label>
+                      {{ form.reporter|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.detection_method.id_for_label }}">{{ form.detection_method.label }}:</label>
+                      {{ form.detection_method|add_class:"form-control" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.vulnerability_class.id_for_label }}">{{ form.vulnerability_class.label }}:</label>
+                      {{ form.vulnerability_class|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.severity.id_for_label }}">{{ form.severity.label }}:</label>
+                      {{ form.severity|add_class:"form-control" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.status.id_for_label }}">{{ form.status.label }}:</label>
+                      {{ form.status|add_class:"form-control"}}
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label" for="{{ form.tags.id_for_label }}">{{ form.tags.label }}:</label>
+                      {{ form.tags|add_class:"form-control"}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-12">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th class="col-md-3">{% trans 'Vulnerability' %}</th>
+            <th class="col-md-1">{% trans 'Status' %}</th>
+            <th class="col-md-2">{% trans 'Severity' %}</th>
+            <th class="col-md-2">{% trans 'Created' %}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for vulnerability in vulnerabilities %}
+            <tr>
+              <td><strong><a href="{% url 'boh:vulnerability.detail' vulnerability.id %}">{{ vulnerability.name }}</a></strong>{% if vulnerability.is_new %} <sup class="text-warning" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Created' %} {{ vulnerability.created_date|naturaltime }}">{% trans 'New' %}!</sup>{% endif %}</td>
+              <td>{{ vulnerability.get_status_display }}</td>
+              <td>{{ vulnerability.get_severity_display }}</td>
+              <td>{{ vulnerability.created_date }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col-sm-9 col-md-10">
+        {% if vulnerabilities.paginator.num_pages > 1 %}
+          <nav>
+            <ul class="pagination no-margin-top">
+              {% if vulnerabilities.has_previous %}
+                <li>
+                  <a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ vulnerabilities.previous_page_number }}&page_size={{ page_size }}" aria-label="{% trans 'Previous' %}"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+                </li>
+              {% else %}
+                <li class="disabled">
+                  <a href="#" aria-label="Previous"><span class="fa fa-angle-double-left" aria-hidden="true"></span></a>
+                </li>
+              {% endif %}
+
+              {% for num in vulnerabilities.paginator.page_range %}
+                {% ifequal num vulnerabilities.number %}
+                  <li class="active hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}<span class="sr-only">({% trans 'current' %})</span></a></li>
+                {% else %}
+                  <li class="hidden-xs"><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ num }}&page_size={{ page_size }}">{{ num }}</a></li>
+                {% endifequal %}
+              {% endfor %}
+
+              {% if vulnerabilities.has_next %}
+                <li><a href="?{% if queries %}{{ queries.urlencode }}&{% endif %}page={{ vulnerabilities.next_page_number }}&page_size={{ page_size }}" aria-label="{% trans 'Next' %}"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a></li>
+              {% else %}
+                <li class="disabled">
+                  <a href="#" aria-label="Next"><span class="fa fa-angle-double-right" aria-hidden="true"></span></a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+      </div>
+      <div class="col-sm-3 col-md-2">
+        {{ page_size_form.page_size|add_class:"form-control"|add_class:"pagesize" }}
+      </div>
     {% else %}
       <div class="panel-body">
         <p>{% trans 'No vulnerabilities found.' %}</p>
       </div>
     {% endif %}
-  </div>
 </div>
 {% endblock application_content %}

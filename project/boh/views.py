@@ -828,13 +828,53 @@ def application_people(request, application_id):
 @require_http_methods(['GET'])
 def application_vulnerabilities(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+    if queries.__contains__('page_size'):
+        del queries['page_size']
+
+    vulnerability_filter = filters.VulnerabilityFilter(request.GET, queryset=application.vulnerability_set.all())
+    page_size = 25
+
+    page_size_form = forms.PageSizeForm()
+    if request.GET.get('page_size'):
+        page_size_form = forms.PageSizeForm(request.GET)
+        if page_size_form.is_valid():
+            page_size = page_size_form.cleaned_data['page_size']
+            if page_size == 'all':
+                page_size = 10000000
+            else:
+                page_size = int(page_size)
+
+    paginator = Paginator(vulnerability_filter, page_size)
+    page = request.GET.get('page')
+
+    try:
+        vulnerabilities = paginator.page(page)
+        print(vulnerabilities.count())
+    except PageNotAnInteger:
+        vulnerabilities = paginator.page(1)
+    except EmptyPage:
+        vulnerabilities = paginator.page(paginator.num_pages)
+
+    show_advanced = False
+    if request.GET.get('reporter') or request.GET.get('detection_method') or request.GET.get('vulnerability_class') \
+        or request.GET.get('severity') or request.GET.get('status') or request.GET.get('tags'):
+        show_advanced = True
 
     return render(request, 'boh/application/vulnerabilities.html', {
+        'form': vulnerability_filter.form,
         'application': application,
-        'vulnerabilities': application.vulnerability_set,
+        'vulnerabilities': vulnerabilities,
+        'queries': queries,
+        'page_size_form': page_size_form,
+        'page_size': str(page_size),
+        'show_advanced': show_advanced,
         'active_top': 'applications',
         'active_tab': 'vulnerabilities'
     })
+
 
 
 @login_required
@@ -1701,7 +1741,8 @@ def vulnerability_list(request):
 
     #
     show_advanced = False
-    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or request.GET.get('service_level_agreements') or request.GET.get('asvs_level') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
+    if request.GET.get('reporter') or request.GET.get('detection_method') or request.GET.get('vulnerability_class')  \
+        or request.GET.get('severity') or request.GET.get('status') or request.GET.get('tags'):
         show_advanced = True
 
     return render(request, 'boh/vulnerability/list.html', {
