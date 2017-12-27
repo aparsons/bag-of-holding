@@ -37,12 +37,9 @@ def upload_to(instance, filename):
 
 class Tag(models.Model):
     """Associated with application for search and categorization."""
-
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message=_("Color must be entered in the 6 character hex format."))
-
     name = models.CharField(max_length=64, unique=True, help_text=_('A unique name for this tag.'))
     color = models.CharField(max_length=6, validators=[color_regex], help_text=_('Specify a 6 character hex color value. (e.g., \'d94d59\')'))
-
     description = models.CharField(max_length=64, blank=True, help_text=_('A short description of this tag\'s purpose to be shown in tooltips.'))
 
     class Meta:
@@ -125,14 +122,14 @@ class Person(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     email = models.EmailField(max_length=128, unique=True)
-    slack_id = models.CharField(max_length=128, blank=True)
+    slack_id = models.CharField(max_length=128, unique=True)
     role = models.CharField(max_length=17, choices=ROLE_CHOICES)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     job_title = models.CharField(max_length=128, blank=True)
 
     class Meta:
-        ordering = ['last_name']
+        ordering = ['slack_id', 'last_name', 'first_name']
         verbose_name_plural = 'People'
 
     def __str__(self):
@@ -855,6 +852,7 @@ class Vulnerability(TimeStampedModel, models.Model):
     vulnerability_classes = models.ManyToManyField(VulnerabilityClassification, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
     activity = models.ForeignKey(Activity, null=True, blank=True)
     detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD,  verbose_name=_('Detection Method'))
+    tags = models.ManyToManyField(Tag, blank=True)
 
     class Meta:
         ordering = ['-severity', 'status', '-created_date']

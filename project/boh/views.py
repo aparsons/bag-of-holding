@@ -1668,9 +1668,30 @@ def person_delete(request, person_id):
 @login_required
 @require_http_methods(['GET'])
 def vulnerability_list(request):
-    paginator = Paginator(models.Vulnerability.objects.all(), 50)
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+    if queries.__contains__('page_size'):
+        del queries['page_size']
+
+    vulnerability_filter = filters.VulnerabilityFilter(request.GET, queryset=models.Vulnerability.objects.all().select_related('affected_app'))
+
+    page_size = 25
+
+    page_size_form = forms.PageSizeForm()
+    if request.GET.get('page_size'):
+        page_size_form = forms.PageSizeForm(request.GET)
+        if page_size_form.is_valid():
+            page_size = page_size_form.cleaned_data['page_size']
+            if page_size == 'all':
+                page_size = 10000000
+            else:
+                page_size = int(page_size)
+
+    paginator = Paginator(vulnerability_filter, page_size)
 
     page = request.GET.get('page')
+
     try:
         vulnerabilities = paginator.page(page)
     except PageNotAnInteger:
@@ -1678,8 +1699,18 @@ def vulnerability_list(request):
     except EmptyPage:
         vulnerabilities = paginator.page(paginator.num_pages)
 
+    #
+    show_advanced = False
+    if request.GET.get('platform') or request.GET.get('lifecycle') or request.GET.get('origin') or request.GET.get('technologies') or request.GET.get('regulations') or request.GET.get('tags') or request.GET.get('service_level_agreements') or request.GET.get('asvs_level') or (request.GET.get('external_audience') and request.GET.get('external_audience') is not '1') or (request.GET.get('internet_accessible') and request.GET.get('internet_accessible') is not '1'):
+        show_advanced = True
+
     return render(request, 'boh/vulnerability/list.html', {
+        'form': vulnerability_filter.form,
         'vulnerabilities': vulnerabilities,
+        'queries': queries,
+        'page_size_form': page_size_form,
+        'page_size': str(page_size),
+        'show_advanced': show_advanced,
         'active_top': 'vulnerabilities'
     })
 

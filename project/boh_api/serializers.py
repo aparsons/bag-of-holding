@@ -23,6 +23,14 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model = models.Organization
 
 
+class VulnerabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Vulnerability
+
+class DataElementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DataElement
+
 class ApplicationSerializer(serializers.ModelSerializer):
     class ApplicationCustomFieldValueSerializer(serializers.ModelSerializer):
         key = serializers.SerializerMethodField()
@@ -37,11 +45,12 @@ class ApplicationSerializer(serializers.ModelSerializer):
     threadfix_metrics = serializers.SerializerMethodField()
     organization = OrganizationSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    data_elements = DataElementSerializer(many=True, read_only=True)
     custom_fields = ApplicationCustomFieldValueSerializer(source='applicationcustomfieldvalue_set', many=True, read_only=True)
 
     class Meta:
         model = models.Application
-        fields = ['id', 'organization', 'name', 'description', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'threadfix_metrics', 'tags', 'custom_fields', 'people']
+        fields = ['id', 'organization', 'name', 'description', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'threadfix_metrics', 'tags', 'custom_fields', 'people', 'data_elements']
 
     def get_threadfix_metrics(self, application):
         try:

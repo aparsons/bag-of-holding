@@ -2,7 +2,7 @@ import django_filters
 
 from django_filters import filters
 
-from .models import Organization, Application
+from .models import Organization, Application, Vulnerability, VulnerabilityClassification, Person
 
 
 class ApplicationFilter(django_filters.FilterSet):
@@ -19,4 +19,21 @@ class ApplicationFilter(django_filters.FilterSet):
         fields = [
             'name', 'organization', 'business_criticality', 'platform', 'lifecycle', 'origin', 'external_audience',
             'internet_accessible', 'technologies', 'regulations', 'service_level_agreements', 'tags', 'asvs_level', 'data_elements'
+        ]
+
+
+class VulnerabilityFilter(django_filters.FilterSet):
+    name = filters.CharFilter(lookup_type='icontains')
+    affected_app = filters.ModelMultipleChoiceFilter(queryset=Application.objects.all())
+    severity = filters.MultipleChoiceFilter(choices=Vulnerability.SEVERITY_CHOICES)
+    status = filters.MultipleChoiceFilter(choices=Vulnerability.STATUS_CHOICES)
+    reporter = filters.ModelMultipleChoiceFilter(queryset=Person.objects.all())
+    detection_method = filters.MultipleChoiceFilter(choices=Vulnerability.DETECTION_METHOD_CHOICES)
+    vulnerability_class = filters.ModelMultipleChoiceFilter(queryset=VulnerabilityClassification.objects.all())
+
+    class Meta:
+        model = Vulnerability
+        fields = [
+            'name', 'affected_app', 'severity', 'vulnerability_class', 'status', 'reporter', 'tags',
+            'vulnerability_class', 'detection_method'
         ]

@@ -501,14 +501,14 @@ class VulnerabilityAddForm(forms.ModelForm):
         model = models.Vulnerability
         fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
                   'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline',
-                  "vulnerability_classes", 'detection_method']
+                  "vulnerability_classes", 'detection_method', 'tags']
 
 class VulnerabilityEditForm(forms.ModelForm):
     class Meta:
         model = models.Vulnerability
         fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
               'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline', 'status',
-                  "vulnerability_classes", 'detection_method']
+                  "vulnerability_classes", 'detection_method', 'tags']
 
 class VulnerabilityDeleteForm(forms.ModelForm):
     class Meta:

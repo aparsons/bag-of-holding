@@ -14,6 +14,7 @@ router.register(r'engagements', viewsets.EngagementViewSet)
 router.register(r'activities', viewsets.ActivityViewSet)
 router.register(r'activities_types', viewsets.ActivityTypeViewSet)
 router.register(r'users', viewsets.UserViewSet)
+router.register(r'vulnerabilities', viewsets.VulnerabilityViewSet)
 
 urlpatterns = [
     url(r'^v0/', include(router.urls), name='v0'),
