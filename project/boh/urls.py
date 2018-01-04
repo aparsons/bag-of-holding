@@ -101,4 +101,9 @@ urlpatterns = [
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/edit/$', views.vulnerability_edit, name='vulnerability.edit'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/reopen/$', views.vulnerability_reopen, name='vulnerability.reopen'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/delete/$', views.vulnerability_delete, name='vulnerability.delete'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments$', views.vulnerability_attachment_list, name='vulnerability.attachments'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/add$', views.vulnerability_attachment_add, name='vulnerability.attachments.add'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/(?P<attachment_id>\d+)/view', views.vulnerability_attachment_view, name='vulnerability.attachments.view'),
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/(?P<attachment_id>\d+)/delete$', views.vulnerability_attachment_delete, name='vulnerability.attachments.delete')
+
 ]

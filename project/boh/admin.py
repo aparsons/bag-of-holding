@@ -333,6 +333,7 @@ class RegulationAdmin(admin.ModelAdmin):
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = _('Reference')
+
 admin.site.register(models.Regulation, RegulationAdmin)
 
 
@@ -340,3 +341,8 @@ class ServiceLevelAgreementAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
 
 admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)
+
+class VulnerabililtyAttachmentAdmin(admin.ModelAdmin):
+    list_display = ['file_name', 'description']
+
+admin.site.register(models.VulnerabilityAttachment, VulnerabililtyAttachmentAdmin)

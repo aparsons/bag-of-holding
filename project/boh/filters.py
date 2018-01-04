@@ -2,7 +2,7 @@ import django_filters
 
 from django_filters import filters
 
-from .models import Organization, Application, Vulnerability, VulnerabilityClassification, Person
+from .models import Organization, Application, Vulnerability, VulnerabilityClass, Person
 
 
 class ApplicationFilter(django_filters.FilterSet):
@@ -29,7 +29,7 @@ class VulnerabilityFilter(django_filters.FilterSet):
     status = filters.MultipleChoiceFilter(choices=Vulnerability.STATUS_CHOICES)
     reporter = filters.ModelMultipleChoiceFilter(queryset=Person.objects.all())
     detection_method = filters.MultipleChoiceFilter(choices=Vulnerability.DETECTION_METHOD_CHOICES)
-    vulnerability_class = filters.ModelMultipleChoiceFilter(queryset=VulnerabilityClassification.objects.all())
+    vulnerability_class = filters.ModelMultipleChoiceFilter(queryset=VulnerabilityClass.objects.all())
 
     class Meta:
         model = Vulnerability

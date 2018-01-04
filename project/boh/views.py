@@ -13,6 +13,7 @@ from django.db import IntegrityError
 from django.db.models import Count, Prefetch, Q
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render, redirect
@@ -852,7 +853,6 @@ def application_vulnerabilities(request, application_id):
 
     try:
         vulnerabilities = paginator.page(page)
-        print(vulnerabilities.count())
     except PageNotAnInteger:
         vulnerabilities = paginator.page(1)
     except EmptyPage:
@@ -1782,7 +1782,8 @@ def vulnerability_detail(request, vulnerability_id):
 
     return render(request, 'boh/vulnerability/detail.html', {
         'vulnerability': vulnerability,
-        'active_top': 'vulnerabilities'
+        'active_top': 'vulnerabilities',
+        'active_tab': 'details'
     })
 
 
@@ -1822,7 +1823,6 @@ def vulnerability_reopen(request, vulnerability_id):
             messages.success(request, _('You successfully updated the vulnerabililty.'), extra_tags=random.choice(success_messages))
             return redirect('boh:vulnerability.detail', vulnerability.id)
         else:
-            print(("Error:%s" % form.errors))
             messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/vulnerability/edit.html', {
@@ -1846,3 +1846,76 @@ def vulnerability_delete(request, vulnerability_id):
         return redirect('boh:vulnerability.list')
     else:
         return redirect('boh:vulnerability.detail', vulnerability.id)
+
+
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_attachment_list(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    paginator = Paginator(vulnerability.vulnerabilityattachment_set.all(), 50)
+
+    page = request.GET.get('page')
+    try:
+        attachments = paginator.page(page)
+    except PageNotAnInteger:
+        attachments = paginator.page(1)
+    except EmptyPage:
+        attachments = paginator.page(paginator.num_pages)
+
+    return render(request, 'boh/vulnerability/attachments.html', {
+        'vulnerability': vulnerability,
+        'attachments': attachments,
+        'active_top': 'vulnerabilites',
+        'active_tab': 'attachments'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_attachment_add(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+
+    form = forms.VulnerabilityAttachmentAddForm(request.POST or None, request.FILES)
+
+    if request.method == 'POST' and form.is_valid():
+        file_name = request.FILES['attachment'].name
+        attachment = models.VulnerabilityAttachment(file_name=file_name, description=form.data['description'], attachment=request.FILES['attachment'])
+        attachment.vulnerability = vulnerability
+        attachment.save()
+        messages.success(request, _('You successfully uploaded the attachment.'), extra_tags=random.choice(success_messages))
+        return redirect('boh:vulnerability.attachments', vulnerability.id)
+
+    return render(request, 'boh/attachment/add.html', {
+        'vulnerability': vulnerability,
+        'form': form,
+        'active_top': 'vulnerabilites',
+        'active_tab': 'attachments'
+    })
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_attachment_view(request, vulnerability_id, attachment_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
+    return HttpResponse("Text only, please.", content_type="text/plain")
+
+@login_required
+@require_http_methods(['POST'])
+def vulnerability_attachment_delete(request, vulnerability_id, attachment_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    attachment =  get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
+    attachment_list = vulnerability.vulnerabilityattachment_set
+    form = forms.VulnerabilityAttachmentDeleteForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        attachment.delete()
+        messages.success(request, _('You successfully deleted the "%(file_name)s" .') % {'file_name': attachment.file_name}, extra_tags=random.choice(success_messages))
+    else:
+        messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/vulnerability/attachments.html', {
+        'vulnerability': vulnerability,
+        'attachments': attachment_list,
+        'active_top': 'attachments'
+    })

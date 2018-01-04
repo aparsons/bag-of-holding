@@ -284,17 +284,6 @@ class ThreadFix(models.Model):
         return self.name + ' - ' + self.host
 
 
-class Attachment(models.Model):
-    file_name = models.CharField(max_length=255)
-    attachment = models.FileField(upload_to=upload_to)
-
-
-class VulnerabilityClassification(models.Model):
-    cwe_id = models.CharField(unique=True, blank=False, max_length=10, help_text='Specify the Common Weakness Enumeration ID')
-    name = models.CharField(max_length=256, blank=False, help_text='Specify the name of the vulnerability classification')
-    url = models.URLField(blank=False, help_text='Specify the URL to the CWE definition page')
-
-
 class Application(TimeStampedModel, models.Model):
     """Contains information about a software application."""
 
@@ -791,6 +780,11 @@ class ActivityComment(Comment):
     activity = models.ForeignKey(Activity)
 
 
+class VulnerabilityClass(models.Model):
+    cwe_id = models.CharField(unique=True, blank=False, max_length=10, help_text='Specify the Common Weakness Enumeration ID')
+    name = models.CharField(max_length=256, blank=False, help_text='Specify the name of the vulnerability classification')
+    url = models.URLField(blank=False, help_text='Specify the URL to the CWE definition page')
+
 class Vulnerability(TimeStampedModel, models.Model):
     INFORMATIONAL_SEVERITY = 0
     LOW_SEVERITY = 1
@@ -848,8 +842,7 @@ class Vulnerability(TimeStampedModel, models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=OPEN_STATUS)
     fixed_at = models.DateTimeField(blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
-    attachments = models.ManyToManyField(Attachment, blank=True)
-    vulnerability_classes = models.ManyToManyField(VulnerabilityClassification, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
+    vulnerability_classes = models.ManyToManyField(VulnerabilityClass, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
     activity = models.ForeignKey(Activity, null=True, blank=True)
     detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD,  verbose_name=_('Detection Method'))
     tags = models.ManyToManyField(Tag, blank=True)
@@ -876,3 +869,14 @@ class Vulnerability(TimeStampedModel, models.Model):
             self.status = Vulnerability.OPEN_STATUS
 
         super(Vulnerability, self).save(*args, **kwargs)
+
+
+class Attachment(models.Model):
+    file_name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, help_text=_('Description of the attachment'))
+    attachment = models.FileField()
+
+
+class VulnerabilityAttachment(Attachment):
+    """Attachment for a specific vulnerability."""
+    vulnerability = models.ForeignKey(Vulnerability)

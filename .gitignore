@@ -79,7 +79,7 @@ package-lock.json
 bag-of-holding.iml
 
 # Sample Data
-project/mercari_data.json
+project/mercari_data*.json
 
 #Mac
 *.DS_Store
