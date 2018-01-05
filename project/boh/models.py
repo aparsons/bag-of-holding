@@ -10,6 +10,7 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.utils.timezone import now as timezone_now
@@ -785,6 +786,10 @@ class VulnerabilityClass(models.Model):
     name = models.CharField(max_length=256, blank=False, help_text='Specify the name of the vulnerability classification')
     url = models.URLField(blank=False, help_text='Specify the URL to the CWE definition page')
 
+    def __str__(self):
+        return self.cwe_id + ' - ' + self.name
+
+
 class Vulnerability(TimeStampedModel, models.Model):
     INFORMATIONAL_SEVERITY = 0
     LOW_SEVERITY = 1
@@ -880,3 +885,39 @@ class Attachment(models.Model):
 class VulnerabilityAttachment(Attachment):
     """Attachment for a specific vulnerability."""
     vulnerability = models.ForeignKey(Vulnerability)
+
+
+class VulnerabilityComment(Comment):
+    """Comment for a specific engagement."""
+
+    vulnerability = models.ForeignKey(Vulnerability)
+
+# These two auto-delete files from filesystem when they are unneeded:
+
+@receiver(models.signals.post_delete, sender=Attachment)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `Attachment` object is deleted.
+    """
+    if instance.attachment and os.path.isfile(instance.attachment.path):
+        os.remove(instance.attachment.path)
+
+@receiver(models.signals.pre_save, sender=Attachment)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `Attachment` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Attachment.objects.get(pk=instance.pk).attachment
+    except Attachment.DoesNotExist:
+        return False
+
+    new_file = instance.attachment
+    if not old_file == new_file and os.path.isfile(old_file.path):
+        os.remove(old_file.path)

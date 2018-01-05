@@ -523,4 +523,4 @@ class VulnerabilityAttachmentAddForm(forms.ModelForm):
 class VulnerabilityAttachmentDeleteForm(forms.ModelForm):
     class Meta:
         model = models.VulnerabilityAttachment
-        fields = ['attachment']
+        fields = []

@@ -346,3 +346,9 @@ class VulnerabililtyAttachmentAdmin(admin.ModelAdmin):
     list_display = ['file_name', 'description']
 
 admin.site.register(models.VulnerabilityAttachment, VulnerabililtyAttachmentAdmin)
+
+class VulnerabilityClassAdmin(admin.ModelAdmin):
+    list_display = ['cwe_id', 'name', 'url']
+
+admin.site.register(models.VulnerabilityClass, VulnerabilityClassAdmin)
+

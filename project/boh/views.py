@@ -1898,24 +1898,23 @@ def vulnerability_attachment_add(request, vulnerability_id):
 def vulnerability_attachment_view(request, vulnerability_id, attachment_id):
     vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
     attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
+    # TODO: need to read the file and write its data to the HTTP Response instead
     return HttpResponse("Text only, please.", content_type="text/plain")
 
 @login_required
 @require_http_methods(['POST'])
 def vulnerability_attachment_delete(request, vulnerability_id, attachment_id):
     vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
-    attachment =  get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
+    attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
     attachment_list = vulnerability.vulnerabilityattachment_set
     form = forms.VulnerabilityAttachmentDeleteForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
         attachment.delete()
         messages.success(request, _('You successfully deleted the "%(file_name)s" .') % {'file_name': attachment.file_name}, extra_tags=random.choice(success_messages))
-    else:
-        messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
 
-    return render(request, 'boh/vulnerability/attachments.html', {
-        'vulnerability': vulnerability,
-        'attachments': attachment_list,
-        'active_top': 'attachments'
-    })
+    else:
+        messages.error(request, _('There was a problem deleted the attachment.'), extra_tags=random.choice(error_messages))
+
+    return redirect('boh:vulnerability.attachments', vulnerability.id)
+
