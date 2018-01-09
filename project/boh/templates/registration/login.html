@@ -44,6 +44,8 @@
           </div>
           <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans 'Log in' %}</button>
         </form>
+        <p><strong>-- OR --</strong></p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
       </div>
     </div>
   </div>

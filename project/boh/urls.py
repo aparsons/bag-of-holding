@@ -104,5 +104,6 @@ urlpatterns = [
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments$', views.vulnerability_attachment_list, name='vulnerability.attachments'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/add$', views.vulnerability_attachment_add, name='vulnerability.attachments.add'),
     url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/(?P<attachment_id>\d+)/view', views.vulnerability_attachment_view, name='vulnerability.attachments.view'),
-    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/(?P<attachment_id>\d+)/delete$', views.vulnerability_attachment_delete, name='vulnerability.attachments.delete')
+    url(r'^vulnerabilities/(?P<vulnerability_id>\d+)/attachments/(?P<attachment_id>\d+)/delete$', views.vulnerability_attachment_delete, name='vulnerability.attachments.delete'),
+
 ]
