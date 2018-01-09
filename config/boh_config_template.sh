@@ -1,0 +1,8 @@
+#! /bin/bash
+export BOH_SECRET_KEY=''
+export BOH_DB_NAME=''
+export BOH_DB_USER=''
+export BOH_DB_PASSWORD=''
+export BOH_SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=''
+export BOH_SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=''
+

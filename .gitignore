@@ -81,5 +81,8 @@ bag-of-holding.iml
 # Sample Data
 project/mercari_data*.json
 
+# OS Environment Variables Config file
+config/boh_config.sh
+
 #Mac
 *.DS_Store
