@@ -9,3 +9,4 @@ Pygments==2.2.0
 pytz==2017.3
 requests==2.18.4
 threadfix-api==1.1.1
+social-auth-app-django==2.1.0
