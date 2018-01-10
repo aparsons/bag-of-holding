@@ -79,7 +79,7 @@ class CustomField(TimeStampedModel, models.Model):
 
 
 class CustomFieldValue(TimeStampedModel, models.Model):
-    custom_field = models.ForeignKey(CustomField)
+    custom_field = models.ForeignKey(CustomField, on_delete=models.DO_NOTHING)
     value = models.CharField(max_length=255)
 
     class Meta:
@@ -415,7 +415,7 @@ class Application(TimeStampedModel, models.Model):
     override_reason = models.TextField(blank=True, help_text=_('Specify why the calculated data classification level is being overridden.'))
 
     # ThreadFix
-    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text=_('The ThreadFix service to connect to this application.'))
+    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, on_delete=models.DO_NOTHING, help_text=_('The ThreadFix service to connect to this application.'))
     threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique team identifier used within ThreadFix.'))
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique application identifier used within ThreadFix.'))
 
@@ -427,7 +427,7 @@ class Application(TimeStampedModel, models.Model):
     asvs_doc_url = models.URLField(blank=True, help_text=_('URL to the detailed ASVS assessment.'))
 
     # Misc
-    organization = models.ForeignKey(Organization, help_text=_('The organization containing this application.'))
+    organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING, help_text=_('The organization containing this application.'))
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
@@ -463,7 +463,7 @@ class Application(TimeStampedModel, models.Model):
 
 
 class ApplicationCustomFieldValue(CustomFieldValue):
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         unique_together = ('application', 'custom_field', 'value')
@@ -478,7 +478,7 @@ class ThreadFixMetrics(TimeStampedModel, models.Model):
     low_count = models.PositiveIntegerField(default=0)
     informational_count = models.PositiveIntegerField(default=0)
 
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         get_latest_by = 'created_date'
@@ -497,8 +497,8 @@ class Relation(models.Model):
     security_champion = models.BooleanField(default=False, help_text=_('Specify if this person is a security champion.'))
     technical_lead = models.BooleanField(default=False, help_text=_('Specify if this person is a technical lead.'))
     notes = models.TextField(blank=True, help_text=_('Any notes about this person\'s connection to the application.'))
-    person = models.ForeignKey(Person, help_text=_('The person associated with the application.'))
-    application = models.ForeignKey(Application)
+    person = models.ForeignKey(Person, on_delete=models.DO_NOTHING, help_text=_('The person associated with the application.'))
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         unique_together = ('person', 'application')
@@ -529,7 +529,7 @@ class Environment(models.Model):
     description = models.TextField(blank=True, help_text=_('Information about the environment\'s purpose, physical location, hardware, and deployment.'))
     testing_approved = models.BooleanField(default=False, help_text=_('Specify if security testing has been approved for this environment.'))
 
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         ordering = ['-testing_approved', 'environment_type']
@@ -544,7 +544,7 @@ class EnvironmentLocation(models.Model):
     location = models.URLField(help_text=_('A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)'))
     notes = models.TextField(blank=True, help_text=_('Information about the location\'s purpose, physical location, and deployment.'))
 
-    environment = models.ForeignKey(Environment)
+    environment = models.ForeignKey(Environment, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.location
@@ -558,7 +558,7 @@ class EnvironmentCredentials(TimeStampedModel, models.Model):
     role_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the user\'s role or permissions. (e.g., Guest, Admin)'))
     notes = models.TextField(blank=True, help_text=_('Additional information about these credentials.'))
 
-    environment = models.ForeignKey(Environment)
+    environment = models.ForeignKey(Environment, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name_plural = 'Environment credentials'
@@ -589,8 +589,8 @@ class Engagement(TimeStampedModel, models.Model):
     close_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to closed.'))
     duration = models.DurationField(blank=True, null=True)
 
-    requestor = models.ForeignKey(Person, blank=True, null=True, help_text=_('Specify who requested this engagement.'))
-    application = models.ForeignKey(Application)
+    requestor = models.ForeignKey(Person, on_delete=models.DO_NOTHING, blank=True, null=True, help_text=_('Specify who requested this engagement.'))
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     objects = managers.EngagementManager.from_queryset(managers.EngagementQuerySet)()
     metrics = managers.EngagementMetrics.from_queryset(managers.EngagementQuerySet)()
@@ -677,8 +677,8 @@ class Activity(models.Model):
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
     duration = models.DurationField(blank=True, null=True)
 
-    activity_type = models.ForeignKey(ActivityType)
-    engagement = models.ForeignKey(Engagement)
+    activity_type = models.ForeignKey(ActivityType, on_delete=models.DO_NOTHING)
+    engagement = models.ForeignKey(Engagement, on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     objects = managers.ActivityManager.from_queryset(managers.ActivityQuerySet)()
@@ -760,7 +760,7 @@ class Comment(TimeStampedModel, models.Model):
 
     message = models.TextField()
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.message
@@ -772,13 +772,13 @@ class Comment(TimeStampedModel, models.Model):
 class EngagementComment(Comment):
     """Comment for a specific engagement."""
 
-    engagement = models.ForeignKey(Engagement)
+    engagement = models.ForeignKey(Engagement, on_delete=models.DO_NOTHING)
 
 
 class ActivityComment(Comment):
     """Comment for a specific activity."""
 
-    activity = models.ForeignKey(Activity)
+    activity = models.ForeignKey(Activity, on_delete=models.DO_NOTHING)
 
 
 class VulnerabilityClass(models.Model):
@@ -836,19 +836,19 @@ class Vulnerability(TimeStampedModel, models.Model):
     name = models.CharField(blank=False, max_length=256, help_text=_('Specify the name of the vulnerability.'))
     description = models.TextField(blank=False, help_text=_('Specify the detailed description of the issue explaining the vulnerability, including the impact to the user(s) or system.'))
     solution = models.TextField(blank=False, help_text=_('Specify the solution to fix the vulnerability.'))
-    affected_app = models.ForeignKey(Application, blank=False, help_text=_('Specify the application that is affected by this vulenerability.'), verbose_name=_('Affected Application'))
+    affected_app = models.ForeignKey(Application, on_delete=models.DO_NOTHING, blank=False, help_text=_('Specify the application that is affected by this vulenerability.'), verbose_name=_('Affected Application'))
     affected_version = models.CharField(max_length=256, blank=True, help_text=_('Specify the version of the application that is affected by this vulenerability.') , verbose_name=_('Affected Version(s)'))
     environment = models.TextField(blank=True, help_text=_('Specify the environment used during the test, including device, OS, network conection type, target hosts, etc.'))
     severity = models.IntegerField(choices=SEVERITY_CHOICES, blank=False, null=False, default=MEDIUM_SEVERITY)
     pre_conditions = models.TextField(blank=True, help_text=_('If any, specify the pre-conditions to exploit this vulnerablity.'), verbose_name=_('Pre-condition(s)'))
     reproduction_steps = models.TextField(blank=True, help_text=_('Specify the steps to reproduce.'), verbose_name=_('Steps to Reproduce'))
     attack_vector = models.TextField(blank=True,  help_text=_('Specify the attack vectors, including affected pages/screens, input parameters, a test HTTP Request with attack payloads together with its response, etc.)'),  verbose_name=_('Attack Vector(s)'))
-    reporter = models.ForeignKey(Person, help_text=_('Specify a person who reported this vulnerability'))
+    reporter = models.ForeignKey(Person, on_delete=models.DO_NOTHING, help_text=_('Specify a person who reported this vulnerability'))
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=OPEN_STATUS)
     fixed_at = models.DateTimeField(blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
     vulnerability_classes = models.ManyToManyField(VulnerabilityClass, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
-    activity = models.ForeignKey(Activity, null=True, blank=True)
+    activity = models.ForeignKey(Activity, on_delete=models.DO_NOTHING, null=True, blank=True)
     detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD,  verbose_name=_('Detection Method'))
     tags = models.ManyToManyField(Tag, blank=True)
 
@@ -884,13 +884,13 @@ class Attachment(models.Model):
 
 class VulnerabilityAttachment(Attachment):
     """Attachment for a specific vulnerability."""
-    vulnerability = models.ForeignKey(Vulnerability)
+    vulnerability = models.ForeignKey(Vulnerability, on_delete=models.DO_NOTHING)
 
 
 class VulnerabilityComment(Comment):
     """Comment for a specific engagement."""
 
-    vulnerability = models.ForeignKey(Vulnerability)
+    vulnerability = models.ForeignKey(Vulnerability, on_delete=models.DO_NOTHING)
 
 # These two auto-delete files from filesystem when they are unneeded:
 

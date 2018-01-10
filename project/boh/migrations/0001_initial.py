@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
                 ('message', models.TextField()),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('activity', models.ForeignKey(to='boh.Activity')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('activity', models.ForeignKey(to='boh.Activity', on_delete=models.DO_NOTHING)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'abstract': False,
@@ -89,8 +89,8 @@ class Migration(migrations.Migration):
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
                 ('file_type', models.CharField(choices=[('report', 'Report'), ('documentation', 'Documentation')], max_length=13)),
-                ('application', models.ForeignKey(to='boh.Application')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('application', models.ForeignKey(to='boh.Application', on_delete=models.DO_NOTHING)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'abstract': False,
@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
                 ('close_date', models.DateTimeField(blank=True, help_text='The date and time when the status is changed to closed.', null=True)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('application', models.ForeignKey(to='boh.Application')),
+                ('application', models.ForeignKey(to='boh.Application', on_delete=models.DO_NOTHING)),
             ],
             options={
                 'ordering': ['start_date'],
@@ -137,8 +137,8 @@ class Migration(migrations.Migration):
                 ('message', models.TextField()),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('engagement', models.ForeignKey(to='boh.Engagement')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('engagement', models.ForeignKey(to='boh.Engagement', on_delete=models.DO_NOTHING)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'abstract': False,
@@ -152,7 +152,7 @@ class Migration(migrations.Migration):
                 ('environment_type', models.CharField(choices=[('dev', 'Development'), ('int', 'Integration'), ('qa', 'Quality Assurance'), ('ppe', 'Pre-Production'), ('cat', 'Customer Acceptance'), ('prod', 'Production')], help_text='Specify the type of environment.', max_length=4)),
                 ('description', models.TextField(blank=True, help_text="Information about the environment's purpose, physical location, hardware, and deployment.")),
                 ('testing_approved', models.BooleanField(default=False, help_text='Specify if security testing has been approved for this environment.')),
-                ('application', models.ForeignKey(to='boh.Application')),
+                ('application', models.ForeignKey(to='boh.Application', on_delete=models.DO_NOTHING)),
             ],
             options={
                 'ordering': ['-testing_approved', 'environment_type'],
@@ -169,7 +169,7 @@ class Migration(migrations.Migration):
                 ('notes', models.TextField(blank=True, help_text='Additional information about these credentials.')),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('environment', models.ForeignKey(to='boh.Environment')),
+                ('environment', models.ForeignKey(to='boh.Environment', on_delete=models.DO_NOTHING)),
             ],
             options={
                 'verbose_name_plural': 'Environment credentials',
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('location', models.URLField(help_text='A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)')),
                 ('notes', models.TextField(blank=True, help_text="Information about the location's purpose, physical location, and deployment.")),
-                ('environment', models.ForeignKey(to='boh.Environment')),
+                ('environment', models.ForeignKey(to='boh.Environment', on_delete=models.DO_NOTHING)),
             ],
             options={
             },
@@ -224,8 +224,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('owner', models.BooleanField(default=False)),
                 ('notes', models.TextField(blank=True)),
-                ('application', models.ForeignKey(to='boh.Application')),
-                ('person', models.ForeignKey(to='boh.Person')),
+                ('application', models.ForeignKey(to='boh.Application', on_delete=models.DO_NOTHING)),
+                ('person', models.ForeignKey(to='boh.Person', on_delete=models.DO_NOTHING)),
             ],
             options={
             },
@@ -269,7 +269,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='engagement',
             name='requestor',
-            field=models.ForeignKey(blank=True, to='boh.Person', null=True),
+            field=models.ForeignKey(blank=True, to='boh.Person', null=True, on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -281,7 +281,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='application',
             name='organization',
-            field=models.ForeignKey(to='boh.Organization'),
+            field=models.ForeignKey(to='boh.Organization', on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -299,19 +299,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='application',
             name='threadfix',
-            field=models.ForeignKey(blank=True, to='boh.ThreadFix', null=True),
+            field=models.ForeignKey(blank=True, to='boh.ThreadFix', null=True, on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='activity',
             name='activity_type',
-            field=models.ForeignKey(to='boh.ActivityType'),
+            field=models.ForeignKey(to='boh.ActivityType', on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='activity',
             name='engagement',
-            field=models.ForeignKey(to='boh.Engagement'),
+            field=models.ForeignKey(to='boh.Engagement', on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
         migrations.AddField(

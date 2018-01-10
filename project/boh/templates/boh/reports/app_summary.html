@@ -22,7 +22,7 @@
      <table class="table table-condensed">
          {% if application.data_classification_level %}
          <tbody>
-         {% if application.data_classification_level = 0 %}
+         {% if application.data_classification_level == 0 %}
            <tr>
              <td class="col-sm-2 bg-vuln-low vuln-count text-center">Public</td>
            </tr>
@@ -34,7 +34,7 @@
                </div>
              </td>
            </tr>
-         {% elif application.data_classification_level = 1 %}
+         {% elif application.data_classification_level == 1 %}
           <tr>
              <td class="col-sm-2 bg-vuln-low vuln-count text-center">Private</td>
            </tr>
@@ -48,7 +48,7 @@
            </tr>
              {% endif %}
 
-             {% if application.data_classification_level = 2 %}
+             {% if application.data_classification_level == 2 %}
              <tr>
                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">Confidential</td>
              </tr>
@@ -62,7 +62,7 @@
              </tr>
              {% endif %}
 
-             {% if application.data_classification_level = 3 %}
+             {% if application.data_classification_level == 3 %}
              <tr>
              <td class="col-sm-2 bg-vuln-high vuln-count text-center">Sensitive</td>
              </tr>
@@ -76,7 +76,7 @@
              </tr>
              {% endif %}
 
-             {% if application.data_classification_level = 4 %}
+             {% if application.data_classification_level == 4 %}
              <tr>
               <td class="col-sm-2 bg-vuln-critical vuln-count text-center">Highly Sensitive</td>
              </tr>
@@ -102,20 +102,20 @@
            {% if application.asvs_level %}
            <tbody>
              <tr>
-               {% if application.asvs_level = 0 %}
+               {% if application.asvs_level == 0 %}
                <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{% trans 'ASVS Level' %} 0</td>
                {% endif %}
 
-               {% if application.asvs_level = 1 %}
+               {% if application.asvs_level == 1 %}
                <td class="col-sm-2 bg-vuln-high vuln-count text-center">{% trans 'ASVS Level' %} 1</td>
                {% endif %}
 
-               {% if application.asvs_level = 2 %}
+               {% if application.asvs_level == 2 %}
                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{% trans 'ASVS Level' %} 2
                   {{ application.asvs_level_percent_achieved }}% {% trans 'Compliant to' %}<br> {% trans 'ASVS Level' %} {{ application.asvs_level_target }}</td>
                {% endif %}
 
-               {% if application.asvs_level = 3 %}
+               {% if application.asvs_level == 3 %}
                <td class="col-sm-2 bg-vuln-low vuln-count text-center">{% trans 'ASVS Level' %} 3</td>
                {% endif %}
              </tr>

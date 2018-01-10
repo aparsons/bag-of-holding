@@ -1,10 +1,9 @@
 from django.conf.urls import include, url
-
 from rest_framework import routers
 
 from . import viewsets
 
-
+app_name = 'boh_api'
 router = routers.DefaultRouter()
 router.register(r'organizations', viewsets.OrganizationViewSet)
 router.register(r'applications', viewsets.ApplicationViewSet)

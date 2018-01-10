@@ -83,6 +83,7 @@ project/mercari_data*.json
 
 # OS Environment Variables Config file
 config/boh_config.sh
+config/boh_config_prod.sh
 
 #Mac
 *.DS_Store
