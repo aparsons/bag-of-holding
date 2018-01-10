@@ -38,7 +38,7 @@ class VulnerabilityFilter(django_filters.FilterSet):
     status = django_filters.MultipleChoiceFilter(choices=Vulnerability.STATUS_CHOICES)
     reporter = django_filters.ModelMultipleChoiceFilter(queryset=Person.objects.all())
     detection_method = django_filters.MultipleChoiceFilter(choices=Vulnerability.DETECTION_METHOD_CHOICES)
-    vulnerability_class = django_filters.ModelMultipleChoiceFilter(queryset=VulnerabilityClass.objects.all())
+    vulnerability_classes = django_filters.ModelMultipleChoiceFilter(queryset=VulnerabilityClass.objects.all())
 
     def count(self):
         count = 0
@@ -52,6 +52,6 @@ class VulnerabilityFilter(django_filters.FilterSet):
     class Meta:
         model = Vulnerability
         fields = [
-            'name', 'affected_app', 'severity', 'vulnerability_class', 'status', 'reporter', 'tags',
-            'vulnerability_class', 'detection_method'
+            'name', 'affected_app', 'severity', 'vulnerability_classes', 'status', 'reporter', 'tags',
+            'detection_method'
         ]
