@@ -10,7 +10,7 @@ from .base import *
 SECRET_KEY = os.environ['BOH_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -21,7 +21,7 @@ DATABASES = {
         'USER': os.environ['BOH_DB_USER'],
         'PASSWORD': os.environ['BOH_DB_PASSWORD'],
         'HOST': '127.0.0.1',
-        'PORT': '8889',
+        'PORT': '3306',
     }
 }
 
