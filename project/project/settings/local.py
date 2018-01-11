@@ -12,8 +12,6 @@ SECRET_KEY = os.environ['BOH_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS=['localhost', '127.0.0.1', '[::1]', '10.10.13.2',  'proxy']
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 DATABASES = {
