@@ -58,7 +58,9 @@
           <div class="panel-heading">
             <h3 class="panel-title"><span class="fa fa-save" aria-hidden="true"></span> {% trans 'Potential Threats' %}</h3>
           </div>
+          <div class="panel-body">
           {% if application.threats %}{{ application.threats|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'The potential threats are not specified.' %}</em></small></p>{% endif %}
+          </div>
         </div>
       </div>
     </div>
