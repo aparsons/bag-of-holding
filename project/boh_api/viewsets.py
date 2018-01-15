@@ -16,9 +16,11 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = models.Application.objects.all()
     serializer_class = serializers.ApplicationSerializer
 
+
 class VulnerabilityViewSet(viewsets.ModelViewSet):
     queryset = models.Vulnerability.objects.all()
     serializer_class = serializers.VulnerabilitySerializer
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = models.Tag.objects.all()
@@ -43,6 +45,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
 class ActivityTypeViewSet(viewsets.ModelViewSet):
     queryset = models.ActivityType.objects.all()
     serializer_class = serializers.ActivityTypeSerializer
+
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = get_user_model().objects.all()
