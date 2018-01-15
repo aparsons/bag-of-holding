@@ -180,6 +180,11 @@ class ApplicationSettingsRepositoryForm(forms.ModelForm):
         fields = ['repository']
 
 
+class ApplicationSettingsThreatsForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['threats']
+
 class ApplicationSettingsFeaturesForm(forms.ModelForm):
     class Meta:
         model = models.Application

@@ -385,7 +385,7 @@ class Application(TimeStampedModel, models.Model):
     # General
     name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for the application.'))
     description = models.TextField(blank=True, help_text=_('Information about the application\'s purpose, history, and design.'))
-
+    threats = models.TextField(blank=True, help_text=_('Potential threats that could affect the application.'))
     # Metadata
     business_criticality = models.CharField(max_length=30, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
     authentication = models.TextField(blank=True, help_text=_('Does application implement any kind of authentication? If yes, provide additional details.'))

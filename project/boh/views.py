@@ -989,6 +989,7 @@ def application_settings_general(request, application_id):
     organization_form = forms.ApplicationSettingsOrganizationForm(instance=application)
     features_form = forms.ApplicationSettingsFeaturesForm(instance=application)
     dependencies_form = forms.ApplicationSettingsDependenciesForm(instance=application)
+    threats_form = forms.ApplicationSettingsThreatsForm(instance=application)
 
     if request.method == 'POST':
         if 'submit-general' in request.POST:
@@ -1005,6 +1006,14 @@ def application_settings_general(request, application_id):
                 messages.success(request, _('You successfully updated this application\'s repository.'), extra_tags=random.choice(success_messages))
             else:
                 messages.error(request, _('There was a problem updating this application\'s repository.'), extra_tags=random.choice(error_messages))
+        elif 'submit-threats' in request.POST:
+            threats_form = forms.ApplicationSettingsThreatsForm(request.POST, instance=application)
+            if threats_form.is_valid():
+                threats_form.save()
+                messages.success(request, _('You successfully updated this application\'s potential threats.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s potential threats.'), extra_tags=random.choice(error_messages))
+
         elif 'submit-organization' in request.POST:
             organization_form = forms.ApplicationSettingsOrganizationForm(request.POST, instance=application)
             if organization_form.is_valid():
@@ -1034,6 +1043,7 @@ def application_settings_general(request, application_id):
         'organization_form': organization_form,
         'features_form': features_form,
         'dependencies_form': dependencies_form,
+        'threats_form': threats_form,
         'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'

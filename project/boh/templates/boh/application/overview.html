@@ -44,11 +44,21 @@
           </div>
           <ul class="list-group">
             {% if application.repository %}
-              <li class="list-group-item">{{ agreement.name }} <a target="_blank" rel="nofollow noopener noreferrer" href="{{ application.repository }}">{{ application.repository }}</a></li>
+              <li class="list-group-item"><a target="_blank" rel="nofollow noopener noreferrer" href="{{ application.repository }}">{{ application.repository }}</a></li>
             {% else %}
               <li class="list-group-item"><small class="text-muted"><em>{% trans 'The code repository is not specified.' %}</em></small></li>
             {% endif %}
           </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-save" aria-hidden="true"></span> {% trans 'Potential Threats' %}</h3>
+          </div>
+          {% if application.threats %}{{ application.threats|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'The potential threats are not specified.' %}</em></small></p>{% endif %}
         </div>
       </div>
     </div>

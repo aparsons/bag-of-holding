@@ -67,18 +67,45 @@
     </div>
   </div>
 </form>
-
+<form method="post" action="{% url 'boh:application.settings.general' application.id %}">
+  {% csrf_token %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{% trans 'Update dependencies' %}</h3>
+    </div>
+    <div class="panel-body">
+      {% include "boh/snippets/form/_general.html" with control=dependencies_form.dependencies %}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-primary" name="submit-dependencies" type="submit">{% trans 'Update Dependencies' %}</button>
+    </div>
+  </div>
+</form>
   <form method="post" action="{% url 'boh:application.settings.general' application.id %}">
     {% csrf_token %}
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">{% trans 'Update dependencies' %}</h3>
+        <h3 class="panel-title">{% trans 'Update Repository' %}</h3>
       </div>
       <div class="panel-body">
-        {% include "boh/snippets/form/_general.html" with control=dependencies_form.dependencies %}
+        {% include "boh/snippets/form/_general.html" with control=repository_form.repository %}
       </div>
       <div class="panel-footer">
-        <button class="btn btn-primary" name="submit-dependencies" type="submit">{% trans 'Update Dependencies' %}</button>
+        <button class="btn btn-primary" name="submit-repository" type="submit">{% trans 'Update Dependencies' %}</button>
+      </div>
+    </div>
+  </form>
+  <form method="post" action="{% url 'boh:application.settings.general' application.id %}">
+    {% csrf_token %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{% trans 'Update Potential Threats' %}</h3>
+      </div>
+      <div class="panel-body">
+        {% include "boh/snippets/form/_markdown.html" with control=threats_form.threats %}
+      </div>
+      <div class="panel-footer">
+        <button class="btn btn-primary" name="submit-threats" type="submit">{% trans 'Update Potential Threats' %}</button>
       </div>
     </div>
   </form>
