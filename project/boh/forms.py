@@ -441,7 +441,7 @@ class ActivityDeleteForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = models.Person
-        fields = ['first_name', 'last_name', 'email', 'slack_id' 'phone_work', 'phone_mobile', 'job_title', 'role']
+        fields = ['first_name', 'last_name', 'email', 'slack_id', 'phone_work', 'phone_mobile', 'job_title', 'role']
 
 
 class PersonDeleteForm(forms.ModelForm):
