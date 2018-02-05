@@ -31,6 +31,7 @@
             <th class="col-md-3">{% trans 'Name' %}</th>
             <th class="col-md-4">{% trans 'Title' %}</th>
             <th class="col-md-3">{% trans 'Email' %}</th>
+            <th class="col-md-3">{% trans 'Slack ID' %}</th>
             <th class="col-md-2">{% trans 'Role' %}</th>
           </tr>
         </thead>
@@ -40,6 +41,7 @@
             <td><a href="{% url 'boh:person.detail' person.id %}">{{ person.last_name }}, {{ person.first_name }} </a></td>
             <td>{{ person.job_title }}</td>
             <td><a href="mailto://{{ person.email }}">{{ person.email }}</a></td>
+            <td>{{ person.slack_id }}</td>
             <td>{{ person.get_role_display }}</td>
           </tr>
           {% endfor %}

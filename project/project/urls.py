@@ -12,7 +12,11 @@ base_urlpatterns = [
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, name='logout'),
 
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
+
+
+    # Google OAuth2
+    url(r'^auth/', include('social_django.urls', namespace='social')),
 ]
 
 # Apply URL_PREFIX setting to all urls

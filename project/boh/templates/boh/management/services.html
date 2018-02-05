@@ -10,7 +10,7 @@
     <h3 class="panel-title">{% trans 'ThreadFix Services' %}</h3>
   </div>
   <ul class="list-group">
-    <li class="list-group-item">{% trans '<a href="http://www.threadfix.org/download/" target="_blank">ThreadFix</a> is a software vulnerability aggregation and management system that helps organizations aggregate vulnerability data, generate virtual patches, and interact with software defect tracking systems.' %}</li>
+    <li class="list-group-item">{% trans '<a href="http://www.threadfix.org/download/" target="_blank" rel="noopener noreferrer">ThreadFix</a> is a software vulnerability aggregation and management system that helps organizations aggregate vulnerability data, generate virtual patches, and interact with software defect tracking systems.' %}</li>
     {% if not threadfix_services %}
     <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no ThreadFix services.' %}</em></small></li>
     {% endif %}
@@ -30,7 +30,7 @@
         {% for threadfix in threadfix_services %}
         <tr>
           <td>{{ threadfix.name }}</td>
-          <td><a href="{{ threadfix.host }}" target="_blank">{{ threadfix.host }} <span class="fa fa-external-link" aria-hidden="true"></span></a></td>
+          <td><a href="{{ threadfix.host }}" target="_blank" rel="noopener noreferrer">{{ threadfix.host }} <span class="fa fa-external-link" aria-hidden="true"></span></a></td>
           <td class="text-center">{% if threadfix.verify_ssl %}<span class="fa fa-lock text-success" aria-hidden="true"></span>{% else %}<span class="fa fa-unlock text-danger" aria-hidden="true"></span>{% endif %}</td>
           <td class="text-center"><a href="{% url 'boh:management.services.threadfix.edit' threadfix.id %}"><span class="fa fa-pencil-square-o" aria-hidden="true"></span> {% trans 'Edit' %}</a></td>
           <td class="text-center"><a class="threadfix-process" href="{% url 'boh:management.services.threadfix.test' threadfix.id %}"><span class="fa fa-flask" aria-hidden="true"></span> {% trans 'Test' %}</a></td>

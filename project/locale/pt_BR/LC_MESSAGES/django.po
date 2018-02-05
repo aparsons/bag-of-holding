@@ -574,7 +574,7 @@ msgid "Estimate the number of user records within the application."
 msgstr "Estimar o número de cadastras de usuários na aplicação."
 
 #: boh/models.py:360
-msgid "Estimate the application's revenue in USD."
+msgid "Estimate the application's revenue in JPY."
 msgstr "Estimar o valor em R$ da aplicação."
 
 #: boh/models.py:361
@@ -1283,7 +1283,7 @@ msgid "User Records"
 msgstr "Número de Usuários"
 
 #: boh/templates/boh/application/overview.html:161
-msgid "Revenue (USD)"
+msgid "Revenue (JPY)"
 msgstr "Valor (R$)"
 
 #: boh/templates/boh/application/overview.html:177
@@ -1976,12 +1976,12 @@ msgstr "Serviços ThreadFix"
 
 #: boh/templates/boh/management/services.html:13
 msgid ""
-"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\">ThreadFix</"
+"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\" rel=\"noopener noreferrer\">ThreadFix</"
 "a> is a software vulnerability aggregation and management system that helps "
 "organizations aggregate vulnerability data, generate virtual patches, and "
 "interact with software defect tracking systems."
 msgstr ""
-"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\">ThreadFix</"
+"<a href=\"http://www.threadfix.org/download/\" target=\"_blank\" rel=\"noopener noreferrer\">ThreadFix</"
 "a> é um software de agregração de vulonerabilidades e sistema de "
 "gerenciamento que auxilia as organizações a agregar dados de "
 "vulnerabilidades, gerar correções virtuais, e interagir com sistemas de "

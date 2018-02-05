@@ -122,7 +122,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='threadfixmetrics',
             name='application',
-            field=models.ForeignKey(to='boh.Application'),
+            field=models.ForeignKey(to='boh.Application', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='externalrequest',
@@ -132,12 +132,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='externalrequest',
             name='application',
-            field=models.ForeignKey(to='boh.Application', blank=True),
+            field=models.ForeignKey(to='boh.Application', blank=True, on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='externalrequest',
             name='requestor',
-            field=models.ForeignKey(to='boh.Person'),
+            field=models.ForeignKey(to='boh.Person', on_delete=models.DO_NOTHING),
         ),
         migrations.RunPython(update_durations),
     ]

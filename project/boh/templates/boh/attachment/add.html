@@ -1,0 +1,28 @@
+{% extends "boh/vulnerability/base_vulnerability.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Attach a file' %}{% endblock %}
+
+{% block vulnerability_content %}
+  <div class="row">
+    <div class="col-md-12">
+      <form method="post" action="{% url 'boh:vulnerability.attachments.add' vulnerability.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{% trans '' %}</h3>
+          </div>
+          <div class="panel-body">
+            {% include "boh/snippets/form/_general.html" with control=form.attachment %}
+            {% include "boh/snippets/form/_markdown.html" with control=form.description %}
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-primary" type="submit">{% trans 'Upload' %}</button>
+            <a href="{% url 'boh:vulnerability.attachments' vulnerability.id %}" class="btn btn-default" role="button">{% trans 'Cancel' %}</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock vulnerability_content %}

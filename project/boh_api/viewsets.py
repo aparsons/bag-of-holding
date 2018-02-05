@@ -17,6 +17,11 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ApplicationSerializer
 
 
+class VulnerabilityViewSet(viewsets.ModelViewSet):
+    queryset = models.Vulnerability.objects.all()
+    serializer_class = serializers.VulnerabilitySerializer
+
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = models.Tag.objects.all()
     serializer_class = serializers.TagSerializer

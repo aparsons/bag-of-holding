@@ -1,10 +1,9 @@
 from django.conf.urls import include, url
-
 from rest_framework import routers
 
 from . import viewsets
 
-
+app_name = 'boh_api'
 router = routers.DefaultRouter()
 router.register(r'organizations', viewsets.OrganizationViewSet)
 router.register(r'applications', viewsets.ApplicationViewSet)
@@ -14,6 +13,7 @@ router.register(r'engagements', viewsets.EngagementViewSet)
 router.register(r'activities', viewsets.ActivityViewSet)
 router.register(r'activities_types', viewsets.ActivityTypeViewSet)
 router.register(r'users', viewsets.UserViewSet)
+router.register(r'vulnerabilities', viewsets.VulnerabilityViewSet)
 
 urlpatterns = [
     url(r'^v0/', include(router.urls), name='v0'),

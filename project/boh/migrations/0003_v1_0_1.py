@@ -60,13 +60,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='application',
             name='organization',
-            field=models.ForeignKey(to='boh.Organization', help_text='The organization containing this application.'),
+            field=models.ForeignKey(to='boh.Organization', on_delete=models.DO_NOTHING,  help_text='The organization containing this application.'),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='application',
             name='threadfix',
-            field=models.ForeignKey(to='boh.ThreadFix', null=True, blank=True, help_text='The ThreadFix service to connect to this application.'),
+            field=models.ForeignKey(to='boh.ThreadFix', on_delete=models.DO_NOTHING, null=True, blank=True, help_text='The ThreadFix service to connect to this application.'),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='engagement',
             name='requestor',
-            field=models.ForeignKey(to='boh.Person', null=True, blank=True, help_text='Specify who requested this engagement.'),
+            field=models.ForeignKey(to='boh.Person', on_delete=models.DO_NOTHING, null=True, blank=True, help_text='Specify who requested this engagement.'),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='relation',
             name='person',
-            field=models.ForeignKey(to='boh.Person', help_text='The person associated with the application.'),
+            field=models.ForeignKey(to='boh.Person', on_delete=models.DO_NOTHING, help_text='The person associated with the application.'),
             preserve_default=True,
         ),
         migrations.AlterField(

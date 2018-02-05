@@ -119,6 +119,12 @@
                 {{ form.tags|add_class:"form-control"|attr:"placeholder:Tags" }}
               </div>
             </div>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <label class="control-label" for="{{ form.data_elements.id_for_label }}">{{ form.data_elements.label }}:</label>
+                {{ form.data_elements|add_class:"form-control"|attr:"placeholder:Data Elements" }}
+              </div>
+            </div>
             <div class="panel panel-default no-margin-bottom-md no-margin-bottom-lg">
               <div class="panel-body">
                 <label class="control-label" for="{{ form.service_level_agreements.id_for_label }}">{{ form.service_level_agreements.label }}:</label>
