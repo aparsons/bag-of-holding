@@ -9,7 +9,7 @@
 {% block application_content %}
 <div class="row">
   <div class="col-md-12">
-    <a href="{% url 'boh:vulnerability.add' %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
+    <a href="{% url 'boh:application.vulnerabilities.add' application.id %}" class="btn btn-success" role="button"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
     <hr>
   </div>
 </div>
@@ -17,7 +17,6 @@
     {% if application.vulnerability_set.count > 0 %}
       <div class="col-md-12">
         <div class="margin-bottom clearfix">
-          <a href="{% url 'boh:vulnerability.add' %}" class="btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Report a Vulnerability' %}"><span class="fa fa-plus" aria-hidden="true"></span><span class="hidden-xs"> {% trans 'Report a Vulnerability' %}</span></a>
           <div class="pull-right">
             <span class="text-muted"><b>{{ vulnerabilities.start_index }}</b> - <b>{{ vulnerabilities.end_index }}</b> of <b>{{ vulnerabilities.paginator.count }}</b></span>
             <div class="btn-group" role="group" aria-label="...">

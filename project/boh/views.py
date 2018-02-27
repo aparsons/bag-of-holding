@@ -877,6 +877,34 @@ def application_vulnerabilities(request, application_id):
         'active_tab': 'vulnerabilities'
     })
 
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_vulnerabilities_add(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+    form = forms.ApplicationVulnerabilityAddForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            vulnerability = form.save(commit=False)
+            vulnerability.affected_app = application
+
+            try:
+                vulnerability.save()
+            except IntegrityError:
+                messages.error(request, _('"%(name)s" is already reported for this application.') % {'name': vulnerability.name}, extra_tags=random.choice(error_messages))
+            else:
+                messages.success(request, _('You successfully added "%(name)s" to this application.') % {'name': vulnerability.name}, extra_tags=random.choice(success_messages))
+            finally:
+                return redirect('boh:application.vulnerabilities', application.id)
+        else:
+            messages.error(request, _('There was a problem saving the vulnerability to this application.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/application/add_vulnerability.html', {
+        'application': application,
+        'form': form,
+        'active_top': 'applications',
+        'active_tab': 'vulnerabilities'
+    })
 
 
 @login_required
@@ -1908,8 +1936,6 @@ def vulnerability_attachment_add(request, vulnerability_id):
 @login_required
 @require_http_methods(['GET'])
 def vulnerability_attachment_view(request, vulnerability_id, attachment_id):
-    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
-    attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
     # TODO: need to read the file and write its data to the HTTP Response instead
     return HttpResponse("Text only, please.", content_type="text/plain")
 
@@ -1918,7 +1944,6 @@ def vulnerability_attachment_view(request, vulnerability_id, attachment_id):
 def vulnerability_attachment_delete(request, vulnerability_id, attachment_id):
     vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
     attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
-    attachment_list = vulnerability.vulnerabilityattachment_set
     form = forms.VulnerabilityAttachmentDeleteForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():

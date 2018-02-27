@@ -56,6 +56,7 @@ urlpatterns = [
     url(r'^applications/(?P<application_id>\d+)/people/(?P<relation_id>\d+)/edit/$', views.application_people_edit, name='application.people.edit'),
     url(r'^applications/(?P<application_id>\d+)/people/(?P<relation_id>\d+)/delete/$', views.application_people_delete, name='application.people.delete'),
     url(r'^applications/(?P<application_id>\d+)/vulnerabilities/$', views.application_vulnerabilities, name='application.vulnerabilities'),
+    url(r'^applications/(?P<application_id>\d+)/vulnerabilities/add$', views.application_vulnerabilities_add, name='application.vulnerabilities.add'),
     url(r'^applications/(?P<application_id>\d+)/settings/$', views.application_settings_general, name='application.settings.general'),
     url(r'^applications/(?P<application_id>\d+)/settings/metadata/$', views.application_settings_metadata, name='application.settings.metadata'),
     url(r'^applications/(?P<application_id>\d+)/settings/data-elements/$', views.application_settings_data_elements, name='application.settings.data-elements'),

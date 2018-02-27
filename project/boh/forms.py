@@ -279,6 +279,13 @@ class ApplicationDeleteForm(forms.ModelForm):
         model = models.Application
         fields = []
 
+class ApplicationVulnerabilityAddForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_version', 'environment', 'severity',
+                  'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline',
+                  "vulnerability_classes", 'detection_method', 'tags']
+
 
 # Environment
 
