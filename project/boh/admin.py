@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
@@ -310,7 +309,7 @@ class TechnologyAdmin(admin.ModelAdmin):
     category_display.short_description = _('Category')
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html('<a href="{}" rel="nofollow noopener noreferrer" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = _('Reference')
@@ -329,10 +328,11 @@ class RegulationAdmin(admin.ModelAdmin):
     category_display.short_description = 'Category'
 
     def reference_link(self, obj):
-        return format_html('<a href="{}" rel="nofollow" target="_blank">{}</a>', obj.reference, obj.reference)
+        return format_html('<a href="{}" rel="nofollow noopener noreferrer" target="_blank">{}</a>', obj.reference, obj.reference)
     reference_link.admin_order_field = 'reference'
     reference_link.allow_tags = True
     reference_link.short_description = _('Reference')
+
 admin.site.register(models.Regulation, RegulationAdmin)
 
 
@@ -340,3 +340,14 @@ class ServiceLevelAgreementAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
 
 admin.site.register(models.ServiceLevelAgreement, ServiceLevelAgreementAdmin)
+
+class VulnerabililtyAttachmentAdmin(admin.ModelAdmin):
+    list_display = ['file_name', 'description']
+
+admin.site.register(models.VulnerabilityAttachment, VulnerabililtyAttachmentAdmin)
+
+class VulnerabilityClassAdmin(admin.ModelAdmin):
+    list_display = ['cwe_id', 'name', 'url']
+
+admin.site.register(models.VulnerabilityClass, VulnerabilityClassAdmin)
+

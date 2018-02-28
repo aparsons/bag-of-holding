@@ -15,6 +15,10 @@
           <td><a href="mailto://{{ person.email }}">{{ person.email }}</a></td>
         </tr>
         <tr>
+          <td><strong>{% trans 'Slack ID' %}</strong></td>
+          <td>{{ person.slack_id }}</td>
+        </tr>
+        <tr>
           <td><strong><span class="hidden-xs">{% trans 'Phone' %} </span>{% trans 'Work' %}</strong></td>
           <td>{{ person.phone_work|format_phone }}</td>
         </tr>

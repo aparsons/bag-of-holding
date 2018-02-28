@@ -49,11 +49,11 @@ class EngagementCoverageReport(Report):
 
         if self.file_format == 'html':
             template = loader.get_template('boh/reports/engagement_coverage.html')
-            context = Context({
+            context = {
                 'current_datetime': timezone.now(),
                 'requester': self.requester,
                 'organizations': self.organizations
-            })
+            }
             return template.render(context)
         else:
             return 'test, test'
@@ -71,11 +71,11 @@ class ThreadFixSummaryReport(Report):
 
         if self.file_format == 'html':
             template = loader.get_template('boh/reports/threadfix_summary.html')
-            context = Context({
+            context = {
                 'current_datetime': timezone.now(),
                 'requester': self.requester,
                 'organizations': self.organizations
-            })
+            }
             return template.render(context)
         else:
             return 'test, test'
@@ -93,11 +93,11 @@ class AppSummaryReport(Report):
 
         if self.file_format == 'html':
             template = loader.get_template('boh/reports/app_summary.html')
-            context = Context({
+            context = {
                 'current_datetime': timezone.now(),
                 'requester': self.requester,
                 'applications': self.applications
-            })
+            }
             return template.render(context)
         else:
             return 'test, test'

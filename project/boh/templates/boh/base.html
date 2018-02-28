@@ -55,6 +55,7 @@
             <li{% if active_top == 'dashboard' %} class="active"{% endif %}><a href="{% url 'boh:dashboard.personal' %}"><span class="fa fa-tasks" aria-hidden="true"></span> {% trans 'Dashboard' %}</a></li>
             <li{% if active_top == 'applications' %} class="active"{% endif %}><a href="{% url 'boh:application.list' %}"><span class="fa fa-list-alt" aria-hidden="true"></span> {% trans 'Applications' %}</a></li>
             <li{% if active_top == 'people' %} class="active"{% endif %}><a href="{% url 'boh:person.list' %}"><i class="fa fa-users" aria-hidden="true"></i> {% trans 'People' %}</a></li>
+            <li{% if active_top == 'vulnerabilities' %} class="active"{% endif %}><a href="{% url 'boh:vulnerability.list' %}"><i class="fa fa-bug" aria-hidden="true"></i> {% trans 'Vulnerabilities' %}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'boh_api:api-root' %}" target="_blank"><span class="fa fa-code" aria-hidden="true"></span><span class="hidden-sm"> API</span></a></li>

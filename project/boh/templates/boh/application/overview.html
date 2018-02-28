@@ -14,7 +14,73 @@
         {% if application.description %}{{ application.description|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'There is no description.' %}</em></small></p>{% endif %}
       </div>
     </div>
-
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-lock" aria-hidden="true"></span> {% trans 'Features' %}</h3>
+          </div>
+          <div class="panel-body">
+            <h4>{% trans 'Authentication' %}</h4>
+            {% if application.authentication %}{{ application.authentication|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'No authentication schemes are implemented.' %}</em></small></p>{% endif %}
+          </div>
+          <div class="panel-body">
+            <h4>{% trans 'Authorization' %}</h4>
+            {% if application.authorization %}{{ application.authorization|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'No authorization schemes are implemented.' %}</em></small></p>{% endif %}
+          </div>
+          <div class="panel-body">
+            <h4>{% trans 'Plugins' %}</h4>
+            {% if application.plugins %}{{ application.plugins|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'This application is not developed as a plug-in or extension for other application.' %}</em></small></p>{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-save" aria-hidden="true"></span> {% trans 'Repository' %}</h3>
+          </div>
+          <ul class="list-group">
+            {% if application.repository %}
+              <li class="list-group-item"><a target="_blank" rel="nofollow noopener noreferrer" href="{{ application.repository }}">{{ application.repository }}</a></li>
+            {% else %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'The code repository is not specified.' %}</em></small></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-save" aria-hidden="true"></span> {% trans 'Potential Threats' %}</h3>
+          </div>
+          <div class="panel-body">
+          {% if application.threats %}{{ application.threats|markdown_render }}{% else %}<p class="text-muted"><small><em>{% trans 'The potential threats are not specified.' %}</em></small></p>{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if application.dependencies %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-exchange" aria-hidden="true"></span> {% trans 'Dependencies' %}</h3>
+          </div>
+          <ul class="list-group">
+            {% for dependency in application.dependencies.all %}
+              <li class="list-group-item"><span class="badge">{{ dependency.platform }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ dependency.description }}"><a href="{% url 'boh:application.overview' dependency.id %}">{{ dependency.name }}</a></span></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no dependencies.' %}</em></small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
     {% with metrics=application.threadfixmetrics_set.latest %}
     {% if metrics %}
     <div class="row">
@@ -63,14 +129,28 @@
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
+            <h3 class="panel-title"><span class="fa fa-magic" aria-hidden="true"></span> {% trans 'Data Elements' %} ({{ application.data_elements.count }})</h3>
+          </div>
+          <ul class="list-group">
+            {% for data_element in application.data_elements.all %}
+              <li class="list-group-item"><span class="badge">{{ data_element.category }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ data_element.description }}">{{ data_element.name }}</span></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no data elements.' %}</em></small></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
             <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> {% trans 'Technologies' %} ({{ application.technologies.count }})</h3>
           </div>
           <ul class="list-group">
-          {% for technology in application.technologies.all %}
-            <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
-          {% empty %}
-            <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no technologies.' %}</em></small></li>
-          {% endfor %}
+            {% for technology in application.technologies.all %}
+              <li class="list-group-item"><span class="badge">{{ technology.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ technology.description }}">{{ technology.name }}</span></li>
+            {% empty %}
+              <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no technologies.' %}</em></small></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -88,9 +168,6 @@
           </ul>
         </div>
       </div>
-    </div>
-
-    <div class="row">
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -142,6 +219,14 @@
               <td>{{ application.get_business_criticality_display }}</td>
             </tr>
             <tr>
+              <td><strong>{% trans 'Data Clasification Level' %}</strong></td>
+              <td>{{ application.data_classification_level_display }}</td>
+            </tr>
+            <tr>
+              <td><strong>{% trans 'Risk Category' %}</strong></td>
+              <td>{{ application.risk_category }}</td>
+            </tr>
+            <tr>
               <td><strong>{% trans 'Platform' %}</strong></td>
               <td>{{ application.get_platform_display }}</td>
             </tr>
@@ -177,7 +262,7 @@
           {{ application.asvs_level_percent_achieved }}% {% trans 'Compliant to ASVS Level' %} {{ application.get_asvs_level_target_display }}
         </li>
         {% if application.asvs_doc_url %}
-        <a href="{{ application.asvs_doc_url }}" target="_blank" class="list-group-item text-primary">{% trans 'ASVS Detailed Report' %} <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        <a href="{{ application.asvs_doc_url }}" target="_blank" rel="noopener noreferrer" class="list-group-item text-primary">{% trans 'ASVS Detailed Report' %} <span class="fa fa-external-link" aria-hidden="true"></span></a>
         {% endif %}
         {% else %}
         <li class="list-group-item">
@@ -193,7 +278,7 @@
       </div>
       <div class="list-group">
         {% if application.threadfix %}
-        <a href="{{ application.threadfix.host }}" target="_blank" class="list-group-item text-primary">ThreadFix ({{ application.threadfix.name }}) <span class="fa fa-external-link" aria-hidden="true"></span></a>
+        <a href="{{ application.threadfix.host }}" target="_blank" rel="noopener noreferrer" class="list-group-item text-primary">ThreadFix ({{ application.threadfix.name }}) <span class="fa fa-external-link" aria-hidden="true"></span></a>
         {% endif %}
       </div>
     </div>

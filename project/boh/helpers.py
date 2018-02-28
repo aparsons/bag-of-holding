@@ -32,7 +32,9 @@ def data_sensitivity_value(data_elements):
 
 def data_classification_level(dsv):
     """Returns the data classification level of the calculated data sensitivity value."""
-    if dsv < 15:
+    if dsv < 5:
+        return 0
+    elif dsv < 15:
         return 1
     elif 15 <= dsv < 100:
         return 2
@@ -40,3 +42,19 @@ def data_classification_level(dsv):
         return 3
     else:
         return 4
+
+
+def data_classification_level_display(dcl):
+    """Returns the data classification level of the calculated data sensitivity value."""
+    if dcl == 0:
+        return "Public"
+    if dcl == 1:
+        return "Private"
+    elif dcl == 2:
+        return "Confidential"
+    elif dcl == 3:
+        return "Sensitive"
+    elif dcl == 4:
+        return "Highly Sensitive"
+    else:
+        return "None"

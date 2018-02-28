@@ -1,18 +1,40 @@
 from datetime import date, timedelta
-import re
 
+import os
 import phonenumbers
+import random
+import re
+import string
 
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from django.utils.timezone import now as timezone_now
 
 from .behaviors import TimeStampedModel
 from . import helpers, managers
 
+
+def create_random_string(length=30):
+    if length <= 0:
+        length = 30
+
+    symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    return ''.join([random.choice(symbols) for x in range(length)])
+
+
+def upload_to(instance, filename):
+    now = timezone_now()
+    filename_base, filename_ext = os.path.splitext(filename)
+    return 'uploads/{}_{}{}'.format(
+        now.strftime("%Y/%m/%d/%Y%m%d%H%M%S"),
+        create_random_string(),
+        filename_ext.lower()
+    )
 
 class Tag(models.Model):
     """Associated with application for search and categorization."""
@@ -60,7 +82,7 @@ class CustomField(TimeStampedModel, models.Model):
 
 
 class CustomFieldValue(TimeStampedModel, models.Model):
-    custom_field = models.ForeignKey(CustomField)
+    custom_field = models.ForeignKey(CustomField, on_delete=models.DO_NOTHING)
     value = models.CharField(max_length=255)
 
     class Meta:
@@ -88,8 +110,12 @@ class Person(models.Model):
     OPERATIONS_ROLE = 'operations'
     MANAGER_ROLE = 'manager'
     SECURITY_OFFICER_ROLE = 'security officer'
+    TECHNICAL_LEAD_ROLE = 'technical lead'
+    PRODUCER_ROLE = 'producer'
     SECURITY_CHAMPION_ROLE = 'security champion'
     ROLE_CHOICES = (
+        (PRODUCER_ROLE, _('Producer')),
+        (TECHNICAL_LEAD_ROLE, _('Technical Lead')),
         (DEVELOPER_ROLE, _('Developer')),
         (QUALITY_ASSURANCE_ROLE, _('Quality Assurance')),
         (OPERATIONS_ROLE, _('Operations')),
@@ -100,14 +126,15 @@ class Person(models.Model):
 
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
-    email = models.EmailField(max_length=128, unique=True)
+    email = models.EmailField(max_length=128, unique=True, default='')
+    slack_id = models.CharField(max_length=128, unique=True, default='')
     role = models.CharField(max_length=17, choices=ROLE_CHOICES)
     phone_work = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     phone_mobile = models.CharField(max_length=15, validators=[phone_regex], blank=True)
     job_title = models.CharField(max_length=128, blank=True)
 
     class Meta:
-        ordering = ['last_name']
+        ordering = ['slack_id', 'last_name', 'first_name']
         verbose_name_plural = 'People'
 
     def __str__(self):
@@ -271,9 +298,11 @@ class Application(TimeStampedModel, models.Model):
     DESKTOP_PLATFORM = 'desktop'
     MOBILE_PLATFORM = 'mobile'
     WEB_SERVICE_PLATFORM = 'web service'
+    COMMAND_LINE_PLATFORM = 'command line'
     PLATFORM_CHOICES = (
         (WEB_PLATFORM, _('Web')),
         (DESKTOP_PLATFORM, _('Desktop')),
+        (COMMAND_LINE_PLATFORM, _('Command Line')),
         (MOBILE_PLATFORM, _('Mobile')),
         (WEB_SERVICE_PLATFORM, _('Web Service')),
     )
@@ -323,16 +352,28 @@ class Application(TimeStampedModel, models.Model):
         (NONE_CRITICALITY, _('None')),
     )
 
-    DCL_1 = 1
-    DCL_2 = 2
-    DCL_3 = 3
-    DCL_4 = 4
+    HIGH_RISK = 'High Risk'
+    MEDIUM_RISK = 'Medium Risk'
+    LOW_RISK = 'Low Risk'
+    RISK_CATEGORY_CHOICES = (
+        (None, _('Not Specified')),
+        (LOW_RISK, _('Low Risk')),
+        (MEDIUM_RISK, _('Medium Risk')),
+        (HIGH_RISK, _('High Risk')),
+    )
+
+    HIGHLY_SENSITIVE_DATA_CLASSIFICATION = 4
+    SENSITIVE_DATA_CLASSIFICATION = 3
+    CONFIDENTIAL_DATA_CLASSIFICATION = 2
+    PRIVATE_DATA_CLASSIFICATION = 1
+    PUBLIC_DATA_CLASSIFICATION = 0
     DATA_CLASSIFICATION_CHOICES = (
         (None, _('Not Specified')),
-        (DCL_1, 'DCL 1'),
-        (DCL_2, 'DCL 2'),
-        (DCL_3, 'DCL 3'),
-        (DCL_4, 'DCL 4'),
+        (PUBLIC_DATA_CLASSIFICATION, 'Public'),
+        (PRIVATE_DATA_CLASSIFICATION, 'Private'),
+        (CONFIDENTIAL_DATA_CLASSIFICATION, 'Confidential'),
+        (SENSITIVE_DATA_CLASSIFICATION, 'Sensitive'),
+        (HIGHLY_SENSITIVE_DATA_CLASSIFICATION, 'Highly Sensitive'),
     )
 
     ASVS_0 = 0
@@ -350,9 +391,12 @@ class Application(TimeStampedModel, models.Model):
     # General
     name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for the application.'))
     description = models.TextField(blank=True, help_text=_('Information about the application\'s purpose, history, and design.'))
-
+    threats = models.TextField(blank=True, help_text=_('Potential threats that could affect the application.'))
     # Metadata
-    business_criticality = models.CharField(max_length=9, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    business_criticality = models.CharField(max_length=30, choices=BUSINESS_CRITICALITY_CHOICES, blank=True, null=True)
+    authentication = models.TextField(blank=True, help_text=_('Does application implement any kind of authentication? If yes, provide additional details.'))
+    authorization = models.TextField(blank=True, help_text=_('Does application implement any kind of authorization? If yes, provide additional details.'))
+    plugins = models.TextField(blank=True, help_text=_('Is this application developed as a plug-in or extension for other application? If yes, please provide additional details on what all applications it will be working with.'))
     platform = models.CharField(max_length=11, choices=PLATFORM_CHOICES, blank=True, null=True)
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
@@ -362,9 +406,12 @@ class Application(TimeStampedModel, models.Model):
     internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
 
+    repository = models.URLField(blank=True, help_text=_('Specify the URL of the source code repository'))
+    dependencies = models.ManyToManyField('self', blank=True)
     technologies = models.ManyToManyField(Technology, blank=True)
     regulations = models.ManyToManyField(Regulation, blank=True)
     service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True)
+    risk_category = models.CharField(max_length=20, choices=RISK_CATEGORY_CHOICES, blank=True, null=True)
 
     # Data Classification
     # TODO Move to Data Classification Benchmark
@@ -373,7 +420,7 @@ class Application(TimeStampedModel, models.Model):
     override_reason = models.TextField(blank=True, help_text=_('Specify why the calculated data classification level is being overridden.'))
 
     # ThreadFix
-    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, help_text=_('The ThreadFix service to connect to this application.'))
+    threadfix = models.ForeignKey(ThreadFix, blank=True, null=True, on_delete=models.DO_NOTHING, help_text=_('The ThreadFix service to connect to this application.'))
     threadfix_team_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique team identifier used within ThreadFix.'))
     threadfix_application_id = models.PositiveIntegerField(blank=True, null=True, help_text=_('The unique application identifier used within ThreadFix.'))
 
@@ -394,7 +441,7 @@ class Application(TimeStampedModel, models.Model):
     password policy
     """
 
-    organization = models.ForeignKey(Organization, help_text=_('The organization containing this application.'))
+    organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING, help_text=_('The organization containing this application.'))
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
@@ -410,7 +457,20 @@ class Application(TimeStampedModel, models.Model):
 
     def data_classification_level(self):
         """Returns the data classification level of the selected data elements."""
+        if self.override_dcl is not None:
+            return self.override_dcl
+        else:
+            return helpers.data_classification_level(self.data_sensitivity_value())
+
+    def default_data_classification_level(self):
+        """Returns the data classification level of the selected data elements."""
         return helpers.data_classification_level(self.data_sensitivity_value())
+
+    def data_classification_level_display(self):
+        return helpers.data_classification_level_display(self.data_classification_level())
+
+    def default_data_classification_level_display(self):
+        return helpers.data_classification_level_display(self.default_data_classification_level())
 
     def data_sensitivity_value(self):
         """Returns the calculated data sensitivity value of the selected data elements."""
@@ -423,7 +483,7 @@ class Application(TimeStampedModel, models.Model):
 
 
 class ApplicationCustomFieldValue(CustomFieldValue):
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         unique_together = ('application', 'custom_field', 'value')
@@ -438,7 +498,7 @@ class ThreadFixMetrics(TimeStampedModel, models.Model):
     low_count = models.PositiveIntegerField(default=0)
     informational_count = models.PositiveIntegerField(default=0)
 
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         get_latest_by = 'created_date'
@@ -454,10 +514,11 @@ class Relation(models.Model):
 
     owner = models.BooleanField(default=False, help_text=_('Specify if this person is an application owner.'))
     emergency = models.BooleanField(default=False, help_text=_('Specify if this person is an emergency contact.'))
+    security_champion = models.BooleanField(default=False, help_text=_('Specify if this person is a security champion.'))
+    technical_lead = models.BooleanField(default=False, help_text=_('Specify if this person is a technical lead.'))
     notes = models.TextField(blank=True, help_text=_('Any notes about this person\'s connection to the application.'))
-
-    person = models.ForeignKey(Person, help_text=_('The person associated with the application.'))
-    application = models.ForeignKey(Application)
+    person = models.ForeignKey(Person, on_delete=models.DO_NOTHING, help_text=_('The person associated with the application.'))
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         unique_together = ('person', 'application')
@@ -488,7 +549,7 @@ class Environment(models.Model):
     description = models.TextField(blank=True, help_text=_('Information about the environment\'s purpose, physical location, hardware, and deployment.'))
     testing_approved = models.BooleanField(default=False, help_text=_('Specify if security testing has been approved for this environment.'))
 
-    application = models.ForeignKey(Application)
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     class Meta:
         ordering = ['-testing_approved', 'environment_type']
@@ -503,7 +564,7 @@ class EnvironmentLocation(models.Model):
     location = models.URLField(help_text=_('A URL for the environment. (e.g., http://www.google.com/, https://www.owasp.org/)'))
     notes = models.TextField(blank=True, help_text=_('Information about the location\'s purpose, physical location, and deployment.'))
 
-    environment = models.ForeignKey(Environment)
+    environment = models.ForeignKey(Environment, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.location
@@ -517,7 +578,7 @@ class EnvironmentCredentials(TimeStampedModel, models.Model):
     role_description = models.CharField(max_length=128, blank=True, help_text=_('A brief description of the user\'s role or permissions. (e.g., Guest, Admin)'))
     notes = models.TextField(blank=True, help_text=_('Additional information about these credentials.'))
 
-    environment = models.ForeignKey(Environment)
+    environment = models.ForeignKey(Environment, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name_plural = 'Environment credentials'
@@ -540,13 +601,14 @@ class Engagement(TimeStampedModel, models.Model):
     start_date = models.DateField(help_text=_('The date the engagement is scheduled to begin.'))
     end_date = models.DateField(help_text=_('The date the engagement is scheduled to complete.'))
     description = models.TextField(blank=True)
+    version = models.CharField(max_length=128,blank=True,null=True,)
 
     open_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to open.'))
     close_date = models.DateTimeField(blank=True, null=True, help_text=_('The date and time when the status is changed to closed.'))
     duration = models.DurationField(blank=True, null=True)
 
-    requestor = models.ForeignKey(Person, blank=True, null=True, help_text=_('Specify who requested this engagement.'))
-    application = models.ForeignKey(Application)
+    requestor = models.ForeignKey(Person, on_delete=models.DO_NOTHING, blank=True, null=True, help_text=_('Specify who requested this engagement.'))
+    application = models.ForeignKey(Application, on_delete=models.DO_NOTHING)
 
     objects = managers.EngagementManager.from_queryset(managers.EngagementQuerySet)()
     metrics = managers.EngagementMetrics.from_queryset(managers.EngagementQuerySet)()
@@ -587,17 +649,12 @@ class Engagement(TimeStampedModel, models.Model):
 
     def is_ready_for_work(self):
         """If the engagement is pending on or after the start date."""
-        if self.status == Engagement.PENDING_STATUS:
-            if date.today() >= self.start_date:
-                return True
-        return False
+        return self.status == Engagement.PENDING_STATUS and date.today() >= self.start_date
 
     def is_past_due(self):
         """If the engagement is not closed by the end date."""
-        if self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS:
-            if date.today() > self.end_date:
-                return True
-        return False
+        return (self.status == Engagement.PENDING_STATUS or self.status == Engagement.OPEN_STATUS) \
+            and date.today() > self.end_date
 
 
 class ActivityType(TimeStampedModel, models.Model):
@@ -634,8 +691,8 @@ class Activity(models.Model):
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
     duration = models.DurationField(blank=True, null=True)
 
-    activity_type = models.ForeignKey(ActivityType)
-    engagement = models.ForeignKey(Engagement)
+    activity_type = models.ForeignKey(ActivityType, on_delete=models.DO_NOTHING)
+    engagement = models.ForeignKey(Engagement, on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     objects = managers.ActivityManager.from_queryset(managers.ActivityQuerySet)()
@@ -697,17 +754,13 @@ class Activity(models.Model):
 
     def is_ready_for_work(self):
         """If the activity is pending on or after the parent engagement's start date."""
-        if self.status == Activity.PENDING_STATUS:
-            if date.today() >= self.engagement.start_date:
-                return True
-        return False
+        return self.status == Activity.PENDING_STATUS \
+            and date.today() >= self.engagement.start_date
 
     def is_past_due(self):
         """If the activity is not closed by the parent engagement's end date."""
-        if self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS:
-            if date.today() > self.engagement.end_date:
-                return True
-        return False
+        return (self.status == Activity.PENDING_STATUS or self.status == Activity.OPEN_STATUS) \
+               and date.today() > self.engagement.end_date
 
 
 class Comment(TimeStampedModel, models.Model):
@@ -715,7 +768,7 @@ class Comment(TimeStampedModel, models.Model):
 
     message = models.TextField()
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.message
@@ -727,10 +780,152 @@ class Comment(TimeStampedModel, models.Model):
 class EngagementComment(Comment):
     """Comment for a specific engagement."""
 
-    engagement = models.ForeignKey(Engagement)
+    engagement = models.ForeignKey(Engagement, on_delete=models.DO_NOTHING)
 
 
 class ActivityComment(Comment):
     """Comment for a specific activity."""
 
-    activity = models.ForeignKey(Activity)
+    activity = models.ForeignKey(Activity, on_delete=models.DO_NOTHING)
+
+
+class VulnerabilityClass(models.Model):
+    cwe_id = models.CharField(unique=True, blank=False, max_length=10, help_text='Specify the Common Weakness Enumeration ID')
+    name = models.CharField(max_length=256, blank=False, help_text='Specify the name of the vulnerability classification')
+    url = models.URLField(blank=False, help_text='Specify the URL to the CWE definition page')
+
+    def __str__(self):
+        return self.cwe_id + ' - ' + self.name
+
+
+class Vulnerability(TimeStampedModel, models.Model):
+    INFORMATIONAL_SEVERITY = 0
+    LOW_SEVERITY = 1
+    MEDIUM_SEVERITY = 2
+    HIGH_SEVERITY = 3
+    CRITICAL_SEVERITY = 4
+    SEVERITY_CHOICES = (
+        (INFORMATIONAL_SEVERITY, _('Informational')),
+        (LOW_SEVERITY, _('Low')),
+        (MEDIUM_SEVERITY, _('Medium')),
+        (HIGH_SEVERITY, _('High')),
+        (CRITICAL_SEVERITY, _('Critical')),
+    )
+
+    OPEN_STATUS = 'Open'
+    REOPENED_STATUS = 'Re-Opened'
+    FIXING_STATUS = 'Fixing'
+    FIXED_STATUS = 'Fixed'
+    PENDING_STATUS = 'Pending'
+    RISK_ACCEPTED_STATUS = 'Risk-Accepted'
+    MITIGATED_STATUS = 'Mitigated'
+    INVALID_STATUS = 'Invalid'
+    STATUS_CHOICES = (
+        (OPEN_STATUS, _('Open')),
+        (REOPENED_STATUS, _('Re-Opened')),
+        (FIXING_STATUS, _('Fixing')),
+        (PENDING_STATUS, _('Pending')),
+        (MITIGATED_STATUS, _('Mitigated')),
+        (RISK_ACCEPTED_STATUS, _('Risk-Accepted')),
+        (FIXED_STATUS, _('Fixed')),
+        (INVALID_STATUS, _('Invalid')),
+    )
+
+    MANUAL_DETECTION_METHOD = 'Manual'
+    AUTOMATED_DETECTION_METHOD = 'Automated'
+    OTHER_DETECTION_METHOD = 'Other'
+    DETECTION_METHOD_CHOICES = (
+        (MANUAL_DETECTION_METHOD, _('Manual')),
+        (AUTOMATED_DETECTION_METHOD, _('Automated')),
+        (OTHER_DETECTION_METHOD, _('Other')),
+    )
+
+    # General
+    name = models.CharField(blank=False, max_length=256, help_text=_('Specify the name of the vulnerability.'))
+    description = models.TextField(blank=False, help_text=_('Specify the detailed description of the issue explaining the vulnerability, including the impact to the user(s) or system.'))
+    solution = models.TextField(blank=False, help_text=_('Specify the solution to fix the vulnerability.'))
+    affected_app = models.ForeignKey(Application, on_delete=models.DO_NOTHING, blank=False, help_text=_('Specify the application that is affected by this vulenerability.'), verbose_name=_('Affected Application'))
+    affected_version = models.CharField(max_length=256, blank=True, help_text=_('Specify the version of the application that is affected by this vulenerability.') , verbose_name=_('Affected Version(s)'))
+    environment = models.TextField(blank=True, help_text=_('Specify the environment used during the test, including device, OS, network conection type, target hosts, etc.'))
+    severity = models.IntegerField(choices=SEVERITY_CHOICES, blank=False, null=False, default=MEDIUM_SEVERITY)
+    pre_conditions = models.TextField(blank=True, help_text=_('If any, specify the pre-conditions to exploit this vulnerablity.'), verbose_name=_('Pre-condition(s)'))
+    reproduction_steps = models.TextField(blank=True, help_text=_('Specify the steps to reproduce.'), verbose_name=_('Steps to Reproduce'))
+    attack_vector = models.TextField(blank=True,  help_text=_('Specify the attack vectors, including affected pages/screens, input parameters, a test HTTP Request with attack payloads together with its response, etc.)'),  verbose_name=_('Attack Vector(s)'))
+    reporter = models.ForeignKey(Person, on_delete=models.DO_NOTHING, help_text=_('Specify a person who reported this vulnerability'))
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=OPEN_STATUS)
+    fixed_at = models.DateTimeField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    vulnerability_classes = models.ManyToManyField(VulnerabilityClass, blank=True,  verbose_name=_('Vulnerability Classification(s)'))
+    activity = models.ForeignKey(Activity, on_delete=models.DO_NOTHING, null=True, blank=True)
+    detection_method = models.CharField(max_length=15, choices=DETECTION_METHOD_CHOICES, default=MANUAL_DETECTION_METHOD,  verbose_name=_('Detection Method'))
+    tags = models.ManyToManyField(Tag, blank=True)
+
+    class Meta:
+        ordering = ['-severity', 'status', '-created_date']
+        verbose_name_plural = 'Vulnerabilities'
+
+    def is_editable(self):
+        return self.status != Vulnerability.INVALID_STATUS and self.status != Vulnerability.FIXED_STATUS
+
+    def is_fixed(self):
+        return self.status == Vulnerability.FIXED_STATUS
+
+    def save(self, *args, **kwargs):
+        """Automatically sets the open and closed dates when the status changes."""
+        if self.pk is not None:
+            vulnerability = Vulnerability.objects.get(pk=self.pk)
+            now = timezone.now()
+            if vulnerability.status != self.status \
+                and self.status == Vulnerability.FIXED_STATUS:
+                    self.fixed_at = now
+        else:
+            self.status = Vulnerability.OPEN_STATUS
+
+        super(Vulnerability, self).save(*args, **kwargs)
+
+
+class Attachment(models.Model):
+    file_name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, help_text=_('Description of the attachment'))
+    attachment = models.FileField()
+
+
+class VulnerabilityAttachment(Attachment):
+    """Attachment for a specific vulnerability."""
+    vulnerability = models.ForeignKey(Vulnerability, on_delete=models.DO_NOTHING)
+
+
+class VulnerabilityComment(Comment):
+    """Comment for a specific engagement."""
+
+    vulnerability = models.ForeignKey(Vulnerability, on_delete=models.DO_NOTHING)
+
+# These two auto-delete files from filesystem when they are unneeded:
+
+@receiver(models.signals.post_delete, sender=Attachment)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `Attachment` object is deleted.
+    """
+    if instance.attachment and os.path.isfile(instance.attachment.path):
+        os.remove(instance.attachment.path)
+
+@receiver(models.signals.pre_save, sender=Attachment)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `Attachment` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Attachment.objects.get(pk=instance.pk).attachment
+    except Attachment.DoesNotExist:
+        return False
+
+    new_file = instance.attachment
+    if not old_file == new_file and os.path.isfile(old_file.path):
+        os.remove(old_file.path)

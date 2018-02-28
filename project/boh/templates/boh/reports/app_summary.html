@@ -20,25 +20,37 @@
     <div style="float:left; width:225px">
     <h4>{% trans 'Data Classification Level' %}</h4>
      <table class="table table-condensed">
-         {% if application.override_dcl %}
+         {% if application.data_classification_level %}
          <tbody>
-          {% if application.override_dcl = 1 %}
-          <tr>
-             <td class="col-sm-2 bg-vuln-low vuln-count text-center">DCL 1</td>
+         {% if application.data_classification_level == 0 %}
+           <tr>
+             <td class="col-sm-2 bg-vuln-low vuln-count text-center">Public</td>
            </tr>
            <tr>
              <td class="bg-muted vuln-count text-center">
                <div style="font-weight: 200; font-size: 16px;">
-                   {% trans 'Public' %}<br>
+                 {% trans 'Public' %}<br>
+                 {% trans 'Unclassified' %}
+               </div>
+             </td>
+           </tr>
+         {% elif application.data_classification_level == 1 %}
+          <tr>
+             <td class="col-sm-2 bg-vuln-low vuln-count text-center">Private</td>
+           </tr>
+           <tr>
+             <td class="bg-muted vuln-count text-center">
+               <div style="font-weight: 200; font-size: 16px;">
+                   {% trans 'Private' %}<br>
                    {% trans 'Unclassified' %}
                </div>
              </td>
            </tr>
              {% endif %}
 
-             {% if application.override_dcl = 2 %}
+             {% if application.data_classification_level == 2 %}
              <tr>
-               <td class="col-sm-2 bg-vuln-medium vuln-count text-center">DCL 2</td>
+               <td class="col-sm-2 bg-vuln-medium vuln-count text-center">Confidential</td>
              </tr>
              <tr>
                <td class="bg-muted vuln-count text-center">
@@ -50,29 +62,29 @@
              </tr>
              {% endif %}
 
-             {% if application.override_dcl = 3 %}
+             {% if application.data_classification_level == 3 %}
              <tr>
-             <td class="col-sm-2 bg-vuln-high vuln-count text-center">DCL 3</td>
+             <td class="col-sm-2 bg-vuln-high vuln-count text-center">Sensitive</td>
              </tr>
              <tr>
                <td class="bg-muted vuln-count text-center">
                  <div style="font-weight: 200; font-size: 16px;">
-                     {% trans 'Confidential' %}<br>
+                     {% trans 'Sensitive' %}<br>
                      {% trans 'Company Confidential' %}
                  </div>
                </td>
              </tr>
              {% endif %}
 
-             {% if application.override_dcl = 4 %}
+             {% if application.data_classification_level == 4 %}
              <tr>
-              <td class="col-sm-2 bg-vuln-critical vuln-count text-center">DCL 4</td>
+              <td class="col-sm-2 bg-vuln-critical vuln-count text-center">Highly Sensitive</td>
              </tr>
              <tr>
                <td class="bg-muted vuln-count text-center">
                  <div style="font-weight: 200; font-size: 16px;">
-                     {% trans 'Restricted' %}<br>
-                     {% trans 'Highly Confidential' %}
+                     {% trans 'Highly Sensitive' %}<br>
+                     {% trans 'Restricted' %}
                  </div>
                </td>
              </tr>
@@ -80,7 +92,7 @@
 
          </tbody>
          {% else %}
-           {% trans 'Not Assessed' %}
+           <tr><td>{% trans 'Not Assessed' %}<br>{{ application.data_classification_level }}</td></tr>
          {% endif %}
        </table>
      </div>
@@ -90,23 +102,20 @@
            {% if application.asvs_level %}
            <tbody>
              <tr>
-               {% if application.asvs_level = 0 %}
+               {% if application.asvs_level == 0 %}
                <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{% trans 'ASVS Level' %} 0</td>
                {% endif %}
 
-               {% if application.asvs_level = 1 %}
+               {% if application.asvs_level == 1 %}
                <td class="col-sm-2 bg-vuln-high vuln-count text-center">{% trans 'ASVS Level' %} 1</td>
                {% endif %}
 
-               {% if application.asvs_level = 2 %}
+               {% if application.asvs_level == 2 %}
                <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{% trans 'ASVS Level' %} 2
                   {{ application.asvs_level_percent_achieved }}% {% trans 'Compliant to' %}<br> {% trans 'ASVS Level' %} {{ application.asvs_level_target }}</td>
-                 </small>
-             </span>
-           </td>
                {% endif %}
 
-               {% if application.asvs_level = 3 %}
+               {% if application.asvs_level == 3 %}
                <td class="col-sm-2 bg-vuln-low vuln-count text-center">{% trans 'ASVS Level' %} 3</td>
                {% endif %}
              </tr>

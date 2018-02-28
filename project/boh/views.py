@@ -7,12 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.db.models import Avg, Count, Prefetch, Q
+from django.db.models import Count, Prefetch, Q
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render, redirect
@@ -70,10 +71,11 @@ error_messages = [
 def dashboard_personal(request):
     """The personal dashboard with information relevant to the current user."""
 
+
     activities = models.Activity.objects.filter(users__id=request.user.id) \
-        .select_related('activity_type__name') \
+        .select_related('activity_type') \
         .select_related('engagement') \
-        .select_related('engagement__application__name') \
+        .select_related('engagement__application') \
         .annotate(comment_count=Count('activitycomment'))
 
     pending_activities = activities.filter(status=models.Engagement.PENDING_STATUS)
@@ -94,34 +96,34 @@ def dashboard_team(request):
     activities_by_user = User.objects.all().prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects
             .filter(~Q(status=models.Activity.CLOSED_STATUS))
-            .select_related('activity_type__name')
+            .select_related('activity_type')
             .select_related('engagement')
             .annotate(comment_count=Count('activitycomment'))
-            .select_related('engagement__application__name')
+            .select_related('engagement__application')
         )
     )
 
     # Find open and pending engagements
     engagements = models.Engagement.objects.all().prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects.all()
-            .select_related('activity_type__name')
+            .select_related('activity_type')
             .annotate(user_count=Count('users'))
         )
-    ).select_related('application__name').annotate(comment_count=Count('engagementcomment'))
+    ).select_related('application').annotate(comment_count=Count('engagementcomment'))
 
     open_engagements = engagements.filter(status=models.Engagement.OPEN_STATUS)
     pending_engagements = engagements.filter(status=models.Engagement.PENDING_STATUS)
 
     # Find activities where no user is assigned
     unassigned_activities = models.Activity.objects.filter(users=None) \
-        .select_related('activity_type__name') \
+        .select_related('activity_type') \
         .select_related('engagement') \
-        .select_related('engagement__application__name') \
+        .select_related('engagement__application') \
         .annotate(comment_count=Count('activitycomment'))
 
     # Find engagements where no activities have been created
     empty_engagements = models.Engagement.objects.filter(activity__isnull=True) \
-        .select_related('application__name') \
+        .select_related('application') \
         .prefetch_related('activity_set') \
         .annotate(comment_count=Count('engagementcomment'))
 
@@ -721,7 +723,7 @@ def application_list(request):
     if queries.__contains__('page_size'):
         del queries['page_size']
 
-    application_filter = filters.ApplicationFilter(request.GET, queryset=models.Application.objects.all().select_related('organization__name').prefetch_related('tags'))
+    application_filter = filters.ApplicationFilter(request.GET, queryset=models.Application.objects.all().select_related('organization').prefetch_related('tags'))
 
     page_size = 25
 
@@ -735,7 +737,7 @@ def application_list(request):
             else:
                 page_size = int(page_size)
 
-    paginator = Paginator(application_filter, page_size)
+    paginator = Paginator(application_filter.qs, page_size)
 
     page = request.GET.get('page')
 
@@ -758,7 +760,8 @@ def application_list(request):
         'page_size_form': page_size_form,
         'page_size': str(page_size),
         'show_advanced': show_advanced,
-        'active_top': 'applications'
+        'active_top': 'applications',
+        'filter': application_filter
     })
 
 
@@ -782,7 +785,7 @@ def application_engagements(request, application_id):
     engagements = application.engagement_set.prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects
             .all()
-            .select_related('activity_type__name')
+            .select_related('activity_type')
         )
     ).annotate(comment_count=Count('engagementcomment'))
 
@@ -821,6 +824,86 @@ def application_people(request, application_id):
         'application': application,
         'active_top': 'applications',
         'active_tab': 'people'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def application_vulnerabilities(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+    if queries.__contains__('page_size'):
+        del queries['page_size']
+
+    vulnerability_filter = filters.VulnerabilityFilter(request.GET, queryset=application.vulnerability_set.all())
+    page_size = 25
+
+    page_size_form = forms.PageSizeForm()
+    if request.GET.get('page_size'):
+        page_size_form = forms.PageSizeForm(request.GET)
+        if page_size_form.is_valid():
+            page_size = page_size_form.cleaned_data['page_size']
+            if page_size == 'all':
+                page_size = 10000000
+            else:
+                page_size = int(page_size)
+
+    paginator = Paginator(vulnerability_filter.qs, page_size)
+    page = request.GET.get('page')
+
+    try:
+        vulnerabilities = paginator.page(page)
+    except PageNotAnInteger:
+        vulnerabilities = paginator.page(1)
+    except EmptyPage:
+        vulnerabilities = paginator.page(paginator.num_pages)
+
+    show_advanced = False
+    if request.GET.get('reporter') or request.GET.get('detection_method') or request.GET.get('vulnerability_class') \
+        or request.GET.get('severity') or request.GET.get('status') or request.GET.get('tags'):
+        show_advanced = True
+
+    return render(request, 'boh/application/vulnerabilities.html', {
+        'form': vulnerability_filter.form,
+        'application': application,
+        'vulnerabilities': vulnerabilities,
+        'queries': queries,
+        'page_size_form': page_size_form,
+        'page_size': str(page_size),
+        'show_advanced': show_advanced,
+        'active_top': 'applications',
+        'active_tab': 'vulnerabilities'
+    })
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def application_vulnerabilities_add(request, application_id):
+    application = get_object_or_404(models.Application, pk=application_id)
+    form = forms.ApplicationVulnerabilityAddForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            vulnerability = form.save(commit=False)
+            vulnerability.affected_app = application
+
+            try:
+                vulnerability.save()
+            except IntegrityError:
+                messages.error(request, _('"%(name)s" is already reported for this application.') % {'name': vulnerability.name}, extra_tags=random.choice(error_messages))
+            else:
+                messages.success(request, _('You successfully added "%(name)s" to this application.') % {'name': vulnerability.name}, extra_tags=random.choice(success_messages))
+            finally:
+                return redirect('boh:application.vulnerabilities', application.id)
+        else:
+            messages.error(request, _('There was a problem saving the vulnerability to this application.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/application/add_vulnerability.html', {
+        'application': application,
+        'form': form,
+        'active_top': 'applications',
+        'active_tab': 'vulnerabilities'
     })
 
 
@@ -929,9 +1012,12 @@ def application_add(request):
 @require_http_methods(['GET', 'POST'])
 def application_settings_general(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
-
     general_form = forms.ApplicationSettingsGeneralForm(instance=application)
+    repository_form = forms.ApplicationSettingsRepositoryForm(instance=application)
     organization_form = forms.ApplicationSettingsOrganizationForm(instance=application)
+    features_form = forms.ApplicationSettingsFeaturesForm(instance=application)
+    dependencies_form = forms.ApplicationSettingsDependenciesForm(instance=application)
+    threats_form = forms.ApplicationSettingsThreatsForm(instance=application)
 
     if request.method == 'POST':
         if 'submit-general' in request.POST:
@@ -939,16 +1025,53 @@ def application_settings_general(request, application_id):
             if general_form.is_valid():
                 general_form.save()
                 messages.success(request, _('You successfully updated this application\'s general information.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s general information.'), extra_tags=random.choice(error_messages))
+        elif 'submit-repository' in request.POST:
+            repository_form = forms.ApplicationSettingsRepositoryForm(request.POST, instance=application)
+            if repository_form.is_valid():
+                repository_form.save()
+                messages.success(request, _('You successfully updated this application\'s repository.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s repository.'), extra_tags=random.choice(error_messages))
+        elif 'submit-threats' in request.POST:
+            threats_form = forms.ApplicationSettingsThreatsForm(request.POST, instance=application)
+            if threats_form.is_valid():
+                threats_form.save()
+                messages.success(request, _('You successfully updated this application\'s potential threats.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s potential threats.'), extra_tags=random.choice(error_messages))
+
         elif 'submit-organization' in request.POST:
             organization_form = forms.ApplicationSettingsOrganizationForm(request.POST, instance=application)
             if organization_form.is_valid():
                 organization_form.save()
                 messages.success(request, _('You successfully updated this application\'s organization.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s organization.'), extra_tags=random.choice(error_messages))
+        elif 'submit-features' in request.POST:
+            features_form = forms.ApplicationSettingsFeaturesForm(request.POST, instance=application)
+            if features_form.is_valid():
+                features_form.save()
+                messages.success(request, _('You successfully updated this application\'s features.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s features.'), extra_tags=random.choice(error_messages))
+        elif 'submit-dependencies' in request.POST:
+            dependencies_form = forms.ApplicationSettingsDependenciesForm(request.POST, instance=application)
+            if dependencies_form.is_valid():
+                dependencies_form.save()
+                messages.success(request, _('You successfully updated this application\'s dependencies.'), extra_tags=random.choice(success_messages))
+            else:
+                messages.error(request, _('There was a problem updating this application\'s dependencies.'), extra_tags=random.choice(error_messages))
 
     return render(request, 'boh/application/settings/general.html', {
         'application': application,
         'general_form': general_form,
+        'repository_form': repository_form,
         'organization_form': organization_form,
+        'features_form': features_form,
+        'dependencies_form': dependencies_form,
+        'threats_form': threats_form,
         'active_top': 'applications',
         'active_tab': 'settings',
         'active_side': 'general'
@@ -959,7 +1082,6 @@ def application_settings_general(request, application_id):
 @require_http_methods(['GET', 'POST'])
 def application_settings_metadata(request, application_id):
     application = get_object_or_404(models.Application, pk=application_id)
-
     metadata_form = forms.ApplicationSettingsMetadataForm(instance=application)
     technologies_form = forms.ApplicationSettingsTechnologiesForm(instance=application)
     regulations_form = forms.ApplicationSettingsRegulationsForm(instance=application)
@@ -1619,3 +1741,217 @@ def person_delete(request, person_id):
         return redirect('boh:person.list')
     else:
         return redirect('boh:person.detail', person.id)
+
+
+# Vulnerability
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_list(request):
+    queries = request.GET.copy()
+    if queries.__contains__('page'):
+        del queries['page']
+    if queries.__contains__('page_size'):
+        del queries['page_size']
+
+    vulnerability_filter = filters.VulnerabilityFilter(request.GET, queryset=models.Vulnerability.objects.all().select_related('affected_app'))
+
+    page_size = 25
+
+    page_size_form = forms.PageSizeForm()
+    if request.GET.get('page_size'):
+        page_size_form = forms.PageSizeForm(request.GET)
+        if page_size_form.is_valid():
+            page_size = page_size_form.cleaned_data['page_size']
+            if page_size == 'all':
+                page_size = 10000000
+            else:
+                page_size = int(page_size)
+
+    paginator = Paginator(vulnerability_filter.qs, page_size)
+
+    page = request.GET.get('page')
+
+    try:
+        vulnerabilities = paginator.page(page)
+    except PageNotAnInteger:
+        vulnerabilities = paginator.page(1)
+    except EmptyPage:
+        vulnerabilities = paginator.page(paginator.num_pages)
+
+    #
+    show_advanced = False
+    if request.GET.get('reporter') or request.GET.get('detection_method') or request.GET.get('vulnerability_class')  \
+        or request.GET.get('severity') or request.GET.get('status') or request.GET.get('tags'):
+        show_advanced = True
+
+    return render(request, 'boh/vulnerability/list.html', {
+        'form': vulnerability_filter.form,
+        'vulnerabilities': vulnerabilities,
+        'queries': queries,
+        'page_size_form': page_size_form,
+        'page_size': str(page_size),
+        'show_advanced': show_advanced,
+        'active_top': 'vulnerabilities'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_add(request):
+    form = forms.VulnerabilityAddForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('You successfully created this vulnerability.'), extra_tags=random.choice(success_messages))
+            return redirect('boh:vulnerability.list')
+        else:
+            messages.error(request, _('There was a problem creating this vulnerability.'), extra_tags=random.choice(error_messages))
+
+
+    return render(request, 'boh/vulnerability/add.html', {
+        'form': form,
+        'active_top': 'vulnerabilities'
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_detail(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+
+    return render(request, 'boh/vulnerability/detail.html', {
+        'vulnerability': vulnerability,
+        'active_top': 'vulnerabilities',
+        'active_tab': 'details'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_edit(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    form = forms.VulnerabilityEditForm(request.POST or None, instance=vulnerability)
+    if vulnerability.is_editable():
+        if request.method == 'POST':
+            if form.is_valid():
+                vulnerability = form.save()
+                messages.success(request, _('You successfully updated the vulnerabililty.'), extra_tags=random.choice(success_messages))
+                return redirect('boh:vulnerability.detail', vulnerability.id)
+            else:
+                messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
+
+        return render(request, 'boh/vulnerability/edit.html', {
+            'vulnerability': vulnerability,
+            'form': form,
+            'active_top': 'vulnerabilities',
+            'reopen': False
+        })
+    else:
+        return redirect('boh:vulnerability.detail', vulnerability.id)
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_reopen(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    vulnerability.status = models.Vulnerability.REOPENED_STATUS
+    form = forms.VulnerabilityEditForm(request.POST or None, instance=vulnerability)
+    form.fields['status'].disabled = True
+    if request.method == 'POST':
+        if form.is_valid():
+            vulnerability = form.save()
+            messages.success(request, _('You successfully updated the vulnerabililty.'), extra_tags=random.choice(success_messages))
+            return redirect('boh:vulnerability.detail', vulnerability.id)
+        else:
+            messages.error(request, _('There was a problem updating the vulnerabililty.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/vulnerability/edit.html', {
+        'vulnerability': vulnerability,
+        'form': form,
+        'active_top': 'vulnerabilities',
+        'reopen': True
+    })
+
+@login_required
+@require_http_methods(['POST'])
+def vulnerability_delete(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    name = vulnerability.name
+
+    form = forms.VulnerabilityDeleteForm(request.POST or None)
+
+    if form.is_valid():
+        vulnerability.delete()
+        messages.success(request, _('You successfully deleted "%(name)s".') % {'name': name}, extra_tags=random.choice(success_messages))
+        return redirect('boh:vulnerability.list')
+    else:
+        return redirect('boh:vulnerability.detail', vulnerability.id)
+
+
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_attachment_list(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    paginator = Paginator(vulnerability.vulnerabilityattachment_set.all(), 50)
+
+    page = request.GET.get('page')
+    try:
+        attachments = paginator.page(page)
+    except PageNotAnInteger:
+        attachments = paginator.page(1)
+    except EmptyPage:
+        attachments = paginator.page(paginator.num_pages)
+
+    return render(request, 'boh/vulnerability/attachments.html', {
+        'vulnerability': vulnerability,
+        'attachments': attachments,
+        'active_top': 'vulnerabilites',
+        'active_tab': 'attachments'
+    })
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def vulnerability_attachment_add(request, vulnerability_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+
+    form = forms.VulnerabilityAttachmentAddForm(request.POST or None, request.FILES)
+
+    if request.method == 'POST' and form.is_valid():
+        file_name = request.FILES['attachment'].name
+        attachment = models.VulnerabilityAttachment(file_name=file_name, description=form.data['description'], attachment=request.FILES['attachment'])
+        attachment.vulnerability = vulnerability
+        attachment.save()
+        messages.success(request, _('You successfully uploaded the attachment.'), extra_tags=random.choice(success_messages))
+        return redirect('boh:vulnerability.attachments', vulnerability.id)
+
+    return render(request, 'boh/attachment/add.html', {
+        'vulnerability': vulnerability,
+        'form': form,
+        'active_top': 'vulnerabilites',
+        'active_tab': 'attachments'
+    })
+
+@login_required
+@require_http_methods(['GET'])
+def vulnerability_attachment_view(request, vulnerability_id, attachment_id):
+    # TODO: need to read the file and write its data to the HTTP Response instead
+    return HttpResponse("Text only, please.", content_type="text/plain")
+
+@login_required
+@require_http_methods(['POST'])
+def vulnerability_attachment_delete(request, vulnerability_id, attachment_id):
+    vulnerability = get_object_or_404(models.Vulnerability, pk=vulnerability_id)
+    attachment = get_object_or_404(models.VulnerabilityAttachment, pk=attachment_id)
+    form = forms.VulnerabilityAttachmentDeleteForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        attachment.delete()
+        messages.success(request, _('You successfully deleted the "%(file_name)s" .') % {'file_name': attachment.file_name}, extra_tags=random.choice(success_messages))
+
+    else:
+        messages.error(request, _('There was a problem deleted the attachment.'), extra_tags=random.choice(error_messages))
+
+    return redirect('boh:vulnerability.attachments', vulnerability.id)
+

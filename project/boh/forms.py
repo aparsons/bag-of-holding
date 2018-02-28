@@ -162,7 +162,7 @@ class ApplicationAddForm(forms.ModelForm):
 class ApplicationSettingsGeneralForm(forms.ModelForm):
     class Meta:
         model = models.Application
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'authentication','authorization']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 8})
         }
@@ -174,11 +174,34 @@ class ApplicationSettingsOrganizationForm(forms.ModelForm):
         fields = ['organization']
 
 
+class ApplicationSettingsRepositoryForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['repository']
+
+
+class ApplicationSettingsThreatsForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['threats']
+
+class ApplicationSettingsFeaturesForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['authentication', 'authorization', 'plugins']
+
+
+class ApplicationSettingsDependenciesForm(forms.ModelForm):
+    class Meta:
+        model = models.Application
+        fields = ['dependencies']
+
+
 class ApplicationSettingsMetadataForm(forms.ModelForm):
     class Meta:
         model = models.Application
         fields = [
-            'platform', 'lifecycle', 'origin', 'business_criticality', 'user_records', 'revenue', 'external_audience',
+            'platform', 'lifecycle', 'origin', 'business_criticality', 'risk_category', 'user_records', 'revenue', 'external_audience',
             'internet_accessible'
         ]
 
@@ -256,6 +279,13 @@ class ApplicationDeleteForm(forms.ModelForm):
         model = models.Application
         fields = []
 
+class ApplicationVulnerabilityAddForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_version', 'environment', 'severity',
+                  'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline',
+                  "vulnerability_classes", 'detection_method', 'tags']
+
 
 # Environment
 
@@ -320,8 +350,7 @@ class EngagementAddForm(forms.ModelForm):
         start_date = cleaned.get('start_date')
         end_date = cleaned.get('end_date')
 
-        if start_date and end_date:
-            if end_date < start_date:
+        if start_date and end_date and end_date < start_date:
                 self.add_error('end_date', _("End date cannot be before start date."))
 
 
@@ -342,8 +371,7 @@ class EngagementEditForm(forms.ModelForm):
         start_date = cleaned.get('start_date')
         end_date = cleaned.get('end_date')
 
-        if start_date and end_date:
-            if end_date < start_date:
+        if start_date and end_date and end_date < start_date:
                 self.add_error('end_date', _("End date cannot be before start date."))
 
 
@@ -420,7 +448,7 @@ class ActivityDeleteForm(forms.ModelForm):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = models.Person
-        fields = ['first_name', 'last_name', 'email', 'phone_work', 'phone_mobile', 'job_title', 'role']
+        fields = ['first_name', 'last_name', 'email', 'slack_id', 'phone_work', 'phone_mobile', 'job_title', 'role']
 
 
 class PersonDeleteForm(forms.ModelForm):
@@ -476,4 +504,35 @@ class ActivityTypeForm(forms.ModelForm):
 class ActivityTypeDeleteForm(forms.ModelForm):
     class Meta:
         model = models.ActivityType
+        fields = []
+
+
+# Vulnerabilty
+class VulnerabilityAddForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
+                  'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline',
+                  "vulnerability_classes", 'detection_method', 'tags']
+
+class VulnerabilityEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = ['name', 'description', 'solution', 'affected_app', 'affected_version', 'environment', 'severity',
+              'pre_conditions', 'reproduction_steps', 'attack_vector', 'reporter', 'deadline', 'status',
+                  "vulnerability_classes", 'detection_method', 'tags']
+
+class VulnerabilityDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.Vulnerability
+        fields = []
+
+class VulnerabilityAttachmentAddForm(forms.ModelForm):
+    class Meta:
+        model = models.VulnerabilityAttachment
+        fields = ['attachment', 'description']
+
+class VulnerabilityAttachmentDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.VulnerabilityAttachment
         fields = []

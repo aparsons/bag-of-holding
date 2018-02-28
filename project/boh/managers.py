@@ -97,7 +97,7 @@ class EngagementMetrics(models.Manager):
         )
 
         if results['average_duration']:
-            results['average_duration'] = datetime.timedelta(microseconds=results['average_duration'])
+            results['average_duration'] = datetime.timedelta(microseconds=results['average_duration'].microseconds)
 
         return results
 

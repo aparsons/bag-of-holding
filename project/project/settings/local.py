@@ -29,3 +29,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, os.pardir, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, os.pardir, os.pardir, 'media')
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['BOH_SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['BOH_SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['gmail.com']
