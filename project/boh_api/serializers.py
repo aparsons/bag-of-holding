@@ -95,6 +95,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         def get_key(self, custom_field_value):
             return custom_field_value.custom_field.key
 
+    threadfix_metrics = serializers.SerializerMethodField()
     organization = OrganizationSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     data_elements = DataElementSerializer(many=True, read_only=True)
@@ -103,15 +104,21 @@ class ApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Application
-        fields = ['id', 'organization', 'name', 'description', 'business_criticality', 'platform', 'lifecycle', \
-                  'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'tags', \
-                  'custom_fields', 'people', 'data_elements']
+        fields = ['id', 'organization', 'name', 'description', 'business_criticality', 'platform', 'lifecycle', 'origin', 'user_records', 'revenue', 'external_audience', 'internet_accessible', 'threadfix_metrics', 'tags', 'custom_fields', 'people']
 
-
-
-
-
-
-
+    def get_threadfix_metrics(self, application):
+        try:
+            metrics = models.ThreadFixMetrics.objects.filter(application=application).latest()
+            result = {
+                'critical_count': metrics.critical_count,
+                'high_count': metrics.high_count,
+                'medium_count': metrics.medium_count,
+                'low_count:': metrics.low_count,
+                'informational_count': metrics.informational_count,
+                'created_date': metrics.created_date
+            }
+            return result
+        except ObjectDoesNotExist:
+            return None
 
 

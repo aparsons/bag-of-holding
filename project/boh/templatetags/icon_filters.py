@@ -27,16 +27,16 @@ def stars(filled, total, tooltip):
 
 @register.filter
 def business_criticality_icon(value):
-    if value == Application.CRITICAL_APPLICATION:
-        return mark_safe(stars(5, 5, 'Critical'))
-    if value == Application.IMPORTANT_APPLICATION:
-        return mark_safe(stars(4, 5, 'Important'))
-    if value == Application.STRATEGIC_APPLICATION:
-        return mark_safe(stars(3, 5, 'Strategic'))
-    if value == Application.INTERNAL_SUPPORTING_APPLICATION:
-        return mark_safe(stars(2, 5, 'Internal Support'))
-    if value == Application.GENERAL_SUPPORT_APPLICATION:
-        return mark_safe(stars(1, 5, 'Standalone'))
+    if value == Application.VERY_HIGH_CRITICALITY:
+        return mark_safe(stars(5, 5, 'Very High'))
+    if value == Application.HIGH_CRITICALITY:
+        return mark_safe(stars(4, 5, 'High'))
+    if value == Application.MEDIUM_CRITICALITY:
+        return mark_safe(stars(3, 5, 'Medium'))
+    if value == Application.LOW_CRITICALITY:
+        return mark_safe(stars(2, 5, 'Low'))
+    if value == Application.VERY_LOW_CRITICALITY:
+        return mark_safe(stars(1, 5, 'Very Low'))
     if value == Application.NONE_CRITICALITY:
         return mark_safe(stars(0, 5, 'None'))
     else:
@@ -47,7 +47,7 @@ def business_criticality_icon(value):
 def platform_icon(value):
     if value == Application.WEB_PLATFORM:
         return mark_safe(icon('list-alt', 'Web'))
-    elif value == Application.DESKTOP_PLATFORM or value == Application.COMMAND_LINE_PLATFORM:
+    elif value == Application.DESKTOP_PLATFORM:
         return mark_safe(icon('desktop', 'Desktop'))
     elif value == Application.MOBILE_PLATFORM:
         return mark_safe(icon('mobile', 'Mobile'))

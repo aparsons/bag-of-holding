@@ -8,13 +8,12 @@ import os
 from django.contrib import messages
 
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-ALLOWED_HOSTS=['localhost', '127.0.0.1', '[::1]', 'boh.dev5s.com']
+ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = (
@@ -39,7 +38,7 @@ INSTALLED_APPS = (
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',  # May cause an error
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,7 +86,6 @@ USE_TZ = True
 LANGUAGES = (
     ('en', 'English'),
     ('pt-br', 'Portuguese'),
-    ('jp-jp', 'Japanese')
 )
 
 # Locale files

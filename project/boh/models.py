@@ -38,9 +38,12 @@ def upload_to(instance, filename):
 
 class Tag(models.Model):
     """Associated with application for search and categorization."""
+
     color_regex = RegexValidator(regex=r'^[0-9A-Fa-f]{6}$', message=_("Color must be entered in the 6 character hex format."))
+
     name = models.CharField(max_length=64, unique=True, help_text=_('A unique name for this tag.'))
     color = models.CharField(max_length=6, validators=[color_regex], help_text=_('Specify a 6 character hex color value. (e.g., \'d94d59\')'))
+
     description = models.CharField(max_length=64, blank=True, help_text=_('A short description of this tag\'s purpose to be shown in tooltips.'))
 
     class Meta:
@@ -118,6 +121,7 @@ class Person(models.Model):
         (OPERATIONS_ROLE, _('Operations')),
         (MANAGER_ROLE, _('Manager')),
         (SECURITY_OFFICER_ROLE, _('Security Officer')),
+        (SECURITY_CHAMPION_ROLE, _('Security Champion')),
     )
 
     first_name = models.CharField(max_length=64)
@@ -166,6 +170,7 @@ class DataElement(models.Model):
     GLOBAL_CATEGORY = 'global'
     PERSONAL_CATEGORY = 'personal'
     COMPANY_CATEGORY = 'company'
+    STUDENT_CATEGORY = 'student'
     GOVERNMENT_CATEGORY = 'government'
     PCI_CATEGORY = 'pci'
     MEDICAL_CATEGORY = 'medical'
@@ -173,6 +178,7 @@ class DataElement(models.Model):
         (GLOBAL_CATEGORY, _('Global')),
         (PERSONAL_CATEGORY, _('Personal')),
         (COMPANY_CATEGORY, _('Company')),
+        (STUDENT_CATEGORY, _('Student')),
         (GOVERNMENT_CATEGORY, _('Government')),
         (PCI_CATEGORY, _('Payment Card Industry')),
         (MEDICAL_CATEGORY, _('Medical')),
@@ -331,18 +337,18 @@ class Application(TimeStampedModel, models.Model):
         (OUTSOURCED_ORIGIN, _('Outsourced')),
     )
 
-    CRITICAL_APPLICATION = 'Critical'
-    IMPORTANT_APPLICATION = 'Important'
-    STRATEGIC_APPLICATION = 'Strategic'
-    INTERNAL_SUPPORTING_APPLICATION = 'Internal Support'
-    GENERAL_SUPPORT_APPLICATION = 'General Support'
+    VERY_HIGH_CRITICALITY = 'very high'
+    HIGH_CRITICALITY = 'high'
+    MEDIUM_CRITICALITY = 'medium'
+    LOW_CRITICALITY = 'low'
+    VERY_LOW_CRITICALITY = 'very low'
     NONE_CRITICALITY = 'none'
     BUSINESS_CRITICALITY_CHOICES = (
-        (CRITICAL_APPLICATION, _('Critical Application')),
-        (IMPORTANT_APPLICATION, _('Important Application')),
-        (STRATEGIC_APPLICATION, _('Strategic Application')),
-        (INTERNAL_SUPPORTING_APPLICATION, _('Internal Support Application')),
-        (GENERAL_SUPPORT_APPLICATION, _('General Support Application')),
+        (VERY_HIGH_CRITICALITY, _('Very High')),
+        (HIGH_CRITICALITY, _('High')),
+        (MEDIUM_CRITICALITY, _('Medium')),
+        (LOW_CRITICALITY, _('Low')),
+        (VERY_LOW_CRITICALITY, _('Very Low')),
         (NONE_CRITICALITY, _('None')),
     )
 
@@ -395,7 +401,7 @@ class Application(TimeStampedModel, models.Model):
     lifecycle = models.CharField(max_length=8, choices=LIFECYCLE_CHOICES, blank=True, null=True)
     origin = models.CharField(max_length=19, choices=ORIGIN_CHOICES, blank=True, null=True)
     user_records = models.PositiveIntegerField(blank=True, null=True, help_text=_('Estimate the number of user records within the application.'))
-    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text=_('Estimate the application\'s revenue in JPY.'))
+    revenue = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, help_text=_('Estimate the application\'s revenue in USD.'))
     external_audience = models.BooleanField(default=False, help_text=_('Specify if the application is used by people outside the organization.'))
     internet_accessible = models.BooleanField(default=False, help_text=_('Specify if the application is accessible from the public internet.'))
     requestable = models.NullBooleanField(default=True, help_text=_('Specify if activities can be externally requested for this application.'))
@@ -406,7 +412,6 @@ class Application(TimeStampedModel, models.Model):
     regulations = models.ManyToManyField(Regulation, blank=True)
     service_level_agreements = models.ManyToManyField(ServiceLevelAgreement, blank=True)
     risk_category = models.CharField(max_length=20, choices=RISK_CATEGORY_CHOICES, blank=True, null=True)
-
 
     # Data Classification
     # TODO Move to Data Classification Benchmark
@@ -427,10 +432,20 @@ class Application(TimeStampedModel, models.Model):
     asvs_doc_url = models.URLField(blank=True, help_text=_('URL to the detailed ASVS assessment.'))
 
     # Misc
+
+    """
+    source code repo
+    bug tracking tool
+    developer experience / familiarity
+    id for whitehat + checkmarx (third-party ids)
+    password policy
+    """
+
     organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING, help_text=_('The organization containing this application.'))
     people = models.ManyToManyField(Person, through='Relation', blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     custom_fields = models.ManyToManyField(CustomField, through='ApplicationCustomFieldValue')
+
     objects = managers.ApplicationManager.from_queryset(managers.ApplicationQuerySet)()
 
     class Meta:
@@ -460,6 +475,11 @@ class Application(TimeStampedModel, models.Model):
     def data_sensitivity_value(self):
         """Returns the calculated data sensitivity value of the selected data elements."""
         return helpers.data_sensitivity_value(self.data_elements.all())
+
+    def is_new(self):
+        """Returns true if the application was created in the last 7 days"""
+        delta = self.created_date - timezone.now()
+        return delta >= timedelta(days=-7)
 
 
 class ApplicationCustomFieldValue(CustomFieldValue):
@@ -569,13 +589,11 @@ class Engagement(TimeStampedModel, models.Model):
     """Container for activities performed for an application over a duration."""
 
     PENDING_STATUS = 'pending'
-    ONGOING_STATUS = 'ongoing'
     OPEN_STATUS = 'open'
     CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
         (PENDING_STATUS, _('Pending')),
         (OPEN_STATUS, _('Open')),
-        (ONGOING_STATUS, _('Ongoing')),
         (CLOSED_STATUS, _('Closed'))
     )
 
@@ -658,16 +676,12 @@ class ActivityType(TimeStampedModel, models.Model):
 class Activity(models.Model):
     """A unit of work performed for an application over a duration."""
 
-    OPEN_STATUS = 'open'
     PENDING_STATUS = 'pending'
-    ONGOING_STATUS = 'ongoing'
-    CANCELLED_STATUS = 'cancelled'
-    CLOSED_STATUS = 'Closed'
+    OPEN_STATUS = 'open'
+    CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
-        (OPEN_STATUS, 'Open'),
         (PENDING_STATUS, 'Pending'),
-        (ONGOING_STATUS, 'Ongoing'),
-        (CANCELLED_STATUS, 'Cancelled'),
+        (OPEN_STATUS, 'Open'),
         (CLOSED_STATUS, 'Closed')
     )
 
@@ -734,12 +748,6 @@ class Activity(models.Model):
 
     def is_open(self):
         return self.status == Activity.OPEN_STATUS
-
-    def is_ongoing(self):
-        return self.status == Activity.ONGOING_STATUS
-
-    def is_cancelled(self):
-        return self.status == Activity.CANCELLED_STATUS
 
     def is_closed(self):
         return self.status == Activity.CLOSED_STATUS

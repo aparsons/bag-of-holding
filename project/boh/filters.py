@@ -1,7 +1,4 @@
 import django_filters
-
-#from django_filters import filters
-import django_filters
 from .models import Organization, Application, Vulnerability, VulnerabilityClass, Person
 
 

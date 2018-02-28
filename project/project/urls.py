@@ -14,7 +14,6 @@ base_urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
 
-
     # Google OAuth2
     url(r'^auth/', include('social_django.urls', namespace='social')),
 ]
