@@ -1,19 +1,30 @@
-FROM alpine
+FROM python:alpine as base
 
-RUN apk --update add python3 && apk add bash
+FROM base as builder
+
+COPY requirements.txt .
+COPY requirements/ requirements/ 
+
+RUN apk add --update \
+        build-base \
+        python3-dev \
+        mariadb-dev && \
+    mkdir libs && \
+    pip3 install -r requirements.txt -t libs
+
+FROM base
 
 ENV PYTHONUNBUFFERED 1
+
 RUN mkdir /bag-of-holding
 WORKDIR /bag-of-holding
-ADD . /bag-of-holding/
-RUN pip3 install -r requirements.txt
-RUN python3 /bag-of-holding/src/manage.py makemigrations
-RUN python3 /bag-of-holding/src/manage.py migrate
-RUN python3 /bag-of-holding/src/manage.py loaddata /bag-of-holding/src/sample_data.json
+COPY . /bag-of-holding/
 
-CMD python3 /bag-of-holding/src/manage.py runserver 0.0.0.0:8000
+COPY --from=builder /libs /libs
+ENV PYTHONPATH $PYTHONPATH:/libs
 
-# Instructions:
-# docker run -d -p 8000:8000 --name boh-server disenchant/bag-of-holding:latest
-# docker exec -it boh-server bash
-# python3 /bag-of-holding/src/manage.py createsuperuser
+RUN python3 /bag-of-holding/project/manage.py makemigrations && \
+    python3 /bag-of-holding/project/manage.py migrate && \
+    python3 /bag-of-holding/project/manage.py loaddata /bag-of-holding/project/sample_data.json
+
+ENTRYPOINT [ "python3", "/bag-of-holding/project/manage.py", "runserver", "0.0.0.0:8000" ]
