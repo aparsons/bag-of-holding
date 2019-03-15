@@ -16,7 +16,7 @@
         <a href="#" class="list-group-item{% if active_side == 'organizations' %} active{% endif %} disabled"><span class="fa fa-building fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Organizations' %}</a>
         <a href="{% url 'boh:management.tags' %}" class="list-group-item{% if active_side == 'tags' %} active{% endif %}"><span class="fa fa-tags fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Application Tags' %}</a>
         <a href="{% url 'boh:management.activity_types' %}" class="list-group-item{% if active_side == 'activity_types' %} active{% endif %}"><span class="fa fa-clock-o fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Activity Types' %}</a>
-        <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Data Elements' %}</a>
+        <a href="{% url 'boh:management.data_elements' %}" class="list-group-item{% if active_side == 'data_elements' %} active{% endif %}"><span class="fa fa-cubes fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Data Elements' %}</a>
         <a href="#" class="list-group-item{% if active_side == 'asd' %} active{% endif %} disabled"><span class="fa fa-umbrella fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Service Levels' %}</a>
         <a href="{% url 'boh:management.services' %}" class="list-group-item{% if active_side == 'services' %} active{% endif %}"><span class="fa fa-plug fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Third Party Services' %}</a>
         <a href="{% url 'boh:management.users' %}" class="list-group-item{% if active_side == 'users' %} active{% endif %} disabled"><span class="fa fa-users fa-fw" aria-hidden="true"></span>&nbsp; {% trans 'Users' %}</a>
