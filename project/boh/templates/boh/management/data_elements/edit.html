@@ -26,6 +26,6 @@
 
 <form method="post" action="{% url 'boh:management.data_elements.delete' data_element.id %}">
   {% csrf_token %}
-  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('{% trans 'Are you sure want to delete this data element?' %}');"><span class="fa fa-trash-o" aria-hidden="true"></span> {% trans 'Delete Activity Type' %}</button>
+  <button class="btn btn-danger pull-right" type="submit" onclick="return confirm('{% trans 'Are you sure want to delete this data element?' %}');"><span class="fa fa-trash-o" aria-hidden="true"></span> {% trans 'Delete Data Element' %}</button>
 </form>
 {% endblock manage_content %}
