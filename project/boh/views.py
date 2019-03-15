@@ -377,6 +377,80 @@ def management_activity_types_delete(request, activity_type_id):
         messages.error(request, _('There was a problem deleting this activity type.'), extra_tags=random.choice(error_messages))
         return redirect('boh:management.activity_types.edit', activity_type.id)
 
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_data_elements(request):
+    data_elements = models.DataElement.objects.all()
+
+    return render(request, 'boh/management/data_elements/data_elements.html', {
+        'data_elements': data_elements,
+        'active_top': 'management',
+        'active_side': 'data_elements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_data_elements_add(request):
+    data_element_form = forms.DataElementForm(request.POST or None)
+
+    if request.method == 'POST':
+        if data_element_form.is_valid():
+            data_element = data_element_form.save()
+            messages.success(request, _('You successfully created the "%(data_element_name)s" data element.') % {'data_element_name': data_element.name}, extra_tags=random.choice(success_messages))
+            return redirect('boh:management.data_elements')
+        else:
+            messages.error(request, _('There was a problem creating this data element.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/data_elements/add.html', {
+        'data_element_form': data_element_form,
+        'active_top': 'management',
+        'active_side': 'data_elements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_data_elements_edit(request, data_element_id):
+    data_element = get_object_or_404(models.DataElement, pk=data_element_id)
+
+    data_element_form = forms.DataElementForm(request.POST or None, instance=data_element)
+
+    if request.method == 'POST':
+        if data_element_form.is_valid():
+            data_element = data_element_form.save()
+            messages.success(request, _('You successfully updated the "%(data_element_name)s" data element.') % {'data_element_name': data_element.name}, extra_tags=random.choice(success_messages))
+            return redirect('boh:management.data_elements')
+        else:
+            messages.error(request, _('There was a problem updating this data element.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/data_elements/edit.html', {
+        'data_element': data_element,
+        'data_element_form': data_element_form,
+        'active_top': 'management',
+        'active_side': 'data_elements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['POST'])
+def management_data_elements_delete(request, data_element_id):
+    data_element = get_object_or_404(models.DataElement, pk=data_element_id)
+
+    form = forms.DataElementDeleteForm(request.POST, instance=data_element)
+
+    if form.is_valid():
+        data_element.delete()
+        messages.success(request, _('You successfully deleted the "%(data_element_name)s" data element.') % {'data_element_name': data_element.name}, extra_tags=random.choice(success_messages))
+        return redirect('boh:management.data_elements')
+    else:
+        messages.error(request, _('There was a problem deleting this data element.'), extra_tags=random.choice(error_messages))
+        return redirect('boh:management.data_elements.edit', data_element.id)
+
 
 @login_required
 @staff_member_required

@@ -1,0 +1,46 @@
+{% extends "boh/management/base_management.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Manage Settings' %} | {% trans 'Data Elements' %}{% endblock %}
+
+{% block manage_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans 'Data Elements' %}</h3>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">{% trans 'Data elements are a taxonomy of data assets that are processed by an application, the weights are used to calculate a risk score. Create additional types to match your business processing needs.' %}</li>
+    {% if not data_elements %}
+    <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no data elements.' %}</em></small></li>
+    {% endif %}
+  </ul>
+  {% if data_elements %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{% trans 'Name' %}</th>
+          <th>{% trans 'Weight' %}</th>
+          <th>{% trans 'Category' %}</th>
+          <th>{% trans 'Actions' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data_element in data_elements %}
+        <tr>
+          <td>{{ data_element.name }}</td>
+          <td>{{ data_element.weight }}</td>
+          <td>{{ data_element.category }}</td>
+          <td><a href="{% url 'boh:management.data_elements.edit' data_element.id %}">{% trans 'Edit' %}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  <div class="panel-footer">
+    <a href="{% url 'boh:management.data_elements.add' %}" class="btn btn-success btn-sm" role="button"><span class="fa fa-plus" aria-hidden="true"></span> {% trans 'New Data Element' %}</a>
+  </div>
+</div>
+{% endblock manage_content %}

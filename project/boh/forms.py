@@ -414,6 +414,18 @@ class ActivityDeleteForm(forms.ModelForm):
         model = models.Activity
         fields = []
 
+# Data Element
+
+class DataElementForm(forms.ModelForm):
+    class Meta:
+        model = models.DataElement
+        fields = ['name', 'category', 'description', 'weight']
+
+class DataElementDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.DataElement
+        fields = []
+
 
 # Person
 
