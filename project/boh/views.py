@@ -451,6 +451,80 @@ def management_data_elements_delete(request, data_element_id):
         messages.error(request, _('There was a problem deleting this data element.'), extra_tags=random.choice(error_messages))
         return redirect('boh:management.data_elements.edit', data_element.id)
 
+@login_required
+@staff_member_required
+@require_http_methods(['GET'])
+def management_service_level_agreements(request):
+    service_level_agreements = models.ServiceLevelAgreement.objects.all()
+
+    return render(request, 'boh/management/service_level_agreements/service_level_agreements.html', {
+        'service_level_agreements': service_level_agreements,
+        'active_top': 'management',
+        'active_side': 'service_level_agreements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_service_level_agreements_add(request):
+    service_level_agreement_form = forms.ServiceLevelAgreementForm(request.POST or None)
+
+    if request.method == 'POST':
+        if service_level_agreement_form.is_valid():
+            service_level_agreement = service_level_agreement_form.save()
+            messages.success(request, _('You successfully created the "%(service_level_agreement_name)s" service level.') % {'service_level_agreement_name': service_level_agreement.name}, extra_tags=random.choice(success_messages))
+            return redirect('boh:management.service_level_agreements')
+        else:
+            messages.error(request, _('There was a problem creating this service level agreement.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/service_level_agreements/add.html', {
+        'service_level_agreement_form': service_level_agreement_form,
+        'active_top': 'management',
+        'active_side': 'service_level_agreements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['GET', 'POST'])
+def management_service_level_agreements_edit(request, service_level_agreement_id):
+    service_level_agreement = get_object_or_404(models.ServiceLevelAgreement, pk=service_level_agreement_id)
+
+    service_level_agreement_form = forms.ServiceLevelAgreementForm(request.POST or None, instance=service_level_agreement)
+
+    if request.method == 'POST':
+        if service_level_agreement_form.is_valid():
+            service_level_agreement = service_level_agreement_form.save()
+            messages.success(request, _('You successfully updated the "%(service_level_agreement_name)s" service level agreement.') % {'service_level_agreement_name': service_level_agreement.name}, extra_tags=random.choice(success_messages))
+            return redirect('boh:management.service_level_agreements')
+        else:
+            messages.error(request, _('There was a problem updating this service level agreement.'), extra_tags=random.choice(error_messages))
+
+    return render(request, 'boh/management/service_level_agreements/edit.html', {
+        'service_level_agreement': service_level_agreement,
+        'service_level_agreement_form': service_level_agreement_form,
+        'active_top': 'management',
+        'active_side': 'service_level_agreements'
+    })
+
+
+@login_required
+@staff_member_required
+@require_http_methods(['POST'])
+def management_service_level_agreements_delete(request, service_level_agreement_id):
+    service_level_agreement = get_object_or_404(models.ServiceLevelAgreement, pk=service_level_agreement_id)
+
+    form = forms.ServiceLevelAgreementDeleteForm(request.POST, instance=service_level_agreement)
+
+    if form.is_valid():
+        service_level_agreement.delete()
+        messages.success(request, _('You successfully deleted the "%(service_level_agreement_name)s" service level agreement.') % {'service_level_agreement_name': service_level_agreement.name}, extra_tags=random.choice(success_messages))
+        return redirect('boh:management.service_level_agreements')
+    else:
+        messages.error(request, _('There was a problem deleting this service level agreement.'), extra_tags=random.choice(error_messages))
+        return redirect('boh:management.service_level_agreements.edit', service_level.id)
+
 
 @login_required
 @staff_member_required

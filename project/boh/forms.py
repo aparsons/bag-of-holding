@@ -426,6 +426,18 @@ class DataElementDeleteForm(forms.ModelForm):
         model = models.DataElement
         fields = []
 
+# Service Level Agreement
+
+class ServiceLevelAgreementForm(forms.ModelForm):
+    class Meta:
+        model = models.ServiceLevelAgreement
+        fields = ['name', 'description']
+
+class ServiceLevelAgreementDeleteForm(forms.ModelForm):
+    class Meta:
+        model = models.ServiceLevelAgreement
+        fields = []
+
 
 # Person
 

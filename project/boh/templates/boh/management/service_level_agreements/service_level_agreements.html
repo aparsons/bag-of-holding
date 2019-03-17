@@ -1,0 +1,44 @@
+{% extends "boh/management/base_management.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Manage Settings' %} | {% trans 'Service Level Agreements' %}{% endblock %}
+
+{% block manage_content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans 'Service Level Agreements' %}</h3>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">{% trans 'Service level agreements are either internal or external commitments regarding the service.' %}</li>
+    {% if not service_level_agreements %}
+    <li class="list-group-item"><small class="text-muted"><em>{% trans 'There are no service level agreements.' %}</em></small></li>
+    {% endif %}
+  </ul>
+  {% if service_level_agreements %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{% trans 'Name' %}</th>
+          <th>{% trans 'Description' %}</th>
+          <th>{% trans 'Actions' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for service_level_agreement in service_level_agreements %}
+        <tr>
+          <td>{{ service_level_agreement.name }}</td>
+          <td>{{ service_level_agreement.description }}</td>
+          <td><a href="{% url 'boh:management.service_level_agreements.edit' service_level_agreement.id %}">{% trans 'Edit' %}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  <div class="panel-footer">
+    <a href="{% url 'boh:management.service_level_agreements.add' %}" class="btn btn-success btn-sm" role="button"><span class="fa fa-plus" aria-hidden="true"></span> {% trans 'New Service Level Agreement' %}</a>
+  </div>
+</div>
+{% endblock manage_content %}
