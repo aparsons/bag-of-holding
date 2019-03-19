@@ -36,6 +36,66 @@
     <p>{{ activity.activity_type.documentation|markdown_render }}</p>
     {% endif %}
 
+    {% if activity.questionnaire %}
+    <hr>
+    <h3><span class="fa fa-check" aria-hidden="true"></span> {% trans 'Questionnaire' %}</h3>
+    <p id="questions"></p>
+    <form method="post" action="{% url 'boh:activity.questionnaire.save' activity.id %}">
+        {% csrf_token %}
+        <input name="questionnaire" id="questionnaire-result" type="hidden"></input>
+        <button class="btn btn-success" type="submit" onClick="saveQuestionnaire();"><span class="fa fa-check" aria-hidden="true"></span> {% trans 'Save' %}</button>
+    </form>
+    <style>
+      #questions ul {
+        list-style: none;
+      }
+      #questions input[type=checkbox] {
+        margin-right: 20px;
+      }
+    </style>
+    <script>
+      injectPoint = document.getElementById('questions');
+      questionnaire = {{ activity.questionnaire|safe }};
+      var questionCount = 0;
+      for (topic in questionnaire.questions) {
+        var node = document.createElement('h4');
+        var text = document.createTextNode(topic);
+        var list = document.createElement('ul');
+        node.appendChild(text);
+        injectPoint.appendChild(node);
+        injectPoint.appendChild(list);
+        for (question in questionnaire.questions[topic]) {
+          var question_node = document.createElement('li');
+          var question_text = document.createTextNode(questionnaire.questions[topic][question]);
+          var question_choice = document.createElement('input');
+          question_choice.type = "checkbox";
+          if (questionnaire.answers[questionCount] == true) {
+            question_choice.checked = true;
+          }
+          question_node.appendChild(question_choice);
+          question_node.appendChild(question_text);
+          list.appendChild(question_node);
+          questionCount++;
+        }
+
+        function saveQuestionnaire() {
+          var answers = [];
+          var topics = injectPoint.getElementsByTagName('ul');
+          for (var i = 0; i < topics.length; i++) {
+            var questions = topics[i].getElementsByTagName('input');
+            for (var j = 0; j < questions.length; j++) {
+              console.log(questions[j]);
+              answers.push(questions[j].checked);
+            }
+          }
+          questionnaire.answers = answers;
+          document.getElementById('questionnaire-result').setAttribute('value', JSON.stringify(questionnaire));
+          preventDefault();
+        }
+      }
+    </script>
+    {% endif %}
+
     <hr>
 
     <h3><span class="fa fa-comments" aria-hidden="true"></span> {% trans 'Comments' %}</h3>

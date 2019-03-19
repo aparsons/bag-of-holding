@@ -1599,6 +1599,7 @@ def activity_add(request, engagement_id):
     if request.method == 'POST' and form.is_valid():
         activity = form.save(commit=False)
         activity.engagement = engagement
+        activity.questionnaire = activity.activity_type.questionnaire_template
         activity.save()
         form.save_m2m()  # https://docs.djangoproject.com/en/1.7/topics/forms/modelforms/#the-save-method
         messages.success(request, _('You successfully added this activity.'), extra_tags=random.choice(success_messages))
@@ -1678,6 +1679,19 @@ def activity_comment_add(request, activity_id):
         comment.save()
         messages.success(request, _('You successfully added a comment to this activity.'), extra_tags=random.choice(success_messages))
         return redirect(reverse('boh:activity.detail', kwargs={'activity_id': activity.id}) + '#comment-' + str(comment.id))
+
+    return redirect('boh:activity.detail', activity_id=activity.id)
+
+@login_required
+@require_http_methods(['POST'])
+def activity_questionnaire_save(request, activity_id):
+    activity = get_object_or_404(models.Activity, pk=activity_id)
+
+    form = forms.ActivityQuestionnaireSaveForm(request.POST, instance=activity)
+
+    if form.is_valid():
+        activity = form.save()
+        messages.success(request, _('You successfully updated the questionnaire on this activity.'), extra_tags=random.choice(success_messages))
 
     return redirect('boh:activity.detail', activity_id=activity.id)
 

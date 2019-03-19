@@ -93,6 +93,7 @@ urlpatterns = [
     url(r'^activities/(?P<activity_id>\d+)/status/$', views.activity_status, name='activity.status'),
     url(r'^activities/(?P<activity_id>\d+)/delete/$', views.activity_delete, name='activity.delete'),
     url(r'^activities/(?P<activity_id>\d+)/comments/add/$', views.activity_comment_add, name='activity.comment.add'),
+    url(r'^activities/(?P<activity_id>\d+)/questionnaire/save/$', views.activity_questionnaire_save, name='activity.questionnaire.save'),
 
     # People
     url(r'^people/$', views.person_list, name='person.list'),

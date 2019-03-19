@@ -605,6 +605,7 @@ class ActivityType(TimeStampedModel, models.Model):
 
     name = models.CharField(max_length=128, unique=True, help_text=_('A unique name for this activity type.'))
     documentation = models.TextField(blank=True, help_text=_('Guidelines, procedures, and techniques for this activity type.'))
+    questionnaire_template = models.TextField(blank=True, help_text=_('A GoSDL JSON format questionnaire'))
 
     objects = managers.ActivityTypeManager.from_queryset(managers.ActivityTypeQuerySet)()
     metrics = managers.ActivityTypeMetrics.from_queryset(managers.ActivityTypeQuerySet)()
@@ -633,6 +634,7 @@ class Activity(models.Model):
     open_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to open.')
     close_date = models.DateTimeField(blank=True, null=True, help_text='The date and time when the status is changed to closed.')
     duration = models.DurationField(blank=True, null=True)
+    questionnaire = models.TextField(blank=True)
 
     activity_type = models.ForeignKey(ActivityType)
     engagement = models.ForeignKey(Engagement)
@@ -734,3 +736,4 @@ class ActivityComment(Comment):
     """Comment for a specific activity."""
 
     activity = models.ForeignKey(Activity)
+    
