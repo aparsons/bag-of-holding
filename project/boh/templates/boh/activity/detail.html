@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load humanize %}
 {% load markdown_render %}
+{% load gosdl_render %}
 
 {% block title %}{{ application.name }} | {{ activity.engagement.start_date }} - {{ activity.engagement.end_date }} | {{ activity.activity_type.name }}{% endblock %}
 
@@ -37,6 +38,8 @@
     {% endif %}
 
     {% if activity.questionnaire %}
+    <hr>
+    <p>{{ activity.questionnaire|gosdl_render }}</p>
     <hr>
     <h3><span class="fa fa-check" aria-hidden="true"></span> {% trans 'Questionnaire' %}</h3>
     <p id="questions"></p>
