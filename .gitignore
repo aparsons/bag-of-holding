@@ -23,6 +23,7 @@ __pycache__/
 env/
 py3env/
 build/
+libs/
 develop-eggs/
 dist/
 downloads/

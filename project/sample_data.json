@@ -3,39 +3,11 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-      "username": "aparsons",
+      "username": "dev",
       "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
-      "first_name": "Adam",
-      "last_name": "Parsons",
-      "email": "adam.parsons@pearson.com",
-      "is_staff": 1,
-      "is_active": 1,
-      "is_superuser": 1
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 2,
-    "fields": {
-      "username": "mbrown",
-      "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
-      "first_name": "Matt",
-      "last_name": "Brown",
-      "email": "matt.brown@pearson.com",
-      "is_staff": 1,
-      "is_active": 1,
-      "is_superuser": 1
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 3,
-    "fields": {
-      "username": "aweaver",
-      "password": "pbkdf2_sha256$15000$raL6ERHt4kw1$2dRy6YVAWTgJwUq+QQviA73eavlLcDjbX6h1bO2Fc8A=",
-      "first_name": "Aaron",
-      "last_name": "Weaver",
-      "email": "aaron.weaver@pearson.com",
+      "first_name": "dev",
+      "last_name": "dev",
+      "email": "dev@dev.com",
       "is_staff": 1,
       "is_active": 1,
       "is_superuser": 1
