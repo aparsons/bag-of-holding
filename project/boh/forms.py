@@ -385,7 +385,7 @@ class ActivityAddForm(forms.ModelForm):
 class ActivityEditForm(forms.ModelForm):
     class Meta:
         model = models.Activity
-        fields = ['status', 'activity_type', 'description', 'users']
+        fields = ['status', 'activity_type', 'description', 'users', 'questionnaire']
         labels = {
             'users': _('Assigned users')
         }
@@ -399,6 +399,10 @@ class ActivityStatusForm(forms.ModelForm):
         model = models.Activity
         fields = ['status']
 
+class ActivityQuestionnaireSaveForm(forms.ModelForm):
+    class Meta:
+        model = models.Activity
+        fields = ['questionnaire']
 
 class ActivityCommentAddForm(forms.ModelForm):
     class Meta:
@@ -494,7 +498,7 @@ class ApplicationTagDeleteForm(forms.ModelForm):
 class ActivityTypeForm(forms.ModelForm):
     class Meta:
         model = models.ActivityType
-        fields = ['name', 'documentation']
+        fields = ['name', 'documentation', 'questionnaire_template']
 
 
 class ActivityTypeDeleteForm(forms.ModelForm):

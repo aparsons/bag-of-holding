@@ -238,7 +238,7 @@ admin.site.register(models.ActivityType, ActivityTypeAdmin)
 class ActivityAdmin(admin.ModelAdmin):
     date_hierarchy = 'open_date'
     fieldsets = [
-        (None, {'fields': ['engagement', 'activity_type', 'status', 'users']}),
+        (None, {'fields': ['engagement', 'activity_type', 'status', 'questionnaire', 'users']}),
         (_('Advanced options'), {
             'classes': ['collapse'],
             'fields': ['open_date', 'close_date', 'duration']
