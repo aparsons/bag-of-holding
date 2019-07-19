@@ -883,7 +883,7 @@ def application_list(request):
             else:
                 page_size = int(page_size)
 
-    paginator = Paginator(application_filter, page_size)
+    paginator = Paginator(application_filter.qs, page_size)
 
     page = request.GET.get('page')
 

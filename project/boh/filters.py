@@ -1,18 +1,16 @@
 import django_filters
 
-from django_filters import filters
-
 from .models import Organization, Application
 
 
 class ApplicationFilter(django_filters.FilterSet):
-    name = filters.CharFilter(lookup_type='icontains')
-    organization = filters.ModelMultipleChoiceFilter(queryset=Organization.objects.all())
-    business_criticality = filters.MultipleChoiceFilter(choices=Application.BUSINESS_CRITICALITY_CHOICES)
-    platform = filters.MultipleChoiceFilter(choices=Application.PLATFORM_CHOICES)
-    lifecycle = filters.MultipleChoiceFilter(choices=Application.LIFECYCLE_CHOICES)
-    origin = filters.MultipleChoiceFilter(choices=Application.ORIGIN_CHOICES)
-    asvs_level = filters.MultipleChoiceFilter(choices=Application.ASVS_CHOICES)
+    name = django_filters.CharFilter(lookup_expr='icontains')
+    organization = django_filters.ModelMultipleChoiceFilter(queryset=Organization.objects.all())
+    business_criticality = django_filters.MultipleChoiceFilter(choices=Application.BUSINESS_CRITICALITY_CHOICES)
+    platform = django_filters.MultipleChoiceFilter(choices=Application.PLATFORM_CHOICES)
+    lifecycle = django_filters.MultipleChoiceFilter(choices=Application.LIFECYCLE_CHOICES)
+    origin = django_filters.MultipleChoiceFilter(choices=Application.ORIGIN_CHOICES)
+    asvs_level = django_filters.MultipleChoiceFilter(choices=Application.ASVS_CHOICES)
 
     class Meta:
         model = Application
