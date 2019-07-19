@@ -593,11 +593,37 @@ class ActivityTests(TestCase):
         self.assertFalse(self.ac_1.is_past_due())
 
 
-class CommentTests(TestCase):
+class EngagementCommentTests(TestCase):
+
+    def test_init(self):
+        self.u_1 = User(pk = 1)
+        self.e_1 = models.Engagement(pk = 1)
+
+        self.ec_1 = models.EngagementComment(message = 'Hello World', user = self.u_1, engagement = self.e_1)
+        self.ec_1.save()
+
+        self.assertEqual('Hello World', self.ec_1.message)
+        self.assertEqual(self.u_1, self.ec_1.user)
+        self.assertEqual(self.e_1, self.ec_1.engagement)
 
     def test_str(self):
-        self.user_1 = User.objects.create(username='testy', password='secret', email='testy@noreply.com')
-        self.user_1.save()
+        self.ec_1 = models.EngagementComment(message = 'Hello World')
+        self.assertEqual('Hello World', self.ec_1.__str__())
 
-        self.c_1 = models.Comment(message='Hello World', user=self.user_1)
-        self.assertEqual('Hello World', self.c_1.__str__())
+class ActivityCommentTests(TestCase):
+
+    def test_init(self):
+        self.u_1 = User(pk = 1)
+        self.a_1 = models.Activity(pk = 1)
+
+        self.ac_1 = models.ActivityComment(message = 'Hello World', user = self.u_1, activity = self.a_1)
+        self.ac_1.save()
+
+        self.assertEqual('Hello World', self.ac_1.message)
+        self.assertEqual(self.u_1, self.ac_1.user)
+        self.assertEqual(self.a_1, self.ac_1.activity)
+
+    def test_str(self):
+        self.ac_1 = models.ActivityComment(message = 'Hello World')
+        self.assertEqual('Hello World', self.ac_1.__str__())
+
