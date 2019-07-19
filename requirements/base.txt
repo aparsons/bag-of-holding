@@ -1,6 +1,6 @@
 Django==1.11.22
 django-formtools==1.0
-djangorestframework==3.4.7
+djangorestframework==3.5.4
 django-filter==1.1.0
 django-widget-tweaks==1.4.1
 Markdown==2.6.11
