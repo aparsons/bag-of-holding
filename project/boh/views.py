@@ -71,9 +71,9 @@ def dashboard_personal(request):
     """The personal dashboard with information relevant to the current user."""
 
     activities = models.Activity.objects.filter(users__id=request.user.id) \
-        .select_related('activity_type__name') \
+        .select_related('activity_type') \
         .select_related('engagement') \
-        .select_related('engagement__application__name') \
+        .select_related('engagement__application') \
         .annotate(comment_count=Count('activitycomment'))
 
     pending_activities = activities.filter(status=models.Engagement.PENDING_STATUS)
@@ -94,34 +94,34 @@ def dashboard_team(request):
     activities_by_user = User.objects.all().prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects
             .filter(~Q(status=models.Activity.CLOSED_STATUS))
-            .select_related('activity_type__name')
+            .select_related('activity_type')
             .select_related('engagement')
             .annotate(comment_count=Count('activitycomment'))
-            .select_related('engagement__application__name')
+            .select_related('engagement__application')
         )
     )
 
     # Find open and pending engagements
     engagements = models.Engagement.objects.all().prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects.all()
-            .select_related('activity_type__name')
+            .select_related('activity_type')
             .annotate(user_count=Count('users'))
         )
-    ).select_related('application__name').annotate(comment_count=Count('engagementcomment'))
+    ).select_related('application').annotate(comment_count=Count('engagementcomment'))
 
     open_engagements = engagements.filter(status=models.Engagement.OPEN_STATUS)
     pending_engagements = engagements.filter(status=models.Engagement.PENDING_STATUS)
 
     # Find activities where no user is assigned
     unassigned_activities = models.Activity.objects.filter(users=None) \
-        .select_related('activity_type__name') \
+        .select_related('activity_type') \
         .select_related('engagement') \
-        .select_related('engagement__application__name') \
+        .select_related('engagement__application') \
         .annotate(comment_count=Count('activitycomment'))
 
     # Find engagements where no activities have been created
     empty_engagements = models.Engagement.objects.filter(activity__isnull=True) \
-        .select_related('application__name') \
+        .select_related('application') \
         .prefetch_related('activity_set') \
         .annotate(comment_count=Count('engagementcomment'))
 
@@ -869,7 +869,7 @@ def application_list(request):
     if queries.__contains__('page_size'):
         del queries['page_size']
 
-    application_filter = filters.ApplicationFilter(request.GET, queryset=models.Application.objects.all().select_related('organization__name').prefetch_related('tags'))
+    application_filter = filters.ApplicationFilter(request.GET, queryset=models.Application.objects.all().select_related('organization').prefetch_related('tags'))
 
     page_size = 25
 
@@ -883,7 +883,7 @@ def application_list(request):
             else:
                 page_size = int(page_size)
 
-    paginator = Paginator(application_filter, page_size)
+    paginator = Paginator(application_filter.qs, page_size)
 
     page = request.GET.get('page')
 
@@ -930,7 +930,7 @@ def application_engagements(request, application_id):
     engagements = application.engagement_set.prefetch_related(
         Prefetch('activity_set', queryset=models.Activity.objects
             .all()
-            .select_related('activity_type__name')
+            .select_related('activity_type')
         )
     ).annotate(comment_count=Count('engagementcomment'))
 
