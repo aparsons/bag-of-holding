@@ -21,7 +21,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-py3env/
+py*env/
 build/
 libs/
 develop-eggs/
