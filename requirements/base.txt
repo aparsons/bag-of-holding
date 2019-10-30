@@ -1,4 +1,4 @@
-Django==1.11.22
+Django==1.11.23
 django-formtools==1.0
 djangorestframework==3.10.1
 django-filter==2.2.0
